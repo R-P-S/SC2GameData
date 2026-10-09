@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
+  <const id="$ButcherHamstringSlowDuration" value="2" />
+  <const id="$ButcherHamstringSlowAmountPos" value="0.5" />
+  <const id="$ButcherHamstringSlowMultiplierPerStep" value="/($ButcherHamstringSlowAmountPos *($ButcherHamstringSlowDuration 16))" evaluateAsExpression="1" />
+  <const id="$ButcherHamstringSlowMultiplierPerStep50PercentReduction" value="/($ButcherHamstringSlowMultiplierPerStep 0.5)" evaluateAsExpression="1" />
+  <const id="$ButcherHamstringSlowMultiplierPerStep75PercentReduction" value="/($ButcherHamstringSlowMultiplierPerStep 0.25)" evaluateAsExpression="1" />
+  <const id="$ButcherHamstringSlowAmount" value="negate($ButcherHamstringSlowAmountPos)" evaluateAsExpression="1" />
+  <const id="$ButcherCripplingSlamBonusDurationPercent" value="0.3" />
+  <const id="$ButcherCripplingSlamCatalogModificationAmount" value="*($ButcherHamstringSlowDuration $ButcherCripplingSlamBonusDurationPercent)" evaluateAsExpression="1" />
   <CAbilEffectInstant id="ButcherFreshMeatDummy">
     <Effect value="ButcherFreshMeatDummySet" />
     <Flags index="ValidateButtonState" value="0" />
@@ -147,6 +155,20 @@
     <TokenId value="ButcherFreshMeatTokenCounter" />
     <Scale value="0.5" />
   </CAccumulatorToken>
+  <CAccumulatorTimed id="ButcherHamstringDecayAccumulator">
+    <TimestampBehavior value="ButcherHamstringTimestamp" />
+    <MinAccumulation value="0" />
+    <MaxAccumulation value="$ButcherHamstringSlowAmountPos" />
+    <ApplicationRule value="Add" />
+    <MultiplierPerStep value="$ButcherHamstringSlowMultiplierPerStep" />
+    <UnitSource Value="Target" />
+  </CAccumulatorTimed>
+  <CAccumulatorTimed id="ButcherHamstringDecayAccumulator50PercentCCReduction" parent="ButcherHamstringDecayAccumulator">
+    <MultiplierPerStep value="$ButcherHamstringSlowMultiplierPerStep50PercentReduction" />
+  </CAccumulatorTimed>
+  <CAccumulatorTimed id="ButcherHamstringDecayAccumulator75PercentCCReduction" parent="ButcherHamstringDecayAccumulator">
+    <MultiplierPerStep value="$ButcherHamstringSlowMultiplierPerStep75PercentReduction" />
+  </CAccumulatorTimed>
   <CActorSound id="ButcherFreshMeatPickupQuestSound" parent="SoundOneShot">
     <On Terms="Effect.ButcherFreshMeatQuestSoundDummy.Start" Send="Create" />
     <Sound value="Butcher_FreshMeat_Quest_Pickup_Chomp" />
@@ -279,7 +301,7 @@
     <On Terms="Effect.HamstringImpactSet.Start; At Target" Send="Create" />
   </CActorSound>
   <CActorSound id="Butcher_Hamstring_Impact_BrutalStrike" parent="SoundOneShot">
-    <On Terms="Effect.ButcherHamstringBrutalStrikeImpactSet.Start" Send="Create" />
+    <On Terms="Effect.HamstringBrutalStrikeCritDummyModifyUnit.Start" Send="Create" />
     <Filter index="All" value="1" />
     <VisibleTo index="Self" value="1" />
   </CActorSound>
@@ -524,10 +546,10 @@
       <Image value="Assets\Textures\storm_ui_ingame_partyframe_butcher.dds" />
     </GroupIcon>
   </CActorUnit>
-  <CActorAction id="ButcherHeroWeaponAttackActor" parent="MeleeHeroAttack" effectAttack="ButcherHeroWeaponSet">
+  <CActorAction id="ButcherHeroWeaponAttackActor" parent="MeleeHeroAttack" effectAttack="ButcherWeaponImpactDummy">
     <ImpactMap index="Rock" Sound="Butcher_AttackImpact_Building" />
   </CActorAction>
-  <CActorAction id="ButcherAttackWithButchersBrand" parent="MeleeHeroAttack" effectAttack="ButcherHeroWeaponButchersBrandSet">
+  <CActorAction id="ButcherAttackWithButchersBrand" parent="MeleeHeroAttack" effectAttack="ButcherButchersBrandImpactDummy">
     <ImpactMap index="None" Sound="Butcher_ButchersBrand_AttackImpact" />
     <ImpactMap index="Rock" Sound="Butcher_AttackImpact_Building_ButchersBrand" />
   </CActorAction>
@@ -790,6 +812,7 @@
       <AbilLinkEnableArray value="ButcherRuthlessOnslaught" />
       <AbilLinkEnableArray value="RuthlessOnslaughtCancel" />
       <AbilLinkEnableArray value="ButcherRuthlessOnslaughtCharge" />
+      <BehaviorLinkDisableArray value="StormRootSuppressMoving" />
     </Modification>
   </CBehaviorBuff>
   <CBehaviorBuff id="ButcherFreshMeatDeathResponse">
@@ -819,6 +842,10 @@
   <CBehaviorBuff id="ButcherHamstringBrutalStrikeTalentStack">
     <MaxStackCount value="3" />
     <Duration value="5" />
+    <Alignment value="Positive" />
+    <InfoFlags index="Hidden" value="0" />
+    <InfoIcon value="Assets\Textures\storm_ui_icon_butcher_hamstring.dds" />
+    <SortIndex value="45" />
   </CBehaviorBuff>
   <CBehaviorBuff id="ButcherFreshMeatVehicleCarry" parent="CarryBehaviorParent">
     <Period value="0.5" />
@@ -873,21 +900,6 @@
       <Event EventId="QuestComplete" Effect="ButcherFreshMeatQuestCompleteSet" />
     </ConditionalEvents>
   </CBehaviorTokenCounter>
-  <CBehaviorBuff id="ButcherBrutalStrike">
-    <Alignment value="Positive" />
-    <InfoIcon value="Assets\Textures\storm_btn_d3_barbarian_weaponthrow.dds" />
-    <BehaviorCategories index="BuffAutoattackDPS" value="1" />
-    <Modification>
-      <DamageDealtFraction index="Basic" value="0.15" />
-    </Modification>
-    <Duration value="5" />
-    <DamageResponse Chance="1" Handled="ButcherHamstringBrutalStrikeImpactSet" Location="Attacker">
-      <RequireEffectArray value="ButcherHeroWeaponDamage" />
-      <ValidatorArray value="TargetNotEvading" />
-    </DamageResponse>
-    <RemoveValidatorArray value="ButcherHasBrutalStrikeStacks" />
-    <Aliases value="RangedDamageCrit" />
-  </CBehaviorBuff>
   <CBehaviorBuff id="ButcherFurnaceBlast">
     <Alignment value="Positive" />
     <InfoIcon value="Assets\Textures\storm_temp_war3_btnwalloffire.dds" />
@@ -1018,16 +1030,37 @@
     <Face value="ButcherButchersBrand" />
   </CBehaviorBuff>
   <CBehaviorBuff id="ButcherHamstringSlow" parent="StormSlowParent">
-    <MaxStackCount value="32" />
-    <Duration value="2" />
-    <InitialEffect value="HamstringRemoveStacksCreatePersistent" />
+    <Duration value="$ButcherHamstringSlowDuration" />
+    <InitialEffect value="ButcherHamstringApplyTimeStampBehavior" />
+    <RefreshEffect value="ButcherHamstringApplyTimeStampBehavior" />
+    <FinalEffect value="ButcherHamstringRemoveTimeStampBehavior" />
     <Modification>
-      <UnifiedMoveSpeedFactor value="-0.0156" />
+      <UnifiedMoveSpeedFactor value="$ButcherHamstringSlowAmount">
+        <AccumulatorArray value="ButcherHamstringDecayAccumulator" />
+      </UnifiedMoveSpeedFactor>
     </Modification>
   </CBehaviorBuff>
-  <CBehaviorBuff id="ButcherHamstringInvigorationRefundController">
+  <CBehaviorBuff id="ButcherHamstringInvigorationRefundController" parent="CarryBehaviorParent">
     <CancelEffect value="ButcherHamstringInvigorationSet" />
   </CBehaviorBuff>
+  <CBehaviorBuff id="ButcherHamstringSlow50PercentCCReduction" parent="ButcherHamstringSlow">
+    <Modification>
+      <UnifiedMoveSpeedFactor value="$ButcherHamstringSlowAmount">
+        <AccumulatorArray index="0" value="ButcherHamstringDecayAccumulator50PercentCCReduction" />
+      </UnifiedMoveSpeedFactor>
+    </Modification>
+  </CBehaviorBuff>
+  <CBehaviorBuff id="ButcherHamstringSlow75PercentCCReduction" parent="ButcherHamstringSlow">
+    <Modification>
+      <UnifiedMoveSpeedFactor value="$ButcherHamstringSlowAmount">
+        <AccumulatorArray index="0" value="ButcherHamstringDecayAccumulator75PercentCCReduction" />
+      </UnifiedMoveSpeedFactor>
+    </Modification>
+  </CBehaviorBuff>
+  <CBehaviorTimestamp id="ButcherHamstringTimestamp">
+    <Flags index="UseTimeScale" value="1" />
+    <TimeScaleSource Value="Target" />
+  </CBehaviorTimestamp>
   <CBehaviorBuff id="ButcherRuthlessOnslaughtCaster" parent="StormUnstoppableParent">
     <RemoveValidatorArray value="ButcherRuthlessOnslaughtCancelNotQueued" />
     <Duration value="2.5" />
@@ -1086,8 +1119,7 @@
     <TrackingValidatorArray value="TargetHasButchersBrandTargetBehavior" />
     <UnitAddedAtMaxRule value="ReplaceOldest" />
   </CBehaviorUnitTracker>
-  <CBehaviorBuff id="RuthlessOnslaughtKnockupBehavior">
-    <RemoveValidatorArray value="TargetNotUnstoppable" />
+  <CBehaviorBuff id="RuthlessOnslaughtKnockupBehavior" parent="PushPullParent">
     <Duration value="0.125" />
     <Period value="0.0625" />
     <InitialEffect value="RuthlessOnslaughtApplyForce" />
@@ -1176,6 +1208,7 @@
     <MaxStackCount value="5" />
   </CBehaviorBuff>
   <CBehaviorBuff id="ButcherLambToTheSlaughterLMHookedStun" parent="PushPullParent">
+    <BehaviorCategories index="PushOrPull" value="0" />
     <Duration value="0.1875" />
     <Period value="0.0625" />
     <PeriodCount value="1" />
@@ -1391,24 +1424,24 @@
     <CaseDefault value="ButcherFreshMeatQuestSoundDummy" />
   </CEffectSwitch>
   <CEffectModifyUnit id="ButcherFreshMeatSoundDummy" />
-  <CEffectSet id="ButcherHamstringApplyBrutalStrikeTalentSet">
-    <ValidatorArray value="ButcherHasBrutalStrikeTalent" />
-    <EffectArray value="ButcherHamstringBrutalStrikeApplyStackBehavior" />
-    <EffectArray value="HamstringBrutalStrikeApplyBehavior" />
-  </CEffectSet>
   <CEffectApplyBehavior id="ButcherHamstringBrutalStrikeApplyStackBehavior">
-    <ValidatorArray index="0" value="HamstringBrutalStrikeApplyBehaviorTargetFilters" />
+    <ValidatorArray value="ButcherHasBrutalStrikeTalent" />
     <WhichUnit Value="Caster" />
     <Behavior value="ButcherHamstringBrutalStrikeTalentStack" />
     <Count value="3" />
   </CEffectApplyBehavior>
   <CEffectSet id="ButcherHeroWeaponCleaverImpactSet">
     <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="ButcherCleaverWeaponPreImpactSet" />
     <EffectArray value="ButcherHeroWeaponCleaverTalentDamage" />
+    <EffectArray value="ButcherCleaverWeaponPostImpactSet" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
+  <CEffectSet id="ButcherCleaverWeaponPreImpactSet" />
+  <CEffectSet id="ButcherCleaverWeaponPostImpactSet" />
   <CEffectDamage id="ButcherHeroWeaponCleaverTalentDamage" parent="StormWeapon">
     <MultiplicativeModifierArray index="Cleaver" Modifier="-0.65" />
+    <MultiplicativeModifierArray index="BrutalStrike" Validator="ButcherHasBrutalStrikeStacks" Modifier="0.15" Crit="1" />
     <Amount value="130" />
     <LeechFraction index="Life" value="0.75" />
     <LeechValidator index="Life" value="TargetHasButchersBrandTargetBehavior" />
@@ -1492,7 +1525,7 @@
   </CEffectApplyBehavior>
   <CEffectSet id="ButcherRuthlessOnslaughtApplyStunSet">
     <EffectArray value="RuthlessOnslaughtImpactStunApplyBehavior" />
-    <EffectArray value="RuthlessOnslaughtApplyKnockupBehavior" />
+    <EffectArray value="ButcherRuthlessOnslaughtKnockbackApplySet" />
   </CEffectSet>
   <CEffectSet id="ButcherFreshMeat20StackImpactSet">
     <EffectArray value="ButcherFreshMeatStackAddSwitch" />
@@ -1504,13 +1537,14 @@
     <CaseDefault value="ButcherFreshMeat10StackAdd" />
   </CEffectSwitch>
   <CEffectLaunchMissile id="ButcherFreshMeat20StackLaunchMissile">
-    <ImpactEffect value="ButcherFreshMeat20StackInitialSwitch" />
+    <SharedFlags index="SaveTargetOnTeleport" value="1" />
+    <FinishEffect value="ButcherFreshMeat20StackInitialSwitch" />
     <AmmoUnit value="ButcherFreshMeat20StackMissile" />
   </CEffectLaunchMissile>
   <CEffectSet id="ButcherHamstringBrutalStrikeImpactSet">
+    <ValidatorArray value="ButcherHasBrutalStrikeTalent" />
     <EffectArray value="HamstringBrutalStrikeCritDummyModifyUnit" />
     <EffectArray value="ButcherHamstringBrutalStrikeRemoveStackBehavior" />
-    <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
   </CEffectSet>
   <CEffectLaunchMissileAdvanced id="ButcherLambtotheSlaughterFlyerPullInLM">
     <ValidatorArray index="0" value="ButcherLambToTheSlaughterPullInLMTargetFilters" />
@@ -1603,17 +1637,11 @@
     <Behavior value="ButcherButchersBrandInRange" />
     <ValidatorArray index="0" value="ButcherButchersBrandTargetInRange" />
   </CEffectApplyBehavior>
-  <CEffectSet id="ButcherHeroWeaponButchersBrandSet">
-    <EffectArray value="UniversalWeaponImpact" />
-    <EffectArray value="ButchersBrandAttackSet" />
-    <EffectArray value="ButcherHeroWeaponCleaverTalentSearch" />
-    <EffectArray value="ButcherHeroWeaponDamage" />
-    <EffectArray value="TheButcherButchersBrandExtendDuration" />
-    <EffectArray value="UniversalWeaponLaunchSet" />
-  </CEffectSet>
+  <CEffectModifyUnit id="ButcherWeaponImpactDummy" />
+  <CEffectModifyUnit id="ButcherButchersBrandImpactDummy" />
   <CEffectSwitch id="ButcherHeroWeaponSwitch">
-    <CaseArray Validator="TargetHasButchersBrandTargetBehavior" Effect="ButcherHeroWeaponButchersBrandSet" />
-    <CaseDefault value="ButcherHeroWeaponSet" />
+    <CaseArray Validator="TargetHasButchersBrandTargetBehavior" Effect="ButcherButchersBrandImpactDummy" />
+    <CaseDefault value="ButcherWeaponImpactDummy" />
   </CEffectSwitch>
   <CEffectApplyBehavior id="ButcherEnragedApplyResistantBehavior">
     <WhichUnit Value="Caster" />
@@ -1646,10 +1674,6 @@
     <WhichUnit Value="Caster" />
     <BehaviorCategories index="DebuffRoot" value="1" />
   </CEffectRemoveBehavior>
-  <CEffectApplyBehavior id="HamstringBrutalStrikeApplyBehavior">
-    <WhichUnit Value="Caster" />
-    <Behavior value="ButcherBrutalStrike" />
-  </CEffectApplyBehavior>
   <CEffectRemoveBehavior id="ButcherHamstringBrutalStrikeRemoveStackBehavior">
     <WhichUnit Value="Caster" />
     <BehaviorLink value="ButcherHamstringBrutalStrikeTalentStack" />
@@ -1662,12 +1686,13 @@
   <CEffectSet id="HamstringImpactSet">
     <EffectArray value="ApplyAbilityImpactReveal" />
     <EffectArray value="HamstringDamage" />
-    <EffectArray value="ButcherHamstringApplyBehavior" />
+    <EffectArray value="ButcherHamstringRemoveTimeStampBehavior" />
+    <EffectArray value="ButcherHamstringApplyBehaviorSwitch" />
     <EffectArray value="ButcherHamstringInvigorationRefundCancelBehavior" />
   </CEffectSet>
   <CEffectSet id="HamstringInitialSet">
     <EffectArray value="HamstringCreatePersistent" />
-    <EffectArray value="ButcherHamstringApplyBrutalStrikeTalentSet" />
+    <EffectArray value="ButcherHamstringBrutalStrikeApplyStackBehavior" />
     <EffectArray value="HamstringWeaponSwingAdjustmentModifyUnit" />
     <EffectArray value="HamstringBrutalStrikeWeaponSwingAdjustmentModifyUnit" />
     <TargetLocationType value="Point" />
@@ -1724,21 +1749,12 @@
     <MultiplicativeModifierArray index="ButcherHamstringCheapShot" Validator="ButcherHasCheapShotTalentAndTargetIsCCd" Modifier="1" Crit="1" />
     <MultiplicativeModifierArray index="ButcherHamstringChopMeat" Validator="ButcherHasChopMeatAndTargetMinionOrMerc" Modifier="1" Crit="1" />
   </CEffectDamage>
-  <CEffectCreatePersistent id="HamstringRemoveStacksCreatePersistent">
-    <WhichLocation Value="TargetUnit" />
-    <PeriodCount value="32" />
-    <PeriodicEffectArray value="HamstringRemoveBehaviorStack" />
-    <PeriodicPeriodArray value="0.0625" />
-  </CEffectCreatePersistent>
-  <CEffectRemoveBehavior id="HamstringRemoveBehaviorStack">
-    <BehaviorLink value="ButcherHamstringSlow" />
-    <Count value="1" />
-  </CEffectRemoveBehavior>
   <CEffectSet id="HamstringVisualEffectDummy">
     <TargetLocationType value="Point" />
   </CEffectSet>
   <CEffectModifyUnit id="HamstringBrutalStrikeCritDummyModifyUnit">
-    <ValidatorArray value="CasterHasBrutalStrikeBuff" />
+    <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
+    <ValidatorArray value="ButcherHasBrutalStrikeStacks" />
   </CEffectModifyUnit>
   <CEffectCreateHealer id="ButcherFreshMeatVictualsCreateHealer" parent="StormSelfOnlyHealingSpellPercent">
     <ValidatorArray value="CasterLifeNotFull" />
@@ -1938,6 +1954,12 @@
     <WhichLocation Value="CasterUnit" />
     <Amount value="10" />
   </CEffectApplyForce>
+  <CEffectSet id="ButcherRuthlessOnslaughtKnockbackApplySet">
+    <ValidatorArray value="TargetNotUnstoppable" />
+    <EffectArray value="HeroRemovePushPullDebuffs" />
+    <EffectArray value="HeroRemovePreventsMovement" />
+    <EffectArray value="RuthlessOnslaughtApplyKnockupBehavior" />
+  </CEffectSet>
   <CEffectApplyBehavior id="RuthlessOnslaughtApplyKnockupBehavior">
     <Behavior value="RuthlessOnslaughtKnockupBehavior" />
   </CEffectApplyBehavior>
@@ -1950,6 +1972,7 @@
     <ValidatorArray value="TargetIsHero" />
     <Chance value="0" />
     <VitalFractionMax index="Life" value="0.1" />
+    <SourceButtonFace value="ButcherRuthlessOnslaughtSavageChargeTalent" />
   </CEffectDamage>
   <CEffectSet id="RuthlessOnslaughtCancelSet">
     <EffectArray value="RuthlessOnslaughtCasterRemoveChargingBehavior" />
@@ -1989,31 +2012,61 @@
     <EffectArray value="ButchersBrandLifestealHeroicSwitch" />
   </CEffectSet>
   <CEffectSet id="ButcherHeroWeaponSet">
-    <EffectArray value="UniversalWeaponImpact" />
-    <EffectArray value="ButcherHeroWeaponCleaverTalentSearch" />
-    <EffectArray value="TheButcherButchersBrandExtendDuration" />
-    <EffectArray value="ButcherHeroWeaponDamage" />
-    <EffectArray value="ButcherHeroWeaponApplyBloodFrenzyTalentBuff" />
     <EffectArray value="UniversalWeaponLaunchSet" />
+    <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="ButcherHeroWeaponSwitch" />
+    <EffectArray value="ButcherWeaponPreImpactSet" />
+    <EffectArray value="ButcherHeroWeaponDamage" />
+    <EffectArray value="ButcherWeaponPostImpactSet" />
+    <EffectArray value="ButcherHeroWeaponCleaverTalentSearch" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
+  </CEffectSet>
+  <CEffectSet id="ButcherWeaponPreImpactSet">
+    <EffectArray value="TheButcherButchersBrandExtendDuration" />
+  </CEffectSet>
+  <CEffectSet id="ButcherWeaponPostImpactSet">
+    <EffectArray value="ButcherHeroWeaponApplyBloodFrenzyTalentBuff" />
+    <EffectArray value="ButcherHamstringBrutalStrikeImpactSet" />
   </CEffectSet>
   <CEffectDamage id="ButcherHeroWeaponDamage" parent="StormWeapon">
     <Amount value="130" />
+    <MultiplicativeModifierArray index="BrutalStrike" Validator="ButcherHasBrutalStrikeStacks" Modifier="0.15" Crit="1" />
     <LeechFraction index="Life" value="0.75" />
     <LeechValidator index="Life" value="TargetHasButchersBrandTargetBehavior" />
     <LeechFlatModifierArray index="BrandedHero" Validator="ButcherHasButchersBrandTargetAndIsHeroic" Modifier="0.75" />
   </CEffectDamage>
   <CEffectLaunchMissile id="ButcherFreshMeat1StackLaunchMissile">
-    <ImpactEffect value="ButcherFreshMeat1StackInitialSwitch" />
+    <SharedFlags index="SaveTargetOnTeleport" value="1" />
+    <FinishEffect value="ButcherFreshMeat1StackInitialSwitch" />
     <AmmoUnit value="ButcherFreshMeat1StackMissile" />
     <ValidatorArray index="0" value="ButcherTargetHasLessThan200StacksFreshMeat" />
   </CEffectLaunchMissile>
-  <CEffectApplyBehavior id="ButcherHamstringApplyBehavior">
-    <Behavior value="ButcherHamstringSlow" />
-    <Count value="32" />
-    <ValidatorArray index="0" value="TargetNotDead" />
+  <CEffectSwitch id="ButcherHamstringApplyBehaviorSwitch">
+    <ValidatorArray value="TargetNotDead" />
     <ValidatorArray value="TargetNotUnstoppable" />
+    <CaseArray Validator="TargetHas50PercentCCReductionCombine" Effect="ButcherHamstringApplyBehavior50PercentCCReduction" />
+    <CaseArray Validator="TargetHas75PercentCCReduction" Effect="ButcherHamstringApplyBehavior75PercentCCReduction" />
+    <CaseDefault value="ButcherHamstringApplyBehavior" />
+  </CEffectSwitch>
+  <CEffectApplyBehavior id="ButcherHamstringApplyBehavior" parent="StormSlowApply">
+    <Behavior value="ButcherHamstringSlow" />
   </CEffectApplyBehavior>
+  <CEffectApplyBehavior id="ButcherHamstringApplyBehavior50PercentCCReduction" parent="StormSlowApply">
+    <Behavior value="ButcherHamstringSlow50PercentCCReduction" />
+  </CEffectApplyBehavior>
+  <CEffectApplyBehavior id="ButcherHamstringApplyBehavior75PercentCCReduction" parent="StormSlowApply">
+    <Behavior value="ButcherHamstringSlow75PercentCCReduction" />
+  </CEffectApplyBehavior>
+  <CEffectApplyBehavior id="ButcherHamstringApplyTimeStampBehavior">
+    <ValidatorArray value="ButcherDoesNotHaveCripplingSlamTalent" />
+    <Behavior value="ButcherHamstringTimestamp" />
+  </CEffectApplyBehavior>
+  <CEffectRemoveBehavior id="ButcherHamstringRemoveTimeStampBehavior">
+    <BehaviorLink value="ButcherHamstringTimestamp" />
+  </CEffectRemoveBehavior>
+  <CEffectModifyUnit id="ButcherCripplingSlamCatalogReference">
+    <XP value="$ButcherCripplingSlamBonusDurationPercent" />
+  </CEffectModifyUnit>
   <CEffectEnumArea id="RuthlessOnslaughtScanSearchArea">
     <LaunchLocation Value="CasterUnit" />
     <ImpactLocation Value="CasterUnit" />
@@ -2223,17 +2276,39 @@
     <Flags index="Placement" value="1" />
     <PlacementRange value="10" />
   </CEffectLaunchMissileAdvanced>
+  <CEffectLaunchMissileAdvanced id="ButcherLambToTheSlaughterPullInLMInstant">
+    <ImpactLocation Effect="ButcherLambToTheSlaughterPostCreateUnit" Value="TargetPoint" />
+    <LaunchLocation Effect="ButcherLambToTheSlaughterPostDistanceCheck" Value="TargetUnit" />
+    <Movers Link="ButcherLambToTheSlaughterPullInMissileShort" IfRangeLTE="5" />
+    <Movers Link="ButcherLambToTheSlaughterPullInMissileLong" IfRangeLTE="500" />
+    <DeathType value="Unknown" />
+    <ImpactOffset Y="1" />
+    <Flags index="Placement" value="1" />
+    <PlacementRange value="10" />
+  </CEffectLaunchMissileAdvanced>
   <CEffectRedirectMissile id="ButcherLambToTheSlaughterPullInRM">
     <ImpactLocation Effect="ButcherLambToTheSlaughterPostTargetLMHookedAB" Value="SourceUnit" />
     <Movers Link="MissileDefault" />
   </CEffectRedirectMissile>
   <CEffectSwitch id="ButcherLambToTheSlaughterPullInSwitch">
-    <CaseArray Validator="ButcherLambToTheSlaughterPullInSwitchCombine" Effect="ButcherLambToTheSlaughterPostTargetLMHookedAB" />
-    <CaseDefault value="ButcherLambToTheSlaughterPostTargetStunAB" />
+    <ValidatorArray value="ButcherLambToTheSlaughterTargetNotBeingPulledCombine" />
+    <CaseArray Validator="ButcherLambToTheSlaughterPullInSwitchCombine" Effect="ButcherLambToTheSlaughterLMApplySet" />
+    <CaseDefault value="ButcherLambToTheSlaughterKnockbackApplySet" />
   </CEffectSwitch>
+  <CEffectSet id="ButcherLambToTheSlaughterLMApplySet">
+    <EffectArray value="HeroRemovePushPullDebuffs" />
+    <EffectArray value="ButcherLambToTheSlaughterPostTargetLMHookedSwitch" />
+  </CEffectSet>
+  <CEffectSwitch id="ButcherLambToTheSlaughterPostTargetLMHookedSwitch">
+    <CaseArray Validator="TargetIsNotGroundMover" Effect="ButcherLambToTheSlaughterPostTargetLMHookedAB" />
+    <CaseDefault value="ButcherLambToTheSlaughterPullInLMInstant" />
+  </CEffectSwitch>
+  <CEffectSet id="ButcherLambToTheSlaughterKnockbackApplySet">
+    <EffectArray value="HeroRemovePushPullDebuffs" />
+    <EffectArray value="ButcherLambToTheSlaughterPostTargetStunAB" />
+  </CEffectSet>
   <CEffectApplyBehavior id="ButcherLambToTheSlaughterPostTargetStunAB">
     <Behavior value="ButcherLambToTheSlaughterHookedStun" />
-    <ValidatorArray index="0" value="TargetNotUnstoppable" />
   </CEffectApplyBehavior>
   <CEffectApplyForce id="ButcherLambToTheSlaughterHookedStunForce">
     <WhichLocation Effect="ButcherLambToTheSlaughterPostTargetStunAB" Value="SourceUnit" />
@@ -2270,6 +2345,7 @@
     <SkinArray value="ButcherButcherlisk" />
     <SkinArray value="ButcherSpring19" />
     <SkinArray value="ButcherClassic21" />
+    <SkinArray value="ButcherToys21" />
     <HeroAbilArray Abil="ButcherHamstring" Button="ButcherHamstring">
       <Flags index="ShowInHeroSelect" value="1" />
       <Flags index="AffectedByCooldownReduction" value="1" />
@@ -2708,18 +2784,24 @@
     <AbilityModificationArray>
       <Modifications>
         <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="HamstringRemoveStacksCreatePersistent" />
-        <Field value="Chance" />
-        <FieldIsInteger value="1" />
-        <Value value="-1.000000" />
-      </Modifications>
-      <Modifications>
-        <Type value="MultiplyLevelModification" />
         <Catalog value="Behavior" />
         <Entry value="ButcherHamstringSlow" />
         <Field value="Duration" />
-        <Value value="1.300000" />
+        <Value value="$ButcherCripplingSlamCatalogModificationAmount" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Behavior" />
+        <Entry value="ButcherHamstringSlow50PercentCCReduction" />
+        <Field value="Duration" />
+        <Value value="$ButcherCripplingSlamCatalogModificationAmount" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Behavior" />
+        <Entry value="ButcherHamstringSlow75PercentCCReduction" />
+        <Field value="Duration" />
+        <Value value="$ButcherCripplingSlamCatalogModificationAmount" />
       </Modifications>
     </AbilityModificationArray>
     <Abil value="ButcherHamstring" />
@@ -3226,6 +3308,10 @@
     <Find value="1" />
     <Value value="ButcherMasteryHamstringCripplingSlam" />
   </CValidatorPlayerTalent>
+  <CValidatorPlayerTalent id="ButcherDoesNotHaveCripplingSlamTalent">
+    <WhichPlayer Value="Caster" />
+    <Value value="ButcherMasteryHamstringCripplingSlam" />
+  </CValidatorPlayerTalent>
   <CValidatorPlayerTalent id="ButcherHasBloodFrenzyTalent">
     <WhichPlayer Value="Caster" />
     <Find value="1" />
@@ -3352,6 +3438,27 @@
     <CombineArray value="TargetNotInDevouringMaw" />
     <CombineArray value="AnubarakTargetIsNotWebbed" />
   </CValidatorCombine>
+  <CValidatorCombine id="ButcherLambToTheSlaughterTargetNotBeingPulledCombine">
+    <Type value="And" />
+    <CombineArray value="ButcherLambToTheSlaughterTargetNotBeingPulled" />
+    <CombineArray value="ButcherLambToTheSlaughterTargetNotBeingPulledForce" />
+    <CombineArray value="ButcherLambToTheSlaughterTargetNotBeingPulledMoverShort" />
+    <CombineArray value="ButcherLambToTheSlaughterTargetNotBeingPulledMoverLong" />
+  </CValidatorCombine>
+  <CValidatorUnitHasBehavior id="ButcherLambToTheSlaughterTargetNotBeingPulled">
+    <Behavior value="ButcherLambToTheSlaughterLMHookedStun" />
+    <Negate value="1" />
+  </CValidatorUnitHasBehavior>
+  <CValidatorUnitHasBehavior id="ButcherLambToTheSlaughterTargetNotBeingPulledForce">
+    <Behavior value="ButcherLambToTheSlaughterHookedStun" />
+    <Negate value="1" />
+  </CValidatorUnitHasBehavior>
+  <CValidatorUnitMover id="ButcherLambToTheSlaughterTargetNotBeingPulledMoverShort">
+    <Value value="ButcherLambToTheSlaughterPullInMissileShort" />
+  </CValidatorUnitMover>
+  <CValidatorUnitMover id="ButcherLambToTheSlaughterTargetNotBeingPulledMoverLong">
+    <Value value="ButcherLambToTheSlaughterPullInMissileLong" />
+  </CValidatorUnitMover>
   <CValidatorUnitCompareBehaviorCount id="RuthlessOnslaughtDoesNotHaveChargingBehavior">
     <WhichUnit Value="Caster" />
     <Behavior value="ButcherRuthlessOnslaughtCaster" />

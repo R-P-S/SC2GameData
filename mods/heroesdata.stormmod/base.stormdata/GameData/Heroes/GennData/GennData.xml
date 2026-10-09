@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
+  <const id="$GreymaneDarkflightRange" value="6.75" />
+  <const id="$GreymaneDisengageRange" value="6" />
+  <const id="$GreymaneDisengageDashDuration" value="0.4375" />
+  <const id="$GreymaneDisengageDashSpeed" value="/($GreymaneDisengageRange +($GreymaneDisengageDashDuration 0.0625))" evaluateAsExpression="1" />
+  <const id="$GreymaneRunningWildRangeModifier" value="0.35" />
+  <const id="$GreymaneRunningWildRangeIncreaseDarkflight" value="*($GreymaneDarkflightRange $GreymaneRunningWildRangeModifier)" evaluateAsExpression="1" />
+  <const id="$GreymaneRunningWildRangeIncreaseDisengage" value="*($GreymaneDisengageRange $GreymaneRunningWildRangeModifier)" evaluateAsExpression="1" />
+  <const id="$GreymaneRunningWildSpeedIncreaseDisengage" value="*($GreymaneDisengageDashSpeed $GreymaneRunningWildRangeModifier)" evaluateAsExpression="1" />
   <CAbilEffectTarget id="GreymaneGilneanCocktail">
     <PrepEffect value="AbilityUseResponseSetDismountDecloakSuppressTurning" />
     <Effect value="GreymaneGilneanCocktailInitialSet" />
@@ -60,12 +68,13 @@
     <Effect value="GreymaneDarkflightCastSet" />
     <Flags index="ClearLastAttackTargetOutOfRange" value="1" />
     <Flags index="ClearLastMoveTarget" value="1" />
+    <Flags index="RangeUseCasterRadius" value="0" />
     <Cost>
       <Vital index="Energy" value="10" />
       <Cooldown TimeUse="5" />
     </Cost>
     <TargetFilters value="-;Player,Ally,Neutral,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
-    <Range value="6" />
+    <Range value="$GreymaneDarkflightRange" />
     <Arc value="360" />
     <SetLastTarget value="Attack" />
     <CmdButtonArray index="Execute" DefaultButtonFace="GreymaneDarkflight" />
@@ -321,7 +330,7 @@
     <HostSiteOps Ops="SOpAttachCenter" />
     <Model value="GreymaneDarkflightLeap" />
   </CActorModel>
-  <CActorAction id="GreymaneHumanMeleeAttack" parent="MeleeHeroAttack" effectAttack="HeroGreymaneHumanMeleeWeaponImpactSet">
+  <CActorAction id="GreymaneHumanMeleeAttack" parent="MeleeHeroAttack" effectAttack="GreymaneHumanMeleeImpactDummy">
     <ImpactMap index="None" Model="HeroGreymaneHumanMeleeWeaponAttackImpact" Sound="None" />
     <ImpactMap index="Rock" Sound="None" />
   </CActorAction>
@@ -582,14 +591,14 @@
     <On Terms="Effect.GreymaneGoForTheThroatDamage.Start; At Caster" Send="Create GreymaneGoForTheThroatCast" />
     <On Terms="Abil.GreymaneGoForTheThroat.SourceCastStart" Send="AnimClear Attack" />
     <On Terms="Abil.GreymaneGoForTheThroat.SourceCastStart; ValidateUnit GreymaneSourceHasWorgenForm" Send="ModelMaterialApply GreymaneTransformGlaze" />
-    <On Terms="Effect.GreymaneGoForTheThroatLaunchGreymane.Start" Send="AnimPlay Spell Spell,A 0 -1.000000 -1.000000 1.000000 AsTimeScale" />
-    <On Terms="Effect.GreymaneGoForTheThroatInstantImpactSet.Start" Send="AnimPlay Spell Spell,R 0 -1.000000 -1.000000 1.000000 AsTimeScale" />
+    <On Terms="Effect.GreymaneGoForTheThroatLaunchGreymane.Start; At Caster" Send="AnimPlay Spell Spell,A 0 -1.000000 -1.000000 1.000000 AsTimeScale" />
+    <On Terms="Effect.GreymaneGoForTheThroatInstantImpactSet.Start; At Caster" Send="AnimPlay Spell Spell,R 0 -1.000000 -1.000000 1.000000 AsTimeScale" />
     <On Terms="Abil.GreymaneGoForTheThroat.SourceCastStart" Send="Create GreymaneWorgenTransformFXHumanToWorgen" />
     <On Terms="Effect.GreymaneGoForTheThroatLaunchGreymane.Start" Send="Create GreymaneGoForTheThroatLaunchSound" />
     <On Terms="Effect.GreymaneGoForTheThroatInstantCastPersistent.Start" Send="Create GreymaneGoForTheThroatLaunchSound" />
-    <On Terms="Effect.GreymaneGoForTheThroatInstantImpactSet.Start" Send="StatusSet AttackOrder 2" />
-    <On Terms="Effect.GreymaneGoForTheThroatRangeImpactSet.Start" Send="StatusSet AttackOrder 2" />
-    <On Terms="Effect.GreymaneGoForTheThroatFizzleRefund.Start" Send="AnimClear Spell" />
+    <On Terms="Effect.GreymaneGoForTheThroatInstantImpactSet.Start; At Caster" Send="StatusSet AttackOrder 2" />
+    <On Terms="Effect.GreymaneGoForTheThroatRangeImpactSet.Start; At Caster" Send="StatusSet AttackOrder 2" />
+    <On Terms="Effect.GreymaneGoForTheThroatFizzleRefund.Start; At Caster" Send="AnimClear Spell" />
     <On Terms="UnitDeathCustomize; ValidateUnit GreymaneSourceHasWorgenFormandNotAbathurUltimateEvolutionControl" Send="DeathCustomize Variation6" />
     <On Terms="Effect.HeroGenericMissileInterruptLaunchMissile.Start" Send="AnimClear Spell" />
     <Remove Terms="UnitTaunt.*.Start; Taunt Tease" Send="AnimPlay Taunt Taunt 0 -1.000000 -1.000000 1.000000 AsTimeScale" />
@@ -664,7 +673,7 @@
   <CActorMissile id="HeroGreymaneWeaponAttackMissile" parent="StormMissileWithDeath" unitName="HeroGreymaneWeaponAttackMissile">
     <AnimBlendTime value="0.000000" />
   </CActorMissile>
-  <CActorAction id="HeroGreymaneWeaponAttack" parent="RangedHeroAttackMissile" effectImpact="HeroGreymaneWeaponImpactSet" effectLaunch="GreymaneWeaponLaunchBaseSet">
+  <CActorAction id="HeroGreymaneWeaponAttack" parent="RangedHeroAttackMissile" effectImpact="GreymaneWeaponImpactDummy" effectLaunch="GreymaneWeaponLaunchBaseSet">
     <LaunchAssets Model="HeroGreymaneWeaponAttackCast" Sound="None" />
     <LaunchSiteOps Ops="SOpShadow SOpForwardTargetUnit SOpOffsetLaunch" />
     <ImpactMap index="None" Sound="Greymane_Weapon_AttackImpact_Unit" />
@@ -672,7 +681,7 @@
     <ImpactSiteOps Ops="SOpAttachHarness SOpAttachVolumeStandard SOpForwardOriginPointInverted" />
     <LaunchAttachQuery Methods="AMFilterWeapon00FullMatch" />
   </CActorAction>
-  <CActorAction id="HeroGreymaneInnerBeastWeaponAttack" parent="RangedHeroAttackMissile" effectImpact="HeroGreymaneWeaponImpactSet" effectLaunch="GreymaneWeaponLaunchInnerBeastSet">
+  <CActorAction id="HeroGreymaneInnerBeastWeaponAttack" parent="RangedHeroAttackMissile" effectImpact="GreymaneWeaponImpactDummy" effectLaunch="GreymaneWeaponLaunchInnerBeastSet">
     <LaunchAssets Model="HeroGreymaneInnerBeastWeaponAttackCast" Sound="None" />
     <LaunchSiteOps Ops="SOpShadow SOpForwardTargetUnit SOpOffsetLaunch" />
     <ImpactMap index="None" Model="HeroGreymaneWeaponAttackImpact" Sound="Greymane_Weapon_AttackImpact_Unit" ModelReaction="HeroGreymaneWeaponAttackImpactReaction" />
@@ -682,7 +691,7 @@
     <Missile value="HeroGreymaneWeaponAttackMissile" />
     <LaunchAttachQuery Methods="AMFilterWeapon00FullMatch" />
   </CActorAction>
-  <CActorAction id="HeroGreymaneWorgenWeaponAttack" parent="MeleeHeroAttack" effectAttack="HeroGreymaneWorgenWeaponImpactSet">
+  <CActorAction id="HeroGreymaneWorgenWeaponAttack" parent="MeleeHeroAttack" effectAttack="GreymaneWorgenWeaponImpactDummy">
     <ImpactMap index="None" Model="HeroGreymaneWorgenWeaponAttackImpact" Sound="None" />
     <ImpactMap index="Rock" Sound="None" />
   </CActorAction>
@@ -909,7 +918,7 @@
   </CActorSound>
   <CActorRange id="GreymaneDarkflightRange" parent="StormRangeAbilPlusSplat" abil="GreymaneDarkflight" />
   <CActorSplat id="GreymaneDarkflightRangeSplat" parent="StormRangeSplat">
-    <Scale value="6.700000" />
+    <Scale value="$GreymaneDarkflightRange" />
   </CActorSplat>
   <CActorModel id="GreymaneDarkflightImpact" parent="StormModelAnimationStyleOneShotUnit">
     <On Terms="ActorCreation" Send="Create GreymaneDarkflightImpactSound" />
@@ -921,7 +930,7 @@
     <SoundFlags index="UpdateVisibility" value="0" />
   </CActorSound>
   <CActorQuad id="GreymaneDisengageGuide" parent="StormGuideVisualQuadDownClosestFantasy" abil="GreymaneDisengage">
-    <Height value="6.000000" />
+    <Height value="$GreymaneDisengageRange" />
     <Width value="1.000000" />
   </CActorQuad>
   <CActorSound id="GreymaneDisengageCastSound" parent="SoundOneShot">
@@ -1152,8 +1161,8 @@
       <ModifyFlags index="OrdersUninterruptible" value="1" />
       <StateFlags index="SuppressCollision" value="1" />
       <StateFlags index="LineMovement" value="1" />
-      <MoveSpeedMaximum value="12" />
-      <MoveSpeedMinimum value="12" />
+      <MoveSpeedMaximum value="$GreymaneDisengageDashSpeed" />
+      <MoveSpeedMinimum value="$GreymaneDisengageDashSpeed" />
       <AbilLinkEnableArray value="GreymaneDisengage" />
     </Modification>
   </CBehaviorBuff>
@@ -1448,7 +1457,6 @@
     <EffectCategory index="Quest" value="1" />
     <Chance value="0" />
     <CollationId value="" />
-    <ContextUnit Value="Caster" />
     <TokenId value="GreymaneGilneanCocktailIncendiaryElixirQuestToken" />
   </CEffectModifyTokenCount>
   <CEffectModifyTokenCount id="GreymaneWizenedDuelistResetQuest">
@@ -1593,10 +1601,16 @@
     <CaseDefault value="GreymaneWorgenFormApplySet" />
   </CEffectSwitch>
   <CEffectSet id="GreymaneHuntersBlunderbussTargetSet">
-    <EffectArray value="GreymaneLordofHisPackProcSet" />
+    <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="GreymaneHuntersBlunderbussPreImpactSet" />
     <EffectArray value="GreymaneHuntersBlunderbussDamage" />
+    <EffectArray value="GreymaneHuntersBlunderbussPostImpactSet" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
+  <CEffectSet id="GreymaneHuntersBlunderbussPreImpactSet">
+    <EffectArray value="GreymaneLordofHisPackProcSet" />
+  </CEffectSet>
+  <CEffectSet id="GreymaneHuntersBlunderbussPostImpactSet" />
   <CEffectSet id="GreymaneWeaponLaunchInnerBeastSet">
     <EffectArray value="HeroGreymaneWeaponLaunchSet" />
   </CEffectSet>
@@ -1609,10 +1623,12 @@
   </CEffectSet>
   <CEffectSet id="HeroGreymaneHumanMeleeWeaponImpactSet">
     <EffectArray value="UniversalWeaponLaunchSet" />
+    <EffectArray value="GreymaneHumanMeleeImpactDummy" />
     <EffectArray value="HeroGreymaneWeaponImpactSet" />
-    <EffectArray value="GreymaneInnerBeastInsatiableManaRefund" />
-    <EffectArray value="GreymaneInsatiableModifyHealingFountainCooldown" />
   </CEffectSet>
+  <CEffectModifyUnit id="GreymaneHumanMeleeImpactDummy" />
+  <CEffectModifyUnit id="GreymaneWeaponImpactDummy" />
+  <CEffectModifyUnit id="GreymaneWorgenWeaponImpactDummy" />
   <CEffectSwitch id="GreymaneDisengageHeroicUseSwitch">
     <ValidatorArray value="GreymaneNotInWorgenForm" />
     <CaseArray Validator="GreymaneHasDarkflightDisengageRunningWild" Effect="DisengageHeroicUseModifyCooldownRunningWild" />
@@ -1690,12 +1706,9 @@
     <EffectArray value="GreymaneGoForTheThroatFreeApply" />
   </CEffectSet>
   <CEffectSet id="GreymaneGoForTheThroatSoundDummy" />
-  <CEffectSet id="GreymaneHuntersBlunderbussImpactSet">
-    <EffectArray value="GreymaneHuntersBlunderbussSearchArea" />
-    <Chance value="0" />
-    <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
-  </CEffectSet>
   <CEffectEnumArea id="GreymaneHuntersBlunderbussSearchArea">
+    <Chance value="0" />
+    <ValidatorArray value="TargetNotEvading" />
     <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
     <ImpactLocation Value="TargetUnit" />
     <AreaArray Arc="64.995" Effect="GreymaneHuntersBlunderbussTargetSet">
@@ -1759,10 +1772,16 @@
     <BehaviorLink value="GreymaneGoForTheThroatFizzleRefundBehavior" />
   </CEffectRemoveBehavior>
   <CEffectSet id="GreymaneToothAndClawImpactSet">
-    <EffectArray value="GreymaneLordofHisPackProcSet" />
+    <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="GreymaneToothAndClawPreImpactSet" />
     <EffectArray value="GreymaneToothAndClawDamage" />
+    <EffectArray value="GreymaneToothAndClawPostImpactSet" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
+  <CEffectSet id="GreymaneToothAndClawPreImpactSet">
+    <EffectArray value="GreymaneLordofHisPackProcSet" />
+  </CEffectSet>
+  <CEffectSet id="GreymaneToothAndClawPostImpactSet" />
   <CEffectEnumArea id="GreymaneToothAndClawSearchArea">
     <SearchFilters value="-;Self,Player,Ally,ImmuneToAOE,Missile,Item,Stasis,Dead,Invulnerable" />
     <ImpactLocation Value="SourceUnit" />
@@ -1861,13 +1880,6 @@
     <BehaviorLink value="GreymaneWorgenForm" />
     <ValidatorArray index="0" value="CasterIsGreymane" />
   </CEffectRemoveBehavior>
-  <CEffectSet id="GreymaneWorgenWeaponImpactSecondarySet">
-    <EffectArray value="GreymaneToothAndClawSearchArea" />
-    <EffectArray value="GreymaneInnerBeastInsatiableManaRefund" />
-    <EffectArray value="GreymaneInsatiableModifyHealingFountainCooldown" />
-    <EffectArray value="GreymaneRazorSwipeUnfetteredAssaultModifyCooldown" />
-    <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
-  </CEffectSet>
   <CEffectApplyBehavior id="GreymaneGoForTheThroatApplySoundDummy">
     <WhichUnit Value="Caster" />
     <Behavior value="GreymaneGoForTheThroatSoundDummy" />
@@ -1878,8 +1890,8 @@
     <ValidatorArray value="GreymaneDoesNotHaveUnleashedTalentGoForTheThroat" />
   </CEffectApplyBehavior>
   <CEffectSet id="HeroGreymaneWeaponLaunchSet">
-    <EffectArray value="HeroGreymaneWeaponLaunchSwitch" />
     <EffectArray value="UniversalWeaponLaunchSet" />
+    <EffectArray value="HeroGreymaneWeaponLaunchSwitch" />
   </CEffectSet>
   <CEffectSet id="GreymaneLordofHisPackProcSet">
     <ValidatorArray value="GreymaneLordofHisPackActivateCombine" />
@@ -1901,15 +1913,21 @@
   </CEffectLaunchMissile>
   <CEffectSet id="HeroGreymaneWeaponImpactSet">
     <EffectArray value="UniversalWeaponImpact" />
-    <EffectArray value="GreymaneLordofHisPackProcSet" />
+    <EffectArray value="GreymaneWeaponImpactDummy" />
+    <EffectArray value="GreymaneWeaponPreImpactSet" />
     <EffectArray value="HeroGreymaneWeaponDamage" />
+    <EffectArray value="GreymaneWeaponPostImpactSet" />
+    <EffectArray value="GreymaneHuntersBlunderbussSearchArea" />
     <EffectArray value="GreymaneWizenedDuelistIncrementTokenCounterHuman" />
-    <EffectArray value="GreymaneHuntersBlunderbussImpactSet" />
-    <EffectArray value="GreymaneInnerBeastAttackProcSet" />
-    <EffectArray value="GreymaneInnerBeastInsatiableManaRefund" />
-    <EffectArray value="GreymaneInsatiableModifyHealingFountainCooldown" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
+  <CEffectSet id="GreymaneWeaponPreImpactSet">
+    <EffectArray value="GreymaneLordofHisPackProcSet" />
+    <EffectArray value="GreymaneInnerBeastInsatiableManaRefund" />
+    <EffectArray value="GreymaneInsatiableModifyHealingFountainCooldown" />
+    <EffectArray value="GreymaneInnerBeastAttackProcSet" />
+  </CEffectSet>
+  <CEffectSet id="GreymaneWeaponPostImpactSet" />
   <CEffectSwitch id="HeroGreymaneWeaponLaunchSwitch">
     <CaseArray Validator="GreymaneWeaponDistanceCheck" Effect="HeroGreymaneWeaponLaunchMissile" />
     <CaseDefault value="HeroGreymaneWeaponImpactSet" />
@@ -1917,14 +1935,23 @@
   <CEffectSet id="HeroGreymaneWorgenWeaponImpactSet">
     <EffectArray value="UniversalWeaponLaunchSet" />
     <EffectArray value="UniversalWeaponImpact" />
-    <EffectArray value="GreymaneLordofHisPackProcSet" />
-    <EffectArray value="GreymaneInnerBeastAttackProcSet" />
+    <EffectArray value="GreymaneWorgenWeaponImpactDummy" />
+    <EffectArray value="GreymaneWorgenWeaponPreImpactSet" />
     <EffectArray value="HeroGreymaneWorgenWeaponDamage" />
-    <EffectArray value="GreymaneAlphaKillerDamage" />
+    <EffectArray value="GreymaneWorgenWeaponPostImpactSet" />
+    <EffectArray value="GreymaneToothAndClawSearchArea" />
     <EffectArray value="GreymaneWizenedDuelistIncrementTokenCounterWorgen" />
-    <EffectArray value="GreymaneWorgenWeaponImpactSecondarySet" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
+  <CEffectSet id="GreymaneWorgenWeaponPreImpactSet">
+    <EffectArray value="GreymaneLordofHisPackProcSet" />
+    <EffectArray value="GreymaneInnerBeastInsatiableManaRefund" />
+    <EffectArray value="GreymaneInsatiableModifyHealingFountainCooldown" />
+    <EffectArray value="GreymaneRazorSwipeUnfetteredAssaultModifyCooldown" />
+    <EffectArray value="GreymaneInnerBeastAttackProcSet" />
+    <EffectArray value="GreymaneAlphaKillerDamage" />
+  </CEffectSet>
+  <CEffectSet id="GreymaneWorgenWeaponPostImpactSet" />
   <CEffectDamage id="HeroGreymaneWeaponDamage" parent="StormWeapon">
     <Amount value="148" />
     <MultiplicativeModifierArray index="LordofHisPack" Validator="GreymaneHasLordofHisPackDamageBuff" Modifier="0.25" />
@@ -2303,12 +2330,12 @@
     <InitialEffect value="GreymaneDisengageOffsetPersistent2" />
     <PeriodCount value="1" />
     <PeriodicEffectArray value="GreymaneDisengageOffsetPersistent2" />
-    <PeriodicOffsetArray Y="-6" />
+    <PeriodicOffsetArray Y="-$GreymaneDisengageRange" />
   </CEffectCreatePersistent>
   <CEffectCreatePersistent id="GreymaneDisengageOffsetPersistent2">
     <TimeScaleSource Value="Caster" />
     <InitialEffect value="GreymaneDisengageRollSet" />
-    <ExpireDelay value="0.4" />
+    <ExpireDelay value="$GreymaneDisengageDashDuration" />
     <FinalEffect value="GreymaneDisengageImpactSet" />
   </CEffectCreatePersistent>
   <CEffectSet id="GreymaneDisengageRollSet">
@@ -3341,7 +3368,7 @@
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Effect" />
-        <Entry value="GreymaneHuntersBlunderbussImpactSet" />
+        <Entry value="GreymaneHuntersBlunderbussSearchArea" />
         <Field value="Chance" />
         <Value value="1.000000" />
       </Modifications>
@@ -3443,48 +3470,48 @@
         <Type value="FlatModification" />
         <Entry value="GreymaneDarkflight" />
         <Field value="Range[0]" />
-        <Value value="2.000000" />
+        <Value value="$GreymaneRunningWildRangeIncreaseDarkflight" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="GreymaneDarkflightRangeSplat" />
         <Field value="Scale" />
-        <Value value="2.050000" />
+        <Value value="$GreymaneRunningWildRangeIncreaseDarkflight" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Effect" />
         <Entry value="GreymaneDisengageOffsetPersistent1" />
         <Field value="PeriodicOffsetArray[0]" />
-        <Value value="-2.000000" />
+        <Value value="-$GreymaneRunningWildRangeIncreaseDisengage" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Behavior" />
         <Entry value="GreymaneDisengageRoll" />
         <Field value="Modification.MoveSpeedMinimum" />
-        <Value value="4.000000" />
+        <Value value="$GreymaneRunningWildSpeedIncreaseDisengage" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Behavior" />
         <Entry value="GreymaneDisengageRoll" />
         <Field value="Modification.MoveSpeedMaximum" />
-        <Value value="4.000000" />
+        <Value value="$GreymaneRunningWildSpeedIncreaseDisengage" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="GreymaneDisengageGuide" />
         <Field value="Height" />
-        <Value value="2.000000" />
+        <Value value="$GreymaneRunningWildRangeIncreaseDisengage" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Entry value="GreymaneDisengage" />
         <Field value="MoveLocation.ProjectionDistanceScale" />
-        <Value value="2.000000" />
+        <Value value="$GreymaneRunningWildRangeIncreaseDisengage" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
@@ -3503,6 +3530,15 @@
   <CTalent id="GreymaneInnerBeastWolfheart">
     <Face value="GreymaneInnerBeastWolfheartTalent" />
     <Abil value="GreymaneInnerBeast" />
+    <AbilityModificationArray>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Behavior" />
+        <Entry value="GreymaneWorgenForm" />
+        <Field value="ArmorModification.AllArmorBonus" />
+        <Value value="5.000000" />
+      </Modifications>
+    </AbilityModificationArray>
   </CTalent>
   <CTalent id="GreymaneInnerBeastViciousness">
     <Face value="GreymaneInnerBeastViciousnessTalent" />

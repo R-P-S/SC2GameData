@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
+  <const id="$ValeeraUnitRadius" value="0.625" />
+  <const id="$ValeeraWeaponPeriod" value="0.5" />
+  <const id="$ValeeraWeaponPreswingBetween" value="0.25" />
+  <const id="$ValeeraStealthAbilitiesRange" value="2.5" />
+  <const id="$ValeeraStealthAbilitiesRangeSplat" value="+($ValeeraStealthAbilitiesRange $ValeeraUnitRadius)" evaluateAsExpression="1" />
+  <const id="$ValeeraStealthAbilitiesIncreasedRange" value="5" />
+  <const id="$ValeeraStealthAbilitiesIncreasedRangeSplat" value="+($ValeeraStealthAbilitiesIncreasedRange $ValeeraUnitRadius)" evaluateAsExpression="1" />
+  <const id="$ValeeraSliceAndDiceResetValue" value="-($ValeeraWeaponPeriod /($ValeeraWeaponPreswingBetween 2))" evaluateAsExpression="1" />
   <CAbilEffectTarget id="ValeeraEviscerate">
     <PrepEffect value="DismountDecloakCasterSet" />
     <Effect value="ValeeraEviscerateInitialSet" />
@@ -22,7 +30,7 @@
       <Cooldown TimeUse="1" />
     </Cost>
     <TargetFilters value="-;Player,Ally,Neutral,Structure,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
-    <Range value="2.5" />
+    <Range value="$ValeeraStealthAbilitiesRange" />
     <CmdButtonArray index="Execute" DefaultButtonFace="ValeeraAmbush" Requirements="ValeeraHasVanishStealth" />
     <SetLastTarget value="Attack" />
   </CAbilEffectTarget>
@@ -35,7 +43,7 @@
       <Cooldown TimeUse="1" />
     </Cost>
     <TargetFilters value="-;Player,Ally,Neutral,Structure,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
-    <Range value="2.5" />
+    <Range value="$ValeeraStealthAbilitiesRange" />
     <CmdButtonArray index="Execute" DefaultButtonFace="ValeeraCheapShot" Requirements="ValeeraHasVanishStealth" />
     <SetLastTarget value="Attack" />
   </CAbilEffectTarget>
@@ -112,7 +120,7 @@
       <Cooldown TimeUse="1" />
     </Cost>
     <TargetFilters value="-;Player,Ally,Neutral,Structure,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
-    <Range value="2.5" />
+    <Range value="$ValeeraStealthAbilitiesRange" />
     <CmdButtonArray index="Execute" DefaultButtonFace="ValeeraGarrote" Requirements="ValeeraHasVanishStealth" />
     <SetLastTarget value="Attack" />
   </CAbilEffectTarget>
@@ -234,15 +242,15 @@
   </CActorSplat>
   <CActorRange id="ValeeraAmbushRange" parent="StormRangeAbilPlusSplat" abil="ValeeraAmbush" />
   <CActorSplat id="ValeeraAmbushRangeSplat" parent="StormRangeSplat">
-    <Scale value="3.000000" />
+    <Scale value="$ValeeraStealthAbilitiesRangeSplat" />
   </CActorSplat>
   <CActorRange id="ValeeraGarroteRange" parent="StormRangeAbilPlusSplat" abil="ValeeraGarrote" />
   <CActorSplat id="ValeeraGarroteRangeSplat" parent="StormRangeSplat">
-    <Scale value="3.000000" />
+    <Scale value="$ValeeraStealthAbilitiesRangeSplat" />
   </CActorSplat>
   <CActorRange id="ValeeraCheapShotRange" parent="StormRangeAbilPlusSplat" abil="ValeeraCheapShot" />
   <CActorSplat id="ValeeraCheapShotRangeSplat" parent="StormRangeSplat">
-    <Scale value="3.000000" />
+    <Scale value="$ValeeraStealthAbilitiesRangeSplat" />
   </CActorSplat>
   <CActorModelMaterial id="ValeeraSinisterStrikeGlaze" parent="ModelAnimationStyleOneShot">
     <ModelFlags index="AutomateGlobalLoops" value="1" />
@@ -312,7 +320,7 @@
     <On Terms="ActorCreation" Send="StatusSet SliceAndDice 0" />
     <On Terms="Effect.ValeeraSliceAndDiceBuffApply.Start; At Caster" Send="StatusSet SliceAndDice 3" />
     <On Terms="WeaponStart.*.AttackStart; IsStatus SliceAndDice 3" Send="AnimClear Eviscerate" />
-    <On Terms="Effect.ValeeraSliceAndDiceBuffRemove.Start; At Caster" Send="StatusDecrement SliceAndDice" />
+    <On Terms="Effect.ValeeraSliceAndDiceModifyToken.Start; At Caster" Send="StatusDecrement SliceAndDice" />
     <On Terms="Behavior.ValeeraSliceAndDiceBuff.Off" Send="StatusSet SliceAndDice 0" />
     <On Terms="Behavior.ValeeraStealthCloak.On" Send="ModelMaterialApply ValeeraStealthGlaze" />
     <On Terms="Behavior.ValeeraStealthCloak.Off" Target="ValeeraStealthGlaze" Send="AnimBracketStop BSD" />
@@ -724,8 +732,8 @@
     <On Terms="Abil.ValeeraGarrote.SourceCastStart" Send="Create" />
   </CActorSound>
   <CActorModel id="ValeeraAssassinationTarget" parent="StormModelAnimationStyleContinuousUnit">
-    <On Terms="Behavior.ValeeraAssassinationTarget.On" Send="Create" />
-    <On Terms="Behavior.ValeeraAssassinationTarget.Off" Send="AnimBracketStop BSD" />
+    <On Terms="Effect.ValeeraAssassinationApply.Start; At Target" Send="Create" />
+    <On Terms="Effect.ValeeraAssassinationRemoveModifyUnit.Start; FromEffectTreeDescendant" Send="AnimBracketStop BSD" />
     <HostSiteOps Ops="SOpAttachOverhead SOpPointSouthWorld" HoldRotation="1" />
     <Filter index="All" value="1" />
     <VisibleTo index="Self" value="1" />
@@ -1074,21 +1082,17 @@
     </DamageResponse>
   </CBehaviorBuff>
   <CBehaviorBuff id="ValeeraSliceAndDiceBuff">
-    <MaxStackCount value="3" />
+    <RemoveValidatorArray value="ValeeraHasSliceAndDiceTokens" />
     <Duration value="3" />
     <Modification>
-      <AdditiveAttackSpeedFactor value="1.5" />
+      <AdditiveAttackSpeedFactor value="4" />
     </Modification>
+    <FinalEffect value="ValeeraSliceAndDiceRemoveTokenCounter" />
   </CBehaviorBuff>
-  <CBehaviorBuff id="ValeeraSliceAndDiceMonitor">
-    <DamageResponse>
-      <Chance value="1" />
-      <Handled value="ValeeraSliceAndDiceBuffRemove" />
-      <Location value="Attacker" />
-      <DamageValue value="Original" />
-      <RequireEffectArray value="ValeeraWeaponDamage" />
-    </DamageResponse>
-  </CBehaviorBuff>
+  <CBehaviorTokenCounter id="ValeeraSliceAndDiceToken" parent="StormGenericToken">
+    <Max value="3" />
+    <Init value="3" />
+  </CBehaviorTokenCounter>
   <CBehaviorBuff id="ValeeraInitiativeBonus">
     <Alignment value="Positive" />
     <InfoIcon value="Assets\Textures\storm_ui_temp_icon_stealthmastery_2.dds" />
@@ -1108,14 +1112,13 @@
     <PeriodicEffect value="ValeeraAssassinateSearchArea" />
   </CBehaviorBuff>
   <CBehaviorBuff id="ValeeraAssassinationTarget">
+    <MaxStackCount value="10" />
+    <MaxStackCountPerCaster value="1" />
     <RemoveValidatorArray value="ValeeraRangeLTE12" />
     <RemoveValidatorArray value="ValeeraHasAssassinate" />
     <RemoveValidatorArray value="ValeeraIsStealthedCombine" />
     <Duration value="0.1875" />
-    <DamageResponse Chance="1" ModifyFraction="1.5">
-      <RequireEffectArray value="ValeeraAmbushDamage" />
-      <RequireEffectArray value="ValeeraAmbushFullDamage" />
-    </DamageResponse>
+    <FinalEffect value="ValeeraAssassinationRemoveModifyUnit" />
   </CBehaviorBuff>
   <CBehaviorBuff id="ValeeraSmokeBombUnrevealable" parent="StormUnrevealableCloak">
     <Duration value="0.125" />
@@ -1309,6 +1312,7 @@
   </CButton>
   <CButton id="ValeeraCancelStealth" parent="StormButtonParent">
     <Icon value="Assets\Textures\hud_btn_bg_ability_cancel.dds" />
+    <SimpleDisplayText value="Button/Tooltip/ValeeraCancelStealth" />
     <TooltipAppender Validator="ValeeraHasSubtlety" Face="ValeeraSubtlety" />
     <TooltipAppender Validator="ValeeraHasInitiative" Face="ValeeraInitiative" />
     <TooltipAppender Validator="ValeeraHasElusiveness" Face="ValeeraElusiveness" />
@@ -1502,20 +1506,20 @@
     <Count value="1" />
   </CEffectDestroyPersistent>
   <CEffectModifyPlayer id="ValeeraStealthIncreaseStealthRangesModifyPlayer">
-    <EffectArray Operation="Set" Reference="Abil,ValeeraGarrote,Range" Value="5" />
-    <EffectArray Operation="Set" Reference="Abil,ValeeraCheapShot,Range" Value="5" />
-    <EffectArray Operation="Set" Reference="Abil,ValeeraAmbush,Range" Value="5" />
-    <EffectArray Operation="Set" Reference="Actor,ValeeraAmbushRangeSplat,Scale" Value="5.500000" />
-    <EffectArray Operation="Set" Reference="Actor,ValeeraCheapShotRangeSplat,Scale" Value="5.500000" />
-    <EffectArray Operation="Set" Reference="Actor,ValeeraGarroteRangeSplat,Scale" Value="5.500000" />
+    <EffectArray Operation="Set" Reference="Abil,ValeeraGarrote,Range" Value="$ValeeraStealthAbilitiesIncreasedRange" />
+    <EffectArray Operation="Set" Reference="Abil,ValeeraCheapShot,Range" Value="$ValeeraStealthAbilitiesIncreasedRange" />
+    <EffectArray Operation="Set" Reference="Abil,ValeeraAmbush,Range" Value="$ValeeraStealthAbilitiesIncreasedRange" />
+    <EffectArray Operation="Set" Reference="Actor,ValeeraAmbushRangeSplat,Scale" Value="$ValeeraStealthAbilitiesIncreasedRangeSplat" />
+    <EffectArray Operation="Set" Reference="Actor,ValeeraCheapShotRangeSplat,Scale" Value="$ValeeraStealthAbilitiesIncreasedRangeSplat" />
+    <EffectArray Operation="Set" Reference="Actor,ValeeraGarroteRangeSplat,Scale" Value="$ValeeraStealthAbilitiesIncreasedRangeSplat" />
   </CEffectModifyPlayer>
   <CEffectModifyPlayer id="ValeeraStealthReduceStealthRangesModifyPlayer">
-    <EffectArray Operation="Set" Reference="Abil,ValeeraGarrote,Range" Value="2.5" />
-    <EffectArray Operation="Set" Reference="Abil,ValeeraCheapShot,Range" Value="2.5" />
-    <EffectArray Operation="Set" Reference="Abil,ValeeraAmbush,Range" Value="2.5" />
-    <EffectArray Operation="Set" Reference="Actor,ValeeraAmbushRangeSplat,Scale" Value="3.000000" />
-    <EffectArray Operation="Set" Reference="Actor,ValeeraCheapShotRangeSplat,Scale" Value="3.000000" />
-    <EffectArray Operation="Set" Reference="Actor,ValeeraGarroteRangeSplat,Scale" Value="3.000000" />
+    <EffectArray Operation="Set" Reference="Abil,ValeeraGarrote,Range" Value="$ValeeraStealthAbilitiesRange" />
+    <EffectArray Operation="Set" Reference="Abil,ValeeraCheapShot,Range" Value="$ValeeraStealthAbilitiesRange" />
+    <EffectArray Operation="Set" Reference="Abil,ValeeraAmbush,Range" Value="$ValeeraStealthAbilitiesRange" />
+    <EffectArray Operation="Set" Reference="Actor,ValeeraAmbushRangeSplat,Scale" Value="$ValeeraStealthAbilitiesRangeSplat" />
+    <EffectArray Operation="Set" Reference="Actor,ValeeraCheapShotRangeSplat,Scale" Value="$ValeeraStealthAbilitiesRangeSplat" />
+    <EffectArray Operation="Set" Reference="Actor,ValeeraGarroteRangeSplat,Scale" Value="$ValeeraStealthAbilitiesRangeSplat" />
   </CEffectModifyPlayer>
   <CEffectApplyBehavior id="ValeeraInitiativeMoveSpeedApply">
     <Chance value="0" />
@@ -1635,11 +1639,18 @@
   <CEffectSet id="ValeeraWeaponSet">
     <EffectArray value="UniversalWeaponLaunchSet" />
     <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="ValeeraWeaponPreImpactSet" />
     <EffectArray value="ValeeraWeaponDamageSwitch" />
-    <EffectArray value="ValeeraGarroteRuptureRefresh" />
-    <EffectArray value="ValeeraSliceAndDiceEnergyRestore" />
+    <EffectArray value="ValeeraWeaponPostImpactSet" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
     <ValidatorArray value="ValeeraDoesNotHaveVanish" />
+  </CEffectSet>
+  <CEffectSet id="ValeeraWeaponPreImpactSet">
+    <EffectArray value="ValeeraSliceAndDiceEnergyRestore" />
+    <EffectArray value="ValeeraGarroteRuptureRefresh" />
+  </CEffectSet>
+  <CEffectSet id="ValeeraWeaponPostImpactSet">
+    <EffectArray value="ValeeraSliceAndDiceAttackSet" />
   </CEffectSet>
   <CEffectRemoveBehavior id="ValeeraStealthCloakRemove">
     <WhichUnit Value="Caster" />
@@ -1737,7 +1748,7 @@
   </CEffectSwitch>
   <CEffectDamage id="ValeeraAmbushDamage" parent="StormSpell">
     <Amount value="130" />
-    <CritValidatorArray index="0" value="ValeeraTargetHasAssassinateTarget" />
+    <MultiplicativeModifierArray index="Assassinate" Validator="ValeeraTargetHasAssassinateTarget" Modifier="0.5" Crit="1" />
   </CEffectDamage>
   <CEffectSet id="ValeeraCheapShotInitialSet">
     <EffectArray value="ValeeraModifyWeaponCooldown" />
@@ -2065,13 +2076,17 @@
   </CEffectSwitch>
   <CEffectSet id="ValeeraSliceAndDiceApplySet">
     <Chance value="0" />
+    <EffectArray value="ValeeraSliceAndDiceApplyTokenCounter" />
     <EffectArray value="ValeeraSliceAndDiceBuffApply" />
-    <EffectArray value="ValeeraSliceAndDiceMonitorApply" />
   </CEffectSet>
-  <CEffectApplyBehavior id="ValeeraSliceAndDiceMonitorApply">
+  <CEffectApplyBehavior id="ValeeraSliceAndDiceApplyTokenCounter">
     <WhichUnit Value="Caster" />
-    <Behavior value="ValeeraSliceAndDiceMonitor" />
+    <Behavior value="ValeeraSliceAndDiceToken" />
   </CEffectApplyBehavior>
+  <CEffectRemoveBehavior id="ValeeraSliceAndDiceRemoveTokenCounter">
+    <WhichUnit Value="Caster" />
+    <BehaviorLink value="ValeeraSliceAndDiceToken" />
+  </CEffectRemoveBehavior>
   <CEffectApplyBehavior id="ValeeraSliceAndDiceBuffApply">
     <WhichUnit Value="Caster" />
     <Behavior value="ValeeraSliceAndDiceBuff" />
@@ -2082,6 +2097,25 @@
     <BehaviorLink value="ValeeraSliceAndDiceBuff" />
     <Count value="1" />
   </CEffectRemoveBehavior>
+  <CEffectSet id="ValeeraSliceAndDiceAttackSet">
+    <ValidatorArray value="ValeeraHasSliceAndDiceTokens" />
+    <EffectArray value="ValeeraSliceAndDiceModifyToken" />
+    <EffectArray value="ValeeraSliceAndDiceRemoveSet" />
+  </CEffectSet>
+  <CEffectModifyTokenCount id="ValeeraSliceAndDiceModifyToken" parent="BaseEffectModifyTokenCount">
+    <TokenId value="ValeeraSliceAndDiceToken" />
+    <Value value="-1" />
+  </CEffectModifyTokenCount>
+  <CEffectSet id="ValeeraSliceAndDiceRemoveSet">
+    <ValidatorArray value="ValeeraHasNoSliceAndDiceTokens" />
+    <EffectArray value="ValeeraSliceAndDiceBuffRemove" />
+    <EffectArray value="ValeeraSliceAndDiceRemoveTokenCounter" />
+    <EffectArray value="ValeeraSliceAndDiceResetWeaponCooldown" />
+  </CEffectSet>
+  <CEffectModifyUnit id="ValeeraSliceAndDiceResetWeaponCooldown">
+    <ImpactUnit Value="Caster" />
+    <Weapon Weapon="HeroValeera" CooldownOperation="Set" CooldownAmount="$ValeeraSliceAndDiceResetValue" />
+  </CEffectModifyUnit>
   <CEffectSet id="ValeeraGarroteInitialSet">
     <EffectArray value="ValeeraModifyWeaponCooldown" />
     <EffectArray value="ValeeraGarroteImpactSet" />
@@ -2218,10 +2252,20 @@
   </CEffectModifyTokenCount>
   <CEffectEnumArea id="ValeeraAssassinateSearchArea">
     <SearchFilters value="Heroic,Visible;Self,Player,Ally,Neutral,Missile,Stasis,Dead,Hidden,Invulnerable" />
-    <AreaArray Effect="ValeeraAssassinationApply">
+    <AreaArray Effect="ValeeraAssassinationApplySwitch">
       <Radius value="12" />
     </AreaArray>
   </CEffectEnumArea>
+  <CEffectSwitch id="ValeeraAssassinationApplySwitch">
+    <CaseArray Validator="ValeeraTargetHasAssassinateTarget" Effect="ValeeraAssassinationRefreshDuration" />
+    <CaseDefault value="ValeeraAssassinationApply" />
+  </CEffectSwitch>
+  <CEffectModifyBehaviorBuffDuration id="ValeeraAssassinationRefreshDuration">
+    <WhichUnit Value="Target" />
+    <Behavior value="ValeeraAssassinationTarget" />
+    <Operation value="Set" />
+    <Value value="0.1875" />
+  </CEffectModifyBehaviorBuffDuration>
   <CEffectApplyBehavior id="ValeeraAssassinationApply">
     <ValidatorArray index="0" value="ValeeraAssassinateTargetNotNearAllies" />
     <Behavior value="ValeeraAssassinationTarget" />
@@ -2230,6 +2274,7 @@
     <WhichUnit Value="Caster" />
     <Behavior value="ValeeraAssassinate" />
   </CEffectApplyBehavior>
+  <CEffectModifyUnit id="ValeeraAssassinationRemoveModifyUnit" />
   <CEffectSet id="ValeeraSmokeBombInitialSet">
     <EffectArray value="ValeeraSmokeBombCreatePersistent" />
     <EffectArray value="ValeeraSmokeBombApplyResistant" />
@@ -2402,6 +2447,10 @@
     <Flags index="NoDamageTimerReset" value="1" />
   </CEffectDamage>
   <CHero id="Valeera">
+    <PortraitPaired value="Assets\Textures\ui_targetportrait_hero_valeera.dds" />
+    <PortraitPairedText value="Hero/PortraitPairedText/Valeera" />
+    <PairedHero value="ValeeraStealthed" />
+    <Flags index="IsBaseHeroOfPair" value="1" />
     <AttributeId value="VALE" />
     <Role value="Damage" />
     <RolesMultiClass value="Damage" />
@@ -2657,6 +2706,31 @@
     </TalentAIBuildsArray>
     <Rarity value="Legendary" />
     <ExpandedRole value="MeleeAssassin" />
+  </CHero>
+  <CHero id="ValeeraStealthed" parent="Valeera">
+    <StoreName value="Hero/Name/Valeera" />
+    <PortraitPaired value="Assets\Textures\storm_ui_icon_valeera_vanish.dds" />
+    <PortraitPairedText value="Hero/PortraitPairedText/ValeeraStealthed" />
+    <PairedHero value="Valeera" />
+    <Flags index="IsBaseHeroOfPair" value="0" />
+    <Flags index="PreventTryMeLaunch" value="1" />
+    <HeroAbilArray index="0" Abil="ValeeraAmbush" Button="ValeeraAmbush">
+      <Flags index="ShowInHeroSelect" value="1" />
+      <Flags index="AffectedByCooldownReduction" value="1" />
+    </HeroAbilArray>
+    <HeroAbilArray index="1" Abil="ValeeraCheapShot" Button="ValeeraCheapShot">
+      <Flags index="ShowInHeroSelect" value="1" />
+      <Flags index="AffectedByCooldownReduction" value="1" />
+    </HeroAbilArray>
+    <HeroAbilArray index="2" Abil="ValeeraGarrote" Button="ValeeraGarrote">
+      <Flags index="ShowInHeroSelect" value="1" />
+      <Flags index="AffectedByCooldownReduction" value="1" />
+    </HeroAbilArray>
+    <HeroAbilArray index="5" Abil="" Button="ValeeraCancelStealth">
+      <Flags index="ShowInHeroSelect" value="1" />
+      <Flags index="AffectedByCooldownReduction" value="1" />
+      <Flags index="Trait" value="1" />
+    </HeroAbilArray>
   </CHero>
   <CHeroMastery id="ValeeraMasteryRing1" parent="MasteryRingRank1">
     <ProductId value="66944" />
@@ -3150,8 +3224,8 @@
       <LayoutButtons Face="ValeeraGarrote" Type="AbilCmd" AbilCmd="ValeeraGarrote,Execute" Slot="Ability3" />
       <LayoutButtons Face="ValeeraEviscerate" Type="AbilCmd" AbilCmd="ValeeraEviscerate,Execute" Slot="Ability3" />
     </CardLayouts>
-    <Radius value="0.625" />
-    <InnerRadius value="0.625" />
+    <Radius value="$ValeeraUnitRadius" />
+    <InnerRadius value="$ValeeraUnitRadius" />
     <AIThinkTree value="AI/Valeera.aitree" />
     <InitializerFunction value="libHVAL_gf_HeroValeeraIncrementHeroCountFunction" />
     <DestructionFunction value="libHVAL_gf_HeroValeeraDecrementHeroCountFunction" />
@@ -3393,6 +3467,7 @@
   <CValidatorUnitCompareBehaviorCount id="ValeeraTargetHasAssassinateTarget">
     <Behavior value="ValeeraAssassinationTarget" />
     <Value value="1" />
+    <RequireCasterUnit Value="Caster" />
   </CValidatorUnitCompareBehaviorCount>
   <CValidatorUnitCompareBehaviorCount id="ValeeraHasVanish">
     <WhichUnit Value="Caster" />
@@ -3441,6 +3516,19 @@
     <Behavior value="ValeeraMutilateDamageBuff" />
     <Value value="1" />
   </CValidatorUnitCompareBehaviorCount>
+  <CValidatorUnitHasBehavior id="ValeeraCasterHasSliceAndDiceBuff">
+    <WhichUnit Value="Caster" />
+    <Behavior value="ValeeraSliceAndDiceBuff" />
+  </CValidatorUnitHasBehavior>
+  <CValidatorUnitCompareTokenCount id="ValeeraHasSliceAndDiceTokens">
+    <WhichUnit Value="Caster" />
+    <Compare value="GT" />
+    <TokenId value="ValeeraSliceAndDiceToken" />
+  </CValidatorUnitCompareTokenCount>
+  <CValidatorUnitCompareTokenCount id="ValeeraHasNoSliceAndDiceTokens">
+    <WhichUnit Value="Caster" />
+    <TokenId value="ValeeraSliceAndDiceToken" />
+  </CValidatorUnitCompareTokenCount>
   <CValidatorPlayerTalent id="ValeeraHasSliceAndDice">
     <Find value="1" />
     <Value value="ValeeraEviscerateSliceAndDice" />
@@ -3569,9 +3657,9 @@
     <DisplayEffect value="ValeeraWeaponDamage" />
     <MinScanRange value="4" />
     <Range value="1.25" />
-    <Period value="0.5" />
+    <Period value="$ValeeraWeaponPeriod" />
     <Effect value="ValeeraWeaponSet" />
     <PreswingBeforeAttack value="0.5" />
-    <PreswingBetweenAttacks value="0.25" />
+    <PreswingBetweenAttacks value="$ValeeraWeaponPreswingBetween" />
   </CWeaponLegacy>
 </Catalog>

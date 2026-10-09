@@ -365,6 +365,37 @@
     <IconRows value="12" />
     <IconSlot value="1" />
   </CRewardGroup>
+  <CRewardGroup id="Nexomania2025QuestFlyout">
+    <Category File="HeroIcon" Tag="ICON" />
+    <IconFile value="$HeroRewards1" />
+    <IconCols value="5" />
+    <IconRows value="12" />
+    <IconSlot value="1" />
+  </CRewardGroup>
+  <CRewardPortrait id="StormPortrait10Birthday1" parent="AchievementPortraitParent">
+    <Description value="Reward/Description/10thYearAnniversaryRewardCommon" />
+    <IconFile value="$HeroPortraits44" />
+    <IconSlot value="24" />
+    <License value="1101818" />
+  </CRewardPortrait>
+  <CRewardPortrait id="Blizzcon2026Logo" parent="AchievementPortraitParent">
+    <Description value="Reward/Description/Blizzcon2026RewardCommon" />
+    <IconFile value="$HeroPortraits44" />
+    <IconSlot value="26" />
+    <License value="1167009" />
+  </CRewardPortrait>
+  <CRewardPortrait id="Blizzcon2026Giveaway" parent="AchievementPortraitParent">
+    <Description value="Reward/Description/Blizzcon2026RewardCommon" />
+    <IconFile value="$HeroPortraits44" />
+    <IconSlot value="27" />
+    <License value="1167010" />
+  </CRewardPortrait>
+  <CRewardPortrait id="StormPortrait10Birthday2" parent="AchievementPortraitParent">
+    <Description value="Reward/Description/10thYearAnniversaryRewardCommon" />
+    <IconFile value="$HeroPortraits44" />
+    <IconSlot value="25" />
+    <License value="1101866" />
+  </CRewardPortrait>
   <CRewardIcon id="Toy2019RepeatableFlyout" parent="HeroIconBasicParent" />
   <CRewardGroup id="Mecha19RewardUpgrades">
     <Description value="Reward/Name/Mecha19RewardUpgrades" />
@@ -400,6 +431,14 @@
     <License value="30628" />
     <ProductId value="38419" />
   </CRewardGroup>
+  <CRewardGroup id="Toy2025UniqueFlyout">
+    <Category File="HeroIcon" Tag="ICON" />
+    <IconFile value="$HeroRewards1" />
+    <IconCols value="5" />
+    <IconRows value="12" />
+    <IconSlot value="1" />
+  </CRewardGroup>
+  <CRewardIcon id="Toy2025RepeatableFlyout" parent="HeroIconBasicParent" />
   <CRewardGroup id="Toy2019UniqueFlyout">
     <Category File="HeroIcon" Tag="ICON" />
     <IconFile value="$HeroRewards1" />

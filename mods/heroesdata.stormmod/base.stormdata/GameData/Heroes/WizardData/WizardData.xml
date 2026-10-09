@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
+  <const id="$WizardTeleportRange" value="4" />
+  <const id="$WizardIllusionistRangeModifier" value="0.5" />
+  <const id="$WizardIllusionistRangeIncrease" value="*($WizardTeleportRange $WizardIllusionistRangeModifier)" evaluateAsExpression="1" />
+  <const id="$WizardCannoneerModifier" value="0.75" />
+  <const id="$WizardWaveOfForceRange" value="9" />
+  <const id="$WizardRepulsionRangeModifier" value="0.95" />
+  <const id="$WizardRepulsionRangeIncrease" value="*($WizardWaveOfForceRange $WizardRepulsionRangeModifier)" evaluateAsExpression="1" />
   <CAbilEffectTarget id="WizardArcaneOrb">
     <PrepEffect value="WizardArcaneOrbPrepSet" />
     <Effect value="WizardArcaneOrbCreatePersistent" />
@@ -97,7 +104,7 @@
       <Vital index="Energy" value="30" />
       <Cooldown TimeUse="5" />
     </Cost>
-    <Range value="4" />
+    <Range value="$WizardTeleportRange" />
     <CmdButtonArray index="Execute" DefaultButtonFace="WizardTeleport" />
     <CursorEffect value="WizardTeleportCalamitySearch" />
   </CAbilEffectTarget>
@@ -107,11 +114,12 @@
     <Flags index="ClearLastAttackTargetOutOfRange" value="1" />
     <Flags index="ClearLastMoveTarget" value="1" />
     <Flags index="RequireTargetVision" value="0" />
+    <Flags index="RangeUseCasterRadius" value="0" />
     <Cost>
       <Vital index="Energy" value="80" />
       <Cooldown TimeUse="30" />
     </Cost>
-    <Range value="8.5" />
+    <Range value="$WizardWaveOfForceRange" />
     <Arc value="360" />
     <UninterruptibleArray index="Cast" value="1" />
     <UninterruptibleArray index="Channel" value="1" />
@@ -1089,6 +1097,8 @@
     <On Terms="Behavior.WizardPowerHungryBuff.On" Send="Create" />
     <On Terms="ActorCreation; ValidateUnit WizardCasterHasArchonOrDisintegrateCombine" Send="SetOpacity" />
     <On Terms="ActorCreation; AnimPlaying Spell Spell,B" Send="SetOpacity" />
+    <On Terms="Behavior.Dead.On" Send="AnimBracketStop BSD" />
+    <On Terms="Behavior.Dead.Off; ValidateUnit WizardHasPowerHungryBuff" Send="Create" />
     <On Terms="Behavior.WizardPowerHungryBuff.Off" Send="AnimBracketStop BSD" />
     <On Terms="Behavior.WizardDisintegrateCasterBehavior.On" Send="SetOpacity" />
     <On Terms="Behavior.WizardArchonPurePowerBuff.On" Send="SetOpacity" />
@@ -1207,7 +1217,7 @@
     <FogVisibility value="Hidden" />
   </CActorModel>
   <CActorModel id="WizardChargedBlastDebuffImpact" parent="StormModelAnimationStyleOneShotUnit">
-    <On Terms="Effect.WizardMagicMissilesChargedBlastProcSet.Start; At Source" Send="Create" />
+    <On Terms="Effect.WizardMagicMissilesChargedBlastProcSet.Start; At Target" Send="Create" />
     <HostSiteOps Ops="SOpAttachCenter" />
   </CActorModel>
   <CActorSound id="WizardChargedBlastDebuffImpactSound" parent="SoundOneShot">
@@ -1303,7 +1313,7 @@
   </CActorSound>
   <CActorRange id="WizardTeleportRange" parent="StormRangeAbilPlusSplat" abil="WizardTeleport" />
   <CActorSplat id="WizardTeleportRangeSplat" parent="StormRangeSplat">
-    <Scale value="4.000000" />
+    <Scale value="$WizardTeleportRange" />
   </CActorSplat>
   <CActorSound id="WizardTeleportSoundOut" parent="SoundOneShot">
     <Sound value="Wizard_Teleport_Sound_Out" />
@@ -1371,7 +1381,7 @@
   </CActorSplat>
   <CActorRange id="WizardWaveOfForceRange" parent="StormRangeAbilPlusSplat" abil="WizardWaveOfForce" />
   <CActorSplat id="WizardWaveOfForceRangeSplat" parent="StormRangeSplat">
-    <Scale value="9.250000" />
+    <Scale value="$WizardWaveOfForceRange" />
   </CActorSplat>
   <CActorModel id="WizardWaveofForceWizardModel" parent="StormModelAnimationStyleOneShot">
     <On Terms="Effect.WizardWaveOfForceInitialPersistent.Start; At Effect" Send="Create" />
@@ -1659,15 +1669,6 @@
     <RemoveValidatorArray value="TargetNotDead" />
     <RemoveValidatorArray value="TargetNotSpecialDeathState" />
     <Duration value="5" />
-    <DamageResponse Chance="1" Handled="WizardMagicMissilesChargedBlastProcSet" Priority="96">
-      <RequireEffectArray value="WizardHeroWeaponDamage" />
-      <RequireEffectArray value="WizardCannoneerWeaponDamage" />
-      <RequireEffectArray value="WizardCannoneerWeaponDamage2" />
-      <RequireEffectArray value="WizardCannoneerWeaponDamage3" />
-      <ValidatorArray value="TargetDoesNotHaveAbathurUltimateEvolutionControl" />
-      <ValidatorArray value="WizardSourceHasChargedBlastDebuff" />
-      <Kind index="Splash" value="0" />
-    </DamageResponse>
     <Face value="WizardMagicMissilesChargedBlastTalent" />
     <MaxStackCount value="10" />
     <MaxStackCountPerCaster value="1" />
@@ -1682,9 +1683,8 @@
   <CBehaviorBuff id="WizardPowerHungryCarryBehavior" parent="CarryBehaviorParent">
     <Face value="WizardPowerHungryTalent" />
   </CBehaviorBuff>
-  <CBehaviorBuff id="WizardPowerHungryBuff">
+  <CBehaviorBuff id="WizardPowerHungryBuff" parent="StormDamageIncrease">
     <BuffFlags index="RefreshStack" value="1" />
-    <BuffFlags index="UpdateDurationWhileDisabled" value="1" />
     <Duration value="20" />
     <Modification>
       <HealDealtAdditiveMultiplier index="Life" value="0.1" />
@@ -1744,6 +1744,7 @@
     <RemoveValidatorArray value="CasterIsCastingDisintegrate" />
   </CBehaviorBuff>
   <CBehaviorBuff id="WizardArchonPurePowerDisintegrateControllerBehavior">
+    <BehaviorCategories index="PreventsMovement" value="1" />
     <RemoveValidatorArray value="CasterNotDeadOrSilencedOrStasisOrStunnedExceptTimeStop" />
     <RemoveValidatorArray value="CasterNotDazed" />
     <RemoveValidatorArray value="CasterIsCastingArchonPurePowerDisintegrate" />
@@ -1754,6 +1755,7 @@
     <ExpireEffect value="WizardArchonPurePowerDisintegrateFinalSet" />
   </CBehaviorBuff>
   <CBehaviorBuff id="WizardDisintegrateController">
+    <BehaviorCategories index="PreventsMovement" value="1" />
     <Duration value="2.5" />
     <InitialEffect value="WizardDisintegrateActiveApplyBehavior" />
     <FinalEffect value="WizardDisintegrateFinalSet" />
@@ -1790,11 +1792,14 @@
     <FinalEffect value="WizardDisintegrateTalrashasElementsSwitch" />
   </CBehaviorBuff>
   <CBehaviorBuff id="WizardWaveOfForceKnockback" parent="PushPullParent">
-    <Duration value="0.25" />
+    <Duration value="0.1875" />
+    <Period value="0.0625" />
     <Modification>
-      <MoveSpeedMaximum value="18" />
-      <MoveSpeedMinimum value="18" />
+      <MoveSpeedMaximum value="9.7968" />
+      <MoveSpeedMinimum value="9.7968" />
     </Modification>
+    <InitialEffect value="WizardWaveOfForceApplyForce" />
+    <PeriodicEffect value="WizardWaveOfForceApplyForce" />
   </CBehaviorBuff>
   <CBehaviorBuff id="WizardArchonPurePowerInitialDelay">
     <BuffFlags index="UpdateDurationWhileDisabled" value="1" />
@@ -2107,9 +2112,25 @@
     <WhichUnit Value="Caster" />
     <AbilCmd value="WizardArchonPurePowerDisintegrate,Execute" />
   </CEffectCancelOrder>
-  <CEffectCancelOrder id="WizardDisintegrateCancelOrders">
+  <CEffectSet id="WizardDisintegrateCancelOrdersSet">
+    <EffectArray value="WizardDisintegrateCancelStopOrders" />
+    <EffectArray value="WizardDisintegrateCancelHoldFireStopOrders" />
+    <EffectArray value="WizardDisintegrateCancelHoldFireHoldFireOrders" />
+  </CEffectSet>
+  <CEffectCancelOrder id="WizardDisintegrateCancelStopOrders">
     <WhichUnit Value="Caster" />
     <AbilCmd value="stop,Stop" />
+    <Flags index="Queued" value="1" />
+  </CEffectCancelOrder>
+  <CEffectCancelOrder id="WizardDisintegrateCancelHoldFireStopOrders">
+    <WhichUnit Value="Caster" />
+    <AbilCmd value="HoldFire,Stop" />
+    <Flags index="Queued" value="1" />
+  </CEffectCancelOrder>
+  <CEffectCancelOrder id="WizardDisintegrateCancelHoldFireHoldFireOrders">
+    <WhichUnit Value="Caster" />
+    <AbilCmd value="HoldFire,HoldFire" />
+    <Flags index="Queued" value="1" />
   </CEffectCancelOrder>
   <CEffectModifyUnit id="WizardIllusionistCooldownRefund">
     <Cost Abil="WizardTeleport,Execute" CooldownOperation="Add">
@@ -2146,7 +2167,7 @@
     <Behavior value="WizardArchonPurePowerDisintegrateCasterBehavior" />
   </CEffectApplyBehavior>
   <CEffectSet id="WizardArchonPurePowerDisintegrateStartBeamSet">
-    <EffectArray value="WizardDisintegrateCancelOrders" />
+    <EffectArray value="WizardDisintegrateCancelOrdersSet" />
     <EffectArray value="WizardArchonPurePowerDisintegrateApplyCasterBehavior" />
     <EffectArray value="WizardArchonPurePowerDisintegrateModifyCooldown" />
     <EffectArray value="WizardArchonPurePowerDisintegrateApplyControllerBehavior" />
@@ -2155,7 +2176,7 @@
     <ValidatorArray value="CasterNotDeadOrSilencedOrStasisOrStunnedExceptTimeStop" />
   </CEffectSet>
   <CEffectSet id="WizardDisintegrateStartBeamSet">
-    <EffectArray value="WizardDisintegrateCancelOrders" />
+    <EffectArray value="WizardDisintegrateCancelOrdersSet" />
     <EffectArray value="WizardDisintegrateApplyCasterBehavior" />
     <EffectArray value="WizardDisintegrateModifyCooldown" />
     <EffectArray value="WizardDisintegrateAbilityCooldownCasterApplyBehavior" />
@@ -2358,10 +2379,9 @@
     <EffectArray value="WizardArcaneOrbScorchDestroyScanPersistent" />
   </CEffectSet>
   <CEffectDamage id="WizardMagicMissilesChargedBlastDamage" parent="StormSpell">
-    <ImpactLocation Value="SourceUnit" />
-    <Amount value="87">
-      <AccumulatorArray value="WizardTalrashasElementsCasterAccumulator" />
-    </Amount>
+    <Amount value="87" />
+    <MultiplicativeModifierArray index="0" Accumulator="WizardTalrashasElementsCasterAccumulator" />
+    <SourceButtonFace value="WizardMagicMissilesChargedBlastTalent" />
   </CEffectDamage>
   <CEffectCreatePersistent id="WizardArcaneOrbCreatePersistent">
     <InitialEffect value="WizardArcaneOrbInitialSet" />
@@ -2430,16 +2450,16 @@
     <EffectArray value="WizardCannoneerTrackerAB" />
   </CEffectSet>
   <CEffectSet id="WizardHeroWeaponLaunchMissileSet">
-    <EffectArray value="WizardHeroWeaponLaunchMissile" />
     <EffectArray value="UniversalWeaponLaunchSet" />
+    <EffectArray value="WizardHeroWeaponLaunchMissile" />
   </CEffectSet>
   <CEffectSwitch id="WizardWeaponLaunchSwitch">
     <CaseArray Validator="HasGTE1StackCannoneerTracker" Effect="WizardHeroWeaponCannoneerLaunchMissileSet" />
     <CaseDefault value="WizardHeroWeaponLaunchMissileSet" />
   </CEffectSwitch>
   <CEffectSet id="WizardHeroWeaponCannoneerLaunchMissileSet">
-    <EffectArray value="WizardCannoneerWeaponLaunchMissile" />
     <EffectArray value="UniversalWeaponLaunchSet" />
+    <EffectArray value="WizardCannoneerWeaponLaunchMissile" />
   </CEffectSet>
   <CEffectDamage id="WizardHeroWeaponDamage" parent="StormWeapon">
     <Amount value="63" />
@@ -2447,48 +2467,24 @@
   <CEffectDamage id="WizardCannoneerWeaponDamage" parent="StormWeapon">
     <Kind value="Ability" />
     <Amount value="63" />
-    <AttributeFactor index="Creep" value="0.75" />
-    <AttributeFactor index="Tower" value="0.75" />
-    <AttributeFactor index="Minion" value="0.75" />
-    <AttributeFactor index="Merc" value="0.75" />
-    <AttributeFactor index="Structure" value="0.75" />
-    <AttributeFactor index="Heroic" value="0.75" />
-    <AttributeFactor index="Summoned" value="0.75" />
-    <AttributeFactor index="User1" value="0.75" />
-    <AttributeFactor index="MapBoss" value="0.75" />
-    <AttributeFactor index="MapCreature" value="0.75" />
+    <MultiplicativeModifierArray index="Cannoneer1" Modifier="$WizardCannoneerModifier" />
     <Flags index="Crit" value="1" />
     <SourceButtonFace value="WizardCannoneerTalent" />
   </CEffectDamage>
   <CEffectDamage id="WizardCannoneerWeaponDamage2" parent="StormWeapon">
     <Kind value="Ability" />
     <Amount value="63" />
-    <AttributeFactor index="Creep" value="1.5" />
-    <AttributeFactor index="Tower" value="1.5" />
-    <AttributeFactor index="Minion" value="1.5" />
-    <AttributeFactor index="Merc" value="1.5" />
-    <AttributeFactor index="Structure" value="1.5" />
-    <AttributeFactor index="Heroic" value="1.5" />
-    <AttributeFactor index="Summoned" value="1.5" />
-    <AttributeFactor index="User1" value="1.5" />
-    <AttributeFactor index="MapBoss" value="1.5" />
-    <AttributeFactor index="MapCreature" value="1.5" />
+    <MultiplicativeModifierArray index="Cannoneer1" Modifier="$WizardCannoneerModifier" />
+    <MultiplicativeModifierArray index="Cannoneer2" Modifier="$WizardCannoneerModifier" />
     <Flags index="Crit" value="1" />
     <SourceButtonFace value="WizardCannoneerTalent" />
   </CEffectDamage>
   <CEffectDamage id="WizardCannoneerWeaponDamage3" parent="StormWeapon">
-    <AttributeFactor index="Creep" value="2.25" />
-    <AttributeFactor index="Tower" value="2.25" />
-    <AttributeFactor index="Minion" value="2.25" />
-    <AttributeFactor index="Merc" value="2.25" />
-    <AttributeFactor index="Structure" value="2.25" />
-    <AttributeFactor index="Heroic" value="2.25" />
-    <AttributeFactor index="Summoned" value="2.25" />
-    <AttributeFactor index="User1" value="2.25" />
-    <AttributeFactor index="MapBoss" value="2.25" />
-    <AttributeFactor index="MapCreature" value="2.25" />
     <Kind value="Ability" />
     <Amount value="63" />
+    <MultiplicativeModifierArray index="Cannoneer1" Modifier="$WizardCannoneerModifier" />
+    <MultiplicativeModifierArray index="Cannoneer2" Modifier="$WizardCannoneerModifier" />
+    <MultiplicativeModifierArray index="Cannoneer3" Modifier="$WizardCannoneerModifier" />
     <Flags index="Crit" value="1" />
     <SourceButtonFace value="WizardCannoneerTalent" />
   </CEffectDamage>
@@ -2529,9 +2525,15 @@
   </CEffectLaunchMissile>
   <CEffectSet id="WizardHeroWeaponImpactSet">
     <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="WizardWeaponPreImpactSet" />
     <EffectArray value="WizardHeroWeaponDamage" />
+    <EffectArray value="WizardWeaponPostImpactSet" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
+  <CEffectSet id="WizardWeaponPreImpactSet">
+    <EffectArray value="WizardMagicMissilesChargedBlastProcSet" />
+  </CEffectSet>
+  <CEffectSet id="WizardWeaponPostImpactSet" />
   <CEffectSet id="WizardCannoneerWeaponLaunchSet">
     <EffectArray value="WizardCannoneerWeaponLaunchSwitch" />
     <EffectArray value="WizardCannoneerTrackerRB" />
@@ -2542,16 +2544,21 @@
     <CaseArray Validator="Has3StackCannoneerTracker" Effect="WizardCannoneerTrackerSource3AB" />
   </CEffectSwitch>
   <CEffectSet id="WizardFamliarCannoneerWeaponImpactSet">
-    <EffectArray value="UniversalWeaponImpact" />
     <EffectArray value="WizardCannoneerMissSwitch" />
   </CEffectSet>
   <CEffectSwitch id="WizardCannoneerMissSwitch" parent="AbilDmgMissCheck">
     <CaseDefault value="WizardCannoneerDamageImpactSet" />
   </CEffectSwitch>
   <CEffectSet id="WizardCannoneerDamageImpactSet">
+    <EffectArray value="WizardCannoneerWeaponPreImpactSet" />
     <EffectArray value="WizardCannoneerWeaponDamageSwitch" />
+    <EffectArray value="WizardCannoneerWeaponPostImpactSet" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
+  <CEffectSet id="WizardCannoneerWeaponPreImpactSet">
+    <EffectArray value="WizardMagicMissilesChargedBlastProcSet" />
+  </CEffectSet>
+  <CEffectSet id="WizardCannoneerWeaponPostImpactSet" />
   <CEffectSwitch id="WizardCannoneerWeaponDamageSwitch">
     <CaseArray Validator="SourceHas3StackCannoneerTracker" Effect="WizardCannoneerWeaponDamage3" />
     <CaseArray Validator="SourceHas2StackCannoneerTracker" Effect="WizardCannoneerWeaponDamage2" />
@@ -2601,8 +2608,8 @@
     <EffectArray value="ApplyAbilityImpactReveal" />
   </CEffectSet>
   <CEffectTeleport id="WizardTeleportTeleport" parent="StormTeleportSelf">
-    <PlacementRange value="4" />
-    <Range value="4" />
+    <PlacementRange value="$WizardTeleportRange" />
+    <Range value="$WizardTeleportRange" />
     <TargetLocation Value="TargetPoint" />
     <PlacementArc value="360" />
     <TeleportEffect value="WizardTeleportSet" />
@@ -2881,29 +2888,24 @@
     <ValidatorArray value="TargetNotInvulnerable" />
   </CEffectApplyBehavior>
   <CEffectSet id="WizardMagicMissilesChargedBlastProcSet">
-    <EffectArray value="WizardMagicMissilesChargedBlastDamageDelay" />
+    <ValidatorArray value="WizardTargetHasChargedBlastDebuffFromCaster" />
+    <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
+    <EffectArray value="WizardMagicMissilesChargedBlastDamage" />
     <EffectArray value="WizardMagicMissilesChargedBlastDebuffRB" />
   </CEffectSet>
-  <CEffectCreatePersistent id="WizardMagicMissilesChargedBlastDamageDelay">
-    <WhichLocation Value="SourceUnit" />
-    <PeriodicEffectArray value="WizardMagicMissilesChargedBlastDamage" />
-    <PeriodicPeriodArray value="0.0625" />
-    <PeriodCount value="1" />
-  </CEffectCreatePersistent>
   <CEffectRemoveBehavior id="WizardMagicMissilesChargedBlastDebuffRB">
-    <WhichUnit Value="Source" />
     <BehaviorLink value="WizardMagicMissilesChargedBlastDebuff" />
     <Count value="1" />
-    <RequireOriginPlayer Value="Target" />
+    <RequireOriginPlayer Value="Caster" />
   </CEffectRemoveBehavior>
   <CEffectSet id="WizardMagicMissilesDamageImpactSet">
-    <EffectArray value="WizardMagicMissilesSeekerBuffSwitch" />
     <EffectArray value="WizardMagicMissilesDamage" />
+    <EffectArray value="WizardMagicMissilesSeekerBuffSwitch" />
     <EffectArray value="ApplyAbilityImpactReveal" />
   </CEffectSet>
   <CEffectSet id="WizardMagicMissilesMirrorBallDamageImpactSet">
-    <EffectArray value="WizardMagicMissilesSeekerBuffSwitch" />
     <EffectArray value="WizardMagicMissilesDamage" />
+    <EffectArray value="WizardMagicMissilesSeekerBuffSwitch" />
     <EffectArray value="ApplyAbilityImpactReveal" />
   </CEffectSet>
   <CEffectRemoveBehavior id="WizardTalRashasElementsCasterBuffRB">
@@ -3069,18 +3071,21 @@
     <MultiplicativeModifierArray index="0" Accumulator="WizardTalrashasElementsCasterAccumulator" />
     <ValidatorArray value="HasGTE3SeekerBuffs" />
     <Flags index="Crit" value="1" />
+    <SourceButtonFace value="WizardMagicMissilesSeekerTalent" />
   </CEffectDamage>
   <CEffectDamage id="WizardMagicMissilesSeekerDamage2" parent="StormSpell">
     <ValidatorArray value="HasGTE3SeekerBuffs2" />
     <Amount value="140" />
     <MultiplicativeModifierArray index="0" Accumulator="WizardTalrashasElementsCasterAccumulator" />
     <Flags index="Crit" value="1" />
+    <SourceButtonFace value="WizardMagicMissilesSeekerTalent" />
   </CEffectDamage>
   <CEffectDamage id="WizardMagicMissilesSeekerDamage3" parent="StormSpell">
     <ValidatorArray value="HasGTE3SeekerBuffs3" />
     <Amount value="140" />
     <MultiplicativeModifierArray index="0" Accumulator="WizardTalrashasElementsCasterAccumulator" />
     <Flags index="Crit" value="1" />
+    <SourceButtonFace value="WizardMagicMissilesSeekerTalent" />
   </CEffectDamage>
   <CEffectDamage id="WizardMagicMissilesSuicide">
     <ImpactLocation Value="SourceUnit" />
@@ -3131,24 +3136,19 @@
     </RevealerParams>
   </CEffectEnumArea>
   <CEffectSet id="WizardWaveOfForceSearchImpactSet">
-    <EffectArray value="WizardWaveOfForceKnockbackPersistent" />
+    <EffectArray value="WizardWaveofForceKnockbackInitialSet" />
     <EffectArray value="WizardWaveOfForceDamage" />
     <EffectArray value="ApplyAbilityImpactReveal" />
   </CEffectSet>
-  <CEffectCreatePersistent id="WizardWaveOfForceKnockbackPersistent">
+  <CEffectSet id="WizardWaveofForceKnockbackInitialSet">
     <ValidatorArray value="TargetNotUnstoppable" />
-    <ValidatorArray value="NotStructureTarget" />
-    <WhichLocation Value="TargetUnit" />
-    <InitialEffect value="WizardWaveofForceKnockbackPersistentInitialSet" />
-    <FinalEffect value="WizardWaveOfForceKnockbackRB" />
-    <PeriodCount value="2" />
-    <PeriodicValidator value="HasWaveOfForceKnockback" />
-    <PeriodicEffectArray value="WizardWaveOfForceApplyForce" />
-    <PeriodicPeriodArray value="0.0625" />
-  </CEffectCreatePersistent>
+    <EffectArray value="HeroRemovePushPullDebuffs" />
+    <EffectArray value="HeroRemovePreventsMovement" />
+    <EffectArray value="WizardWaveOfForceKnockbackAB" />
+  </CEffectSet>
   <CEffectApplyForce id="WizardWaveOfForceApplyForce">
     <WhichLocation Effect="WizardWaveOfForceSearchArea" Value="TargetPoint" />
-    <WhichUnit Effect="WizardWaveOfForceKnockbackPersistent" />
+    <WhichUnit Effect="WizardWaveofForceKnockbackInitialSet" />
     <Amount value="5" />
   </CEffectApplyForce>
   <CEffectApplyBehavior id="WizardWaveOfForceKnockbackAB">
@@ -3242,10 +3242,6 @@
     <WhichUnit Value="Caster" />
     <BehaviorLink value="WizardCannoneerTracker" />
   </CEffectRemoveBehavior>
-  <CEffectSet id="WizardWaveofForceKnockbackPersistentInitialSet">
-    <EffectArray value="HeroRemovePushPullDebuffs" />
-    <EffectArray value="WizardWaveOfForceKnockbackAB" />
-  </CEffectSet>
   <CEffectCreatePersistent id="WizardArcaneOrbMissileScanPersistent">
     <WhichLocation Value="SourceUnit" />
     <PeriodCount value="100" />
@@ -3956,27 +3952,27 @@
         <Catalog value="Effect" />
         <Entry value="WizardTeleportTeleport" />
         <Field value="Range" />
-        <Value value="2.000000" />
+        <Value value="$WizardIllusionistRangeIncrease" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Effect" />
         <Entry value="WizardTeleportTeleport" />
         <Field value="PlacementRange" />
-        <Value value="2.000000" />
+        <Value value="$WizardIllusionistRangeIncrease" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Entry value="WizardTeleport" />
         <Field value="Range[0]" />
-        <Value value="2.000000" />
+        <Value value="$WizardIllusionistRangeIncrease" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="WizardTeleportRangeSplat" />
         <Field value="Scale" />
-        <Value value="2.000000" />
+        <Value value="$WizardIllusionistRangeIncrease" />
       </Modifications>
     </AbilityModificationArray>
   </CTalent>
@@ -4213,45 +4209,37 @@
     <AbilityModificationArray>
       <Modifications>
         <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="WizardWaveOfForceKnockbackPersistent" />
-        <Field value="PeriodCount" />
-        <FieldIsInteger value="1" />
-        <Value value="2.000000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
         <Catalog value="Behavior" />
         <Entry value="WizardWaveOfForceKnockback" />
         <Field value="Duration" />
-        <Value value="0.250000" />
+        <Value value="0.125000" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Behavior" />
         <Entry value="WizardWaveOfForceKnockback" />
         <Field value="Modification.MoveSpeedMaximum" />
-        <Value value="8.000000" />
+        <Value value="10.100000" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Behavior" />
         <Entry value="WizardWaveOfForceKnockback" />
         <Field value="Modification.MoveSpeedMinimum" />
-        <Value value="8.000000" />
+        <Value value="10.100000" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Entry value="WizardWaveOfForce" />
         <Field value="Range[0]" />
-        <Value value="8.500000" />
+        <Value value="$WizardRepulsionRangeIncrease" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="WizardWaveOfForceRangeSplat" />
         <Field value="Scale" />
-        <Value value="8.500000" />
+        <Value value="$WizardRepulsionRangeIncrease" />
       </Modifications>
     </AbilityModificationArray>
   </CTalent>
@@ -4418,6 +4406,9 @@
     <CombineArray value="WizardHasTeleportAetherWalkerDummyBehavior" />
     <CombineArray value="WizardHasAetherWalker" />
   </CValidatorCombine>
+  <CValidatorUnitHasBehavior id="WizardHasPowerHungryBuff">
+    <Behavior value="WizardPowerHungryBuff" />
+  </CValidatorUnitHasBehavior>
   <CValidatorUnitTimeElapsed id="WizardArcaneOrb10To15LoopsElapsed">
     <WhichUnit Value="Source" />
     <TimestampBehavior value="WizardArcaneOrbTimestamp" />
@@ -4454,11 +4445,10 @@
     <Value value="0.35" />
     <Vital value="Energy" />
   </CValidatorUnitCompareVital>
-  <CValidatorUnitCompareBehaviorCount id="WizardSourceHasChargedBlastDebuff">
-    <WhichUnit Value="Source" />
+  <CValidatorUnitCompareBehaviorCount id="WizardTargetHasChargedBlastDebuffFromCaster">
     <Compare value="GT" />
     <Behavior value="WizardMagicMissilesChargedBlastDebuff" />
-    <RequireOriginPlayer Value="Target" />
+    <RequireOriginPlayer Value="Caster" />
   </CValidatorUnitCompareBehaviorCount>
   <CValidatorUnitCompareCooldown id="WizardTeleportOnCooldown">
     <WhichUnit Value="Source" />

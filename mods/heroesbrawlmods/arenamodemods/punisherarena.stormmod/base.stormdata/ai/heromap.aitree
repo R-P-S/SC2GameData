@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<tree>
+	<include file="AI/HeroBase.aitree"/>
+	<mod id="0B86AEA7C6B570CE">
+		<moveChild id="A0EE6761136812A4" before=""/>
+	</mod>
+</tree>

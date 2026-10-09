@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
+  <const id="$NovaUnitRadius" value="0.625" />
+  <const id="$NovaBasicAttackRange" value="6.5" />
+  <const id="$NovaPinningShotRange" value="7.25" />
+  <const id="$NovaHoloDecoyRange" value="8.5" />
+  <const id="$NovaLongshotRangeModifier" value="0.3" />
+  <const id="$NovaLongshotRangeIncrease" value="*($NovaPinningShotRange $NovaLongshotRangeModifier)" evaluateAsExpression="1" />
+  <const id="$NovaLongshotBasicAttackRangeIncrease" value="-(+($NovaPinningShotRange $NovaLongshotRangeIncrease) +($NovaBasicAttackRange $NovaUnitRadius))" evaluateAsExpression="1" />
+  <const id="$NovaHoloStabilityRangeModifier" value="1" />
+  <const id="$NovaHoloStabilityRangeIncrease" value="*($NovaHoloDecoyRange $NovaHoloStabilityRangeModifier)" evaluateAsExpression="1" />
   <const id="$NovaHoloDecoyLethalDecoyDamageModifier" value="2" />
   <CAbilEffectTarget id="NovaCovertMission">
     <PrepEffect value="DismountDecloakCasterSet" />
@@ -52,12 +61,13 @@
     <PrepEffect value="DismountCasterSet" />
     <Effect value="NovaHoloDecoyInitialSet" />
     <Flags index="RequireTargetVision" value="0" />
+    <Flags index="RangeUseCasterRadius" value="0" />
     <Cost>
       <Vital index="Energy" value="50" />
       <Cooldown TimeUse="15" />
     </Cost>
     <Placeholder value="NovaHoloClonePlacement" />
-    <Range value="8" />
+    <Range value="$NovaHoloDecoyRange" />
     <Arc value="360" />
     <CursorEffect value="HoloDecoySearch" />
     <CmdButtonArray index="Execute" DefaultButtonFace="NovaHoloDecoy" Requirements="HoloDecoyRelicRequirement" />
@@ -138,6 +148,7 @@
   <CAbilEffectTarget id="NovaPinningShot">
     <Effect value="PinningShotSet" />
     <Flags index="ClearLastMoveTarget" value="1" />
+    <Flags index="RangeUseCasterRadius" value="0" />
     <Cost>
       <Vital index="Energy" value="65" />
       <Charge>
@@ -150,7 +161,7 @@
       <Cooldown TimeUse="1" />
     </Cost>
     <TargetFilters value="-;Player,Ally,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
-    <Range value="6.5" />
+    <Range value="$NovaPinningShotRange" />
     <RangeSlop value="5" />
     <UninterruptibleArray index="Cast" value="1" />
     <UninterruptibleArray index="Channel" value="1" />
@@ -580,7 +591,7 @@
   </CActorModel>
   <CActorRange id="NovaPinningShotRange" parent="StormRangeAbilPlusSplat" abil="NovaPinningShot" />
   <CActorSplat id="NovaPinningShotRangeSplat" parent="StormRangeSplat">
-    <Scale value="7.250000" />
+    <Scale value="$NovaPinningShotRange" />
   </CActorSplat>
   <CActorMissile id="NovaPinningShotAttackMissile" parent="StormMissileWithDeath" unitName="NovaPinningShotMissile" />
   <CActorAction id="NovaPinningShotAttack" parent="GenericAttackStorm" effectImpact="PinningShotImpactSet" effectLaunch="PinningShotLaunchMissile">
@@ -656,7 +667,7 @@
   </CActorSound>
   <CActorRange id="NovaHoloDecoyRange" parent="StormRangeAbilPlusSplat" abil="NovaHoloDecoy" />
   <CActorSplat id="NovaHoloDecoyRangeSplat" parent="StormRangeSplat">
-    <Scale value="8.500000" />
+    <Scale value="$NovaHoloDecoyRange" />
   </CActorSplat>
   <CActorSplat id="NovaPrecisionStrikeCursorSplat" parent="StormGuideVisualCircle" abil="NovaPrecisionStrike">
     <Model value="NovaPrecisionStrikeCursorSplat" />
@@ -885,7 +896,7 @@
   <CBehaviorBuff id="NovaLongshotRangeBuff">
     <Duration value="2" />
     <Modification>
-      <WeaponRange value="2" />
+      <WeaponRange value="$NovaLongshotBasicAttackRangeIncrease" />
     </Modification>
   </CBehaviorBuff>
   <CBehaviorBuff id="NovaCloakCooldownDisplayCarry" parent="CarryBehaviorParent">
@@ -945,10 +956,6 @@
   <CBehaviorBuff id="NovaAntiArmorShellsWeaponCooldownUIDummy" parent="CarryBehaviorParent">
     <Duration value="2.5" />
   </CBehaviorBuff>
-  <CBehaviorBuff id="TripleTapInitialMissileScan">
-    <Duration value="0.125" />
-    <ExpireEffect value="TripleTapApplyMissileScan" />
-  </CBehaviorBuff>
   <CBehaviorBuff id="NovaTripleTapCCInterruption">
     <RemoveValidatorArray value="CasterNotDazedOrDeadOrSilencedOrStasisOrStunnedExceptTimeStop" />
     <RemoveValidatorArray value="TripleTapRevealBehaviorOn" />
@@ -980,7 +987,12 @@
     <BehaviorFlags index="Permanent" value="1" />
     <BehaviorFlags index="EnabledWhileDead" value="1" />
     <Duration value="0.625" />
-    <FinalEffect value="TripleTapModifyCooldownAfterDeath" />
+    <DamageResponse>
+      <Chance value="1" />
+      <Handled value="NovaTripleTapFastReloadDeathResponseSet" />
+      <Priority value="15" />
+      <Fatal value="1" />
+    </DamageResponse>
   </CBehaviorBuff>
   <CBehaviorBuff id="TripleTapDummyRemove">
     <Duration value="0.125" />
@@ -1032,13 +1044,6 @@
     <PeriodicEffect value="NovaPinningShotCovertOpsApplyTimerBehavior" />
     <EnableEffect value="NovaPermanentCloakInitialSet" />
     <DisableEffect value="NovaPermanentCloakExpireSet" />
-  </CBehaviorBuff>
-  <CBehaviorBuff id="TripleTapMissileScan">
-    <Duration value="3" />
-    <Period value="0.0625" />
-    <InitialEffect value="TripleTapMissilePeriodicSet" />
-    <PeriodicEffect value="TripleTapMissilePeriodicSet" />
-    <FinalEffect value="TripleTapSuicideRemove" />
   </CBehaviorBuff>
   <CBehaviorBuff id="TripleTapReveal" parent="StormReveal">
     <RemoveValidatorArray index="0" value="TargetNotInvulnerable" />
@@ -1456,12 +1461,6 @@
     <ValidatorArray value="TargetIsSpecialDeathState" />
     <EffectArray value="NovaSnipePerfectShotRefundMana" />
   </CEffectSet>
-  <CEffectDestroyPersistent id="TripleTapMissileScanDestroyPersistent">
-    <WhichLocation Value="SourcePoint" />
-    <Effect value="TripleTapMissileScanPersistent" />
-    <Count value="1" />
-    <Radius value="0.25" />
-  </CEffectDestroyPersistent>
   <CEffectSet id="NovaCloakCooldownDisplayDummy">
     <ValidatorArray value="AlwaysReturnsFalse" />
   </CEffectSet>
@@ -1640,10 +1639,6 @@
     <EffectArray value="NovaAntiArmorShellsApplyArmorDebuff" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
-  <CEffectApplyBehavior id="TripleTapInitialApplyMissileScan">
-    <WhichUnit Value="Source" />
-    <Behavior value="TripleTapInitialMissileScan" />
-  </CEffectApplyBehavior>
   <CEffectSet id="TripleTapCCInterruptionSet">
     <ValidatorArray value="TripleTapCooldownReductionCombine" />
     <EffectArray value="NovaTripleTapModifyUnitCCInterruption" />
@@ -1742,26 +1737,21 @@
     <ValidatorArray value="TargetNotHallucination" />
     <ValidatorArray value="TargetNotPseudoStructure" />
     <ValidatorArray value="NotLongboatUnit" />
+    <ValidatorArray value="TargetNotDeadAndNoSpecialDeathState" />
   </CEffectApplyBehavior>
-  <CEffectModifyUnit id="TripleTapModifyCooldown">
-    <ValidatorArray value="OuterIsHeroicAndNotHallucinationAndNotSummoned" />
-    <ValidatorArray value="NotStructureOuter" />
-    <ImpactUnit Effect="TripleTapApplyMasteryDebuff" Value="Caster" />
-    <Cost Abil="NovaTripleTap,Execute" CooldownOperation="Set" CooldownTimeUse="0.1" />
-  </CEffectModifyUnit>
-  <CEffectModifyUnit id="TripleTapModifyCooldownAfterDeath">
-    <ValidatorArray value="TripleTapModifyCooldownAfterDeath" />
-    <ImpactUnit Effect="TripleTapApplyMasteryDebuff" Value="Caster" />
-    <Cost Abil="NovaTripleTap,Execute" CooldownOperation="Set" CooldownTimeUse="0.1" />
-  </CEffectModifyUnit>
-  <CEffectSet id="TripleTapMissilePeriodicSet">
-    <EffectArray value="TripleTapMissileScanPersistent" />
-    <TargetLocationType value="UnitOrPoint" />
+  <CEffectSet id="NovaTripleTapFastReloadDeathResponseSet">
+    <ValidatorArray value="NovaTripleTapFastReloadSourceDeathResponseBehavior" />
+    <EffectArray value="NovaTripleTapFastReloadRemoveDeathResponse" />
+    <EffectArray value="NovaTripleTapFastReloadModifyUnit" />
   </CEffectSet>
-  <CEffectSet id="TripleTapMissileInitialSet">
-    <EffectArray value="TripleTapInitialMissileScan" />
-    <TargetLocationType value="UnitOrPoint" />
-  </CEffectSet>
+  <CEffectRemoveBehavior id="NovaTripleTapFastReloadRemoveDeathResponse">
+    <WhichUnit Value="Source" />
+    <BehaviorLink value="QuadrupleTapMasteryTargetBehavior" />
+  </CEffectRemoveBehavior>
+  <CEffectModifyUnit id="NovaTripleTapFastReloadModifyUnit">
+    <ImpactUnit Value="Caster" />
+    <Cost Abil="NovaTripleTap,Execute" CooldownOperation="Set" />
+  </CEffectModifyUnit>
   <CEffectSet id="TripleTapRedirectDummySet" />
   <CEffectCreatePersistent id="TripleTapRevealPersistent">
     <WhichLocation Value="TargetUnit" />
@@ -1906,14 +1896,15 @@
     <EffectArray value="NovaGhostProtocolApplyUnrevealableBehavior" />
   </CEffectSet>
   <CEffectLaunchMissile id="TripleTapLaunchMissile">
-    <LaunchEffect value="TripleTapInitialApplyMissileScan" />
+    <SharedFlags index="DynamicSearchArea" value="1" />
+    <SharedFlags index="DisableArriveOnLaunch" value="1" />
+    <SharedFlags index="ArriveOnSearchHit" value="1" />
+    <SharedFlags index="ValidateAbil" value="0" />
+    <ValidateTeleportRange value="20" />
+    <SearchEffect value="TripleTapMissileScan" />
     <ImpactEffect value="TripleTapImpactSet" />
     <AmmoUnit value="TripleTapArrowMissile" />
   </CEffectLaunchMissile>
-  <CEffectApplyBehavior id="TripleTapApplyMissileScan">
-    <WhichUnit Value="Source" />
-    <Behavior value="TripleTapMissileScan" />
-  </CEffectApplyBehavior>
   <CEffectApplyBehavior id="TripleTapApplyRevealBehavior">
     <Behavior value="TripleTapReveal" />
   </CEffectApplyBehavior>
@@ -1961,7 +1952,6 @@
   <CEffectSet id="TripleTapImpactSet">
     <EffectArray value="TripleTapApplyMasteryDebuff" />
     <EffectArray value="TripleTapMissileDamage" />
-    <EffectArray value="TripleTapMissileScanDestroyPersistent" />
     <EffectArray value="CameraShakeLightTauntingTotemSet" />
     <EffectArray value="TripleTapSuicideRemove" />
     <EffectArray value="ApplyAbilityImpactReveal" />
@@ -1973,17 +1963,6 @@
     <PeriodicEffectArray value="TripleTapLaunchMissile" />
     <PeriodicPeriodArray value="0.1" />
   </CEffectCreatePersistent>
-  <CEffectEnumArea id="TripleTapInitialMissileScan">
-    <SearchFilters value="-;Player,Ally,Neutral,Minion,ImmuneToSkillshots,Missile,Item,Stasis,Dead,Hidden,Invulnerable,Summoned" />
-    <TargetSorts>
-      <SortArray value="TSDistance" />
-    </TargetSorts>
-    <AreaArray Arc="45" MaxCount="1" Effect="TripleTapImpactSet">
-      <Radius value="1" />
-    </AreaArray>
-    <LaunchLocation Value="CasterUnit" />
-    <ImpactLocation Value="CasterUnit" />
-  </CEffectEnumArea>
   <CEffectEnumArea id="TripleTapMissileScan">
     <SearchFilters value="-;Player,Ally,Neutral,Creep,ImmuneToSkillshots,User1,Missile,Item,Stasis,Dead,Hidden,Summoned" />
     <AreaArray MaxCount="1" Effect="TripleTapImpactSet">
@@ -1991,21 +1970,11 @@
       <RectangleHeight value="1.25" />
     </AreaArray>
     <MaxCount value="1" />
-    <LaunchLocation Value="OriginPoint" />
   </CEffectEnumArea>
   <CEffectDamage id="TripleTapMissileDamage" parent="StormSpell">
     <Amount value="372" />
     <ValidatorArray value="TargetNotInvulnerable" />
   </CEffectDamage>
-  <CEffectCreatePersistent id="TripleTapMissileScanPersistent">
-    <WhichLocation Value="SourcePoint" />
-    <PeriodCount value="3" />
-    <PeriodicEffectArray value="TripleTapMissileScan" />
-    <PeriodicOffsetArray Y="-1" />
-    <PeriodicOffsetArray Y="0.5" />
-    <PeriodicOffsetArray />
-    <PeriodicPeriodArray value="0" />
-  </CEffectCreatePersistent>
   <CEffectRemoveBehavior id="TripleTapRemoveRevealBehavior">
     <BehaviorLink value="TripleTapReveal" />
   </CEffectRemoveBehavior>
@@ -2814,14 +2783,14 @@
         <Type value="FlatModification" />
         <Entry value="NovaPinningShot" />
         <Field value="Range[0]" />
-        <Value value="2.000000" />
+        <Value value="$NovaLongshotRangeIncrease" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="NovaPinningShotRangeSplat" />
         <Field value="Scale" />
-        <Value value="2.000000" />
+        <Value value="$NovaLongshotRangeIncrease" />
       </Modifications>
     </AbilityModificationArray>
   </CTalent>
@@ -3264,14 +3233,14 @@
         <Type value="FlatModification" />
         <Entry value="NovaHoloDecoy" />
         <Field value="Range[0]" />
-        <Value value="8.000000" />
+        <Value value="$NovaHoloStabilityRangeIncrease" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="NovaHoloDecoyRangeSplat" />
         <Field value="Scale" />
-        <Value value="8.000000" />
+        <Value value="$NovaHoloStabilityRangeIncrease" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
@@ -3333,7 +3302,7 @@
     <OverlapIndex value="Minion" />
     <LifeRegenRate value="2.711" />
     <EnergyRegenRate value="3" />
-    <Radius value="0.625" />
+    <Radius value="$NovaUnitRadius" />
   </CUnit>
   <CUnit id="NovaHoloClonePlacement">
     <Collide index="Structure" value="1" />
@@ -3347,7 +3316,7 @@
     <LifeStart value="1300" />
     <LifeMax value="1300" />
     <LifeRegenRate value="2.711" />
-    <InnerRadius value="0.625" />
+    <InnerRadius value="$NovaUnitRadius" />
     <AbilArray Link="NovaSnipeStorm" />
     <AbilArray Link="NovaPinningShot" />
     <AbilArray Link="NovaTripleTap" />
@@ -3377,7 +3346,7 @@
     <BehaviorArray Link="NovaPrecisionSniperDummyBehavior" />
     <WeaponArray Link="HeroNovaAntiArmorShellsTargeting" />
     <WeaponArray Link="HeroNova" />
-    <Radius value="0.625" />
+    <Radius value="$NovaUnitRadius" />
     <Gender value="Female" />
     <AIEvalFactor value="1.2" />
     <InitializerFunction value="libGDHL_gf_HeroNovaIncrementHeroCountFunction" />
@@ -3709,15 +3678,15 @@
     <Find value="1" />
     <Value value="NovaHoloStability" />
   </CValidatorPlayerTalent>
-  <CValidatorCombine id="TripleTapModifyCooldownAfterDeath">
-    <CombineArray value="IsDead" />
-    <CombineArray value="TargetIsSpecialDeathState" />
-  </CValidatorCombine>
+  <CValidatorUnitHasBehavior id="NovaTripleTapFastReloadSourceDeathResponseBehavior">
+    <WhichUnit Value="Source" />
+    <Behavior value="QuadrupleTapMasteryTargetBehavior" />
+  </CValidatorUnitHasBehavior>
   <CWeaponLegacy id="HoloCloneWeapon" parent="StormHeroFastWeapon">
     <Icon value="Assets\Textures\storm_temp_btn-upgrade-terran-infantryweaponslevel3.dds" />
     <DisplayEffect value="RangedAttackNovaDamage" />
-    <MinScanRange value="6.5" />
-    <Range value="6.5" />
+    <MinScanRange value="$NovaBasicAttackRange" />
+    <Range value="$NovaBasicAttackRange" />
     <Period value="1" />
     <PreswingBeforeAttack value="0.5" />
     <Effect value="NovaHoloCloneWeaponLaunchMissileSet" />
@@ -3731,8 +3700,8 @@
     <Options index="LinkedCooldown" value="0" />
     <Icon value="Assets\Textures\storm_temp_btn-upgrade-terran-infantryweaponslevel2.dds" />
     <DisplayEffect value="RangedAttackNovaDamage" />
-    <MinScanRange value="6.5" />
-    <Range value="6.5" />
+    <MinScanRange value="$NovaBasicAttackRange" />
+    <Range value="$NovaBasicAttackRange" />
     <Period value="1" />
     <PreswingBeforeAttack value="0.5" />
     <PreswingBetweenAttacks value="0.2" />
@@ -3744,8 +3713,8 @@
   <CWeaponLegacy id="HeroNovaAntiArmorShellsTargeting" parent="StormHeroFastWeapon">
     <Icon value="Assets\Textures\storm_temp_btn-upgrade-terran-infantryweaponslevel3.dds" />
     <DisplayEffect value="NovaRangedAttackNovaAntiArmorShellsDamage" />
-    <MinScanRange value="6.5" />
-    <Range value="6.5" />
+    <MinScanRange value="$NovaBasicAttackRange" />
+    <Range value="$NovaBasicAttackRange" />
     <Cost>
       <Cooldown Link="Abil/NovaWeaponCooldown" Location="Unit" TimeUse="0.25" />
     </Cost>

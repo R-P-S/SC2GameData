@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<tree>
+  <include file="AI/HeroMutator.aitree" />
+  <mod id="0404FCA4F12FA6C8">
+    <insertChild id="4EDDB23177B9EACF" after="F9EBE56C73DD6A85" />
+  </mod>
+  <mod id="0CFB598FC7FD06DC">
+    <insertChild id="7E69A0972DECF767" after="0484E8D2007373DE" />
+  </mod>
+  <mod id="87811D772E337EB7">
+    <insertChild id="F4614715A23C952F" />
+  </mod>
+  <node name="Shadow Mark" type="AbilityUsable" id="F4614715A23C952F">
+    <property name="Ability" valueSource="literal" value="XalatathShadowMark" />
+    <insertChild id="EC99F2F4F7077DA8" />
+  </node>
+  <node name="" type="And" id="EC99F2F4F7077DA8">
+    <variable name="XalatathShadowMarkRange" type="Number" valueSource="lookup" value="Abil,XalatathShadowMark,Range" />
+    <variable name="XalatathShadowMarkTarget" type="Point" />
+    <variable name="XalatathShadowMarkRadius" type="Number" valueSource="lookup" value="Effect,XalatathShadowMarkTargetSearch,AreaArray[0].Radius" />
+    <insertChild id="E09FF505303DC536" />
+    <insertChild id="A72532CF9F27C27D" />
+  </node>
+  <node name="Shadow Mark" type="Ability" id="A72532CF9F27C27D">
+    <property name="Ability" valueSource="literal" value="XalatathShadowMark" />
+    <property name="TargetPoint" valueSource="variable" value="XalatathShadowMarkTarget" />
+  </node>
+  <node name="" type="Or" id="E09FF505303DC536">
+    <insertChild id="53227FE4B87C8957" />
+    <insertChild id="B72EAB4AB5DBD161" />
+    <insertChild id="BAEA58D307C46A1B" />
+  </node>
+  <node name="&gt;=70%" type="EnergyFraction" id="53227FE4B87C8957">
+    <property name="EnergyFraction" valueSource="literal" value="0.7" />
+    <property name="Target" valueSource="intrinsic" value="Self" />
+    <insertChild id="1D0E56B7414FB1BC" />
+  </node>
+  <node name="" type="Or" id="1D0E56B7414FB1BC">
+    <insertChild id="61AFB686198F0861" />
+    <insertChild id="7FB3828709591BBB" />
+    <insertChild id="0F5B9409E1CFF31C" />
+    <insertChild id="E17D12F0FBD5EB39" />
+    <insertChild id="FDAD432A8B4F2077" />
+  </node>
+  <node name="&gt;= 2 Enemy Hero" type="FindBestAOEPoint" id="61AFB686198F0861">
+    <property name="TargetTypes" valueSource="literal" value="" />
+    <property name="RequiredTypes" valueSource="literal" value="Enemy,Heroic" />
+    <property name="OutputTarget" value="XalatathShadowMarkTarget" />
+    <property name="MaxTargetDistance" valueSource="variable" value="XalatathShadowMarkRange" />
+    <property name="AOERadius" valueSource="variable" value="XalatathShadowMarkRadius" />
+    <property name="MinTargets" valueSource="literal" value="2" />
+  </node>
+  <node name="&gt;= 1 Enemy Hero" type="FindBestAOEPoint" id="7FB3828709591BBB">
+    <property name="TargetTypes" valueSource="literal" value="" />
+    <property name="RequiredTypes" valueSource="literal" value="Enemy,Heroic" />
+    <property name="OutputTarget" value="XalatathShadowMarkTarget" />
+    <property name="MaxTargetDistance" valueSource="variable" value="XalatathShadowMarkRange" />
+    <property name="AOERadius" valueSource="variable" value="XalatathShadowMarkRadius" />
+    <property name="MinTargets" valueSource="literal" value="1" />
+    <insertChild id="05C35674F9B2DB44" />
+  </node>
+  <node name="&gt;= 1 Enemy Hero" type="FindBestAOEPoint" id="05C35674F9B2DB44">
+    <property name="TargetTypes" valueSource="literal" value="Creep,Minion,Merc,MapBoss,MapCreature" />
+    <property name="RequiredTypes" valueSource="literal" value="Heroic" />
+    <property name="OutputTarget" value="XalatathShadowMarkTarget" />
+    <property name="MaxTargetDistance" valueSource="variable" value="XalatathShadowMarkRadius" />
+    <property name="AOERadius" valueSource="variable" value="XalatathShadowMarkRadius" />
+    <property name="MinTargets" valueSource="literal" value="1" />
+    <property name="SearchCenter" valueSource="variable" value="XalatathShadowMarkTarget" />
+    <property name="ClipCenter" valueSource="intrinsic" value="Self" />
+    <property name="ClipRadius" valueSource="variable" value="XalatathShadowMarkRange" />
+  </node>
+  <node name="&gt;= 2 Mercs" type="FindBestAOEPoint" id="0F5B9409E1CFF31C">
+    <property name="TargetTypes" valueSource="literal" value="" />
+    <property name="RequiredTypes" valueSource="literal" value="Enemy,Creep" />
+    <property name="OutputTarget" value="XalatathShadowMarkTarget" />
+    <property name="MaxTargetDistance" valueSource="variable" value="XalatathShadowMarkRange" />
+    <property name="AOERadius" valueSource="variable" value="XalatathShadowMarkRadius" />
+    <property name="MinTargets" valueSource="literal" value="2" />
+  </node>
+  <node name="&gt;= 3 Minion" type="FindBestAOEPoint" id="E17D12F0FBD5EB39">
+    <property name="TargetTypes" valueSource="literal" value="" />
+    <property name="RequiredTypes" valueSource="literal" value="Enemy,Minion" />
+    <property name="OutputTarget" value="XalatathShadowMarkTarget" />
+    <property name="MaxTargetDistance" valueSource="variable" value="XalatathShadowMarkRange" />
+    <property name="AOERadius" valueSource="variable" value="XalatathShadowMarkRadius" />
+    <property name="MinTargets" valueSource="literal" value="3" />
+  </node>
+  <node name="MapBoss" type="FindBestAOEPoint" id="FDAD432A8B4F2077">
+    <property name="TargetTypes" valueSource="literal" value="" />
+    <property name="RequiredTypes" valueSource="literal" value="Enemy,MapBoss" />
+    <property name="OutputTarget" value="XalatathShadowMarkTarget" />
+    <property name="MaxTargetDistance" valueSource="variable" value="XalatathShadowMarkRange" />
+    <property name="AOERadius" valueSource="variable" value="XalatathShadowMarkRadius" />
+    <property name="MinTargets" valueSource="literal" value="1" />
+  </node>
+  <node name="&gt;=40%" type="EnergyFraction" id="B72EAB4AB5DBD161">
+    <property name="EnergyFraction" valueSource="literal" value="0.4" />
+    <property name="Target" valueSource="intrinsic" value="Self" />
+    <insertChild id="D50885CFD81C7A27" />
+  </node>
+  <node name="" type="Or" id="D50885CFD81C7A27">
+    <insertChild id="45B2EBAF1DF9FAD7" />
+    <insertChild id="9C9E2B80959EAD0C" />
+    <insertChild id="A80B673921063377" />
+    <insertChild id="D139B45ABEC3751B" />
+    <insertChild id="B7B21E4B631B3621" />
+  </node>
+  <node name="&gt;= 2 Enemy Hero" type="FindBestAOEPoint" id="45B2EBAF1DF9FAD7">
+    <property name="TargetTypes" valueSource="literal" value="" />
+    <property name="RequiredTypes" valueSource="literal" value="Enemy,Heroic" />
+    <property name="OutputTarget" value="XalatathShadowMarkTarget" />
+    <property name="MaxTargetDistance" valueSource="variable" value="XalatathShadowMarkRange" />
+    <property name="AOERadius" valueSource="variable" value="XalatathShadowMarkRadius" />
+    <property name="MinTargets" valueSource="literal" value="2" />
+  </node>
+  <node name="&gt;= 1 Enemy Hero" type="FindBestAOEPoint" id="9C9E2B80959EAD0C">
+    <property name="TargetTypes" valueSource="literal" value="" />
+    <property name="RequiredTypes" valueSource="literal" value="Enemy,Heroic" />
+    <property name="OutputTarget" value="XalatathShadowMarkTarget" />
+    <property name="MaxTargetDistance" valueSource="variable" value="XalatathShadowMarkRange" />
+    <property name="AOERadius" valueSource="variable" value="XalatathShadowMarkRadius" />
+    <property name="MinTargets" valueSource="literal" value="1" />
+    <insertChild id="6D3B8E993DF6B205" />
+  </node>
+  <node name="&gt;= 1 Enemy Hero" type="FindBestAOEPoint" id="6D3B8E993DF6B205">
+    <property name="TargetTypes" valueSource="literal" value="Creep,Minion,Merc,MapBoss,MapCreature" />
+    <property name="RequiredTypes" valueSource="literal" value="Heroic" />
+    <property name="OutputTarget" value="XalatathShadowMarkTarget" />
+    <property name="MaxTargetDistance" valueSource="variable" value="XalatathShadowMarkRadius" />
+    <property name="AOERadius" valueSource="variable" value="XalatathShadowMarkRadius" />
+    <property name="MinTargets" valueSource="literal" value="1" />
+    <property name="SearchCenter" valueSource="variable" value="XalatathShadowMarkTarget" />
+    <property name="ClipCenter" valueSource="intrinsic" value="Self" />
+    <property name="ClipRadius" valueSource="variable" value="XalatathShadowMarkRange" />
+  </node>
+  <node name="&gt;= 3 Mercs" type="FindBestAOEPoint" id="A80B673921063377">
+    <property name="TargetTypes" valueSource="literal" value="" />
+    <property name="RequiredTypes" valueSource="literal" value="Enemy,Creep" />
+    <property name="OutputTarget" value="XalatathShadowMarkTarget" />
+    <property name="MaxTargetDistance" valueSource="variable" value="XalatathShadowMarkRange" />
+    <property name="AOERadius" valueSource="variable" value="XalatathShadowMarkRadius" />
+    <property name="MinTargets" valueSource="literal" value="3" />
+  </node>
+  <node name="&gt;= 4 Minion" type="FindBestAOEPoint" id="D139B45ABEC3751B">
+    <property name="TargetTypes" valueSource="literal" value="" />
+    <property name="RequiredTypes" valueSource="literal" value="Enemy,Minion" />
+    <property name="OutputTarget" value="XalatathShadowMarkTarget" />
+    <property name="MaxTargetDistance" valueSource="variable" value="XalatathShadowMarkRange" />
+    <property name="AOERadius" valueSource="variable" value="XalatathShadowMarkRadius" />
+    <property name="MinTargets" valueSource="literal" value="4" />
+  </node>
+  <node name="MapBoss" type="FindBestAOEPoint" id="B7B21E4B631B3621">
+    <property name="TargetTypes" valueSource="literal" value="" />
+    <property name="RequiredTypes" valueSource="literal" value="Enemy,MapBoss" />
+    <property name="OutputTarget" value="XalatathShadowMarkTarget" />
+    <property name="MaxTargetDistance" valueSource="variable" value="XalatathShadowMarkRange" />
+    <property name="AOERadius" valueSource="variable" value="XalatathShadowMarkRadius" />
+    <property name="MinTargets" valueSource="literal" value="1" />
+  </node>
+  <node name="&lt; 40%" type="EnergyFraction" id="BAEA58D307C46A1B">
+    <property name="EnergyFraction" valueSource="literal" value="0.4" />
+    <property name="Target" valueSource="intrinsic" value="Self" />
+    <property name="Comparison" valueSource="literal" value="LT" />
+    <insertChild id="80EC761341F95C3D" />
+  </node>
+  <node name="" type="Or" id="80EC761341F95C3D">
+    <insertChild id="5399500D6D6C4620" />
+    <insertChild id="928E8B8B140D5310" />
+    <insertChild id="EB74427C5501BCAF" />
+  </node>
+  <node name="&gt;= 2 Enemy Hero" type="FindBestAOEPoint" id="5399500D6D6C4620">
+    <property name="TargetTypes" valueSource="literal" value="" />
+    <property name="RequiredTypes" valueSource="literal" value="Enemy,Heroic" />
+    <property name="OutputTarget" value="XalatathShadowMarkTarget" />
+    <property name="MaxTargetDistance" valueSource="variable" value="XalatathShadowMarkRange" />
+    <property name="AOERadius" valueSource="variable" value="XalatathShadowMarkRadius" />
+    <property name="MinTargets" valueSource="literal" value="2" />
+  </node>
+  <node name="&gt;= 1 Enemy Hero" type="FindBestAOEPoint" id="928E8B8B140D5310">
+    <property name="TargetTypes" valueSource="literal" value="" />
+    <property name="RequiredTypes" valueSource="literal" value="Enemy,Heroic" />
+    <property name="OutputTarget" value="XalatathShadowMarkTarget" />
+    <property name="MaxTargetDistance" valueSource="variable" value="XalatathShadowMarkRange" />
+    <property name="AOERadius" valueSource="variable" value="XalatathShadowMarkRadius" />
+    <property name="MinTargets" valueSource="literal" value="1" />
+  </node>
+  <node name="MapBoss" type="FindBestAOEPoint" id="EB74427C5501BCAF">
+    <property name="TargetTypes" valueSource="literal" value="" />
+    <property name="RequiredTypes" valueSource="literal" value="Enemy,MapBoss" />
+    <property name="OutputTarget" value="XalatathShadowMarkTarget" />
+    <property name="MaxTargetDistance" valueSource="variable" value="XalatathShadowMarkRange" />
+    <property name="AOERadius" valueSource="variable" value="XalatathShadowMarkRadius" />
+    <property name="MinTargets" valueSource="literal" value="1" />
+  </node>
+  <node name="Custom Attack Ability" type="SetAttackAbility" id="7E69A0972DECF767">
+    <property name="AttackAbility" valueSource="literal" value="XalatathSmartTargetingRightClick" />
+  </node>
+  <node name="Custom Attack Ability" type="SetAttackAbility" id="4EDDB23177B9EACF">
+    <property name="AttackAbility" valueSource="literal" value="XalatathSmartTargetingRightClick" />
+  </node>
+</tree>

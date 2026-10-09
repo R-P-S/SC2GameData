@@ -357,6 +357,7 @@
     <On Terms="Abil.AnduinFlashHeal.TargetCastStop" Target="Anduin_FlashHeal_Launch_Warning_NPC" Send="Destroy Immediate" />
     <On Terms="ActorCreation" Send="Create Anduin_FlashHeal_Launch_Warning_NPC" />
     <On Terms="ActorCreation" Send="Create Anduin_FlashHeal_Launch_Target" />
+    <On Terms="Behavior.AnduinFlashHealHealthPreview.Destroy" Send="AnimBracketStop BSD" />
     <HostSiteOps Ops="SOpAttachOrigin" />
   </CActorModel>
   <CActorModel id="AnduinFlashHealCastCompleteFX" parent="StormModelAnimationStyleOneShotUnit">
@@ -573,9 +574,7 @@
     <HostSiteOps Ops="SOpAttachOrigin SOpForwardTargetPoint SOp2DRotation" HoldPosition="1" HoldRotation="1" />
     <VisibilityShape Shape="AnduinChastiseVisibilityShape" />
   </CActorModel>
-  <CActorModel id="AnduinChastiseRootFX" parent="StormModelAnimationStyleContinuousUnit">
-    <On Terms="Effect.AnduinChastiseApplyRoot.Start; At Target; ValidateEffect TargetNotUnstoppable" Send="Create" />
-    <On Terms="Behavior.AnduinChastiseRoot.Off" Send="AnimBracketStop BSD" />
+  <CActorModel id="AnduinChastiseRootFX" parent="StormModelRoot" effect="AnduinChastiseApplyRoot" behavior="AnduinChastiseRoot">
     <HostSiteOps Ops="SOpAttachOrigin SOpForwardOriginPoint" HoldRotation="1" />
     <AutoScaleFactor value="1.000000" />
   </CActorModel>
@@ -1396,6 +1395,7 @@
     <RemoveValidatorArray value="AnduinHasChastiseHolyReachTalent" />
   </CBehaviorBuff>
   <CBehaviorBuff id="AnduinLeapOfFaithTargetUnstoppable" parent="StormUnstoppableParent">
+    <InitialEffect value="HeroRemovePreventsMovement" />
     <Modification>
       <ModifyFlags index="SuppressTurning" value="1" />
       <StateFlags index="SuppressCollision" value="1" />
@@ -1415,6 +1415,7 @@
     <Alignment value="Positive" />
     <InfoFlags index="AlwaysUseGameText" value="1" />
     <BehaviorCategories index="Restorable" value="1" />
+    <BehaviorCategories index="PreventsMovement" value="1" />
     <DisplayDuration index="Self" value="1" />
     <DisplayDuration index="Ally" value="1" />
     <DisplayDuration index="Neutral" value="1" />
@@ -1822,6 +1823,7 @@
   <CEffectSet id="AnduinDivineStarHolyNovaDamageImpactSet">
     <EffectArray value="AnduinDivineStarHolyNovaDamage" />
     <EffectArray value="AnduinFlashHealInnerFocusTalentModifyCooldown" />
+    <EffectArray value="AnduinPushForwardSet" />
     <EffectArray value="ApplyAbilityImpactReveal" />
   </CEffectSet>
   <CEffectEnumArea id="AnduinDivineStarPowerWordShieldTalentAllySearch">
@@ -1998,6 +2000,13 @@
     <EffectArray value="AnduinLightBombInnerFireTalentApplyMoveSpeed" />
   </CEffectSet>
   <CEffectSet id="AnduinPushForwardSet">
+    <ValidatorArray value="TargetIsHero" />
+    <EffectArray value="AnduinPushForwardMoveSpeedApplyBehavior" />
+    <EffectArray value="AnduinPushForwardIncreaseTokenCount" />
+  </CEffectSet>
+  <CEffectSet id="AnduinPushForwardSetPhysicalDamage">
+    <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
+    <ValidatorArray value="TargetIsHero" />
     <EffectArray value="AnduinPushForwardMoveSpeedApplyBehavior" />
     <EffectArray value="AnduinPushForwardIncreaseTokenCount" />
   </CEffectSet>
@@ -2184,6 +2193,7 @@
     <EffectArray value="AnduinDivineStarDamage" />
     <EffectArray value="AnduinDivineStarHitsIncreaseTokenCount" />
     <EffectArray value="AnduinFlashHealInnerFocusTalentModifyCooldown" />
+    <EffectArray value="AnduinPushForwardSet" />
     <EffectArray value="ApplyAbilityImpactReveal" />
   </CEffectSet>
   <CEffectCreateHealer id="AnduinDivineStarHeal" parent="StormHealingSpell">
@@ -2216,6 +2226,7 @@
   <CEffectSet id="AnduinVariansLegacyPeriodicSet">
     <EffectArray value="AnduinVariansLegacyDamage" />
     <EffectArray value="AnduinFlashHealInnerFocusTalentModifyCooldown" />
+    <EffectArray value="AnduinPushForwardSet" />
   </CEffectSet>
   <CEffectLaunchMissile id="AnduinWeaponDivineStarMoralCompassLaunchMissile">
     <ValidatorArray index="0" value="TargetNotDead" />
@@ -2227,13 +2238,21 @@
     <Movers Link="AnduinWeaponMissile" />
   </CEffectLaunchMissile>
   <CEffectSet id="AnduinWeaponDivineStarMoralCompassImpactSet">
-    <EffectArray value="AnduinChastiseSurgeofLightTalentModifyUnitCooldown" />
+    <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="AnduinMoralCompassPreImpactSet" />
     <EffectArray value="AnduinWeaponDamage" />
+    <EffectArray value="AnduinMoralCompassPostImpactSet" />
+    <EffectArray value="UniversalWeaponPostImpactSet" />
+  </CEffectSet>
+  <CEffectSet id="AnduinMoralCompassPreImpactSet">
+    <EffectArray value="AnduinHeroWeaponPursuedByGraceTalentProcSet" />
+    <EffectArray value="AnduinChastiseSurgeofLightTalentModifyUnitCooldown" />
+    <EffectArray value="AnduinFlashHealInnerFocusTalentModifyCooldownPhysicalDamage" />
     <EffectArray value="AnduinFlashHealRenewTalentEnumerateTrackedUnits" />
     <EffectArray value="AnduinVariansLegacyDoTApplyBehavior" />
-    <EffectArray value="AnduinHeroWeaponPursuedByGraceTalentProcSet" />
-    <EffectArray value="AnduinFlashHealInnerFocusTalentModifyCooldownPhysicalDamage" />
-    <EffectArray value="UniversalWeaponPostImpactSet" />
+  </CEffectSet>
+  <CEffectSet id="AnduinMoralCompassPostImpactSet">
+    <EffectArray value="AnduinPushForwardSetPhysicalDamage" />
   </CEffectSet>
   <CEffectApplyBehavior id="AnduinDivineStarPowerWordShieldApplyShield">
     <Behavior value="AnduinDivineStarPowerWordShieldShield" />
@@ -2372,6 +2391,7 @@
     <EffectArray value="AnduinChastiseCensureTalentApplyStun" />
     <EffectArray value="AnduinChastiseApplyRoot" />
     <EffectArray value="AnduinChastiseDummyMissileEnumerateTrackedUnit" />
+    <EffectArray value="AnduinPushForwardSet" />
     <EffectArray value="ApplyAbilityImpactReveal" />
     <EffectArray value="AnduinChastiseHolyReachApplyBehavior" />
     <EffectArray value="AnduinChastiseDummyMissileDestructionApplyBehavior" />
@@ -2393,7 +2413,7 @@
     <ImpactLocation Effect="AnduinChastiseImpactSet" />
   </CEffectLaunchMissile>
   <CEffectModifyUnit id="AnduinChastiseRootDummyMissileImpactDummy" />
-  <CEffectApplyBehavior id="AnduinChastiseApplyRoot">
+  <CEffectApplyBehavior id="AnduinChastiseApplyRoot" parent="StormRootApply">
     <Behavior value="AnduinChastiseRoot" />
   </CEffectApplyBehavior>
   <CEffectApplyBehavior id="AnduinChastiseApplyImpactReveal">
@@ -2693,6 +2713,7 @@
     <EffectArray value="AnduinLightBombDamage" />
     <EffectArray value="AnduinLightBombApplyStun" />
     <EffectArray value="AnduinFlashHealInnerFocusTalentModifyCooldown" />
+    <EffectArray value="AnduinPushForwardSet" />
     <EffectArray value="ApplyAbilityImpactReveal" />
   </CEffectSet>
   <CEffectApplyBehavior id="AnduinLightBombApplyStun">
@@ -2780,13 +2801,20 @@
   </CEffectLaunchMissile>
   <CEffectSet id="AnduinWeaponImpactSet">
     <EffectArray value="UniversalWeaponImpact" />
-    <EffectArray value="AnduinChastiseSurgeofLightTalentModifyUnitCooldown" />
+    <EffectArray value="AnduinWeaponPreImpactSet" />
     <EffectArray value="AnduinWeaponDamage" />
+    <EffectArray value="AnduinWeaponPostImpactSet" />
+    <EffectArray value="UniversalWeaponPostImpactSet" />
+  </CEffectSet>
+  <CEffectSet id="AnduinWeaponPreImpactSet">
+    <EffectArray value="AnduinHeroWeaponPursuedByGraceTalentProcSet" />
+    <EffectArray value="AnduinChastiseSurgeofLightTalentModifyUnitCooldown" />
+    <EffectArray value="AnduinFlashHealInnerFocusTalentModifyCooldownPhysicalDamage" />
     <EffectArray value="AnduinFlashHealRenewTalentEnumerateTrackedUnits" />
     <EffectArray value="AnduinVariansLegacyDoTApplyBehavior" />
-    <EffectArray value="AnduinHeroWeaponPursuedByGraceTalentProcSet" />
-    <EffectArray value="AnduinFlashHealInnerFocusTalentModifyCooldownPhysicalDamage" />
-    <EffectArray value="UniversalWeaponPostImpactSet" />
+  </CEffectSet>
+  <CEffectSet id="AnduinWeaponPostImpactSet">
+    <EffectArray value="AnduinPushForwardSetPhysicalDamage" />
   </CEffectSet>
   <CEffectDamage id="AnduinWeaponDamage" parent="StormWeapon">
     <Amount value="85" />
@@ -4721,8 +4749,6 @@
   <CTalent id="AnduinPushForward">
     <Face value="AnduinPushForward" />
     <RankArray>
-      <BehaviorArray value="AnduinPushForwardAbilityDamageResponse" />
-      <BehaviorArray value="AnduinPushForwardPhysicalDamageResponse" />
       <BehaviorArray value="AnduinPushForwardToken" />
     </RankArray>
     <Trait value="1" />
@@ -5137,6 +5163,13 @@
     <Range value="6.25" />
     <Value Effect="AnduinHolyWordSalvationCreatePersistent" Value="TargetPoint" />
   </CValidatorLocationCompareRange>
+  <CValidatorUnitHasBehavior id="AnduinTargetHasChastiseRootIncludeDisabled">
+    <Behavior value="AnduinChastiseRoot" />
+    <IncludeDisabled value="1" />
+  </CValidatorUnitHasBehavior>
+  <CValidatorCombine id="StormTargetHasRootCombineIncludeDisabled">
+    <CombineArray value="AnduinTargetHasChastiseRootIncludeDisabled" />
+  </CValidatorCombine>
   <CValidatorUnitCompareBehaviorCount id="AnduinTargetHasChastiseRoot">
     <Compare value="GE" />
     <Value value="1" />

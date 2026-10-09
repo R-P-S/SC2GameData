@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<tree>
+  <include file="AI/HeroBase.aitree" />
+  <mod id="C8C1718B7484860F">
+    <removeChild id="47326184C4663D3D" />
+    <removeChild id="E51EF502E2ABBD72" />
+  </mod>
+  <mod id="0404FCA4F12FA6C8">
+    <removeChild id="48E99A92A2A91E6A" />
+    <removeChild id="E360BCC265AAC5A2" />
+  </mod>
+  <mod id="6EE7690704943622">
+    <property name="TargetPosition" valueSource="intrinsic" value="AllyCore" />
+  </mod>
+</tree>

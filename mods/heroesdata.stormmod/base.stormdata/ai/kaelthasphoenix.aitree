@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<tree root="24A1136B26AF86E0">
+  <node name="Root" type="Select" id="24A1136B26AF86E0">
+    <insertChild id="A8333F61068C8F74"/>
+  </node>
+  <node name="Rebirth - Phoenix" type="AbilityUsable" id="A8333F61068C8F74">
+    <property name="Ability" valueSource="literal" value="KaelthasPhoenixRetargetPhoenixAbility"/>
+    <insertChild id="1B86B0EF1AD5C971"/>
+  </node>
+  <node name="Use Cases" type="Select" id="1B86B0EF1AD5C971">
+    <variable name="PhoenixMinRange" type="Number" value="3"/>
+    <variable name="PhoenixRange" type="Number" value="15"/>
+    <variable name="PhoenixRadius" type="Number" value="3"/>
+    <variable name="PhoenixTarget" type="Unit"/>
+    <variable name="PhoenixAOEPoint" type="Point"/>
+    <insertChild id="F7072C27F2384220"/>
+  </node>
+  <node name="Use Cases" type="And" id="F7072C27F2384220">
+    <insertChild id="6C5666DD3E7A9197"/>
+    <insertChild id="CAC9F11CFB9923C5"/>
+  </node>
+  <node name="Phoenix" type="Ability" id="CAC9F11CFB9923C5">
+    <property name="Ability" valueSource="literal" value="KaelthasPhoenixRetargetPhoenixAbility"/>
+    <property name="TargetPoint" valueSource="variable" value="PhoenixAOEPoint"/>
+    <property name="DoNotThrottle" valueSource="literal" value="true"/>
+  </node>
+  <node name="All Conition" type="Or" id="6C5666DD3E7A9197">
+    <insertChild id="E983EA8852CF1E6A"/>
+    <insertChild id="6E045FC46FB7E37F"/>
+    <insertChild id="665B5EA0E18F677F"/>
+    <insertChild id="C89F4F9482F4CADB"/>
+    <insertChild id="19B0EB3507725369"/>
+  </node>
+  <node name="Critical Kill" type="FindBestTarget" id="E983EA8852CF1E6A">
+    <property name="OutputTarget" value="PhoenixTarget"/>
+    <property name="DistanceFactor" valueSource="literal" value="0"/>
+    <property name="TargetTypes" valueSource="literal" value="Heroic,MapBoss"/>
+    <property name="ExcludeTypes" valueSource="literal" value="Missile,Dead,Invulnerable,Benign"/>
+    <property name="RequiredTypes" valueSource="literal" value="Enemy"/>
+    <property name="MinTargetDistance" valueSource="variable" value="PhoenixMinRange"/>
+    <property name="MaxTargetDistance" valueSource="variable" value="PhoenixRange"/>
+    <property name="MaxLifeFraction" valueSource="literal" value="0.25"/>
+    <property name="MissileRadius" valueSource="literal" value="0.5"/>
+  </node>
+  <node name="Find Group" type="FindBestAOEPoint" id="6E045FC46FB7E37F">
+    <property name="TargetTypes" valueSource="literal" value="Tower,Heroic,MapBoss"/>
+    <property name="RequiredTypes" valueSource="literal" value="Enemy"/>
+    <property name="OutputTarget" value="PhoenixAOEPoint"/>
+    <property name="MinTargets" valueSource="literal" value="2"/>
+    <property name="AOERadius" valueSource="variable" value="PhoenixRadius"/>
+    <property name="MinTargetDistance" valueSource="variable" value="PhoenixMinRange"/>
+    <property name="MaxTargetDistance" valueSource="variable" value="PhoenixRange"/>
+    <property name="MissileRadius" valueSource="literal" value="0.5"/>
+    <property name="MaxLifeFraction" valueSource="literal" value="0.5"/>
+  </node>
+  <node name="Find Group" type="FindBestAOEPoint" id="665B5EA0E18F677F">
+    <property name="TargetTypes" valueSource="literal" value="Tower,Heroic,MapBoss"/>
+    <property name="RequiredTypes" valueSource="literal" value="Enemy"/>
+    <property name="OutputTarget" value="PhoenixAOEPoint"/>
+    <property name="MinTargets" valueSource="literal" value="3"/>
+    <property name="AOERadius" valueSource="variable" value="PhoenixRadius"/>
+    <property name="MinTargetDistance" valueSource="variable" value="PhoenixMinRange"/>
+    <property name="MaxTargetDistance" valueSource="variable" value="PhoenixRange"/>
+    <property name="MissileRadius" valueSource="literal" value="0.5"/>
+    <property name="MaxLifeFraction" valueSource="literal" value="0.75"/>
+  </node>
+  <node name="Find Group" type="FindBestAOEPoint" id="C89F4F9482F4CADB">
+    <property name="TargetTypes" valueSource="literal" value="Tower,Heroic,MapBoss"/>
+    <property name="RequiredTypes" valueSource="literal" value="Enemy"/>
+    <property name="OutputTarget" value="PhoenixAOEPoint"/>
+    <property name="MinTargets" valueSource="literal" value="4"/>
+    <property name="AOERadius" valueSource="variable" value="PhoenixRadius"/>
+    <property name="MinTargetDistance" valueSource="variable" value="PhoenixMinRange"/>
+    <property name="MaxTargetDistance" valueSource="variable" value="PhoenixRange"/>
+    <property name="MissileRadius" valueSource="literal" value="0.5"/>
+    <property name="MaxLifeFraction" valueSource="literal" value="1"/>
+  </node>
+  <node name="" type="And" id="19B0EB3507725369">
+    <insertChild id="57D9018BE145061A"/>
+  </node>
+  <node name="Structure/Map Objective to siege" type="FindBestTarget" id="57D9018BE145061A">
+    <property name="OutputTarget" value="PhoenixTarget"/>
+    <property name="TargetTypes" valueSource="literal" value="Tower,MapBoss"/>
+    <property name="RequiredTypes" valueSource="literal" value="Enemy"/>
+    <property name="MinTargetDistance" valueSource="variable" value="PhoenixMinRange"/>
+    <property name="MaxTargetDistance" valueSource="variable" value="PhoenixRange"/>
+    <insertChild id="AF9DC380CC073622"/>
+  </node>
+  <node name="2 Heroes near" type="FindBestAOEPoint" id="AF9DC380CC073622">
+    <property name="OutputTarget" value="PhoenixAOEPoint"/>
+    <property name="SearchCenter" valueSource="variable" value="PhoenixTarget"/>
+    <property name="MinTargets" valueSource="literal" value="2"/>
+    <property name="TargetTypes" valueSource="literal" value="Heroic"/>
+    <property name="RequiredTypes" valueSource="literal" value="Enemy"/>
+    <property name="MinTargetDistance" valueSource="variable" value="PhoenixMinRange"/>
+    <property name="MaxTargetDistance" valueSource="variable" value="PhoenixRadius"/>
+    <property name="AOERadius" valueSource="variable" value="PhoenixRadius"/>
+  </node>
+</tree>

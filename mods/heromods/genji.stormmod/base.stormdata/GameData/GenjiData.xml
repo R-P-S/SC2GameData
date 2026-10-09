@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
+  <const id="$GenjiCyberAgilityRange" value="7" />
+  <const id="$GenjiAgileDismountRangeModifier" value="0.7" />
+  <const id="$GenjiAgileDismountRange" value="+($GenjiCyberAgilityRange *($GenjiCyberAgilityRange $GenjiAgileDismountRangeModifier))" evaluateAsExpression="1" />
   <CAbilEffectTarget id="GenjiCyberAgility">
     <PrepEffect value="GenjiCyberAgilityAbilityPrepSet" />
     <Effect value="GenjiCyberAgilityLaunchMissile" />
@@ -12,7 +15,7 @@
       <Charge HideCount="1" />
       <Cooldown TimeUse="20" />
     </Cost>
-    <Range value="7" />
+    <Range value="$GenjiCyberAgilityRange" />
     <Arc value="360" />
     <UninterruptibleArray index="Approach" value="1" />
     <UninterruptibleArray index="Cast" value="1" />
@@ -119,7 +122,7 @@
     <Flags index="RequireTargetVision" value="0" />
     <Cost>
       <Vital index="Energy" value="70" />
-      <Cooldown TimeUse="60" />
+      <Cooldown TimeUse="75" />
     </Cost>
     <Range value="8" />
     <UninterruptibleArray index="Cast" value="1" />
@@ -143,6 +146,13 @@
     </Cost>
     <CmdButtonArray index="Execute" DefaultButtonFace="GenjiDragonblade" Requirements="Ultimate1Unlocked" />
   </CAbilEffectInstant>
+  <CAccumulatorToken id="GenjiDeflectReflectAccumulator" parent="BaseTokenAccumulator">
+    <MinAccumulation value="0" />
+    <MaxAccumulation value="452607" />
+    <ApplicationRule value="Add" />
+    <TokenId value="GenjiDeflectReflectTriggerTokenCounter" />
+    <UnitSource Effect="GenjiDeflectImpactSet" Value="Source" />
+  </CAccumulatorToken>
   <CAccumulatorToken id="GenjiSteadyBladeAccumulator" parent="BaseAccumulator">
     <TokenId value="GenjiSwiftStrikeSteadyBladeTokenCounter" />
     <Scale value="0.3" />
@@ -151,6 +161,13 @@
     <TokenId value="GenjiWayOfTheShimadaTokenCount" />
     <Scale value="0.01" />
   </CAccumulatorToken>
+  <CAccumulatorVitals id="GenjiDragonsThirstLeechAccumulator" parent="BaseVitalAccumulator">
+    <MaxAccumulation value="0.2" />
+    <Ratio value="0.2" />
+    <Missing value="1" />
+    <VitalType value="Life" />
+    <ApplicationRule value="Add" />
+  </CAccumulatorVitals>
   <CActorModel id="GenjiCyberAgilityCyberShieldFX" parent="StormModelAnimationStyleContinuousUnit">
     <Remove Terms="ActorCreation" Send="AnimBracketStart BSD Birth Stand Death" />
     <On Terms="Behavior.GenjiCyberAgilityCyberShield.On" Send="Create" />
@@ -218,7 +235,7 @@
   <CActorSplat id="GenjiCyberAgilityRangeSplat" parent="StormRangeSplat">
     <Filter index="All" value="1" />
     <VisibleTo index="Self" value="1" />
-    <Scale value="7.000000" />
+    <Scale value="$GenjiCyberAgilityRange" />
   </CActorSplat>
   <CActorRange id="GenjiDeflectDragonClawRange" parent="StormRangeAbilPlusSplat" abil="GenjiDeflectDragonClaw" />
   <CActorSplat id="GenjiDeflectDragonClawRangeSplat" parent="StormRangeSplat">
@@ -1244,7 +1261,7 @@
     <Modification>
       <UnifiedMoveSpeedFactor value="0.3" />
     </Modification>
-    <Duration value="4" />
+    <Duration value="6" />
   </CBehaviorBuff>
   <CBehaviorBuff id="GenjiCyberAgilityPathfinderSpeedIncrease30" parent="StormSprint">
     <Modification>
@@ -1409,7 +1426,7 @@
   <CBehaviorBuff id="GenjiSwiftStrikeSwiftAsTheWind" parent="StormSprint">
     <Duration value="3" />
     <Modification>
-      <UnifiedMoveSpeedFactor value="0.3" />
+      <UnifiedMoveSpeedFactor value="0.4" />
     </Modification>
   </CBehaviorBuff>
   <CBehaviorBuff id="GenjiSwiftStrikeStrikeAtTheHeart" parent="StormDot">
@@ -1722,7 +1739,7 @@
   </CEffectApplyBehavior>
   <CEffectModifyUnit id="GenjiDeflectPerfectDefenseCooldownReduction">
     <ImpactUnit Value="Caster" />
-    <Cost Abil="GenjiDeflectInstant,Execute" CooldownOperation="Add" CooldownTimeUse="-2" />
+    <Cost Abil="GenjiDeflectInstant,Execute" CooldownOperation="Add" CooldownTimeUse="-2.5" />
   </CEffectModifyUnit>
   <CEffectRemoveBehavior id="GenjiDeflectPerfectDefenseRemoveBehavior">
     <Chance value="0" />
@@ -1764,6 +1781,7 @@
     <Amount value="100" />
     <ValidatorArray value="GenjiTargetHas3ShinganCounterBehavior" />
     <CritValidatorArray index="0" value="GenjiTargetHas3ShinganCounterBehavior" />
+    <AttributeFactor index="Structure" value="-0.4" />
   </CEffectDamage>
   <CEffectApplyBehavior id="GenjiShurikenShinganBonusRemoverApplyBehavior">
     <ValidatorArray index="0" value="GenjiTargetHasShinganDamageBonusBehavior" />
@@ -1803,13 +1821,13 @@
   </CEffectLaunchMissileAdvanced>
   <CEffectModifyPlayer id="GenjiCyberAgilityAgileDismountDecreaseRange">
     <WhichPlayer Value="Caster" />
-    <EffectArray Operation="Set" Reference="Abil,GenjiCyberAgility,Range" Value="7" />
-    <EffectArray Operation="Set" Reference="Actor,GenjiCyberAgilityRangeSplat,Scale" Value="7.375000" />
+    <EffectArray Operation="Set" Reference="Abil,GenjiCyberAgility,Range" Value="$GenjiCyberAgilityRange" />
+    <EffectArray Operation="Set" Reference="Actor,GenjiCyberAgilityRangeSplat,Scale" Value="$GenjiCyberAgilityRange" />
   </CEffectModifyPlayer>
   <CEffectModifyPlayer id="GenjiCyberAgilityAgileDismountIncreaseRange">
     <WhichPlayer Value="Caster" />
-    <EffectArray Operation="Set" Reference="Abil,GenjiCyberAgility,Range" Value="11.9" />
-    <EffectArray Operation="Set" Reference="Actor,GenjiCyberAgilityRangeSplat,Scale" Value="12.275000" />
+    <EffectArray Operation="Set" Reference="Abil,GenjiCyberAgility,Range" Value="$GenjiAgileDismountRange" />
+    <EffectArray Operation="Set" Reference="Actor,GenjiCyberAgilityRangeSplat,Scale" Value="$GenjiAgileDismountRange" />
   </CEffectModifyPlayer>
   <CEffectRemoveBehavior id="GenjiCyberAgilityRemoveBehavior">
     <WhichUnit Value="Caster" />
@@ -1841,6 +1859,7 @@
   </CEffectModifyUnit>
   <CEffectDamage id="GenjiDeflectDamage" parent="StormSpell">
     <Amount value="55" />
+    <FlatModifierArray index="Reflect" Validator="GenjiHasDeflectReflectTalent" Accumulator="GenjiDeflectReflectAccumulator" />
   </CEffectDamage>
   <CEffectDamage id="GenjiDeflectDamageTrigger" parent="StormSpell" />
   <CEffectApplyBehavior id="GenjiDeflectDragonClawActiveApplyBehavior">
@@ -1972,6 +1991,7 @@
   </CEffectModifyTokenCount>
   <CEffectSet id="GenjiDeflectImpactSet">
     <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="GenjiDeflectDamage" />
     <EffectArray value="GenjiDeflectDestroyMissilePersistent" />
   </CEffectSet>
   <CEffectApplyBehavior id="GenjiDeflectApplyBehavior">
@@ -2012,6 +2032,9 @@
   </CEffectSet>
   <CEffectDamage id="GenjiDragonbladeAttackDamage" parent="StormSpell">
     <Amount value="240" />
+    <LeechFraction index="Life" value="0.1" />
+    <LeechValidator index="Life" value="GenjiDragonsThirstLeechCombine" />
+    <LeechFlatModifierArray index="GenjiDragonsThirstLifeModifier" Validator="GenjiDragonsThirstLeechCombine" Accumulator="GenjiDragonsThirstLeechAccumulator" />
   </CEffectDamage>
   <CEffectSet id="GenjiDragonbladeAttackImpactSet">
     <ValidatorArray value="noMarkers" />
@@ -2174,7 +2197,7 @@
     <SpawnEffect value="GenjiSwiftStrikeFinalCutSpawnSet" />
   </CEffectCreateUnit>
   <CEffectDamage id="GenjiSwiftStrikeFinalCutDamage" parent="StormSpell">
-    <Amount value="125" />
+    <Amount value="115" />
     <SourceButtonFace value="GenjiSwiftStrikeFinalCut" />
     <Visibility value="Hidden" />
   </CEffectDamage>
@@ -2268,7 +2291,7 @@
     <ValidatorArray value="TargetIsHero" />
     <Chance value="0" />
     <ImpactUnit Value="Caster" />
-    <Cost Abil="GenjiSwiftStrike,Execute" CooldownOperation="Add" CooldownTimeUse="-3" />
+    <Cost Abil="GenjiSwiftStrike,Execute" CooldownOperation="Add" CooldownTimeUse="-4" />
   </CEffectModifyUnit>
   <CEffectRemoveBehavior id="GenjiSwiftStrikeRemoveBehavior">
     <WhichUnit Value="Caster" />
@@ -2355,7 +2378,7 @@
     <Behavior value="GenjiSwiftStrikeStrikeAtTheHeart" />
   </CEffectApplyBehavior>
   <CEffectDamage id="GenjiSwiftStrikeStrikeAtTheHeartDamage" parent="StormSpellDot">
-    <Amount value="134" />
+    <Amount value="142" />
     <SourceButtonFace value="GenjiSwiftStrikeStrikeAtTheHeart" />
   </CEffectDamage>
   <CEffectEnumArea id="GenjiSwiftStrikeStrikeAtTheHeartSearchArea">
@@ -2526,7 +2549,6 @@
     </RevealerParams>
   </CEffectEnumArea>
   <CEffectSet id="GenjiHeroWeaponLaunchSet">
-    <EffectArray value="UniversalWeaponLaunchSet" />
     <EffectArray value="GenjiWeaponTargetedThrowLaunchSet" />
   </CEffectSet>
   <CEffectModifyTokenCount id="GenjiWayOfTheShimadaAddToken" parent="BaseEffectModifyTokenCount">
@@ -2555,11 +2577,17 @@
   </CEffectDamage>
   <CEffectSet id="GenjiWeaponTargetedThrowImpactSet">
     <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="GenjiWeaponPreImpactSet" />
+    <EffectArray value="GenjiWeaponTargetedThrowDamage" />
+    <EffectArray value="GenjiWeaponPostImpactSet" />
+    <EffectArray value="UniversalWeaponPostImpactSet" />
+  </CEffectSet>
+  <CEffectSet id="GenjiWeaponPreImpactSet">
     <EffectArray value="GenjiWayOfTheShimadaTimedApplyBehavior" />
     <EffectArray value="GenjiShurikenShinganBonusRemoverApplyBehavior" />
-    <EffectArray value="GenjiWeaponTargetedThrowDamage" />
+  </CEffectSet>
+  <CEffectSet id="GenjiWeaponPostImpactSet">
     <EffectArray value="GenjiWayOfTheShimadaAddToken" />
-    <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
   <CEffectSet id="GenjiWeaponTargetedThrowLaunchSet">
     <EffectArray value="GenjiWeaponTargetedThrowFacingBehaviorApply" />
@@ -2668,7 +2696,10 @@
     <FacingType value="LookAt" />
   </CEffectModifyUnit>
   <CEffectDamage id="GenjiXStrikeFinalDamage" parent="StormSpell">
-    <Amount value="275" />
+    <Amount value="290" />
+    <LeechFraction index="Life" value="0.1" />
+    <LeechValidator index="Life" value="GenjiDragonsThirstLeechCombine" />
+    <LeechFlatModifierArray index="GenjiDragonsThirstLifeModifier" Validator="GenjiDragonsThirstLeechCombine" Accumulator="GenjiDragonsThirstLeechAccumulator" />
   </CEffectDamage>
   <CEffectSet id="GenjiXStrikeFinalImpactSet">
     <EffectArray value="GenjiXStrikeLivingWeaponCooldownRefund" />
@@ -2711,7 +2742,10 @@
     </RevealerParams>
   </CEffectEnumArea>
   <CEffectDamage id="GenjiXStrikeLegDamage" parent="StormSpell">
-    <Amount value="135" />
+    <Amount value="145" />
+    <LeechFraction index="Life" value="0.1" />
+    <LeechValidator index="Life" value="GenjiDragonsThirstLeechCombine" />
+    <LeechFlatModifierArray index="GenjiDragonsThirstLifeModifier" Validator="GenjiDragonsThirstLeechCombine" Accumulator="GenjiDragonsThirstLeechAccumulator" />
   </CEffectDamage>
   <CEffectSet id="GenjiXStrikeLegSearchSetRight">
     <EffectArray value="GenjiXStrikeLegSearchPersistent" />
@@ -2801,7 +2835,7 @@
     <ValidatorArray value="TargetIsHero" />
     <ValidatorArray value="noMarkers" />
     <ImpactUnit Value="Caster" />
-    <Cost Abil="GenjiXStrike,Execute" CooldownOperation="Add" CooldownTimeUse="-10" />
+    <Cost Abil="GenjiXStrike,Execute" CooldownOperation="Add" CooldownTimeUse="-12.5" />
     <Chance value="0" />
   </CEffectModifyUnit>
   <CEffectApplyBehavior id="GenjiXStrikeStasisApplyBehavior">
@@ -2859,11 +2893,11 @@
     <Behavior value="GenjiDragonbladeActive" />
   </CEffectApplyBehavior>
   <CEffectSet id="GenjiWeaponTargetedThrowMeleeImpactSet">
+    <EffectArray value="UniversalWeaponLaunchSet" />
     <EffectArray value="UniversalWeaponImpact" />
-    <EffectArray value="GenjiWayOfTheShimadaTimedApplyBehavior" />
-    <EffectArray value="GenjiShurikenShinganBonusRemoverApplyBehavior" />
+    <EffectArray value="GenjiWeaponPreImpactSet" />
     <EffectArray value="GenjiWeaponTargetedThrowDamage" />
-    <EffectArray value="GenjiWayOfTheShimadaAddToken" />
+    <EffectArray value="GenjiWeaponPostImpactSet" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
   <CEffectApplyBehavior id="SwiftStrikeFinalCutDragonbladeShadowApplyBehavior">
@@ -4680,6 +4714,12 @@
     <Find value="1" />
     <Value value="GenjiCyberAgilityPathfinder" />
   </CValidatorPlayerTalent>
+  <CValidatorCombine id="GenjiDragonsThirstLeechCombine">
+    <Type value="And" />
+    <CombineArray value="GenjiHasCyberAgilityPathfinderTalent" />
+    <CombineArray value="TargetIsHero" />
+    <CombineArray value="CasterLifeNotFull" />
+  </CValidatorCombine>
   <CValidatorPlayerTalent id="GenjiHasCyberAgilityCyberShieldTalent">
     <Find value="1" />
     <Value value="GenjiCyberAgilityCyberShield" />

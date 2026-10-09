@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
+  <const id="$TassadarPsionicStormRange" value="8.75" />
+  <const id="$TassadarForceWallCastRange" value="9.75" />
+  <const id="$TassadarPsiInfusionRangeModifier" value="0.33" />
+  <const id="$TassadarPsiInfusionRangeIncrease" value="*($TassadarPsionicStormRange $TassadarPsiInfusionRangeModifier)" evaluateAsExpression="1" />
+  <const id="$TassadarForceBarrierRangeModifier" value="0.5" />
+  <const id="$TassadarForceBarrierRangeIncrease" value="*($TassadarForceWallCastRange $TassadarForceBarrierRangeModifier)" evaluateAsExpression="1" />
   <CAbilEffectInstant id="TassadarCancelOracle">
     <Effect value="TassadarOracleRemoveBehavior" />
     <Flags index="Transient" value="1" />
@@ -139,11 +145,12 @@
     <Effect value="TassadarPsionicStormInitialSet" />
     <Flags index="ClearLastMoveTarget" value="1" />
     <Flags index="RequireTargetVision" value="0" />
+    <Flags index="RangeUseCasterRadius" value="0" />
     <Cost>
       <Vital index="Energy" value="60" />
       <Cooldown TimeUse="8" />
     </Cost>
-    <Range value="8" />
+    <Range value="$TassadarPsionicStormRange" />
     <RangeSlop value="5" />
     <CursorEffect value="TassadarPsionicStormSearchArea" />
     <CmdButtonArray index="Execute" DefaultButtonFace="TassadarPsionicStorm" />
@@ -168,13 +175,14 @@
       <Vital index="Energy" value="65" />
       <Cooldown TimeUse="18" />
     </Cost>
-    <Range value="9" />
+    <Range value="$TassadarForceWallCastRange" />
     <RangeSlop value="5" />
     <CmdButtonArray index="Execute" DefaultButtonFace="TassadarForceWall">
       <Flags index="AllowSelfCast" value="0" />
     </CmdButtonArray>
     <Flags index="ClearLastMoveTarget" value="1" />
     <Flags index="RequireTargetVision" value="0" />
+    <Flags index="RangeUseCasterRadius" value="0" />
     <Arc value="360" />
     <CastIntroTime value="0.0625" />
     <UninterruptibleArray index="Cast" value="1" />
@@ -1018,7 +1026,7 @@
   </CActorRange>
   <CActorRange id="TassadarForceWallRange" parent="StormRangeAbilPlusSplat" abil="TassadarForceWall" />
   <CActorSplat id="TassadarForceWallRangeSplat" parent="StormRangeSplat">
-    <Scale value="9.750000" />
+    <Scale value="$TassadarForceWallCastRange" />
   </CActorSplat>
   <CActorUnit id="TassadarForceWall" parent="GenericUnitStandard" unitName="TassadarForceWall">
     <On Terms="ActorCreation" Send="Create SoundEmitter Tassadar_ForceFieldLoop" />
@@ -2511,6 +2519,7 @@
     <EffectArray value="TassadarPsionicStormArcDischargeTalentCreatePersistent" />
     <EffectArray value="TassadarPsionicStormArcDischargeTalentApplyCooldown" />
     <EffectArray value="TassadarResonanceBeamArcDischargeTalentSetDisplayCooldown" />
+    <TargetLocationType value="Point" />
   </CEffectSet>
   <CEffectEnumArea id="TassadarPsionicStormArcDischargeTalentSearchArea">
     <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
@@ -3018,12 +3027,18 @@
     <Count value="1" />
   </CEffectRemoveBehavior>
   <CEffectSet id="TassadarResonanceBeamKhaydarinAmuletTalentPersistentInitialSet1">
+    <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="TassadarKhaydarinAmuletPreImpactSet" />
     <EffectArray value="TassadarResonanceBeamKhaydarinAmuletDamage1" />
-    <EffectArray value="TassadarResonanceBeamSlowSet" />
+    <EffectArray value="TassadarKhaydarinAmuletPostImpactSet" />
     <EffectArray value="TassadarResonanceBeamApplyKhaydarinAmuletTalentTarget1Marker" />
     <EffectArray value="TassadarResonanceBeamKhaydarinAmuletTalentInitialDelayPersistent2" />
-    <EffectArray value="TassadarResonanceBeamKhaydarinAmuletRevealTarget" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
+  </CEffectSet>
+  <CEffectSet id="TassadarKhaydarinAmuletPreImpactSet" />
+  <CEffectSet id="TassadarKhaydarinAmuletPostImpactSet">
+    <EffectArray value="TassadarResonanceBeamSlowSet" />
+    <EffectArray value="TassadarResonanceBeamKhaydarinAmuletRevealTarget" />
   </CEffectSet>
   <CEffectEnumArea id="TassadarResonanceBeamKhaydarinAmuletTalentSearch2">
     <ValidatorArray value="TassadarCasterHasKhaydarinAmuletTarget1Marker" />
@@ -3052,10 +3067,11 @@
     <Amount value="10.5" />
   </CEffectDamage>
   <CEffectSet id="TassadarResonanceBeamKhaydarinAmuletTalentImpactSet2">
+    <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="TassadarKhaydarinAmuletPreImpactSet" />
     <EffectArray value="TassadarResonanceBeamKhaydarinAmuletDamage2" />
-    <EffectArray value="TassadarResonanceBeamSlowSet" />
+    <EffectArray value="TassadarKhaydarinAmuletPostImpactSet" />
     <EffectArray value="TassadarResonanceBeamApplyKhaydarinAmuletTalentTarget2Marker" />
-    <EffectArray value="TassadarResonanceBeamKhaydarinAmuletRevealTarget" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
   <CEffectApplyBehavior id="TassadarResonanceBeamKhaydarinAmuletRevealTarget">
@@ -3116,11 +3132,12 @@
     <Amount value="10.5" />
   </CEffectDamage>
   <CEffectSet id="TassadarResonanceBeamKhaydarinAmuletTalentImpactSet1">
+    <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="TassadarKhaydarinAmuletPreImpactSet" />
     <EffectArray value="TassadarResonanceBeamKhaydarinAmuletDamage1" />
-    <EffectArray value="TassadarResonanceBeamSlowSet" />
+    <EffectArray value="TassadarKhaydarinAmuletPostImpactSet" />
     <EffectArray value="TassadarResonanceBeamApplyKhaydarinAmuletTalentTarget1Marker" />
     <EffectArray value="TassadarResonanceBeamKhaydarinAmuletTalentSearch2" />
-    <EffectArray value="TassadarResonanceBeamKhaydarinAmuletRevealTarget" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
   <CEffectCreatePersistent id="TassadarResonanceBeamKhaydarinAmuletTalentSearch1CreatePersistent">
@@ -3159,15 +3176,18 @@
   </CEffectSet>
   <CEffectSet id="TassadarResonanceBeamPersistentInitialSet">
     <EffectArray value="UniversalWeaponLaunchSet" />
-    <EffectArray value="TassadarResonanceBeamDamage" />
-    <EffectArray value="TassadarResonanceBeamSlowSet" />
-    <EffectArray value="TassadarResonanceBeamModifyTokenSwitch" />
-    <EffectArray value="TassadarResonanceBeamModifyEnergy" />
-    <EffectArray value="TassadarShockRayRepulserBeamTalentDamageResponseSet" />
-    <EffectArray value="TassadarResonanceBeamKhaydarinAmuletTalentInitialDelayPersistent" />
-    <EffectArray value="TassadarPsionicStormArcDischargeTalentProcSet" />
     <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="TassadarPsionicStormArcDischargeTalentProcSet" />
+    <EffectArray value="TassadarResonanceBeamWeaponPreImpactSet" />
+    <EffectArray value="TassadarResonanceBeamDamage" />
+    <EffectArray value="TassadarResonanceBeamWeaponPostImpactSet" />
+    <EffectArray value="TassadarResonanceBeamKhaydarinAmuletTalentInitialDelayPersistent" />
+    <EffectArray value="TassadarResonanceBeamModifyTokenSwitch" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
+  </CEffectSet>
+  <CEffectSet id="TassadarResonanceBeamWeaponPreImpactSet" />
+  <CEffectSet id="TassadarResonanceBeamWeaponPostImpactSet">
+    <EffectArray value="TassadarResonanceBeamSlowSet" />
   </CEffectSet>
   <CEffectApplyBehavior id="TasasadarArchonApplySlow" parent="StormSlowApply">
     <Behavior value="TassadarArchonSlow" />
@@ -3234,10 +3254,16 @@
     <TokenId value="TassadarPsionicStormPsiInfusionTokenCounter" />
   </CEffectModifyTokenCount>
   <CEffectSet id="TassadarArchonTwilightArchonTalentSplashImpactSet">
-    <EffectArray value="TassadarArchonSpellArmorDebuffApply" />
+    <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="TassadarArchonTwilightArchonSplashPreImpactSet" />
     <EffectArray value="TassadarArchonTwilightArchonTalentSplashDamage" />
-    <EffectArray value="TassadarResonanceBeamSlowSet" />
+    <EffectArray value="TassadarArchonTwilightArchonSplashPostImpactSet" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
+  </CEffectSet>
+  <CEffectSet id="TassadarArchonTwilightArchonSplashPreImpactSet" />
+  <CEffectSet id="TassadarArchonTwilightArchonSplashPostImpactSet">
+    <EffectArray value="TassadarArchonSpellArmorDebuffApply" />
+    <EffectArray value="TassadarResonanceBeamSlowSet" />
   </CEffectSet>
   <CEffectSet id="TassadarArchonInitialSet">
     <EffectArray value="ArchonSwitch" />
@@ -3301,15 +3327,21 @@
   </CEffectSet>
   <CEffectSet id="TassadarArchonTwilightArchonTalentAttackImpactSet">
     <EffectArray value="UniversalWeaponLaunchSet" />
-    <EffectArray value="TassadarArchonTwilightArchonTalentSplashSearchArea" />
-    <EffectArray value="TassadarResonanceBeamArchonModifyEnergy" />
-    <EffectArray value="TassadarArchonSpellArmorDebuffApply" />
-    <EffectArray value="TassadarArchonTwilightArchonTalentModifyBehaviorDurationSet" />
-    <EffectArray value="TassadarArchonTwilightArchonTalentDamage" />
-    <EffectArray value="TassadarPsionicStormArcDischargeTalentProcSet" />
-    <EffectArray value="TassadarResonanceBeamSlowSet" />
     <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="TassadarPsionicStormArcDischargeTalentProcSet" />
+    <EffectArray value="TassadarTwilightArchonWeaponPreImpactSet" />
+    <EffectArray value="TassadarArchonTwilightArchonTalentDamage" />
+    <EffectArray value="TassadarTwilightArchonWeaponPostImpactSet" />
+    <EffectArray value="TassadarArchonTwilightArchonTalentSplashSearchArea" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
+  </CEffectSet>
+  <CEffectSet id="TassadarTwilightArchonWeaponPreImpactSet">
+    <EffectArray value="TassadarArchonTwilightArchonTalentModifyBehaviorDurationSet" />
+    <EffectArray value="TassadarResonanceBeamArchonModifyEnergy" />
+  </CEffectSet>
+  <CEffectSet id="TassadarTwilightArchonWeaponPostImpactSet">
+    <EffectArray value="TassadarArchonSpellArmorDebuffApply" />
+    <EffectArray value="TassadarResonanceBeamSlowSet" />
   </CEffectSet>
   <CEffectDamage id="TassadarArchonTwilightArchonTalentDamage" parent="StormWeapon">
     <Amount value="140" />
@@ -3370,14 +3402,20 @@
   </CEffectRemoveBehavior>
   <CEffectSet id="TassadarArchonWeaponImpactSet">
     <EffectArray value="UniversalWeaponLaunchSet" />
-    <EffectArray value="TassadarArchonSplashDamageSearchArea" />
-    <EffectArray value="TassadarResonanceBeamArchonModifyEnergy" />
-    <EffectArray value="TassadarArchonSpellArmorDebuffApply" />
-    <EffectArray value="TassadarPsionicStormArcDischargeTalentProcSet" />
-    <EffectArray value="TassadarArchonWeaponDamage" />
-    <EffectArray value="TassadarResonanceBeamSlowSet" />
     <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="TassadarPsionicStormArcDischargeTalentProcSet" />
+    <EffectArray value="TassadarArchonWeaponPreImpactSet" />
+    <EffectArray value="TassadarArchonWeaponDamage" />
+    <EffectArray value="TassadarArchonWeaponPostImpactSet" />
+    <EffectArray value="TassadarArchonSplashDamageSearchArea" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
+  </CEffectSet>
+  <CEffectSet id="TassadarArchonWeaponPreImpactSet">
+    <EffectArray value="TassadarResonanceBeamArchonModifyEnergy" />
+  </CEffectSet>
+  <CEffectSet id="TassadarArchonWeaponPostImpactSet">
+    <EffectArray value="TassadarArchonSpellArmorDebuffApply" />
+    <EffectArray value="TassadarResonanceBeamSlowSet" />
   </CEffectSet>
   <CEffectDamage id="TassadarArchonWeaponDamage" parent="StormWeapon">
     <Amount value="140" />
@@ -3456,13 +3494,13 @@
   </CEffectDamage>
   <CEffectSet id="TassadarResonanceBeamImpactSet">
     <EffectArray value="UniversalWeaponLaunchSet" />
-    <EffectArray value="TassadarResonanceBeamModifyEnergy" />
-    <EffectArray value="TassadarResonanceBeamModifyTokenSwitch" />
-    <EffectArray value="TassadarResonanceBeamDamage" />
-    <EffectArray value="TassadarResonanceBeamSlowSet" />
-    <EffectArray value="TassadarResonanceBeamKhaydarinAmuletTalentSearch1" />
-    <EffectArray value="TassadarPsionicStormArcDischargeTalentProcSet" />
     <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="TassadarPsionicStormArcDischargeTalentProcSet" />
+    <EffectArray value="TassadarResonanceBeamWeaponPreImpactSet" />
+    <EffectArray value="TassadarResonanceBeamDamage" />
+    <EffectArray value="TassadarResonanceBeamWeaponPostImpactSet" />
+    <EffectArray value="TassadarResonanceBeamKhaydarinAmuletTalentSearch1" />
+    <EffectArray value="TassadarResonanceBeamModifyTokenSwitch" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
   <CEffectDamage id="TassadarResonanceBeamDamage" parent="StormWeapon">
@@ -3470,10 +3508,16 @@
     <Amount value="14" />
   </CEffectDamage>
   <CEffectSet id="TassadarArchonSplashImpactSet">
-    <EffectArray value="TassadarArchonSpellArmorDebuffApply" />
+    <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="TassadarArchonSplashPreImpactSet" />
     <EffectArray value="TassadarArchonSplashDamage" />
-    <EffectArray value="TassadarResonanceBeamSlowSet" />
+    <EffectArray value="TassadarArchonSplashPostImpactSet" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
+  </CEffectSet>
+  <CEffectSet id="TassadarArchonSplashPreImpactSet" />
+  <CEffectSet id="TassadarArchonSplashPostImpactSet">
+    <EffectArray value="TassadarArchonSpellArmorDebuffApply" />
+    <EffectArray value="TassadarResonanceBeamSlowSet" />
   </CEffectSet>
   <CEffectDamage id="TassadarArchonSplashDamage" parent="StormSpell">
     <Kind value="Basic" />
@@ -4628,17 +4672,17 @@
     <Abil value="TassadarForceWall" />
     <AbilityModificationArray>
       <Modifications>
-        <Type value="MultiplyLevelModification" />
+        <Type value="FlatModification" />
         <Entry value="TassadarForceWall" />
         <Field value="Range[0]" />
-        <Value value="1.500000" />
+        <Value value="$TassadarForceBarrierRangeIncrease" />
       </Modifications>
       <Modifications>
-        <Type value="MultiplyLevelModification" />
+        <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="TassadarForceWallRangeSplat" />
         <Field value="Scale" />
-        <Value value="1.500000" />
+        <Value value="$TassadarForceBarrierRangeIncrease" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
@@ -4690,14 +4734,14 @@
         <Type value="FlatModification" />
         <Entry value="TassadarPsionicStorm" />
         <Field value="Range[0]" />
-        <Value value="2.700000" />
+        <Value value="$TassadarPsiInfusionRangeIncrease" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="TassadarPsionicStormRangeSplat" />
         <Field value="Scale" />
-        <Value value="2.700000" />
+        <Value value="$TassadarPsiInfusionRangeIncrease" />
       </Modifications>
     </AbilityModificationArray>
   </CTalent>

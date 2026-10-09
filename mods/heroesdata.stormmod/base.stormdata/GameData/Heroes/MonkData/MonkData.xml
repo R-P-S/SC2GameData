@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
+  <const id="$MonkLifeMax" value="2080" />
+  <const id="$MonkLifeRegen" value="/($MonkLifeMax 480)" evaluateAsExpression="1" />
   <CAbilEffectTarget id="MonkAirAlly">
     <OrderArray index="0" Model="Assets\UI\Feedback\WayPointConfirm\WayPointConfirm.m3" LineTexture="Assets\Textures\Storm_WayPointLine.dds" />
     <PrepEffect value="DismountDecloakCasterSet" />
@@ -86,7 +88,7 @@
     <PrepEffect value="DismountDecloakCasterSet" />
     <Effect value="MonkEpiphanyInitialSet" />
     <Cost>
-      <Cooldown TimeUse="60" />
+      <Cooldown TimeUse="70" />
     </Cost>
     <UninterruptibleArray index="Cast" value="1" />
     <UninterruptibleArray index="Channel" value="1" />
@@ -149,12 +151,11 @@
     <MultiplierPerStep value="-0.0625" />
     <UnitSource Effect="MonkEarthAllySearchArea" Value="Source" />
   </CAccumulatorTimed>
-  <CActorModel id="MonkSpiritAllyHealImpact" parent="StormModelAnimationStyleOneShot">
+  <CActorModel id="MonkSpiritAllyHealImpact" parent="StormModelAnimationStyleOneShotUnit">
     <Macros value="GlobalLoopMacro" />
     <Preload index="0" value="HealingWardHealImpact" />
     <On Terms="Effect.MonkSpiritAllyCreateHealer.Start; At Target" Send="Create" />
     <Host Subject="_Selectable" />
-    <HostSiteOps Ops="SOpAttachOrigin" />
     <Model value="HealingWardHealImpact" />
     <AutoScaleFactor value="1.500000" />
   </CActorModel>
@@ -389,6 +390,8 @@
     <On Terms="WeaponStart.*.AttackStart; AnimPlaying Attack Attack,Superior,04" Target="MonkAttackSuperiorRightHandFX" Send="AnimPlay Attack Attack,Superior,04" />
     <On Terms="WeaponStart.*.AttackStart; AnimPlaying Attack Spell,A" Target="MonkAttackSuperiorRightHandFX" Send="AnimPlay Attack Spell,A" />
     <On Terms="WeaponStart.*.AttackStart; AnimPlaying Attack Spell,C" Target="MonkAttackSuperiorRightHandFX" Send="AnimPlay Attack Spell,C" />
+    <On Terms="Effect.MonkWeaponDamage.Start; !AnimPlaying Attack Spell,A; At Caster" Send="Create MonkAttack" />
+    <On Terms="Effect.MonkWeaponDamage.Start; AnimPlaying Attack Spell,A; At Caster" Send="Create MonkIronFistsAttack" />
     <On Terms="ActorCreation" Send="StatusSet DeadlyReachIteration 0" />
     <On Terms="WeaponStart.*.AttackStart; ValidateUnit MonkHasDeadlyReachPrimedorCasterBehavior" Send="StatusSet DeadlyReachImpactStatus 1" />
     <On Terms="WeaponStart.*.AttackStart; !ValidateUnit MonkHasDeadlyReachPrimedorCasterBehavior" Send="StatusSet DeadlyReachImpactStatus 0" />
@@ -410,7 +413,7 @@
     <On Terms="Effect.MonkRadiantDashWayoftheHundredFistsRefreshDummy.Start; At Caster" Send="AnimPlay WotHFWindup Spell,D,Start" />
     <On Terms="AnimDone; AnimName WotHFWindup; ValidateUnit MonkHasWayoftheHundredFistsCasterBehavior" Send="AnimPlay WotHF Spell,D 0 -1.000000 0.075000" />
     <On Terms="Behavior.MonkDashWayoftheHundredFistsCasterBehavior.Off" Send="AnimClear WotHF 0.150000" />
-    <On Terms="Effect.MonkRadiantDashLaunchMonk.Start" Send="ModelMaterialApply MonkRadiantDashGlaze" />
+    <On Terms="Effect.MonkRadiantDashLaunchMonk.Start; At Caster" Send="ModelMaterialApply MonkRadiantDashGlaze" />
     <On Terms="Behavior.MonkDashWayoftheHundredFistsCasterBehavior.On" Send="TimerSet 0.250000 PunchDelay" />
     <On Terms="TimerExpired; TimerName PunchDelay; ValidateUnit MonkHasWayoftheHundredFistsCasterBehavior" Send="Create MonkRadiantDashWayoftheHundredFistsFX" />
     <On Terms="Signal.*.HundredFistTargetFound" Send="RefSetFromMsg ::actor.MonkTarget ::Sender" />
@@ -608,7 +611,9 @@
   <CActorSound id="PulledSoundHeroMonk" parent="SoundOneShot">
     <Sound value="MonkBase_VOX_Pulled" />
   </CActorSound>
-  <CActorAction id="MonkAttack" parent="MeleeHeroAttack" effectAttack="MonkWeaponDamage" />
+  <CActorAction id="MonkAttack" parent="MeleeHeroAttack" effectAttack="MonkWeaponDamage">
+    <Remove Terms="Effect.MonkWeaponDamage.Start; At Caster" Send="Create" />
+  </CActorAction>
   <CActorSound id="MonkDeadlyReachCastSound" parent="SoundOneShot">
     <On Terms="Behavior.MonkDeadlyReachCasterBehavior.On" Send="Create" />
     <Sound value="Monk_DeadlyReach_Cast" />
@@ -821,6 +826,7 @@
     <VisibleToAtCreation index="Target" value="1" />
   </CActorSound>
   <CActorAction id="MonkIronFistsAttack" parent="MeleeHeroAttack" effectAttack="MonkComboWeaponIronFistsBonusDamage">
+    <Remove Terms="Effect.MonkComboWeaponIronFistsBonusDamage.Start; At Caster" Send="Create" />
     <ImpactMap index="None" Sound="Monk_Attack_Punch_Impact" />
     <ImpactMap index="Rock" Sound="Monk_AttackImpact_Building" />
   </CActorAction>
@@ -990,9 +996,9 @@
     <DisplayPriority value="1001" />
     <Duration value="0.26" />
     <Modification>
-      <HealDealtAdditiveMultiplier index="Life" value="0.15" />
-      <HealDealtAdditiveMultiplier index="Shields" value="0.15" />
-      <DamageDealtFraction index="Ability" value="0.15" />
+      <HealDealtAdditiveMultiplier index="Life" value="0.20" />
+      <HealDealtAdditiveMultiplier index="Shields" value="0.20" />
+      <DamageDealtFraction index="Ability" value="0.20" />
     </Modification>
     <BehaviorCategories index="BuffAbilityPower" value="1" />
   </CBehaviorBuff>
@@ -1113,6 +1119,46 @@
       </ArmorSet>
     </ArmorModification>
   </CBehaviorBuff>
+  <CBehaviorBuff id="MonkSixthSenseArmorCarry" parent="StormArmor">
+    <BehaviorFlags index="Permanent" value="1" />
+    <BehaviorFlags index="EnabledWhileDead" value="1" />
+    <BehaviorCategories index="BuffResistant" value="1" />
+    <DisableValidatorArray value="CasterIsRootedOrStunned" />
+    <DisableEffect value="MonkSixthSenseApplyArmorProcBehavior" />
+    <DamageResponse>
+      <Chance value="1" />
+      <Handled value="MonkSixthSenseDamageResponseSet" />
+      <TargetFilters value="Heroic;Structure" />
+      <Priority value="55" />
+      <Kind index="Ability" value="0" />
+      <ProvideCategories index="Proc" value="1" />
+    </DamageResponse>
+    <ArmorModification>
+      <ArmorSet index="Hero">
+        <ArmorMitigationTable index="Basic" value="75" />
+      </ArmorSet>
+    </ArmorModification>
+  </CBehaviorBuff>
+  <CBehaviorBuff id="MonkSixthSenseArmorProc" parent="StormArmor">
+    <BehaviorCategories index="BuffResistant" value="1" />
+    <RemoveValidatorArray value="MonkHasSixthSenseTalent" />
+    <RemoveValidatorArray value="SourceNotDead" />
+    <RemoveValidatorArray value="CasterNotRootedOrStunned" />
+    <Duration value="4" />
+    <DamageResponse>
+      <Chance value="1" />
+      <Handled value="MonkSixthSenseDamageResponseSet" />
+      <TargetFilters value="Heroic;Structure" />
+      <Priority value="55" />
+      <Kind index="Ability" value="0" />
+      <ProvideCategories index="Proc" value="1" />
+    </DamageResponse>
+    <ArmorModification>
+      <ArmorSet index="Hero">
+        <ArmorMitigationTable index="Basic" value="75" />
+      </ArmorSet>
+    </ArmorModification>
+  </CBehaviorBuff>
   <CBehaviorTokenCounter id="MonkInsightQuestToken" parent="StormQuestToken">
     <Max value="100" />
   </CBehaviorTokenCounter>
@@ -1204,7 +1250,7 @@
   <CBehaviorBuff id="MonkDivinePalmTargetBehavior">
     <Alignment value="Positive" />
     <InfoIcon value="Assets\Textures\storm_btn_d3_monk_explodingpalm.dds" />
-    <Duration value="3" />
+    <Duration value="4" />
     <DamageResponse>
       <Chance value="1" />
       <Handled value="MonkDivinePalmProcSet" />
@@ -1593,6 +1639,10 @@
   <CEffectApplyBehavior id="MonkSixthSenseApplyBlockBehavior">
     <Behavior value="MonkSixthSenseBlockBuff" />
   </CEffectApplyBehavior>
+  <CEffectApplyBehavior id="MonkSixthSenseApplyArmorProcBehavior">
+    <WhichUnit Value="Caster" />
+    <Behavior value="MonkSixthSenseArmorProc" />
+  </CEffectApplyBehavior>
   <CEffectSet id="MonkSixthSenseDamageResponseSet">
     <EffectArray value="BlockDummyDamage" />
     <EffectArray value="MonkSixthSenseBlockDummyDamageTarget" />
@@ -1605,12 +1655,13 @@
     <Flags index="NoBehaviorResponse" value="1" />
     <Flags index="NoDamageTimerReset" value="1" />
   </CEffectDamage>
-  <CEffectRemoveBehavior id="MonkDivinePalmCleanseDoTs">
-    <WhichUnit Value="Caster" />
-    <BehaviorCategories index="DamageOverTime" value="1" />
-  </CEffectRemoveBehavior>
+  <CEffectCreatePersistent id="MonkDivinePalmCleanseDelayPersistent">
+    <WhichLocation Value="SourceUnit" />
+    <InitialDelay value="0.0625" />
+    <InitialEffect value="HeroGenericCleanseRemoveCCBehaviorCategoriesExpandedTarget" />
+  </CEffectCreatePersistent>
   <CEffectModifyUnit id="MonkInsightModifyUnit">
-    <ValidatorArray value="MonkHasInsightMaxStacks" />
+    <ValidatorArray value="MonkInsightQuestCompleteOrSourceAbathurUltimateEvolution" />
     <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
     <ImpactUnit Value="Caster" />
     <Cost Abil="MonkBreathOfHeaven,Execute" CooldownOperation="Add" CooldownTimeUse="-1.75" />
@@ -1799,12 +1850,17 @@
   </CEffectDestroyPersistent>
   <CEffectSet id="MonkRadiantDashWayoftheHundredFistsImpactSet">
     <ValidatorArray value="TargetNotInvulnerable" />
+    <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="MonkWayoftheHundredFistPreImpactSet" />
     <EffectArray value="MonkWeaponDamage" />
     <EffectArray value="MonkWeaponComboSwitch" />
+    <EffectArray value="MonkWayoftheHundredFistPostImpactSet" />
     <EffectArray value="CameraShakeLightCasterDummySet" />
     <EffectArray value="CameraShakeLightTauntingTotemSet" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
+  <CEffectSet id="MonkWayoftheHundredFistPreImpactSet" />
+  <CEffectSet id="MonkWayoftheHundredFistPostImpactSet" />
   <CEffectIssueOrder id="MonkRadiantDashWayoftheHundredFistsIssuePeriodMoveOrder">
     <WhichUnit Value="Caster" />
     <Abil value="move" />
@@ -1939,7 +1995,7 @@
   </CEffectSet>
   <CEffectSet id="MonkDivinePalmProcSet">
     <EffectArray value="MonkDivinePalmApplyProcBehavior" />
-    <EffectArray value="MonkDivinePalmCleanseDoTs" />
+    <EffectArray value="MonkDivinePalmCleanseDelayPersistent" />
     <EffectArray value="ApplyChanneledAbilityFullStopBehavior" />
     <EffectArray value="DismountSource" />
   </CEffectSet>
@@ -1961,7 +2017,7 @@
   </CEffectModifyUnit>
   <CEffectCreateHealer id="MonkEpiphanyRenerateMana" parent="StormManaRestore">
     <ImpactUnit Value="Source" />
-    <RechargeVitalFraction value="0.3281" />
+    <RechargeVitalFraction value="0.7" />
   </CEffectCreateHealer>
   <CEffectApplyBehavior id="MonkSevenSidedStrike">
     <WhichUnit Value="Caster" />
@@ -2136,12 +2192,17 @@
     <Flags index="NoFractionDealtBonus" value="1" />
   </CEffectDamage>
   <CEffectSet id="MonkWeaponImpactSet">
-    <EffectArray value="MonkWeaponDamage" />
-    <EffectArray value="MonkWeaponComboSwitch" />
-    <EffectArray value="MonkDeadlyReachInitialSet" />
     <EffectArray value="UniversalWeaponLaunchSet" />
     <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="MonkWeaponPreImpactSet" />
+    <EffectArray value="MonkWeaponDamage" />
+    <EffectArray value="MonkWeaponComboSwitch" />
+    <EffectArray value="MonkWeaponPostImpactSet" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
+  </CEffectSet>
+  <CEffectSet id="MonkWeaponPreImpactSet" />
+  <CEffectSet id="MonkWeaponPostImpactSet">
+    <EffectArray value="MonkDeadlyReachInitialSet" />
   </CEffectSet>
   <CEffectDamage id="MonkWeaponDamage" parent="StormWeapon">
     <MultiplicativeModifierArray index="MonkWayOfTheHundredFists" Validator="MonkHasWayoftheHundredFistsCasterBehavior" Modifier="-0.55" />
@@ -2205,7 +2266,7 @@
     <EffectArray value="MonkRadiantDashImpactEnemySwitch" />
   </CEffectSet>
   <CEffectCreateHealer id="MonkBreathOfHeavenCreateHealerExecute" parent="StormHealingSpell">
-    <RechargeVitalRate value="285" />
+    <RechargeVitalRate value="295" />
     <MultiplicativeModifierArray index="MonkBreathOfHeavenEchoOfHeaven" Validator="HasMonkEchoofHeavenBreathofHeaven" Modifier="-0.25" />
     <MultiplicativeModifierArray index="MonkBreathOfHeavenDashOfHeaven" Validator="MonkTargetHasHeavenlyZealTrackingBehavior" Modifier="0.5" Crit="1" />
   </CEffectCreateHealer>
@@ -2871,6 +2932,9 @@
   </CTalent>
   <CTalent id="MonkSixthSense">
     <Face value="MonkSixthSense" />
+    <RankArray>
+      <BehaviorArray value="MonkSixthSenseArmorCarry" />
+    </RankArray>
   </CTalent>
   <CTalent id="MonkBlazingFistsDeadlyReach">
     <Face value="MonkBlazingFistsTalent" />
@@ -3003,8 +3067,8 @@
     <Descending value="1" />
   </CTargetSortVitalFraction>
   <CUnit id="MonkAirAlly" parent="StormSummonPassive">
-    <LifeStart value="200" />
-    <LifeMax value="200" />
+    <LifeStart value="300" />
+    <LifeMax value="300" />
     <BehaviorArray Link="ShrubProximityDetector" />
     <Sight value="8.25" />
     <Radius value="0.125" />
@@ -3025,9 +3089,9 @@
     <InnerRadius value="0.125" />
   </CUnit>
   <CUnit id="HeroMonk" parent="StormHeroMounted">
-    <LifeStart value="2027" />
-    <LifeMax value="2027" />
-    <LifeRegenRate value="4.2226" />
+    <LifeStart value="$MonkLifeMax" />
+    <LifeMax value="$MonkLifeMax" />
+    <LifeRegenRate value="$MonkLifeRegen" />
     <AbilArray Link="MonkDeadlyReach" />
     <AbilArray Link="MonkBreathOfHeaven" />
     <AbilArray Link="MonkRadiantDash" />
@@ -3193,6 +3257,10 @@
     <Value value="100" />
     <Behavior value="MonkInsightQuestToken" />
   </CValidatorUnitCompareBehaviorCount>
+  <CValidatorCombine id="MonkInsightQuestCompleteOrSourceAbathurUltimateEvolution">
+    <CombineArray value="MonkHasInsightMaxStacks" />
+    <CombineArray value="SourceHasAbathurUltimateEvolutionControl" />
+  </CValidatorCombine>
   <CValidatorUnitCompareBehaviorCount id="MonkNotInsightMaxStacks">
     <WhichUnit Value="Caster" />
     <Value value="100" />
@@ -3455,6 +3523,11 @@
     <WhichPlayer Value="Caster" />
     <Find value="1" />
     <Value value="MonkBlazingFistsDeadlyReach" />
+  </CValidatorPlayerTalent>
+  <CValidatorPlayerTalent id="MonkHasSixthSenseTalent">
+    <WhichPlayer Value="Caster" />
+    <Find value="1" />
+    <Value value="MonkSixthSense" />
   </CValidatorPlayerTalent>
   <CValidatorUnitCompareBehaviorCount id="MonkTargetHasDivinePalmCasterBehavior">
     <Value value="1" />

@@ -169,6 +169,12 @@
     <Flags index="UpdateTarget" value="1" />
     <Cost>
       <Vital index="Energy" value="45" />
+      <Charge>
+        <CountMax value="6" />
+        <CountStart value="6" />
+        <CountUse value="0" />
+        <HideCount value="1" />
+      </Charge>
       <Cooldown TimeUse="60" />
     </Cost>
     <CancelableArray index="Channel" value="1" />
@@ -197,6 +203,7 @@
     <Cost>
       <Charge CountMax="6" CountStart="6" CountUse="1" />
       <Cooldown TimeUse="1" />
+      <CostEventEffectArray index="ChargeDecrease" value="AnaHorusAttackDecrease" />
     </Cost>
     <Range value="500" />
     <Arc value="360" />
@@ -272,6 +279,35 @@
       <ProjectionDistanceScale value="500" />
       <MousePosPlayer Value="Caster" />
     </EndLocation>
+    <Scale value="1" />
+  </CAccumulatorDistance>
+  <CAccumulatorDistance id="AnaEyeOfHorusDistanceAccumulatorStructureTargetMidPoint" parent="BaseAccumulator">
+    <MinAccumulation value="-500" />
+    <MaxAccumulation value="0" />
+    <StartLocation Value="CasterPoint" />
+    <EndLocation>
+      <Effect value="AnaEyeOfHorusImpactEnemyStructureSet" />
+      <Value value="TargetUnitOrPoint" />
+      <ProjectionSourceEffect value="AnaEyeOfHorusImpactEnemyStructureSet" />
+      <ProjectionSourceValue value="TargetUnitOrPoint" />
+      <ProjectionTargetValue value="TargetUnitOrPoint" />
+      <UsesLineDash value="1" />
+    </EndLocation>
+    <ApplicationRule value="Add" />
+    <Scale value="-0.5" />
+  </CAccumulatorDistance>
+  <CAccumulatorDistance id="AnaEyeOfHorusDistanceAccumulatorStructureTarget" parent="BaseAccumulator">
+    <MaxAccumulation value="500" />
+    <StartLocation Value="CasterPoint" />
+    <EndLocation>
+      <Effect value="AnaEyeOfHorusImpactEnemyStructureSet" />
+      <Value value="TargetUnitOrPoint" />
+      <ProjectionSourceEffect value="AnaEyeOfHorusImpactEnemyStructureSet" />
+      <ProjectionSourceValue value="TargetUnitOrPoint" />
+      <ProjectionTargetValue value="TargetUnitOrPoint" />
+      <UsesLineDash value="1" />
+    </EndLocation>
+    <ApplicationRule value="Add" />
     <Scale value="1" />
   </CAccumulatorDistance>
   <CAccumulatorDistance id="AnaEyeOfHorusImpactSearchRevealAccumulator" parent="BaseAccumulator">
@@ -1135,7 +1171,12 @@
     <InfoIcon value="Assets\Textures\storm_ui_icon_ana_overwatch.dds" />
     <SortIndex value="70" />
     <Max value="65535" />
+    <DisplayDurationProxyBehavior value="AnaEyeOfHorusDeadeyeController" />
   </CBehaviorTokenCounter>
+  <CBehaviorBuff id="AnaEyeOfHorusDeadeyeController">
+    <Duration value="4" />
+    <FinalEffect value="AnaEyeOfHorusDeadeyeTokenCounterReset" />
+  </CBehaviorBuff>
   <CBehaviorBuff id="AnaHealingDartAddOnMagazineChargeBuff" parent="CarryBehaviorParent">
     <RemoveValidatorArray value="AnaHasAddOnMagazineTalent" />
     <MaxStackCount value="3" />
@@ -1202,6 +1243,18 @@
     <InfoFlags index="Hidden" value="1" />
     <Max value="100" />
   </CBehaviorTokenCounter>
+  <CBehaviorTokenCounter id="AnaBioticGrenadeEnemyHitCounter" parent="StormGenericToken">
+    <InfoFlags index="Hidden" value="1" />
+    <Max value="2" />
+  </CBehaviorTokenCounter>
+  <CBehaviorTokenCounter id="AnaBioticGrenadeAllyHitCounter" parent="StormGenericToken">
+    <InfoFlags index="Hidden" value="1" />
+    <Max value="2" />
+  </CBehaviorTokenCounter>
+  <CBehaviorTokenCounter id="AnaBioticGrenadeSelfHitCounter" parent="StormGenericToken">
+    <InfoFlags index="Hidden" value="1" />
+    <Max value="2" />
+  </CBehaviorTokenCounter>
   <CBehaviorTokenCounter id="AnaBioticGrenadeContactHealingCountTracker" parent="StormGenericToken">
     <InfoFlags index="Hidden" value="1" />
     <Max value="100" />
@@ -1264,11 +1317,11 @@
     <InfoFlags index="Hidden" value="0" />
     <RemoveValidatorArray value="NotMounted" />
     <RemoveValidatorArray value="NotMountedCaboose" />
-    <FinalEffect value="AnaAimDownSightsDeactivationSet" />
+    <DisableEffect value="AnaAimDownSightsDeactivationSet" />
     <Modification>
       <UnifiedMoveSpeedFactor value="-0.25" />
     </Modification>
-    <InitialEffect value="AnaAimDownSightsActivationSet" />
+    <EnableEffect value="AnaAimDownSightsActivationSet" />
   </CBehaviorBuff>
   <CBehaviorBuff id="AnaDebilitatingDart" parent="StormDamageReduction">
     <BehaviorCategories index="DebuffAbilityPower" value="1" />
@@ -1608,15 +1661,25 @@
     <WhichUnit Value="Caster" />
     <Behavior value="AnaEyeOfHorusDeadeyeTokenCounter" />
   </CEffectApplyBehavior>
+  <CEffectApplyBehavior id="AnaEyeOfHorusDeadeyeApplyControllerBehavior">
+    <WhichUnit Value="Caster" />
+    <Behavior value="AnaEyeOfHorusDeadeyeController" />
+  </CEffectApplyBehavior>
   <CEffectRemoveBehavior id="AnaEyeOfHorusDeadeyeTokenCounterRemoveBehavior">
     <WhichUnit Value="Caster" />
     <BehaviorLink value="AnaEyeOfHorusDeadeyeTokenCounter" />
   </CEffectRemoveBehavior>
+  <CEffectRemoveBehavior id="AnaEyeOfHorusDeadeyeRemoveControllerBehavior">
+    <WhichUnit Value="Caster" />
+    <BehaviorLink value="AnaEyeOfHorusDeadeyeController" />
+  </CEffectRemoveBehavior>
   <CEffectCreatePersistent id="AnaEyeOfHorusDeadeyeDelayPersistent">
     <Chance value="0" />
-    <PeriodCount value="1" />
+    <PeriodCount value="2" />
     <PeriodicEffectArray value="AnaEyeOfHorusDeadeyeAddToken" />
+    <PeriodicEffectArray value="AnaEyeOfHorusDeadeyeApplyControllerBehavior" />
     <PeriodicPeriodArray value="0.0625" />
+    <PeriodicPeriodArray value="0" />
     <ValidatorArray value="TargetIsHero" />
   </CEffectCreatePersistent>
   <CEffectModifyTokenCount id="AnaEyeOfHorusDeadeyeAddToken" parent="BaseEffectModifyTokenCount">
@@ -1625,10 +1688,26 @@
   </CEffectModifyTokenCount>
   <CEffectCreatePersistent id="AnaEyeOfHorusDeadeyeRemoveTokensDelayCreatePersistent">
     <Chance value="0" />
-    <PeriodCount value="1" />
+    <PeriodCount value="2" />
     <PeriodicEffectArray value="AnaEyeOfHorusDeadeyeTokenCounterRemoveBehavior" />
+    <PeriodicEffectArray value="AnaEyeOfHorusDeadeyeRemoveControllerBehavior" />
     <PeriodicPeriodArray value="0.125" />
+    <PeriodicPeriodArray value="0" />
   </CEffectCreatePersistent>
+  <CEffectModifyTokenCount id="AnaEyeOfHorusDeadeyeTokenCounterReset" parent="BaseEffectModifyTokenCount">
+    <TokenId value="AnaEyeOfHorusDeadeyeTokenCounter" />
+    <Operation value="Set" />
+    <Value value="0" />
+  </CEffectModifyTokenCount>
+  <CEffectModifyUnit id="AnaHorusAttackDecrease">
+    <ValidatorArray value="AnaHasEyeOfHorusDeadeyeTalent" />
+    <ImpactUnit Value="Caster" />
+    <Cost>
+      <Abil value="AnaEyeOfHorusActivate,Execute" />
+      <ChargeCountUse value="1" />
+      <ChargeTimeUse value="10" />
+    </Cost>
+  </CEffectModifyUnit>
   <CEffectRemoveBehavior id="AnaHealingDartSharpshooterMaxStacksCarryRemoveBehavior">
     <WhichUnit Value="Caster" />
     <BehaviorLink value="AnaHealingDartSharpshooterMaxStacksCarry" />
@@ -1952,6 +2031,8 @@
     <EffectArray value="AnaBioticGrenadeGrenadeCalibrationSet" />
     <EffectArray value="AnaBioticGrenadeTargetSearchAlly" />
     <EffectArray value="AnaBioticGrenadeTargetSearchEnemy" />
+    <EffectArray value="AnaBioticGrenadeCooldownRefundNoEnemyHit" />
+    <EffectArray value="AnaBioticGrenadeCooldownRefundOnlySelfHitMarker" />
   </CEffectSet>
   <CEffectEnumArea id="AnaBioticGrenadeTargetSearchDummy">
     <ImpactLocation Value="TargetPoint" />
@@ -1991,6 +2072,8 @@
   <CEffectSet id="AnaBioticGrenadeAllyImpactSet">
     <EffectArray value="AnaBioticGrenadeAllyImpactCreateHealer" />
     <EffectArray value="AnaBioticGrenadeAllyBuffApplyBehavior" />
+    <EffectArray value="AnaBioticGrenadeAddAllyHitCounter" />
+    <EffectArray value="AnaBioticGrenadeAddSelfHitCounter" />
   </CEffectSet>
   <CEffectCreateHealer id="AnaBioticGrenadeAllyImpactCreateHealer" parent="StormHealingSpell">
     <RechargeVitalRate value="152" />
@@ -2016,6 +2099,7 @@
   <CEffectSet id="AnaBioticGrenadeEnemyImpactSet">
     <EffectArray value="AnaBioticGrenadeEnemyImpactDamage" />
     <EffectArray value="AnaBioticGrenadeEnemyBuffAB" />
+    <EffectArray value="AnaBioticGrenadeAddEnemyHitCounter" />
     <EffectArray value="CameraShakeLightTauntingTotemSet" />
     <EffectArray value="ApplyAbilityImpactReveal" />
   </CEffectSet>
@@ -2174,6 +2258,35 @@
     <ValidatorArray value="TargetNotImmuneToFriendlyAbilities" />
     <TokenId value="AnaBioticGrenadeContactHealingCountTracker" />
   </CEffectModifyTokenCount>
+  <CEffectModifyTokenCount id="AnaBioticGrenadeAddEnemyHitCounter" parent="BaseEffectModifyTokenCount">
+    <ContextUnit Value="Source" />
+    <WhichUnit Value="Source" />
+    <TokenId value="AnaBioticGrenadeEnemyHitCounter" />
+  </CEffectModifyTokenCount>
+  <CEffectModifyTokenCount id="AnaBioticGrenadeAddAllyHitCounter" parent="BaseEffectModifyTokenCount">
+    <ValidatorArray value="IsNotSelf" />
+    <ContextUnit Value="Source" />
+    <WhichUnit Value="Source" />
+    <TokenId value="AnaBioticGrenadeAllyHitCounter" />
+  </CEffectModifyTokenCount>
+  <CEffectModifyTokenCount id="AnaBioticGrenadeAddSelfHitCounter" parent="BaseEffectModifyTokenCount">
+    <ValidatorArray value="TargetIsSelf" />
+    <ContextUnit Value="Source" />
+    <WhichUnit Value="Source" />
+    <TokenId value="AnaBioticGrenadeSelfHitCounter" />
+  </CEffectModifyTokenCount>
+  <CEffectModifyUnit id="AnaBioticGrenadeCooldownRefundNoEnemyHit">
+    <ValidatorArray value="AnaBioticGrenadeSourceLT1EnemyHitCounter" />
+    <ImpactUnit Value="Caster" />
+    <Cost Abil="AnaBioticGrenade,Execute" CooldownOperation="Add" CooldownTimeUse="-3" />
+  </CEffectModifyUnit>
+  <CEffectModifyUnit id="AnaBioticGrenadeCooldownRefundOnlySelfHitMarker">
+    <ValidatorArray value="AnaBioticGrenadeSourceLT1EnemyHitCounter" />
+    <ValidatorArray value="AnaBioticGrenadeSourceLT1AllyHitCounter" />
+    <ValidatorArray value="AnaBioticGrenadeSourceEQ1SelfHitCounter" />
+    <ImpactUnit Value="Caster" />
+    <Cost Abil="AnaBioticGrenade,Execute" CooldownOperation="Add" CooldownTimeUse="-2" />
+  </CEffectModifyUnit>
   <CEffectModifyTokenCount id="AnaShrikeVampiricRoundsAdd4Tokens" parent="BaseEffectModifyTokenCount">
     <ValidatorArray value="TargetIsHero" />
     <Chance value="0" />
@@ -2325,7 +2438,7 @@
   <CEffectModifyUnit id="AnaNanoBoostModifyUnitDummyMale" />
   <CEffectModifyUnit id="AnaNanoBoostModifyUnitDummyFemale" />
   <CEffectSet id="AnaAimDownSightsInitialSet">
-    <EffectArray value="RemoveMountBehaviorOnCaster" />
+    <EffectArray value="RemoveMountBehaviorsOnCasterSet" />
     <EffectArray value="AnaAimDownSightsApplyBehaviorDelayCP" />
     <EffectArray value="AnaAimDownSightsActivateSetCooldown" />
   </CEffectSet>
@@ -2491,8 +2604,8 @@
     <Behavior value="AnaDynamicOptics" />
   </CEffectApplyBehavior>
   <CEffectSet id="AnaRangedAttackLaunchMissileSet">
-    <EffectArray value="AnaRangedAttackLaunchMissile" />
     <EffectArray value="UniversalWeaponLaunchSet" />
+    <EffectArray value="AnaRangedAttackLaunchMissile" />
   </CEffectSet>
   <CEffectLaunchMissile id="AnaRangedAttackLaunchMissile">
     <ImpactEffect value="AnaRangedAttackImpactSet" />
@@ -2501,12 +2614,18 @@
     <SharedFlags index="ValidateWeapon" value="0" />
   </CEffectLaunchMissile>
   <CEffectSet id="AnaRangedAttackImpactSet">
+    <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="AnaWeaponPreImpactSet" />
+    <EffectArray value="AnaRangedAttackDamage" />
+    <EffectArray value="AnaWeaponPostImpactSet" />
+    <EffectArray value="UniversalWeaponPostImpactSet" />
+  </CEffectSet>
+  <CEffectSet id="AnaWeaponPreImpactSet">
     <EffectArray value="AnaShrikeVampiricRoundsAddToken" />
     <EffectArray value="AnaRangedAttackPoisonImpactSet" />
-    <EffectArray value="AnaRangedAttackDamage" />
+  </CEffectSet>
+  <CEffectSet id="AnaWeaponPostImpactSet">
     <EffectArray value="AnaDynamicOpticsApplyBehavior" />
-    <EffectArray value="UniversalWeaponImpact" />
-    <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
   <CEffectSet id="AnaRangedAttackPoisonImpactSet">
     <ValidatorArray value="TargetNotInvulnerable" />
@@ -2552,10 +2671,12 @@
     <EffectArray value="DismountDecloakCasterSet" />
   </CEffectSet>
   <CEffectModifyUnit id="AnaEyeOfHorusGrantCharges">
+    <ValidatorArray value="AnaDoesNotHaveEyeOfHorusDeadeyeTalent" />
     <ImpactUnit Value="Caster" />
     <Cost Abil="AnaEyeOfHorusAttack,Execute" ChargeCountUse="-6" CooldownOperation="Add" />
   </CEffectModifyUnit>
   <CEffectSet id="AnaEyeOfHorusInitialSet">
+    <ValidatorArray value="AnaEyeOfHorusAnyChargesLeft" />
     <EffectArray value="HeroGenericCasterIssueStopOrder" />
     <EffectArray value="AnaEyeOfHorusApplyBehavior" />
     <TargetLocationType value="Point" />
@@ -2616,9 +2737,12 @@
   </CEffectModifyUnit>
   <CEffectModifyUnit id="AnaEyeOfHorusSetCooldownFull">
     <ImpactUnit Value="Caster" />
-    <Cost Abil="AnaEyeOfHorusActivate,Execute" CooldownOperation="Set" CooldownTimeUse="60" />
+    <Cost Abil="AnaEyeOfHorusActivate,Execute" CooldownOperation="Set">
+      <Fraction Cooldown="1" />
+    </Cost>
   </CEffectModifyUnit>
   <CEffectModifyUnit id="AnaEyeOfHorusRemoveCharges">
+    <ValidatorArray value="AnaDoesNotHaveEyeOfHorusDeadeyeTalent" />
     <ImpactUnit Value="Caster" />
     <Cost Abil="AnaEyeOfHorusAttack,Execute" ChargeCountUse="-6" CooldownOperation="Add" />
   </CEffectModifyUnit>
@@ -2636,8 +2760,8 @@
     <EffectArray value="AnaEyeOfHorusAttackTriggerMarkerApplyBehavior" />
     <EffectArray value="AnaEyeOfHorusAttackSetFacing" />
     <EffectArray value="AnaEyeOfHorusHeroHitRemoveBehavior" />
-    <EffectArray value="AnaEyeOfHorusNoEnemyStructureDelay" />
     <EffectArray value="AnaEyeOfHorusEnemyStructureSearch" />
+    <EffectArray value="AnaEyeOfHorusNoEnemyStructureSet" />
     <TargetLocationType value="Point" />
   </CEffectSet>
   <CEffectModifyUnit id="AnaEyeOfHorusAttackSetDummyCooldown">
@@ -2690,13 +2814,8 @@
     </AreaArray>
     <SearchFlags index="DoActorSearch" value="1" />
   </CEffectEnumArea>
-  <CEffectCreatePersistent id="AnaEyeOfHorusNoEnemyStructureDelay">
-    <WhichLocation Value="CasterUnit" />
-    <PeriodCount value="1" />
-    <PeriodicEffectArray value="AnaEyeOfHorusNoEnemyStructureSet" />
-    <PeriodicPeriodArray value="0.0625" />
-  </CEffectCreatePersistent>
   <CEffectSet id="AnaEyeOfHorusNoEnemyStructureSet">
+    <ValidatorArray value="AnaEyeOfHorusCasterDoesNotHaveHeroHit" />
     <EffectArray value="AnaEyeOfHorusNoEnemyStructureHitDummy" />
     <EffectArray value="AnaEyeOfHorusNoEnemyStructureDamageSearch" />
   </CEffectSet>
@@ -2727,14 +2846,14 @@
     <RevealerParams Duration="0.75" ShapeExpansion="1">
       <RevealFlags index="Unfog" value="1" />
     </RevealerParams>
-    <SearchFilters value="-;Stasis" />
+    <SearchFilters value="Heroic;Self,Player,Missile,Item,Stasis,Dead" />
   </CEffectEnumArea>
   <CEffectSet id="AnaEyeOfHorusImpactEnemyStructureSet">
     <ValidatorArray value="IsEnemyStructure" />
-    <EffectArray value="AnaEyeOfHorusNoEnemyStructureDestroyCP" />
+    <EffectArray value="AnaEyeOfHorusUpdateHeroSearchCatalog" />
     <EffectArray value="AnaEyeOfHorusHeroHitApplyBehavior" />
     <EffectArray value="AnaEyeOfHorusImpactReveal" />
-    <EffectArray value="EyeOfHorusAttackDamageSearch" />
+    <EffectArray value="AnaEyeOfHorusAttackDamageSearchBetweenBuildingHit" />
     <EffectArray value="AnaEyeOfHorusImpactDummyDamage" />
     <EffectArray value="AnaEyeOfHorusMainTargetMarkerApplyBehavior" />
     <EffectArray value="AnaEyeOfHorusImpactSwitch" />
@@ -2749,10 +2868,18 @@
     <EffectArray value="AnaEyeOfHorusMainTargetMarkerApplyBehavior" />
     <EffectArray value="AnaEyeOfHorusImpactSwitch" />
   </CEffectSet>
-  <CEffectDestroyPersistent id="AnaEyeOfHorusNoEnemyStructureDestroyCP">
-    <Effect value="AnaEyeOfHorusNoEnemyStructureDelay" />
-    <Count value="1" />
-  </CEffectDestroyPersistent>
+  <CEffectModifyCatalogNumeric id="AnaEyeOfHorusUpdateHeroSearchCatalog">
+    <CatalogModifications Operation="Set" Reference="Effect,AnaEyeOfHorusAttackDamageSearchBetweenBuildingHit,AreaRelativeOffset.Y">
+      <Value value="0">
+        <AccumulatorArray value="AnaEyeOfHorusDistanceAccumulatorStructureTargetMidPoint" />
+      </Value>
+    </CatalogModifications>
+    <CatalogModifications Operation="Set" Reference="Effect,AnaEyeOfHorusAttackDamageSearchBetweenBuildingHit,AreaArray[0].RectangleHeight">
+      <Value value="0">
+        <AccumulatorArray value="AnaEyeOfHorusDistanceAccumulatorStructureTarget" />
+      </Value>
+    </CatalogModifications>
+  </CEffectModifyCatalogNumeric>
   <CEffectEnumArea id="AnaEyeOfHorusImpactReveal">
     <AreaArray>
       <Radius value="2" />
@@ -2810,27 +2937,19 @@
     <WhichUnit Value="Caster" />
     <Behavior value="AnaDebilitatingDartMissMarkerBuff" />
   </CEffectApplyBehavior>
-  <CEffectEnumArea id="EyeOfHorusAttackDamageSearch">
-    <ImpactLocation>
-      <Value value="CasterPoint" />
-      <ProjectionMultiplier value="1" />
-      <ProjectionSourceValue value="CasterPoint" />
-      <ProjectionTargetValue value="FocusPoint" />
-      <UsesLineDash value="1" />
-      <ProjectionDistanceScale value="500" />
-      <PostProjectionOffsetScale value="0.5" />
-    </ImpactLocation>
-    <AreaArray Effect="AnaEyeOfHorusImpactHeroDummySet">
+  <CEffectEnumArea id="AnaEyeOfHorusAttackDamageSearchBetweenBuildingHit">
+    <LaunchLocation Value="CasterPoint" />
+    <ImpactLocation Effect="AnaEyeOfHorusAttackInitialSet" Value="TargetPoint" />
+    <AreaArray Effect="AnaEyeOfHorusImpactHeroSet">
       <RectangleWidth value="1" />
-      <RectangleHeight value="0">
-        <AccumulatorArray value="AnaEyeOfHorusDistanceAccumulator" />
-      </RectangleHeight>
+      <RectangleHeight value="1" />
     </AreaArray>
     <RevealerParams Duration="0.75" ShapeExpansion="1">
       <RevealFlags index="Unfog" value="1" />
     </RevealerParams>
     <SearchFlags index="DoActorSearch" value="1" />
-    <SearchFilters value="-;Stasis" />
+    <SearchFlags index="CenterAtLaunch" value="1" />
+    <SearchFilters value="Heroic;Self,Player,Missile,Item,Stasis,Dead" />
   </CEffectEnumArea>
   <CEffectCreatePersistent id="AnaEyeOfHorusRadiusTargetHitDummyTriggerImpactCreatePersistent">
     <WhichLocation Value="CasterUnit" />
@@ -4514,6 +4633,25 @@
         <Field value="Chance" />
         <Value value="1.000000" />
       </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Entry value="AnaEyeOfHorusAttack" />
+        <Field value="Cost.Charge.TimeUse" />
+        <Value value="10.000000" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Entry value="AnaEyeOfHorusActivate" />
+        <Field value="Cost[0].Charge.HideCount" />
+        <FieldIsInteger value="1" />
+        <Value value="-1.000000" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Entry value="AnaEyeOfHorusActivate" />
+        <Field value="Cost.Cooldown.TimeUse" />
+        <Value value="-54.000000" />
+      </Modifications>
     </AbilityModificationArray>
   </CTalent>
   <CTalent id="AnaHealingDartSpeedSerum">
@@ -4899,6 +5037,7 @@
         <Catalog value="Accumulator" />
         <Entry value="AnaShrikeSelfHealPoisonTraitHealToken" />
         <Field value="Scale" />
+        <Value value="0.150000" />
       </Modifications>
     </AbilityModificationArray>
     <QuestData StackBehavior="AnaShrikeVampiricRoundsTokenCounter" />
@@ -5050,6 +5189,9 @@
     <Mover value="AnaHealingDartMissileMover" />
   </CUnit>
   <CUnit id="AnaBioticGrenadeMissile" parent="MISSILE_INVULNERABLE">
+    <BehaviorArray Link="AnaBioticGrenadeEnemyHitCounter" />
+    <BehaviorArray Link="AnaBioticGrenadeAllyHitCounter" />
+    <BehaviorArray Link="AnaBioticGrenadeSelfHitCounter" />
     <Sight value="2.5" />
   </CUnit>
   <CUnit id="AnaSleepDartMissile" parent="MISSILE_INVULNERABLE">
@@ -5097,6 +5239,10 @@
     <Find value="1" />
     <Value value="AnaEyeOfHorusDeadeye" />
   </CValidatorPlayerTalent>
+  <CValidatorPlayerTalent id="AnaDoesNotHaveEyeOfHorusDeadeyeTalent">
+    <WhichPlayer Value="Caster" />
+    <Value value="AnaEyeOfHorusDeadeye" />
+  </CValidatorPlayerTalent>
   <CValidatorCompareTrackedUnitsCount id="AnaHasGTE1ConcentratedDosesUnitsTracked">
     <Compare value="GE" />
     <Value value="1" />
@@ -5125,6 +5271,23 @@
     <Compare value="GE" />
     <Value value="2" />
     <TokenId value="AnaBioticGrenadeContactHealingCountTracker" />
+  </CValidatorUnitCompareTokenCount>
+  <CValidatorUnitCompareTokenCount id="AnaBioticGrenadeSourceLT1EnemyHitCounter">
+    <WhichUnit Value="Source" />
+    <Compare value="LT" />
+    <Value value="1" />
+    <TokenId value="AnaBioticGrenadeEnemyHitCounter" />
+  </CValidatorUnitCompareTokenCount>
+  <CValidatorUnitCompareTokenCount id="AnaBioticGrenadeSourceLT1AllyHitCounter">
+    <WhichUnit Value="Source" />
+    <Compare value="LT" />
+    <Value value="1" />
+    <TokenId value="AnaBioticGrenadeAllyHitCounter" />
+  </CValidatorUnitCompareTokenCount>
+  <CValidatorUnitCompareTokenCount id="AnaBioticGrenadeSourceEQ1SelfHitCounter">
+    <WhichUnit Value="Source" />
+    <Value value="1" />
+    <TokenId value="AnaBioticGrenadeSelfHitCounter" />
   </CValidatorUnitCompareTokenCount>
   <CValidatorPlayerTalent id="AnaHasShrikeArmoredStanceTalent">
     <WhichPlayer Value="Caster" />
@@ -5197,6 +5360,11 @@
     <WhichUnit Value="Caster" />
     <Behavior value="AnaEyeOfHorusHeroHit" />
   </CValidatorUnitCompareBehaviorCount>
+  <CValidatorUnitHasBehavior id="AnaEyeOfHorusCasterDoesNotHaveHeroHit">
+    <WhichUnit Value="Caster" />
+    <Behavior value="AnaEyeOfHorusHeroHit" />
+    <Negate value="1" />
+  </CValidatorUnitHasBehavior>
   <CValidatorUnitCompareBehaviorCount id="AnaSourceHasSleepDartAimDownSightsDummyBehavior">
     <WhichUnit Value="Source" />
     <Compare value="GT" />

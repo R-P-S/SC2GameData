@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
+  <const id="$SgtHammerNapalmStrikeRange" value="13" />
+  <const id="$SgtHammerAdvancedLavaStrikeRangeModifier" value="0.75" />
+  <const id="$SgtHammerAdvancedLavaStrikeRangeIncrease" value="*($SgtHammerNapalmStrikeRange $SgtHammerAdvancedLavaStrikeRangeModifier)" evaluateAsExpression="1" />
   <CAbilEffectInstant id="SgtHammerSiegeModeMaelstromRounds">
     <PrepEffect value="DismountDecloakCasterSet" />
     <Effect value="SgtHammerSiegeModeMaelstromRoundsApplyCasterBehavior" />
@@ -89,13 +92,14 @@
   </CAbilEffectInstant>
   <CAbilEffectTarget id="SgtHammerNapalmStrike">
     <Effect value="NapalmStrikeLaunchSet" />
+    <Flags index="RangeUseCasterRadius" value="0" />
     <Flags index="RequireTargetVision" value="0" />
     <Flags index="TransientPreferred" value="1" />
     <Cost>
       <Vital index="Energy" value="35" />
       <Cooldown TimeUse="6" />
     </Cost>
-    <Range value="12" />
+    <Range value="$SgtHammerNapalmStrikeRange" />
     <Arc value="360" />
     <UninterruptibleArray index="Cast" value="1" />
     <UninterruptibleArray index="Channel" value="1" />
@@ -108,13 +112,14 @@
     <ParentAbil value="SgtHammerNapalmStrike" />
     <PrepEffect value="DismountDecloakCasterSet" />
     <Effect value="NapalmStrikeLaunchSet" />
+    <Flags index="RangeUseCasterRadius" value="0" />
     <Flags index="RequireTargetVision" value="0" />
     <Flags index="TransientPreferred" value="1" />
     <Cost>
       <Vital index="Energy" value="35" />
       <Cooldown Link="Abil/SgtHammerNapalmStrike" TimeUse="6" />
     </Cost>
-    <Range value="12" />
+    <Range value="$SgtHammerNapalmStrikeRange" />
     <Arc value="360" />
     <UninterruptibleArray index="Cast" value="1" />
     <UninterruptibleArray index="Channel" value="1" />
@@ -850,10 +855,10 @@
   <CActorRange id="SgtHammerNapalmStrikeRange" parent="StormRangeAbilPlusSplat" abil="SgtHammerNapalmStrike" />
   <CActorRange id="SgtHammerNapalmStrikeSiegeRange" parent="StormRangeAbilPlusSplat" abil="SgtHammerNapalmStrikeSiege" />
   <CActorSplat id="SgtHammerNapalmStrikeRangeSplat" parent="StormRangeSplat">
-    <Scale value="13.000000" />
+    <Scale value="$SgtHammerNapalmStrikeRange" />
   </CActorSplat>
   <CActorSplat id="SgtHammerNapalmStrikeSiegeRangeSplat" parent="StormRangeSplat">
-    <Scale value="13.000000" />
+    <Scale value="$SgtHammerNapalmStrikeRange" />
   </CActorSplat>
   <CActorSplat id="SgtHammerNapalmStrikeCursorSplat" parent="StormGuideVisualCircle" abil="SgtHammerNapalmStrike">
     <Model value="SgtHammerNapalmStrikeCursorSplat" />
@@ -956,7 +961,7 @@
     <StatusBarFlags index="Custom" value="0" />
   </CActorUnit>
   <CActorMissile id="SgtHammerAttackMissile" parent="StormMissileWithDeath" unitName="SgtHammerMissile" />
-  <CActorAction id="SgtHammerAttack" parent="GenericAttackStorm" effectImpact="SgtHammerTankAttackDamage" effectLaunch="SgtHammerTankAttackLaunchMissile">
+  <CActorAction id="SgtHammerAttack" parent="RangedHeroAttackMissile" effectImpact="SgtHammerTankAttackDamage" effectLaunch="SgtHammerTankAttackLaunchMissile">
     <LaunchAttachQuery Methods="AMFilterWeapon00FullMatch" />
     <LaunchAssets Sound="Tank_Attack_Launch" />
     <ImpactSiteOps Ops="SOpAttachHarness SOpAttachVolumeStandard SOpForwardCasterPointInverted" />
@@ -999,7 +1004,6 @@
     <Face value="SgtHammerSpiderMinesPulseDetonationCoreTalent" />
     <Duration value="3" />
     <Period value="1.5" />
-    <InitialEffect value="SgtHammerSpiderMinesImpactSearchArea" />
     <PeriodicEffect value="SgtHammerSpiderMinesImpactSearchArea" />
     <FinalEffect value="SgtHammerSpiderMinesSuicideRemove" />
     <Modification PushPriority="5000" AlliedPushPriority="5000">
@@ -1038,10 +1042,11 @@
     <Duration value="2" />
     <DisableValidatorArray value="TargetHasSiegeMode" />
   </CBehaviorBuff>
-  <CBehaviorBuff id="SgtHammerSpiderMinesShrapnelMinesArmorDebuff">
+  <CBehaviorBuff id="SgtHammerSpiderMinesShrapnelMinesArmorDebuff" parent="StormArmor">
     <BehaviorCategories index="DebuffVulnerable" value="1" />
-    <MaxStackCount value="65535" />
+    <MaxStackCount value="5" />
     <Duration value="4" />
+    <BuffFlags index="RefreshStack" value="1" />
     <ArmorModification StackCount="5">
       <AllArmorBonus value="-10" />
     </ArmorModification>
@@ -1058,12 +1063,25 @@
       <AdditiveAttackSpeedFactor value="0.3" />
     </Modification>
   </CBehaviorBuff>
-  <CBehaviorBuff id="ConcussiveBlastKnockbackEntrenched" parent="PushPullParent">
-    <Duration value="0.375" />
+  <CBehaviorBuff id="SgtHammerConcussiveBlastKnockback" parent="PushPullParent">
+    <Duration value="0.3125" />
+    <Period value="0.0625" />
     <Modification>
-      <MoveSpeedMaximum value="24.5" />
-      <MoveSpeedMinimum value="24.5" />
+      <MoveSpeedMaximum value="12.6484" />
+      <MoveSpeedMinimum value="12.6484" />
     </Modification>
+    <InitialEffect value="ConcussiveBlastKnockbackApplyForce" />
+    <PeriodicEffect value="ConcussiveBlastKnockbackApplyForce" />
+  </CBehaviorBuff>
+  <CBehaviorBuff id="SgtHammerConcussiveBlastKnockbackEntrenched" parent="PushPullParent">
+    <Duration value="0.375" />
+    <Period value="0.0625" />
+    <Modification>
+      <MoveSpeedMaximum value="19.6992" />
+      <MoveSpeedMinimum value="19.6992" />
+    </Modification>
+    <InitialEffect value="ConcussiveBlastKnockbackApplyForce" />
+    <PeriodicEffect value="ConcussiveBlastKnockbackApplyForce" />
   </CBehaviorBuff>
   <CBehaviorBuff id="SgtHammerSiegeModeRegenerativeBioSteel">
     <Face value="GenericVigorousAssaultTalent" />
@@ -1182,13 +1200,6 @@
     <Modification>
       <UnifiedMoveSpeedFactor value="-0.25" />
     </Modification>
-  </CBehaviorBuff>
-  <CBehaviorBuff id="ConcussiveBlastKnockback" parent="PushPullParent">
-    <Modification>
-      <MoveSpeedMaximum value="14" />
-      <MoveSpeedMinimum value="14" />
-    </Modification>
-    <Duration value="0.375" />
   </CBehaviorBuff>
   <CBehaviorBuff id="SgtHammerSpiderMinesDisableScanBehavior">
     <Face value="SgtHammerSpiderMines" />
@@ -1384,6 +1395,12 @@
     <Icon value="Assets\Textures\storm_ui_icon_sgthammer_mount.dds" />
     <TooltipAppender Validator="HasSgtHammerHyperCoolingEngines" Face="SgtHammerThrustersHyperCoolingEnginesTalent" />
   </CButton>
+  <CButton id="SgtHammerThrustersShop" parent="StormButtonParent">
+    <Icon value="Assets\Textures\storm_ui_icon_sgthammer_hypercoolingengines.dds" />
+    <SimpleDisplayText value="Button/SimpleDisplayText/SgtHammerThrusters" />
+    <Tooltip value="Button/Tooltip/SgtHammerThrusters" />
+    <TooltipAppender Validator="HasSgtHammerHyperCoolingEngines" Face="SgtHammerThrustersHyperCoolingEnginesTalent" />
+  </CButton>
   <CButton id="SgtHammerConcussiveBlastBarricadeTalent" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_sgthammer_concussiveblast.dds" />
   </CButton>
@@ -1447,24 +1464,41 @@
     <Variations Model="SgtHammerPortrait" Actor="SgtHammerPortrait" />
     <Unit value="HeroSgtHammer" />
   </CCharacter>
+  <CEffectSet id="SgtHammerSpiderMinesPulseDetonationCoreTalentApplySet">
+    <ValidatorArray value="HasSgtHammerPulseDetonationCore" />
+    <ValidatorArray value="TargetIsHero" />
+    <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
+    <EffectArray value="SgtHammerSpiderMinesPulseDetonationCoreUpdateCatalog" />
+    <EffectArray value="SgtHammerSpiderMinesPulseDetonationCoreModifyCooldown" />
+  </CEffectSet>
+  <CEffectSet id="SgtHammerSpiderMinesPulseDetonationCoreTalentApplySetSiegeMode" parent="SgtHammerSpiderMinesPulseDetonationCoreTalentApplySet">
+    <EffectArray index="1" value="SgtHammerSpiderMinesPulseDetonationCoreSiegeModeModifyCooldown" />
+  </CEffectSet>
+  <CEffectModifyCatalogNumeric id="SgtHammerSpiderMinesPulseDetonationCoreUpdateCatalog">
+    <CatalogModifications Reference="Effect,SgtHammerSpiderMinesPulseDetonationCoreManaRestoration,RechargeVitalRate">
+      <Value value="5" />
+    </CatalogModifications>
+    <CatalogModifications Operation="Set" Reference="Effect,SgtHammerSpiderMinesPulseDetonationCoreTalentProcSet,Chance">
+      <Value value="1" />
+    </CatalogModifications>
+  </CEffectModifyCatalogNumeric>
+  <CEffectSet id="SgtHammerSpiderMinesPulseDetonationCoreTalentProcSet">
+    <Chance value="0" />
+    <EffectArray value="SgtHammerSpiderMinesPulseDetonationCoreManaRestoration" />
+    <EffectArray value="SgtHammerSpiderMinesPulseDetonationCoreResetCatalog" />
+  </CEffectSet>
   <CEffectCreateHealer id="SgtHammerSpiderMinesPulseDetonationCoreManaRestoration" parent="StormManaRestore">
-    <ValidatorArray value="HasSgtHammerPulseDetonationCore" />
-    <ValidatorArray value="TargetIsHero" />
-    <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
     <ImpactUnit Value="Caster" />
-    <RechargeVitalRate value="5" />
   </CEffectCreateHealer>
+  <CEffectModifyCatalogNumeric id="SgtHammerSpiderMinesPulseDetonationCoreResetCatalog">
+    <CatalogModifications Operation="Set" Reference="Effect,SgtHammerSpiderMinesPulseDetonationCoreManaRestoration,RechargeVitalRate" />
+    <CatalogModifications Operation="Set" Reference="Effect,SgtHammerSpiderMinesPulseDetonationCoreTalentProcSet,Chance" />
+  </CEffectModifyCatalogNumeric>
   <CEffectModifyUnit id="SgtHammerSpiderMinesPulseDetonationCoreModifyCooldown">
-    <ValidatorArray value="HasSgtHammerPulseDetonationCore" />
-    <ValidatorArray value="TargetIsHero" />
-    <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
     <ImpactUnit Value="Caster" />
     <Cost Abil="SgtHammerSpiderMines,Execute" CooldownOperation="Add" CooldownTimeUse="-1.5" />
   </CEffectModifyUnit>
   <CEffectModifyUnit id="SgtHammerSpiderMinesPulseDetonationCoreSiegeModeModifyCooldown">
-    <ValidatorArray value="HasSgtHammerPulseDetonationCore" />
-    <ValidatorArray value="TargetIsHero" />
-    <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
     <ImpactUnit Value="Caster" />
     <Cost Abil="SgtHammerSpiderMines,Execute" CooldownOperation="Add" CooldownTimeUse="-2.5" />
   </CEffectModifyUnit>
@@ -1492,6 +1526,7 @@
     </Cost>
   </CEffectModifyPlayer>
   <CEffectSet id="SgtHammerSpiderMinesPulseDetonationCoreSet">
+    <EffectArray value="SgtHammerSpiderMinesImpactSearchArea" />
     <EffectArray value="SgtHammerSpiderMinesPulseDetonationCoreApplyBehavior" />
     <EffectArray value="SgtHammerSpiderMinesApplyDisableScanBehavior" />
   </CEffectSet>
@@ -1506,7 +1541,7 @@
   </CEffectSwitch>
   <CEffectModifyUnit id="SgtHammerSpiderMinesWeaponDummyImpact" />
   <CEffectApplyBehavior id="SgtHammerSiegeModeUltraCapacitorsApplyBehavior">
-    <ValidatorArray index="0" value="TargetIsHero" />
+    <ValidatorArray index="0" value="TargetIsHeroOrStructure" />
     <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
     <Chance value="0" />
     <WhichUnit Value="Caster" />
@@ -1555,16 +1590,8 @@
     <ImpactUnit Value="Caster" />
     <Cost Abil="SgtHammerThrusters,Execute" CooldownOperation="Add" CooldownTimeUse="-5" />
     <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
-    <ValidatorArray value="TargetIsHero" />
+    <ValidatorArray value="TargetIsHeroOrStructure" />
   </CEffectModifyUnit>
-  <CEffectApplyBehavior id="ConcussiveBlastKnockbackApplyBehaviorEntrenched">
-    <ValidatorArray index="0" value="TargetNotUnstoppable" />
-    <Behavior value="ConcussiveBlastKnockbackEntrenched" />
-  </CEffectApplyBehavior>
-  <CEffectSwitch id="SgtHammerConcussiveBlastKnockbackApplyBehaviorSwitch">
-    <CaseArray Validator="SgtHammerHasSgtHammerEntrenchedANDCasterHasSiegeMode" Effect="ConcussiveBlastKnockbackApplyBehaviorEntrenched" />
-    <CaseDefault value="ConcussiveBlastKnockbackApplyBehavior" />
-  </CEffectSwitch>
   <CEffectApplyBehavior id="SgtHammerSiegeModeMaelstromRoundsApplyTargetBehavior">
     <ValidatorArray index="0" value="IsTower" />
     <Chance value="0" />
@@ -1667,11 +1694,17 @@
   </CEffectSwitch>
   <CEffectSet id="SgtHammerTankAttackImpactSet">
     <EffectArray value="UniversalWeaponImpact" />
-    <EffectArray value="SgtHammerGiantKillerDamage" />
+    <EffectArray value="SgtHammerTankWeaponPreImpactSet" />
     <EffectArray value="SgtHammerTankAttackDamage" />
-    <EffectArray value="SgtHammerSpiderMinesPulseDetonationCoreModifyCooldown" />
-    <EffectArray value="SgtHammerSpiderMinesPulseDetonationCoreManaRestoration" />
+    <EffectArray value="SgtHammerTankWeaponPostImpactSet" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
+  </CEffectSet>
+  <CEffectSet id="SgtHammerTankWeaponPreImpactSet">
+    <EffectArray value="SgtHammerSpiderMinesPulseDetonationCoreTalentApplySet" />
+    <EffectArray value="SgtHammerGiantKillerDamage" />
+  </CEffectSet>
+  <CEffectSet id="SgtHammerTankWeaponPostImpactSet">
+    <EffectArray value="SgtHammerSpiderMinesPulseDetonationCoreTalentProcSet" />
   </CEffectSet>
   <CEffectLaunchMissile id="BluntForceGunLaunchMissileOrbital">
     <ImpactLocation Value="TargetPoint" />
@@ -1708,8 +1741,8 @@
     <EffectArray value="SiegeModeDummyBehavior" />
   </CEffectSet>
   <CEffectSet id="SgtHammerTankWeaponInitialSet">
-    <EffectArray value="SgtHammerTankAttackLaunchMissile" />
     <EffectArray value="UniversalWeaponLaunchSet" />
+    <EffectArray value="SgtHammerTankAttackLaunchMissile" />
   </CEffectSet>
   <CEffectRemoveBehavior id="SiegeModeFortifiedPositionRemoveBehavior">
     <WhichUnit Value="Caster" />
@@ -1886,27 +1919,35 @@
   <CEffectSet id="SiegeWeaponImpactSet">
     <EffectArray value="UniversalWeaponLaunchSet" />
     <EffectArray value="UniversalWeaponImpact" />
-    <EffectArray value="SgtHammerGiantKillerDamage" />
+    <EffectArray value="SgtHammerSiegeWeaponPreImpactSet" />
     <EffectArray value="SiegeWeaponDamageSet" />
+    <EffectArray value="SgtHammerSiegeWeaponPostImpactSet" />
     <EffectArray value="SiegeWeaponDummyPersistent" />
+    <EffectArray value="SiegeWeaponSplashSearch" />
     <EffectArray value="CameraShakeLightTauntingTotemSet" />
-    <EffectArray value="SgtHammerSiegeModeMaelstromRoundsModifyPlayer" />
-    <EffectArray value="SgtHammerSiegeModeUltraCapacitorsApplyBehavior" />
-    <EffectArray value="SgtHammerSpiderMinesPulseDetonationCoreSiegeModeModifyCooldown" />
-    <EffectArray value="SgtHammerSpiderMinesPulseDetonationCoreManaRestoration" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
+  </CEffectSet>
+  <CEffectSet id="SgtHammerSiegeWeaponPreImpactSet">
+    <EffectArray value="SgtHammerSpiderMinesPulseDetonationCoreTalentApplySetSiegeMode" />
+    <EffectArray value="SgtHammerSiegeModeMaelstromRoundsModifyPlayer" />
+    <EffectArray value="SgtHammerThrustersHyperCoolingEnginesModifyUnit" />
+    <EffectArray value="SgtHammerSiegeModeUltraCapacitorsApplyBehavior" />
+    <EffectArray value="SgtHammerGiantKillerDamage" />
+  </CEffectSet>
+  <CEffectSet id="SgtHammerSiegeWeaponPostImpactSet">
+    <EffectArray value="SgtHammerSpiderMinesPulseDetonationCoreTalentProcSet" />
   </CEffectSet>
   <CEffectDamage id="SiegeWeaponBaseDamage" parent="StormWeapon">
     <ImpactLocation Value="TargetUnit" />
     <Amount value="140" />
     <MultiplicativeModifierArray index="SiegeBonus" Modifier="0.2" />
-    <MultiplicativeModifierArray index="MaelstromRounds" Validator="SgtHammerHasMaelstromRoundsCarryBehavior" Modifier="0.3" Crit="1" />
+    <MultiplicativeModifierArray index="MaelstromRounds" Validator="SgtHammerHasMaelstromRoundsCarryBehavior" Modifier="0.4" Crit="1" />
     <MultiplicativeModifierArray index="MechanicalKnowhow" Validator="SgtHammerHasMechanicalKnowhowDamageCarryBehavior" Modifier="0.3" Crit="1" />
     <MultiplicativeModifierArray index="Ambush" Validator="HasSgtHammerAmbushCloakORHasSgtHammerDamageBonusSlop" Modifier="1.25" Crit="1" />
   </CEffectDamage>
   <CEffectDamage id="SiegeWeaponSplashDamage" parent="StormWeapon">
     <MultiplicativeModifierArray index="SiegeMode" Modifier="0.2" />
-    <MultiplicativeModifierArray index="MaelstromRounds" Validator="SgtHammerHasMaelstromRoundsCarryBehavior" Modifier="0.3" Crit="1" />
+    <MultiplicativeModifierArray index="MaelstromRounds" Validator="SgtHammerHasMaelstromRoundsCarryBehavior" Modifier="0.4" Crit="1" />
     <MultiplicativeModifierArray index="MechanicalKnowhow" Validator="SgtHammerHasMechanicalKnowhowDamageCarryBehavior" Modifier="0.3" Crit="1" />
     <MultiplicativeModifierArray index="Ambush" Validator="HasSgtHammerAmbushCloakORHasSgtHammerDamageBonusSlop" Modifier="1.25" Crit="1" />
     <Amount value="140" />
@@ -1917,16 +1958,14 @@
   </CEffectSwitch>
   <CEffectDamage id="SgtHammerTankAttackDamage" parent="StormWeapon">
     <Amount value="140" />
-    <MultiplicativeModifierArray index="MaelstromRounds" Validator="SgtHammerHasMaelstromRoundsCarryBehavior" Modifier="0.3" Crit="1" />
+    <MultiplicativeModifierArray index="MaelstromRounds" Validator="SgtHammerHasMaelstromRoundsCarryBehavior" Modifier="0.4" Crit="1" />
     <MultiplicativeModifierArray index="MechanicalKnowhow" Validator="SgtHammerHasMechanicalKnowhowDamageCarryBehavior" Modifier="0.3" Crit="1" />
   </CEffectDamage>
   <CEffectSet id="SiegeWeaponDamageSet">
     <EffectArray value="SiegeWeaponBaseDamage" />
-    <EffectArray value="SiegeWeaponSplashSearch" />
-    <EffectArray value="SgtHammerThrustersHyperCoolingEnginesModifyUnit" />
   </CEffectSet>
   <CEffectEnumArea id="SiegeWeaponSplashSearch">
-    <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
+    <ValidatorArray value="TargetNotEvading" />
     <ExcludeArray Effect="SiegeWeaponImpactSet" Value="Target" />
     <SearchFilters value="-;Self,Player,Ally,Neutral,ImmuneToAOE,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
     <AreaArray Effect="SiegeWeaponSplashDamageSet">
@@ -1937,15 +1976,17 @@
     </RevealerParams>
   </CEffectEnumArea>
   <CEffectSet id="SiegeWeaponSplashDamageSet">
+    <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="SgtHammerSiegeModeSplashPreImpactSet" />
     <EffectArray value="SiegeWeaponSplashDamage" />
-    <EffectArray value="SgtHammerSiegeModeAdvancedArtilleryAddToken" />
-    <EffectArray value="SgtHammerSiegeModeMaelstromRoundsModifyPlayer" />
-    <EffectArray value="SgtHammerThrustersHyperCoolingEnginesModifyUnit" />
-    <EffectArray value="SgtHammerSiegeModeUltraCapacitorsApplyBehavior" />
-    <EffectArray value="SgtHammerSpiderMinesPulseDetonationCoreSiegeModeModifyCooldown" />
-    <EffectArray value="SgtHammerSpiderMinesPulseDetonationCoreManaRestoration" />
+    <EffectArray value="SgtHammerSiegeModeSplashPostImpactSet" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
+  <CEffectSet id="SgtHammerSiegeModeSplashPreImpactSet">
+    <EffectArray value="SgtHammerSpiderMinesPulseDetonationCoreTalentApplySetSiegeMode" />
+    <EffectArray value="SgtHammerSiegeModeMaelstromRoundsModifyPlayer" />
+  </CEffectSet>
+  <CEffectSet id="SgtHammerSiegeModeSplashPostImpactSet" />
   <CEffectLaunchMissile id="SgtHammerTankAttackLaunchMissile">
     <ImpactEffect value="SgtHammerTankAttackImpactSet" />
     <SharedFlags index="ValidateWeapon" value="0" />
@@ -1980,32 +2021,39 @@
     <Behavior value="ConcussiveBlastKnockback" />
     <ValidatorArray index="0" value="TargetNotUnstoppable" />
   </CEffectApplyBehavior>
+  <CEffectSet id="SgtHammerConcussiveBlastKnockbackSet">
+    <ValidatorArray value="TargetNotUnstoppable" />
+    <EffectArray value="HeroRemovePushPullDebuffs" />
+    <EffectArray value="HeroRemovePreventsMovement" />
+    <EffectArray value="SgtHammerConcussiveBlastKnockbackApplyBehaviorSwitch" />
+  </CEffectSet>
+  <CEffectSwitch id="SgtHammerConcussiveBlastKnockbackApplyBehaviorSwitch">
+    <CaseArray Validator="SgtHammerHasSgtHammerEntrenchedANDCasterHasSiegeMode" Effect="SgtHammerConcussiveBlastKnockbackApplyBehaviorEntrenched" />
+    <CaseDefault value="SgtHammerConcussiveBlastKnockbackApplyBehavior" />
+  </CEffectSwitch>
+  <CEffectApplyBehavior id="SgtHammerConcussiveBlastKnockbackApplyBehavior">
+    <Behavior value="SgtHammerConcussiveBlastKnockback" />
+  </CEffectApplyBehavior>
+  <CEffectApplyBehavior id="SgtHammerConcussiveBlastKnockbackApplyBehaviorEntrenched">
+    <Behavior value="SgtHammerConcussiveBlastKnockbackEntrenched" />
+  </CEffectApplyBehavior>
   <CEffectApplyForce id="ConcussiveBlastKnockbackApplyForce">
-    <WhichLocation Effect="ConcussiveBlastKnockbackPersistent" Value="CasterPoint" />
-    <WhichUnit Effect="ConcussiveBlastKnockbackPersistent" />
+    <WhichLocation>
+      <Effect value="ConcussiveBlastInitialSet" />
+      <Value value="OriginPoint" />
+      <ProjectionAngle value="180" />
+      <ProjectionMultiplier value="1" />
+      <ProjectionSourceEffect value="ConcussiveBlastInitialSet" />
+      <ProjectionSourceValue value="OriginPoint" />
+      <ProjectionTargetEffect value="ConcussiveBlastSearch" />
+      <ProjectionTargetValue value="TargetPoint" />
+      <UsesLineDash value="1" />
+      <LineDashType value="AllowedInUnpathable" />
+      <ProjectionDistanceScale value="2" />
+    </WhichLocation>
+    <WhichUnit Effect="ConcussiveBlastSet" />
     <Amount value="10" />
   </CEffectApplyForce>
-  <CEffectCreatePersistent id="ConcussiveBlastKnockbackPersistent">
-    <WhichLocation Value="TargetUnit" />
-    <InitialEffect value="ConcussiveBlastKnockbackSet" />
-    <FinalEffect value="ConcussiveBlastKnockbackRemoveBehavior" />
-    <PeriodCount value="6" />
-    <PeriodicValidator value="SgtHammerHasConcussiveBlastKnockbackORHasConcussiveBlastEntrenchedKnockback" />
-    <PeriodicEffectArray value="ConcussiveBlastKnockbackApplyForce" />
-    <PeriodicPeriodArray value="0.0625" />
-    <ValidatorArray value="TargetNotUnstoppable" />
-  </CEffectCreatePersistent>
-  <CEffectSet id="ConcussiveBlastKnockbackSet">
-    <EffectArray value="HeroRemovePushPullDebuffs" />
-    <EffectArray value="SgtHammerConcussiveBlastKnockbackApplyBehaviorSwitch" />
-    <EffectArray value="ConcussiveBlastKnockbackIssueStopOrder" />
-  </CEffectSet>
-  <CEffectIssueOrder id="ConcussiveBlastKnockbackIssueStopOrder">
-    <Abil value="stop" />
-  </CEffectIssueOrder>
-  <CEffectRemoveBehavior id="ConcussiveBlastKnockbackRemoveBehavior">
-    <BehaviorLink value="ConcussiveBlastKnockback" />
-  </CEffectRemoveBehavior>
   <CEffectSet id="ConcussiveBlastScrapCancelDummySet" />
   <CEffectApplyBehavior id="SgtHammerSpiderMinesApplySlowBehavior" parent="StormSlowApply">
     <Behavior value="SgtHammerSpiderMinesSlowDebuff" />
@@ -2054,7 +2102,7 @@
   <CEffectSet id="ConcussiveBlastSet">
     <EffectArray value="ConcussiveBlastDamage" />
     <EffectArray value="ConcussiveBlastDamageLethalBlast" />
-    <EffectArray value="ConcussiveBlastKnockbackPersistent" />
+    <EffectArray value="SgtHammerConcussiveBlastKnockbackSet" />
     <EffectArray value="CameraShakeLightTauntingTotemSet" />
     <EffectArray value="ApplyAbilityImpactReveal" />
   </CEffectSet>
@@ -2097,7 +2145,7 @@
     <PeriodicPeriodArray value="0" />
   </CEffectCreatePersistent>
   <CEffectEnumArea id="BluntForceGunMissileSearch">
-    <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Structure,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
+    <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
     <AreaArray Effect="BluntForceGunDamage">
       <RectangleWidth value="4" />
       <RectangleHeight value="4" />
@@ -2108,6 +2156,7 @@
     <Amount value="500" />
     <Visibility value="Hidden" />
     <ValidatorArray value="noMarkers" />
+    <MultiplicativeModifierArray index="Structure" Validator="IsStructureTarget" Modifier="-0.5" />
   </CEffectDamage>
   <CEffectCreatePersistent id="NapalmStrikeCreatePersistent">
     <PeriodCount value="4" />
@@ -2124,30 +2173,21 @@
     <Visibility value="Hidden" />
   </CEffectDamage>
   <CEffectSet id="NapalmStrikeImpactSet">
-    <EffectArray value="NapalmStrikeInitialDamage" />
-    <EffectArray value="NapalmStrikeInitialDamageAdvancedLavaStrike" />
+    <EffectArray value="SgtHammerNapalmStrikeInitialSearch" />
     <EffectArray value="NapalmStrikeCreatePersistent" />
     <EffectArray value="CameraShakeLightTauntingTotemSet" />
     <TargetLocationType value="Point" />
   </CEffectSet>
+  <CEffectEnumArea id="SgtHammerNapalmStrikeInitialSearch">
+    <ImpactLocation Value="TargetPoint" />
+    <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
+    <AreaArray Effect="NapalmStrikeInitialDamage">
+      <Radius value="2.5" />
+    </AreaArray>
+  </CEffectEnumArea>
   <CEffectDamage id="NapalmStrikeInitialDamage" parent="StormSpell">
-    <ImpactLocation Value="TargetPoint" />
     <Amount value="164" />
-    <AreaArray Fraction="1">
-      <Radius value="2.5" />
-    </AreaArray>
-    <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
-    <ValidatorArray index="0" removed="1" />
-  </CEffectDamage>
-  <CEffectDamage id="NapalmStrikeInitialDamageAdvancedLavaStrike" parent="StormSpell">
-    <Chance value="0" />
-    <ImpactLocation Value="TargetPoint" />
-    <Amount value="246" />
-    <AreaArray Fraction="1">
-      <Radius value="2.5" />
-    </AreaArray>
-    <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
-    <ValidatorArray index="0" removed="1" />
+    <MultiplicativeModifierArray index="AdvancedLavaStrike" Validator="HasSgtHammerLavaStrike" Modifier="0.65" />
   </CEffectDamage>
   <CEffectLaunchMissile id="NapalmStrikeLaunchMissile">
     <ImpactLocation Value="TargetPoint" />
@@ -2276,6 +2316,7 @@
     <Role value="Specialist" />
     <RolesMultiClass value="Specialist" />
     <Flags index="UsesMount" value="0" />
+    <Flags index="GoodForModeB" value="1" />
     <SelectScreenButtonImage value="Assets\Textures\storm_ui_ingame_heroselect_btn_sgthammer.dds" />
     <UniverseIcon value="Assets\Textures\UI_Glues_Store_GameIcon_SC2.dds" />
     <VariationIcon value="Assets\Textures\UI_Glues_Swatch_Red.dds" />
@@ -2474,14 +2515,6 @@
         <AffectedByAbilityPower value="1" />
         <AffectedByOverdrive value="1" />
       </Modifications>
-      <Modifications>
-        <Catalog value="Effect" />
-        <Entry value="NapalmStrikeInitialDamageAdvancedLavaStrike" />
-        <Field value="Amount" />
-        <Value value="0.040000" />
-        <AffectedByAbilityPower value="1" />
-        <AffectedByOverdrive value="1" />
-      </Modifications>
     </LevelScalingArray>
     <LevelScalingArray Ability="SgtHammerBluntForceGun">
       <Modifications>
@@ -2538,7 +2571,6 @@
       </Modifications>
     </LevelScalingArray>
     <Gender value="Female" />
-    <Flags index="GoodForModeB" value="1" />
     <HeroAbilArray Abil="SgtHammerSpiderMines" Button="SgtHammerSpiderMines">
       <Flags index="ShowInHeroSelect" value="1" />
       <Flags index="AffectedByCooldownReduction" value="1" />
@@ -2566,7 +2598,7 @@
       <Flags index="AffectedByCooldownReduction" value="1" />
       <Flags index="Trait" value="1" />
     </HeroAbilArray>
-    <HeroAbilArray Abil="SgtHammerThrusters" Button="SgtHammerThrusters">
+    <HeroAbilArray Abil="SgtHammerThrusters" Button="SgtHammerThrustersShop">
       <Flags index="ShowInHeroSelect" value="1" />
       <Flags index="AffectedByCooldownReduction" value="1" />
       <Flags index="MountReplacement" value="1" />
@@ -2577,6 +2609,7 @@
       <Survivability value="3" />
       <Complexity value="6" />
     </Ratings>
+    <HeroSpecificUIArray Location="CommandButton05Status" DescName="SgtHammer/SgtHammerSiegeModeButtonOverride" />
     <VoiceLineArray value="SgtHammerBase_VoiceLine01" />
     <VoiceLineArray value="SgtHammerBase_VoiceLine02" />
     <VoiceLineArray value="SgtHammerBase_VoiceLine03" />
@@ -2967,43 +3000,29 @@
     <AbilityModificationArray ModifyAbil="SgtHammerNapalmStrike">
       <Modifications>
         <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="NapalmStrikeInitialDamageAdvancedLavaStrike" />
-        <Field value="Chance" />
-        <Value value="1.000000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="NapalmStrikeInitialDamage" />
-        <Field value="Chance" />
-        <Value value="-1.000000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
         <Entry value="SgtHammerNapalmStrike" />
         <Field value="Range[0]" />
-        <Value value="9.000000" />
+        <Value value="$SgtHammerAdvancedLavaStrikeRangeIncrease" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Entry value="SgtHammerNapalmStrikeSiege" />
         <Field value="Range[0]" />
-        <Value value="9.000000" />
+        <Value value="$SgtHammerAdvancedLavaStrikeRangeIncrease" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="SgtHammerNapalmStrikeRangeSplat" />
         <Field value="Scale" />
-        <Value value="9.000000" />
+        <Value value="$SgtHammerAdvancedLavaStrikeRangeIncrease" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="SgtHammerNapalmStrikeSiegeRangeSplat" />
         <Field value="Scale" />
-        <Value value="9.000000" />
+        <Value value="$SgtHammerAdvancedLavaStrikeRangeIncrease" />
       </Modifications>
     </AbilityModificationArray>
   </CTalent>
@@ -3251,6 +3270,9 @@
     <AbilLink value="AbathurDeepTunnel" />
     <Value value="1" />
   </CValidatorUnitCompareOrderCount>
+  <CValidatorUnitCompareOrderCount id="SgtHammerNoTankModeOrder">
+    <AbilLink value="SgtHammerTankMode" />
+  </CValidatorUnitCompareOrderCount>
   <CValidatorUnitCompareBehaviorCount id="TankDummyBehaviorOff">
     <WhichUnit Value="Source" />
     <Behavior value="TankModeDummyBehavior" />
@@ -3258,6 +3280,12 @@
   <CValidatorCombine id="HasSgtHammerAmbushCloakORHasSgtHammerDamageBonusSlop">
     <CombineArray value="SourceHasAmbushCloak" />
     <CombineArray value="SourceHasAmbushDamageBonusSlop" />
+  </CValidatorCombine>
+  <CValidatorCombine id="SgtHammerAmbushButtonOverrideValidator">
+    <Type value="And" />
+    <CombineArray value="HasSgtHammerAmbush" />
+    <CombineArray value="CasterHasSiegeMode" />
+    <CombineArray value="SgtHammerNoTankModeOrder" />
   </CValidatorCombine>
   <CValidatorCombine id="SgtHammerHasNoSiegeModeOrHasHoverMode">
     <CombineArray value="CasterNoSiegeMode" />
@@ -3352,7 +3380,7 @@
   </CValidatorUnitCompareBehaviorCount>
   <CValidatorUnitCompareBehaviorCount id="HasConcussiveBlastEntrenchedKnockback">
     <Value value="1" />
-    <Behavior value="ConcussiveBlastKnockbackEntrenched" />
+    <Behavior value="SgtHammerConcussiveBlastKnockbackEntrenched" />
   </CValidatorUnitCompareBehaviorCount>
   <CValidatorPlayerTalent id="HasSgtHammerEntrenched">
     <WhichPlayer Value="Caster" />
@@ -3405,7 +3433,7 @@
   </CValidatorUnitCompareBehaviorCount>
   <CValidatorUnitCompareBehaviorCount id="HasConcussiveBlastKnockback">
     <Value value="1" />
-    <Behavior value="ConcussiveBlastKnockback" />
+    <Behavior value="SgtHammerConcussiveBlastKnockback" />
   </CValidatorUnitCompareBehaviorCount>
   <CValidatorCombine id="SgtHammerSpiderMineMovePersistentPeriodicValidator">
     <Type value="And" />

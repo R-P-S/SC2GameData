@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
+  <const id="$StukovWeightedPustuleSlowDuration" value="3" />
+  <const id="$StukovWeightedPustuleSlowDurationAtTotalSlow" value="0.3125" />
+  <const id="$StukovWeightedPustuleTotalSlowAmountPos" value="0.5" />
+  <const id="$StukovWeightedPustuleInitialSlowAmountPos" value="0.05" />
+  <const id="$StukovWeightedPustuleSlowMultiplierPerStep" value="negate(/(-($StukovWeightedPustuleTotalSlowAmountPos $StukovWeightedPustuleInitialSlowAmountPos) *(-($StukovWeightedPustuleSlowDuration $StukovWeightedPustuleSlowDurationAtTotalSlow) 16)))" evaluateAsExpression="1" />
+  <const id="$StukovWeightedPustuleSlowMultiplierPerStep50PercentCCReduction" value="/($StukovWeightedPustuleSlowMultiplierPerStep 0.5)" evaluateAsExpression="1" />
+  <const id="$StukovWeightedPustuleSlowMultiplierPerStep75PercentCCReduction" value="/($StukovWeightedPustuleSlowMultiplierPerStep 0.25)" evaluateAsExpression="1" />
+  <const id="$StukovWeightedPustuleInitialSlowAmount" value="negate($StukovWeightedPustuleInitialSlowAmountPos)" evaluateAsExpression="1" />
+  <const id="$StukovWeightedPustuleMinSlowAccumulated" value="negate(-($StukovWeightedPustuleTotalSlowAmountPos $StukovWeightedPustuleInitialSlowAmountPos))" evaluateAsExpression="1" />
+  <const id="$StukovLurkingArmRange" value="11.5" />
+  <const id="$StukovItHungersRangeModifier" value="0.3" />
+  <const id="$StukovItHungersRangeIncrease" value="*($StukovLurkingArmRange $StukovItHungersRangeModifier)" evaluateAsExpression="1" />
   <CAbilEffectTarget id="StukovHealingPathogen">
     <PrepEffect value="DismountDecloakCasterSet" />
     <Effect value="StukovHealingPathogenInitialCastSet" />
@@ -19,11 +31,12 @@
     <Flags index="ClearLastAttackTarget" value="1" />
     <Flags index="ClearLastMoveTarget" value="1" />
     <Flags index="RequireTargetVision" value="0" />
+    <Flags index="RangeUseCasterRadius" value="0" />
     <Cost>
       <Vital index="Energy" value="60" />
       <Cooldown TimeUse="10" />
     </Cost>
-    <Range value="11" />
+    <Range value="$StukovLurkingArmRange" />
     <RangeSlop value="5" />
     <Arc value="360" />
     <CastIntroTime value="0.75" />
@@ -156,9 +169,9 @@
     <Effect value="StukovWeightedPustuleReactiveBallistosporesSet" />
     <Flags index="Transient" value="1" />
     <Cost>
-      <Cooldown Location="Player" TimeUse="75" />
+      <Cooldown TimeUse="75" />
     </Cost>
-    <CmdButtonArray index="Execute" DefaultButtonFace="StukovReactiveBallistosporesHotbar" />
+    <CmdButtonArray index="Execute" DefaultButtonFace="StukovReactiveBallistosporesTalent" />
     <PrepEffect value="DismountDecloakCasterSet" />
   </CAbilEffectInstant>
   <CAccumulatorTrackedUnitCount id="StukovHealingPathogenTrackingUIAccumulator" parent="BaseAccumulator">
@@ -177,6 +190,20 @@
     <TokenId value="StukovLurkingArmGrowingInfestationAccumulatingToken" />
     <Scale value="0.125" />
   </CAccumulatorToken>
+  <CAccumulatorTimed id="StukovWeightedPustuleRampingAccumulator">
+    <TimestampBehavior value="StukovWeightedPustuleTimestamp" />
+    <MinAccumulation value="$StukovWeightedPustuleMinSlowAccumulated" />
+    <MaxAccumulation value="0" />
+    <ApplicationRule value="Add" />
+    <MultiplierPerStep value="$StukovWeightedPustuleSlowMultiplierPerStep" />
+    <UnitSource Value="Target" />
+  </CAccumulatorTimed>
+  <CAccumulatorTimed id="StukovWeightedPustuleRampingAccumulator50PercentCCReduction" parent="StukovWeightedPustuleRampingAccumulator">
+    <MultiplierPerStep value="$StukovWeightedPustuleSlowMultiplierPerStep50PercentCCReduction" />
+  </CAccumulatorTimed>
+  <CAccumulatorTimed id="StukovWeightedPustuleRampingAccumulator75PercentCCReduction" parent="StukovWeightedPustuleRampingAccumulator">
+    <MultiplierPerStep value="$StukovWeightedPustuleSlowMultiplierPerStep75PercentCCReduction" />
+  </CAccumulatorTimed>
   <CActorModel id="StukovHealingPathogenModelBioticArmor" parent="StormModelAnimationStyleOneShotUnit">
     <Preload index="0" value="BarbarianToughAsNailsBlockBuffModel" />
     <On Terms="Behavior.StukovBioKillSwitchBioticArmorPhysicalArmorBehavior.On" Send="Create" />
@@ -825,7 +852,7 @@
   </CActorModel>
   <CActorRange id="StukovLurkingArmRange" parent="StormRangeAbilPlusSplat" abil="StukovLurkingArm" />
   <CActorSplat id="StukovLurkingArmRangeSplat" parent="StormRangeSplat">
-    <Scale value="11.750000" />
+    <Scale value="$StukovLurkingArmRange" />
   </CActorSplat>
   <CActorModel id="StukovHealingPathogenImpact" parent="StormModelAnimationStyleOneShotUnit">
     <On Terms="Behavior.StukovHealingPathogenHealerBehavior.On" Send="Create" />
@@ -1007,9 +1034,7 @@
     <HostSiteOps Ops="SOpAttachCenter" />
     <Model value="StukovBioKillSwitchDamageImpact" />
   </CActorModel>
-  <CActorModel id="StukovBioKillSwitchVirulentReactionRoot" parent="StormModelAnimationStyleContinuousUnit">
-    <On Terms="Behavior.StukovBioKillSwitchVirulentReactionRootBehavior.On" Send="Create" />
-    <On Terms="Behavior.StukovBioKillSwitchVirulentReactionRootBehavior.Off" Send="AnimBracketStop BSD" />
+  <CActorModel id="StukovBioKillSwitchVirulentReactionRoot" parent="StormModelRoot" effect="StukovBioKillSwitchVirulentReactionApplyRootBehavior" behavior="StukovBioKillSwitchVirulentReactionRootBehavior">
     <On Terms="ActorCreation" Send="SetTintColor 169,14,220" />
     <HostSiteOps Ops="SOpAttachOriginSoft SOpRotationRandomDisc" HoldRotation="1" />
     <AutoScaleFactor value="1.300000" />
@@ -1025,16 +1050,23 @@
   <CBehaviorBuff id="StukovBioKillSwitchPoppinPustulesBehavior" parent="CarryBehaviorParent">
     <Duration value="0.0625" />
   </CBehaviorBuff>
-  <CBehaviorBuff id="StukovFlailingSwipeKnockbackBehavior" parent="PushPullParent">
+  <CBehaviorBuff id="StukovFlailingSwipeFirstKnockbackBehavior" parent="PushPullParent">
     <Duration value="0.125" />
     <Period value="0.0625" />
-    <InitialEffect value="StukovFlailingSwipeKnockbackApplyForce" />
-    <PeriodicEffect value="StukovFlailingSwipeKnockbackApplyForce" />
-    <ExpireEffect value="StukovFlailingSwipeKnockbackApplyForce" />
+    <InitialEffect value="StukovFlailingSwipeFirstKnockbackApplyForce" />
+    <PeriodicEffect value="StukovFlailingSwipeFirstKnockbackApplyForce" />
     <Modification AccelerationBonus="100">
       <MoveSpeedMaximum value="42" />
       <MoveSpeedMinimum value="42" />
     </Modification>
+  </CBehaviorBuff>
+  <CBehaviorBuff id="StukovFlailingSwipeSecondKnockbackBehavior" parent="StukovFlailingSwipeFirstKnockbackBehavior">
+    <InitialEffect value="StukovFlailingSwipeSecondKnockbackApplyForce" />
+    <PeriodicEffect value="StukovFlailingSwipeSecondKnockbackApplyForce" />
+  </CBehaviorBuff>
+  <CBehaviorBuff id="StukovFlailingSwipeFinalKnockbackBehavior" parent="StukovFlailingSwipeFirstKnockbackBehavior">
+    <InitialEffect value="StukovFlailingSwipeFinalKnockbackApplyForce" />
+    <PeriodicEffect value="StukovFlailingSwipeFinalKnockbackApplyForce" />
   </CBehaviorBuff>
   <CBehaviorBuff id="StukovHealingPathogenBioticArmorPhysicalArmorBehavior" parent="StormArmor">
     <BehaviorCategories index="BuffResistant" value="1" />
@@ -1130,7 +1162,7 @@
     </Modification>
   </CBehaviorBuff>
   <CBehaviorAbility id="StukovReactiveBallistosporesItem">
-    <Buttons Face="StukovReactiveBallistosporesHotbar" Type="AbilCmd" AbilCmd="StukovWeightedPustuleReactiveBallistospores,Execute" />
+    <Buttons Face="StukovReactiveBallistosporesTalent" Type="AbilCmd" AbilCmd="StukovWeightedPustuleReactiveBallistospores,Execute" />
   </CBehaviorAbility>
   <CBehaviorAbility id="StukovSpineLauncherItem">
     <Buttons Face="StukovSpineLauncherTalentDisabled" Type="AbilCmd" AbilCmd="StukovSpineLauncher,Off" />
@@ -1168,6 +1200,7 @@
     <Alignment value="Positive" />
     <InfoFlags index="AlwaysUseGameText" value="1" />
     <BehaviorCategories index="Restorable" value="1" />
+    <BehaviorCategories index="PreventsMovement" value="1" />
     <DisplayDuration index="Self" value="1" />
     <DisplayDuration index="Ally" value="1" />
     <DisplayDuration index="Neutral" value="1" />
@@ -1367,13 +1400,34 @@
     <Duration value="0.0625" />
   </CBehaviorBuff>
   <CBehaviorBuff id="StukovWeightedPustuleSlow" parent="StormSlowParent">
-    <RemoveValidatorArray value="StukovTargetHasWeightedPustuleControllerBehavior" />
-    <MaxStackCount value="10" />
-    <MaxStackCountPerCaster value="10" />
+    <RemoveValidatorArray value="StukovTargetHasWeightedPustuleDoTBehavior" />
+    <InitialEffect value="StukovWeightedPustuleApplyTimeStampBehavior" />
+    <RefreshEffect value="StukovWeightedPustuleApplyTimeStampBehavior" />
+    <FinalEffect value="StukovWeightedPustuleRemoveTimeStampBehavior" />
     <Modification>
-      <UnifiedMoveSpeedFactor value="-0.05" />
+      <UnifiedMoveSpeedFactor value="$StukovWeightedPustuleInitialSlowAmount">
+        <AccumulatorArray value="StukovWeightedPustuleRampingAccumulator" />
+      </UnifiedMoveSpeedFactor>
     </Modification>
   </CBehaviorBuff>
+  <CBehaviorBuff id="StukovWeightedPustuleSlow50PercentCCReduction" parent="StukovWeightedPustuleSlow">
+    <Modification>
+      <UnifiedMoveSpeedFactor value="$StukovWeightedPustuleInitialSlowAmount">
+        <AccumulatorArray index="0" value="StukovWeightedPustuleRampingAccumulator50PercentCCReduction" />
+      </UnifiedMoveSpeedFactor>
+    </Modification>
+  </CBehaviorBuff>
+  <CBehaviorBuff id="StukovWeightedPustuleSlow75PercentCCReduction" parent="StukovWeightedPustuleSlow">
+    <Modification>
+      <UnifiedMoveSpeedFactor value="$StukovWeightedPustuleInitialSlowAmount">
+        <AccumulatorArray index="0" value="StukovWeightedPustuleRampingAccumulator75PercentCCReduction" />
+      </UnifiedMoveSpeedFactor>
+    </Modification>
+  </CBehaviorBuff>
+  <CBehaviorTimestamp id="StukovWeightedPustuleTimestamp">
+    <Flags index="UseTimeScale" value="1" />
+    <TimeScaleSource Value="Target" />
+  </CBehaviorTimestamp>
   <CBehaviorBuff id="StukovSpineLauncherSlow" parent="StormSlowParent">
     <Duration value="1.5" />
     <Modification>
@@ -1387,13 +1441,13 @@
     <PeriodCount value="10" />
     <InitialEffect value="StukovHealingPathogenInitialBehaviorSet" />
     <RefreshEffect value="StukovWeightedPustuleAddTrackedUnit" />
-    <PeriodicEffect value="StukovWeightedPustuleApplySlowBehavior" />
     <RemoveValidatorArray index="0" value="TargetDoesNotHaveImmuneToCrowdControlBehavior" />
     <RemoveValidatorArray index="1" removed="1" />
   </CBehaviorBuff>
   <CBehaviorBuff id="StukovWeightedPustuleDoT" parent="StormDot">
-    <RemoveValidatorArray value="StukovTargetHasWeightedPustuleControllerBehavior" />
     <Duration value="3" />
+    <InitialEffect value="StukovWeightedPustuleAddTrackedUnit" />
+    <RefreshEffect value="StukovWeightedPustuleAddTrackedUnit" />
     <FinalEffect value="StukovWeightedPustuleDoTFinalSet" />
     <FinalDisplayEffect value="StukovWeightedPustuleDamage" />
     <ExpireEffect value="StukovWeightedPustuleExpireDummy" />
@@ -1461,7 +1515,7 @@
     <Face value="StukovWeightedPustuleUITooltipButton" />
     <BehaviorFlags index="Permanent" value="1" />
     <BehaviorFlags index="EnabledWhileDead" value="1" />
-    <TrackingValidatorArray value="StukovTargetHasWeightedPustuleControllerBehavior" />
+    <TrackingValidatorArray value="StukovTargetHasWeightedPustuleDoTBehavior" />
   </CBehaviorUnitTracker>
   <CButton id="StukovControlledChaosTalent" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_stukov_flailingswipe.dds" />
@@ -1733,8 +1787,9 @@
   </CEffectCreatePersistent>
   <CEffectSet id="StukovWeightedPustulePoppinPustulesTalentApplicationSet">
     <ValidatorArray value="TargetNotDeadAndNoSpecialDeathState" />
-    <EffectArray value="StukovWeightedPustuleApplySlowControllerBehavior" />
     <EffectArray value="StukovWeightedPustuleApplyDoTBehavior" />
+    <EffectArray value="StukovWeightedPustuleRemoveTimeStampBehavior" />
+    <EffectArray value="StukovWeightedPustuleApplySlowBehaviorSwitch" />
   </CEffectSet>
   <CEffectSet id="StukovWeightedPustuleDoTFinalSet">
     <EffectArray value="StukovWeightedPustuleRemoveTrackedUnit" />
@@ -1777,6 +1832,7 @@
     <EffectArray value="StukovLurkingArmBioExplosionUnitEnum" />
     <EffectArray value="StukovLurkingArmLingeringSpinesRemoveBehavior" />
     <EffectArray value="StukovBioKillSwitchHealingPathogenSearch" />
+    <EffectArray value="StukovBioKillSwitchHealingPathogenRemovalSearch" />
     <EffectArray value="StukovBioKillSwitchEnumerateTrackedUnits" />
     <EffectArray value="StukovBioKillSwitchApplyCooldownBehavior" />
   </CEffectSet>
@@ -1787,9 +1843,14 @@
   </CEffectSet>
   <CEffectSet id="StukovHeroWeaponLaunchSet">
     <EffectArray value="UniversalWeaponLaunchSet" />
+    <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="StukovWeaponPreImpactSet" />
     <EffectArray value="StukovWeaponDamage" />
+    <EffectArray value="StukovWeaponPostImpactSet" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
+  <CEffectSet id="StukovWeaponPreImpactSet" />
+  <CEffectSet id="StukovWeaponPostImpactSet" />
   <CEffectSet id="StukovHeroWeaponSpineLauncherLaunchSet">
     <EffectArray value="UniversalWeaponLaunchSet" />
     <EffectArray value="StukovSpineLauncherWeaponLaunchMissile" />
@@ -1819,36 +1880,34 @@
     <PeriodicEffectArray value="StukovWeightedPustuleBehaviorsApplicationSet" />
     <PeriodicPeriodArray value="0.0625" />
   </CEffectCreatePersistent>
-  <CEffectCreatePersistent id="StukovHealingPathogenRemoveHealerDelay">
+  <CEffectEnumTrackedUnits id="StukovBioKillSwitchHealingPathogenRemovalSearch">
     <ValidatorArray value="StukovDoesNotHavePoxPopuliTalent" />
-    <WhichLocation Value="TargetUnit" />
-    <FinalEffect value="StukovHealingPathogenRemoveSpreadBehavior" />
-    <PeriodCount value="1" />
-    <PeriodicEffectArray value="StukovBioKillSwitchRemoveHealingPathogenHealer" />
-    <PeriodicPeriodArray value="0.0625" />
-  </CEffectCreatePersistent>
+    <BehaviorLink value="StukovHealingPathogenTrackingBehavior" />
+    <Effect value="StukovBioKillSwitchHealingPathogenRemoveSet" />
+    <TrackedUnitFilters value="-;Neutral,Enemy,ImmuneToFriendlyAbilities,Stasis,Dead" />
+  </CEffectEnumTrackedUnits>
+  <CEffectSet id="StukovBioKillSwitchHealingPathogenRemoveSet">
+    <EffectArray value="StukovBioKillSwitchRemoveHealingPathogenHealer" />
+    <EffectArray value="StukovHealingPathogenRemoveSpreadBehavior" />
+  </CEffectSet>
   <CEffectSet id="StukovFlailingSwipeFirstImpactSet">
     <ValidatorArray value="noMarkers" />
     <EffectArray value="StukovFlailingSwipeDamage" />
-    <EffectArray value="StukovFlailingSwipeApplyKnockbackBehavior" />
+    <EffectArray value="StukovFlailingSwipeFirstImpactKnockbackSet" />
     <EffectArray value="ApplyAbilityImpactReveal" />
   </CEffectSet>
   <CEffectSet id="StukovFlailingSwipeSecondImpactSet">
     <ValidatorArray value="noMarkers" />
     <EffectArray value="StukovFlailingSwipeDamage" />
-    <EffectArray value="StukovFlailingSwipeApplyKnockbackBehavior" />
+    <EffectArray value="StukovFlailingSwipeSecondImpactKnockbackSet" />
     <EffectArray value="ApplyAbilityImpactReveal" />
   </CEffectSet>
   <CEffectSet id="StukovFlailingSwipeFinalImpactSet">
     <ValidatorArray value="noMarkers" />
     <EffectArray value="StukovFlailingSwipeDamage" />
-    <EffectArray value="StukovFlailingSwipeApplyKnockbackBehavior" />
+    <EffectArray value="StukovFlailingSwipeFinalImpactKnockbackSet" />
     <EffectArray value="ApplyAbilityImpactReveal" />
   </CEffectSet>
-  <CEffectApplyForce id="StukovFlailingSwipeKnockbackApplyForce">
-    <WhichLocation Effect="StukovFlailingSwipePersistent" Value="CasterPoint" />
-    <Amount value="24" />
-  </CEffectApplyForce>
   <CEffectCreateUnit id="StukovLurkingArmUnitCreate">
     <WhichLocation Value="TargetPoint" />
     <SpawnEffect value="StukovLurkingArmUnitSpawnSet" />
@@ -1942,7 +2001,6 @@
   </CEffectEnumTrackedUnits>
   <CEffectSet id="StukovBioKillSwitchHealingPathogenImpactSet">
     <EffectArray value="StukovBioKillSwitchHeal" />
-    <EffectArray value="StukovHealingPathogenRemoveHealerDelay" />
     <EffectArray value="StukovBioKillSwitchPoxPopuliIncreaseHealerDuration" />
     <EffectArray value="StukovBioKillSwitchPoxPopuliIncreaseSpreadDuration" />
     <EffectArray value="StukovBioKillSwitchTargetedExcisionHealingPathogenApplyBehavior" />
@@ -1988,9 +2046,15 @@
     <Behavior value="StukovFlailingSwipeCancelSlop" />
   </CEffectApplyBehavior>
   <CEffectSet id="StukovSpineLauncherImpactSet">
+    <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="StukovSpineLauncherWeaponPreImpactSet" />
     <EffectArray value="StukovSpineLauncherWeaponDamage" />
-    <EffectArray value="StukovSpineLauncherApplySlow" />
+    <EffectArray value="StukovSpineLauncherPostImpactSet" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
+  </CEffectSet>
+  <CEffectSet id="StukovSpineLauncherWeaponPreImpactSet" />
+  <CEffectSet id="StukovSpineLauncherPostImpactSet">
+    <EffectArray value="StukovSpineLauncherApplySlow" />
   </CEffectSet>
   <CEffectLaunchMissile id="StukovSpineLauncherWeaponLaunchMissile">
     <ValidatorArray index="0" value="TargetNotDead" />
@@ -2312,12 +2376,23 @@
     <EffectArray value="StukovHealingPathogenSpreadLaunchMissile" />
   </CEffectSet>
   <CEffectSet id="StukovHealingPathogenInitialBehaviorSet">
-    <EffectArray value="StukovWeightedPustuleApplySlowBehavior" />
+    <EffectArray value="StukovWeightedPustuleRemoveTimeStampBehavior" />
+    <EffectArray value="StukovWeightedPustuleApplySlowBehaviorSwitch" />
     <EffectArray value="StukovWeightedPustuleAddTrackedUnit" />
   </CEffectSet>
+  <CEffectApplyBehavior id="StukovWeightedPustuleApplyTimeStampBehavior">
+    <Behavior value="StukovWeightedPustuleTimestamp" />
+  </CEffectApplyBehavior>
+  <CEffectRemoveBehavior id="StukovWeightedPustuleRemoveTimeStampBehavior">
+    <BehaviorLink value="StukovWeightedPustuleTimestamp" />
+  </CEffectRemoveBehavior>
+  <CEffectModifyUnit id="StukovWeightedPustuleCatalogReference">
+    <XP value="$StukovWeightedPustuleTotalSlowAmountPos" />
+  </CEffectModifyUnit>
   <CEffectSet id="StukovWeightedPustuleBehaviorsApplicationSet">
-    <EffectArray value="StukovWeightedPustuleApplySlowControllerBehavior" />
     <EffectArray value="StukovWeightedPustuleApplyDoTBehavior" />
+    <EffectArray value="StukovWeightedPustuleRemoveTimeStampBehavior" />
+    <EffectArray value="StukovWeightedPustuleApplySlowBehaviorSwitch" />
   </CEffectSet>
   <CEffectModifyPlayer id="StukovBioKillSwitchDummyEffect" />
   <CEffectApplyBehavior id="StukovLurkingArmApplySilenceBehavior">
@@ -2500,8 +2575,6 @@
   <CEffectSet id="StukovWeightedPustuleReactiveBallistosporesSet">
     <EffectArray value="StukovWeightedPustuleReactiveBallistosporesSplashSearch" />
     <EffectArray value="StukovReactiveBallistosporesResetCooldown" />
-    <EffectArray value="StukovReactiveBallistosporesModifyDummyCooldown" />
-    <EffectArray value="StukovWeightedPustuleReactiveBallistosporesApplyCooldownBehavior" />
   </CEffectSet>
   <CEffectSet id="StukovWeightedPustuleInitialSet">
     <EffectArray value="StukovWeightedPustuleLaunchMissile" />
@@ -2707,18 +2780,101 @@
   <CEffectRemoveBehavior id="StukovBioKillSwitchRemoveWeightedPustuleDoT">
     <BehaviorLink value="StukovWeightedPustuleDoT" />
   </CEffectRemoveBehavior>
-  <CEffectApplyBehavior id="StukovFlailingSwipeApplyKnockbackBehavior">
-    <ValidatorArray index="0" value="TargetNotUnstoppable" />
-    <Behavior value="StukovFlailingSwipeKnockbackBehavior" />
+  <CEffectSet id="StukovFlailingSwipeFirstImpactKnockbackSet">
+    <ValidatorArray value="TargetNotUnstoppable" />
+    <EffectArray value="HeroRemovePushPullDebuffs" />
+    <EffectArray value="HeroRemovePreventsMovement" />
+    <EffectArray value="StukovFlailingSwipeApplyFirstKnockbackBehavior" />
+  </CEffectSet>
+  <CEffectSet id="StukovFlailingSwipeSecondImpactKnockbackSet">
+    <ValidatorArray value="TargetNotUnstoppable" />
+    <EffectArray value="HeroRemovePushPullDebuffs" />
+    <EffectArray value="HeroRemovePreventsMovement" />
+    <EffectArray value="StukovFlailingSwipeApplySecondKnockbackBehavior" />
+  </CEffectSet>
+  <CEffectSet id="StukovFlailingSwipeFinalImpactKnockbackSet">
+    <ValidatorArray value="TargetNotUnstoppable" />
+    <EffectArray value="HeroRemovePushPullDebuffs" />
+    <EffectArray value="HeroRemovePreventsMovement" />
+    <EffectArray value="StukovFlailingSwipeApplyFinalKnockbackBehavior" />
+  </CEffectSet>
+  <CEffectApplyBehavior id="StukovFlailingSwipeApplyFirstKnockbackBehavior">
+    <Behavior value="StukovFlailingSwipeFirstKnockbackBehavior" />
   </CEffectApplyBehavior>
+  <CEffectApplyBehavior id="StukovFlailingSwipeApplySecondKnockbackBehavior">
+    <Behavior value="StukovFlailingSwipeSecondKnockbackBehavior" />
+  </CEffectApplyBehavior>
+  <CEffectApplyBehavior id="StukovFlailingSwipeApplyFinalKnockbackBehavior">
+    <Behavior value="StukovFlailingSwipeFinalKnockbackBehavior" />
+  </CEffectApplyBehavior>
+  <CEffectApplyForce id="StukovFlailingSwipeFirstKnockbackApplyForce">
+    <WhichLocation>
+      <Value value="CasterPoint" />
+      <Effect value="StukovFlailingSwipeInitialSet" />
+      <ProjectionMultiplier value="1" />
+      <ProjectionSourceEffect value="StukovFlailingSwipeInitialSet" />
+      <ProjectionSourceValue value="OriginPoint" />
+      <ProjectionTargetEffect value="StukovFlailingSwipePersistent" />
+      <ProjectionTargetValue value="TargetPoint" />
+      <UsesLineDash value="1" />
+      <LineDashType value="AllowedInUnpathable" />
+      <ProjectionAngle value="180" />
+      <ProjectionDistanceScale value="3" />
+    </WhichLocation>
+    <Amount value="24" />
+  </CEffectApplyForce>
+  <CEffectApplyForce id="StukovFlailingSwipeSecondKnockbackApplyForce">
+    <WhichLocation>
+      <Value value="CasterPoint" />
+      <Effect value="StukovFlailingSwipeInitialSet" />
+      <ProjectionMultiplier value="1" />
+      <ProjectionSourceEffect value="StukovFlailingSwipeInitialSet" />
+      <ProjectionSourceValue value="OriginPoint" />
+      <ProjectionTargetEffect value="StukovFlailingSwipePersistent" />
+      <ProjectionTargetValue value="TargetPoint" />
+      <UsesLineDash value="1" />
+      <LineDashType value="AllowedInUnpathable" />
+      <ProjectionAngle value="180" />
+      <ProjectionDistanceScale value="2" />
+    </WhichLocation>
+    <Amount value="24" />
+  </CEffectApplyForce>
+  <CEffectApplyForce id="StukovFlailingSwipeFinalKnockbackApplyForce">
+    <WhichLocation>
+      <Value value="CasterPoint" />
+      <Effect value="StukovFlailingSwipeInitialSet" />
+      <ProjectionMultiplier value="1" />
+      <ProjectionSourceEffect value="StukovFlailingSwipeInitialSet" />
+      <ProjectionSourceValue value="OriginPoint" />
+      <ProjectionTargetEffect value="StukovFlailingSwipePersistent" />
+      <ProjectionTargetValue value="TargetPoint" />
+      <UsesLineDash value="1" />
+      <LineDashType value="AllowedInUnpathable" />
+      <ProjectionAngle value="180" />
+      <ProjectionDistanceScale value="1" />
+    </WhichLocation>
+    <Amount value="24" />
+  </CEffectApplyForce>
   <CEffectApplyBehavior id="StukovWeightedPustuleApplySlowControllerBehavior">
     <Behavior value="StukovWeightedPustuleController" />
   </CEffectApplyBehavior>
   <CEffectApplyBehavior id="StukovWeightedPustuleApplyDoTBehavior">
     <Behavior value="StukovWeightedPustuleDoT" />
   </CEffectApplyBehavior>
+  <CEffectSwitch id="StukovWeightedPustuleApplySlowBehaviorSwitch">
+    <ValidatorArray value="TargetNotUnstoppable" />
+    <CaseArray Validator="TargetHas50PercentCCReductionCombine" Effect="StukovWeightedPustuleApplySlowBehavior50PercentCCReduction" />
+    <CaseArray Validator="TargetHas75PercentCCReduction" Effect="StukovWeightedPustuleApplySlowBehavior75PercentCCReduction" />
+    <CaseDefault value="StukovWeightedPustuleApplySlowBehavior" />
+  </CEffectSwitch>
   <CEffectApplyBehavior id="StukovWeightedPustuleApplySlowBehavior">
     <Behavior value="StukovWeightedPustuleSlow" />
+  </CEffectApplyBehavior>
+  <CEffectApplyBehavior id="StukovWeightedPustuleApplySlowBehavior50PercentCCReduction">
+    <Behavior value="StukovWeightedPustuleSlow50PercentCCReduction" />
+  </CEffectApplyBehavior>
+  <CEffectApplyBehavior id="StukovWeightedPustuleApplySlowBehavior75PercentCCReduction">
+    <Behavior value="StukovWeightedPustuleSlow75PercentCCReduction" />
   </CEffectApplyBehavior>
   <CEffectDamage id="StukovWeightedPustuleImpactDamage" parent="StormSpell">
     <Amount value="20" />
@@ -2732,7 +2888,7 @@
     <ValidatorArray value="StukovTargetHasWeightedPustuleDoTBehavior" />
     <Behavior value="StukovBioKillSwitchSlow" />
   </CEffectApplyBehavior>
-  <CEffectApplyBehavior id="StukovBioKillSwitchVirulentReactionApplyRootBehavior">
+  <CEffectApplyBehavior id="StukovBioKillSwitchVirulentReactionApplyRootBehavior" parent="StormRootApply">
     <ValidatorArray value="StukovTargetHasWeightedPustuleDoTBehavior" />
     <ValidatorArray value="StukovTargetHasLurkingArmBehavior" />
     <Chance value="0" />
@@ -4484,14 +4640,14 @@
         <Type value="FlatModification" />
         <Entry value="StukovLurkingArm" />
         <Field value="Range[0]" />
-        <Value value="3.300000" />
+        <Value value="$StukovItHungersRangeIncrease" />
       </Modifications>
       <Modifications>
-        <Type value="MultiplyLevelModification" />
+        <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="StukovLurkingArmRangeSplat" />
         <Field value="Scale" />
-        <Value value="1.300000" />
+        <Value value="$StukovItHungersRangeIncrease" />
       </Modifications>
     </AbilityModificationArray>
   </CTalent>
@@ -5162,10 +5318,25 @@
     <Find value="1" />
     <Value value="StukovLowBlow" />
   </CValidatorPlayerTalent>
-  <CValidatorUnitCompareBehaviorCount id="HasStukovFlailingSwipeKnockbackBehavior">
+  <CValidatorCombine id="StukovTargetHasFlailingSwipeAnyKnockback">
+    <CombineArray value="HasStukovFlailingSwipeFirstKnockbackBehavior" />
+    <CombineArray value="HasStukovFlailingSwipeSecondKnockbackBehavior" />
+    <CombineArray value="HasStukovFlailingSwipeFinalKnockbackBehavior" />
+  </CValidatorCombine>
+  <CValidatorUnitCompareBehaviorCount id="HasStukovFlailingSwipeFirstKnockbackBehavior">
     <WhichUnit Effect="StukovFlailingSwipeImpactSet" />
     <Value value="1" />
-    <Behavior value="StukovFlailingSwipeKnockback" />
+    <Behavior value="StukovFlailingSwipeFirstKnockbackBehavior" />
+  </CValidatorUnitCompareBehaviorCount>
+  <CValidatorUnitCompareBehaviorCount id="HasStukovFlailingSwipeSecondKnockbackBehavior">
+    <WhichUnit Effect="StukovFlailingSwipeImpactSet" />
+    <Value value="1" />
+    <Behavior value="StukovFlailingSwipeSecondKnockbackBehavior" />
+  </CValidatorUnitCompareBehaviorCount>
+  <CValidatorUnitCompareBehaviorCount id="HasStukovFlailingSwipeFinalKnockbackBehavior">
+    <WhichUnit Effect="StukovFlailingSwipeImpactSet" />
+    <Value value="1" />
+    <Behavior value="StukovFlailingSwipeFinalKnockbackBehavior" />
   </CValidatorUnitCompareBehaviorCount>
   <CValidatorPlayerTalent id="StukovHasItHungersTalent">
     <WhichPlayer Value="Caster" />
@@ -5331,6 +5502,13 @@
     <Value value="2" />
     <Ability value="StukovLurkingArm" />
   </CValidatorUnitCompareCooldown>
+  <CValidatorUnitHasBehavior id="StukovTargetHasVirulentReactionRootIncludeDisabled">
+    <Behavior value="StukovBioKillSwitchVirulentReactionRootBehavior" />
+    <IncludeDisabled value="1" />
+  </CValidatorUnitHasBehavior>
+  <CValidatorCombine id="StormTargetHasRootCombineIncludeDisabled">
+    <CombineArray value="StukovTargetHasVirulentReactionRootIncludeDisabled" />
+  </CValidatorCombine>
   <CWeaponLegacy id="StukovHeroWeapon" parent="StormHeroMediumWeapon">
     <DisplayEffect value="StukovWeaponDamage" />
     <MinScanRange value="4" />

@@ -234,12 +234,16 @@
       <AbilLinkEnableArray value="TracerTargetingAttackClick" />
       <AbilLinkEnableArray value="SgtHammerTankMode" />
       <AbilLinkEnableArray value="LucioTargetingAttackClick" />
-      <AbilLinkEnableArray value="LucioAttack" />
       <AbilLinkEnableArray value="LucioSmartTargetingRightClick" />
+      <AbilLinkEnableArray value="XalatathTargetingAttackClick" />
+      <AbilLinkEnableArray value="XalatathSmartTargetingRightClick" />
       <AbilLinkEnableArray value="RexxarMishaChargeRedirect" />
       <AbilLinkEnableArray value="RexxarMishaFocus" />
       <AbilLinkEnableArray value="RexxarMishaFollow" />
       <AbilLinkEnableArray value="RexxarMishaFollowCancel" />
+      <AbilLinkEnableArray value="LostVikingsLargeAndInChargeCharge" />
+      <AbilLinkEnableArray value="AnaAimDownSightsActivate" />
+      <AbilLinkEnableArray value="AnaAimDownSightsDeactivate" />
     </Modification>
     <RemoveValidatorArray value="TargetNotUnstoppable" />
     <RemoveValidatorArray value="TargetDoesNotHaveImmuneToCrowdControlBehavior" />
@@ -458,12 +462,12 @@
     <Alignment value="Negative" />
     <RemoveValidatorArray value="TargetNotUnstoppable" />
     <RemoveValidatorArray value="TargetDoesNotHaveImmuneToCrowdControlBehavior" />
-    <Modification PushPriority="5000" AlliedPushPriority="5000">
-      <ModifyFlags index="SuppressMoving" value="1" />
-    </Modification>
+    <Modification PushPriority="5000" AlliedPushPriority="5000" />
     <DisableValidatorArray value="TargetNotPushPull" />
     <DisableValidatorArray value="TargetLocationIsPathable" />
     <DisableValidatorArray value="TargetNotDazed" />
+    <EnableEffect value="StormRootSuppressMovementApply" />
+    <DisableEffect value="StormRootSuppressMovementRemove" />
     <BehaviorCategories index="DebuffRoot" value="1" />
     <BuffFlags index="UpdateDurationWhileDisabled" value="1" />
     <InfoIcon value="Assets\Textures\storm_ui_rootedicon.dds" />
@@ -507,6 +511,7 @@
     <RemoveValidatorArray value="TargetIsNotABossUnitCombine" />
     <RemoveValidatorArray value="TargetNotUnstoppableCategory" />
     <RemoveValidatorArray value="TargetIsNotDeathwing" />
+    <RemoveValidatorArray value="TargetNotUnstoppable" />
     <BuffFlags index="UpdateDurationWhileDisabled" value="1" />
     <DamageResponse>
       <Chance value="1" />
@@ -544,12 +549,14 @@
   </CBehaviorBuff>
   <CBehaviorBuff default="1" id="StormTauntParent" parent="StormForcedActionDebuff">
     <BehaviorCategories index="Taunt" value="1" />
+    <DisplayPriority value="4" />
     <InfoIcon value="Assets\Textures\storm_ui_taunted.dds" />
     <RemoveValidatorArray value="TargetNotMindControlled" />
     <RemoveValidatorArray value="CasterNotDead" />
     <Modification>
       <AbilLinkEnableArray value="LucioSmartTargetingRightClick" />
       <AbilLinkEnableArray value="TracerSmartTargetingRightClick" />
+      <AbilLinkEnableArray value="XalatathSmartTargetingRightClick" />
     </Modification>
   </CBehaviorBuff>
   <CBehaviorBuff default="1" id="StormDamageReductionAttackSpeedSlow">
@@ -576,7 +583,9 @@
   <CBehaviorBuff default="1" id="StormSleep" parent="StormStun">
     <InitialEffect value="SleepBreakPreventApplyBehavior" />
     <BehaviorCategories index="Sleeping" value="1" />
-    <DamageResponse Chance="1" Handled="StormSleepRemoveBehaviorDelayCP" Priority="96" />
+    <DamageResponse Chance="1" Handled="StormSleepRemoveBehaviorDelayCP" Priority="96">
+      <UnitDamageType index="Minion" value="0" />
+    </DamageResponse>
   </CBehaviorBuff>
   <CBehaviorBuff default="1" id="StormStackingComboMarker">
     <BehaviorCategories index="StackingComboMarker" value="1" />
@@ -595,6 +604,13 @@
     <Alignment value="Positive" />
     <BehaviorCategories index="Fast" value="1" />
     <RemoveValidatorArray value="TargetNotSpecialDeathState" />
+  </CBehaviorBuff>
+  <CBehaviorBuff id="StormRootSuppressMoving">
+    <RemoveValidatorArray value="StormTargetHasRootCombineIncludeDisabled" />
+    <BehaviorCategories index="PreventsMovement" value="1" />
+    <Modification>
+      <ModifyFlags index="SuppressMoving" value="1" />
+    </Modification>
   </CBehaviorBuff>
   <CBehaviorTokenCounter id="AITokenHeroesAlive" parent="StormGenericToken">
     <Max value="50" />
@@ -722,7 +738,10 @@
     <Period value="4" />
     <PeriodicEffect value="ExperienceGlobeFadeDummy" />
   </CBehaviorBuff>
-  <CBehaviorBuff id="HeroGenericExperienceGlobeReducedXPCarry" parent="CarryBehaviorParent" />
+  <CBehaviorBuff id="HeroGenericExperienceGlobeReducedXPCarry" parent="CarryBehaviorParent">
+    <RemoveValidatorArray value="NoHeroNearby2" />
+    <FinalEffect value="KillExperienceGlobe" />
+  </CBehaviorBuff>
   <CBehaviorBuff id="HeroGenericImmuneToConveyers" />
   <CBehaviorBuff id="HeroGenericTimeStop" parent="StormTimeStopParent">
     <BehaviorFlags index="Permanent" value="1" />
@@ -780,6 +799,9 @@
     <Period value="0.1875" />
     <InitialEffect value="ExperienceGlobeSearchSet" />
     <PeriodicEffect value="ExperienceGlobeSearchSet" />
+    <Modification>
+      <StateFlags index="SuppressGateEnforcement" value="1" />
+    </Modification>
   </CBehaviorBuff>
   <CBehaviorBuff id="PreventNearbyCollisionBlockerCreation" />
   <CBehaviorAbility id="SpellShieldItem">
@@ -796,6 +818,17 @@
   <CBehaviorAbility id="IntroVOInteractor">
     <Buttons Face="IntroVOInteractor" Type="AbilCmd" AbilCmd="IntroVOInteractor,Execute" />
   </CBehaviorAbility>
+  <CBehaviorBuff id="TowerHitDetection">
+    <BehaviorFlags index="Permanent" value="1" />
+    <InfoFlags index="Hidden" value="0" />
+    <DamageResponse Chance="1" Handled="BuildingHitSearchArea" TargetFilters="Heroic;Ally,Hallucination,Summoned">
+      <Kind index="Splash" value="0" />
+      <Kind index="Ability" value="0" />
+    </DamageResponse>
+  </CBehaviorBuff>
+  <CBehaviorBuff id="TownRampingArmorShredCooldown" parent="StormArmor">
+    <Duration value="0.9" />
+  </CBehaviorBuff>
   <CBehaviorAbility id="ToyTrainFollowAbility">
     <Buttons Face="ToyTrainFollowAbility" Type="AbilCmd" AbilCmd="ToyTrainFollowAbility,Execute" />
     <Flags index="UseFirstDynamicSlot" value="0" />
@@ -803,6 +836,15 @@
   <CBehaviorBuff id="ToyTrainFollowBuff">
     <RemoveValidatorArray value="ToyTrainUnitHasFollowOrder" />
     <FinalEffect value="ToyTrainFollowAbilityRemove" />
+  </CBehaviorBuff>
+  <CBehaviorBuff id="InspirationBuff">
+    <BuffFlags index="RefreshStack" value="1" />
+    <Duration value="3" />
+    <Modification>
+      <UnifiedMoveSpeedFactor value="0.35" />
+      <AdditiveAttackSpeedFactor value="0.35" />
+    </Modification>
+    <DamageResponse Chance="1" TargetFilters="Structure;-" Location="Attacker" />
   </CBehaviorBuff>
   <CBehaviorBuff id="UntargetableByFriendlyAbilities" parent="CarryBehaviorParent" />
   <CBehaviorUnitTracker id="VitalAliasUnitTracker">
@@ -1094,14 +1136,13 @@
     <MaxTrackedUnits value="15" />
     <UnitAddedAtMaxRule value="ReplaceOldest" />
   </CBehaviorUnitTracker>
-  <CBehaviorBuff id="StormSummonedUnitVisibilityController">
-    <DisableValidatorArray value="StormSummonedUnitHasDamagedUnitsTracked" />
-    <EnableEffect value="StormSummonedUnitDamagedUnitsEnableEffectSet" />
-  </CBehaviorBuff>
   <CBehaviorBuff id="SummonedUnitSpecialCaseInteraction" parent="CarryBehaviorParent" />
   <CBehaviorBuff id="SuppressTowerAI" />
   <CBehaviorTokenCounter id="HeroGenericRegenerationMasterQuestToken" parent="StormQuestToken">
-    <AtMaxEvents index="0" EventId="QuestComplete" Effect="HeroGenericRegenerationMasterCompleteModifyPlayer" />
+    <AtMaxEvents index="0" removed="1" />
+    <ConditionalEvents Compare="GE" CompareValue="25">
+      <Event EventId="QuestComplete" Effect="HeroGenericRegenerationMasterCompleteModifyPlayer" />
+    </ConditionalEvents>
     <Max value="30" />
   </CBehaviorTokenCounter>
   <CBehaviorBuff id="DontShowCoreInvulnerability" />
@@ -3468,9 +3509,9 @@
   <CBehaviorBuff id="UnderworldBossSkullStacks">
     <MaxStackCount value="100" />
     <Modification>
-      <DamageDealtFraction index="Basic" value="0.05" />
-      <DamageDealtFraction index="Ability" value="0.05" />
-      <VitalMaxAdditiveMultiplierArray index="Life" value="0.05" />
+      <DamageDealtFraction index="Basic" value="0.07" />
+      <DamageDealtFraction index="Ability" value="0.07" />
+      <VitalMaxAdditiveMultiplierArray index="Life" value="0.07" />
     </Modification>
   </CBehaviorBuff>
   <CBehaviorBuff id="UnitCanBeSmartCommandInteracted" />
@@ -3991,9 +4032,12 @@
   </CBehaviorBuff>
   <CBehaviorBuff id="VehicleDragonKnightDeathKnockbackStun" parent="PushPullParent">
     <Duration value="0.1875" />
+    <Period value="0.0625" />
+    <InitialEffect value="VehicleDragonKnightDeathKnockbackApplyForce" />
+    <PeriodicEffect value="VehicleDragonKnightDeathKnockbackApplyForce" />
     <Modification>
-      <MoveSpeedMaximum value="20" />
-      <MoveSpeedMinimum value="20" />
+      <MoveSpeedMaximum value="13" />
+      <MoveSpeedMinimum value="13" />
     </Modification>
   </CBehaviorBuff>
   <CBehaviorVeterancy id="FootmanMinionXPScaling">
@@ -8849,67 +8893,67 @@
     <VeterancyLevelArray />
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="14">
-        <DamageDealtScaled index="Basic" value="4" />
-        <DamageDealtFraction index="Ability" value="0.07" />
-        <VitalMaxArray index="Life" value="1100" />
+        <DamageDealtFraction index="Ability" value="0.02" />
+        <VitalMaxArray index="Life" value="350" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="14">
+        <DamageDealtFraction index="Ability" value="0.02" />
+        <VitalMaxArray index="Life" value="350" />
+      </Modification>
+    </VeterancyLevelArray>
+    <VeterancyLevelArray MinVeterancyXP="1">
+      <Modification KillXPBonus="18">
+        <DamageDealtFraction index="Ability" value="0.02" />
+        <VitalMaxArray index="Life" value="350" />
+      </Modification>
+    </VeterancyLevelArray>
+    <VeterancyLevelArray MinVeterancyXP="1">
+      <Modification KillXPBonus="18">
+        <DamageDealtFraction index="Ability" value="0.02" />
+        <VitalMaxArray index="Life" value="350" />
+      </Modification>
+    </VeterancyLevelArray>
+    <VeterancyLevelArray MinVeterancyXP="1">
+      <Modification KillXPBonus="18">
+        <DamageDealtFraction index="Ability" value="0.02" />
+        <VitalMaxArray index="Life" value="350" />
+      </Modification>
+    </VeterancyLevelArray>
+    <VeterancyLevelArray MinVeterancyXP="1">
+      <Modification KillXPBonus="18">
         <DamageDealtScaled index="Basic" value="4" />
-        <DamageDealtFraction index="Ability" value="0.07" />
-        <VitalMaxArray index="Life" value="1100" />
+        <DamageDealtFraction index="Ability" value="0.03" />
+        <VitalMaxArray index="Life" value="525" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="18">
         <DamageDealtScaled index="Basic" value="4" />
-        <DamageDealtFraction index="Ability" value="0.07" />
-        <VitalMaxArray index="Life" value="1100" />
+        <DamageDealtFraction index="Ability" value="0.03" />
+        <VitalMaxArray index="Life" value="525" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
-      <Modification KillXPBonus="18">
+      <Modification KillXPBonus="22">
         <DamageDealtScaled index="Basic" value="4" />
-        <DamageDealtFraction index="Ability" value="0.07" />
-        <VitalMaxArray index="Life" value="1100" />
+        <DamageDealtFraction index="Ability" value="0.03" />
+        <VitalMaxArray index="Life" value="525" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
-      <Modification KillXPBonus="18">
+      <Modification KillXPBonus="22">
         <DamageDealtScaled index="Basic" value="4" />
-        <DamageDealtFraction index="Ability" value="0.07" />
-        <VitalMaxArray index="Life" value="1100" />
-      </Modification>
-    </VeterancyLevelArray>
-    <VeterancyLevelArray MinVeterancyXP="1">
-      <Modification KillXPBonus="18">
         <DamageDealtFraction index="Ability" value="0.03" />
-        <VitalMaxArray index="Life" value="350" />
-      </Modification>
-    </VeterancyLevelArray>
-    <VeterancyLevelArray MinVeterancyXP="1">
-      <Modification KillXPBonus="18">
-        <DamageDealtFraction index="Ability" value="0.03" />
-        <VitalMaxArray index="Life" value="350" />
+        <VitalMaxArray index="Life" value="525" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="22">
+        <DamageDealtScaled index="Basic" value="4" />
         <DamageDealtFraction index="Ability" value="0.03" />
-        <VitalMaxArray index="Life" value="350" />
-      </Modification>
-    </VeterancyLevelArray>
-    <VeterancyLevelArray MinVeterancyXP="1">
-      <Modification KillXPBonus="22">
-        <DamageDealtFraction index="Ability" value="0.03" />
-        <VitalMaxArray index="Life" value="350" />
-      </Modification>
-    </VeterancyLevelArray>
-    <VeterancyLevelArray MinVeterancyXP="1">
-      <Modification KillXPBonus="22">
-        <DamageDealtFraction index="Ability" value="0.03" />
-        <VitalMaxArray index="Life" value="350" />
+        <VitalMaxArray index="Life" value="525" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
@@ -8950,197 +8994,197 @@
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="26">
         <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
+        <DamageDealtFraction index="Ability" value="0.05" />
         <VitalMaxArray index="Life" value="850" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="26">
         <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
+        <DamageDealtFraction index="Ability" value="0.05" />
         <VitalMaxArray index="Life" value="850" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="30">
         <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
+        <DamageDealtFraction index="Ability" value="0.05" />
         <VitalMaxArray index="Life" value="850" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="30">
         <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
+        <DamageDealtFraction index="Ability" value="0.05" />
         <VitalMaxArray index="Life" value="850" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="30">
         <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
+        <DamageDealtFraction index="Ability" value="0.05" />
         <VitalMaxArray index="Life" value="850" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="30">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="30">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="34">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="34">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="34">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="34">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="34">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="38">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="38">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="38">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="38">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="38">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="42">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="42">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="42">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="42">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="42">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="46">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="46">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="46">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="46">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="46">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1">
       <Modification KillXPBonus="50">
-        <DamageDealtScaled index="Basic" value="10" />
-        <DamageDealtFraction index="Ability" value="0.04" />
-        <VitalMaxArray index="Life" value="900" />
+        <DamageDealtScaled index="Basic" value="15" />
+        <DamageDealtFraction index="Ability" value="0.05" />
+        <VitalMaxArray index="Life" value="1000" />
       </Modification>
     </VeterancyLevelArray>
     <VeterancyLevelArray MinVeterancyXP="1" />
@@ -9570,13 +9614,18 @@
   <CBehaviorBuff id="TalentBucketBlock" parent="StormArmorPermanent">
     <Alignment value="Positive" />
     <InfoFlags index="Hidden" value="0" />
+    <InfoIcon value="Assets\Textures\storm_ui_icon_talent_block.dds" />
+    <SortIndex value="100" />
+    <DisableValidatorArray value="SourceNotDead" />
+    <BuffFlags index="RemoveDamageResponseExhausted" value="0" />
+    <BuffFlags index="RefreshStack" value="1" />
     <MaxStackCount value="4" />
     <DamageResponse>
       <Chance value="1" />
       <Handled value="TalentBucketBlockRemoveSet" />
       <TargetFilters value="Heroic;Structure" />
-      <Priority value="55" />
       <ValidateEffectAliasesOp value="ExcludeHasAny" />
+      <Priority value="55" />
       <ValidateEffectAliases value="IgnorePositiveArmor" />
       <Kind index="Ability" value="0" />
       <ProvideCategories index="Proc" value="1" />
@@ -9586,11 +9635,6 @@
         <ArmorMitigationTable index="Basic" value="75" />
       </ArmorSet>
     </ArmorModification>
-    <BuffFlags index="RemoveDamageResponseExhausted" value="0" />
-    <BuffFlags index="RefreshStack" value="1" />
-    <DisableValidatorArray value="SourceNotDead" />
-    <InfoIcon value="Assets\Textures\storm_ui_icon_talent_block.dds" />
-    <SortIndex value="100" />
   </CBehaviorBuff>
   <CBehaviorBuff id="TalentBucketBlockCharged" parent="CarryBehaviorParent">
     <Alignment value="Positive" />
@@ -9601,6 +9645,7 @@
       <Chance value="1" />
       <Handled value="TalentBucketBlockChargedRemoveSet" />
       <TargetFilters value="Heroic;Structure" />
+      <ValidateEffectAliasesOp value="ExcludeHasAny" />
       <Priority value="55" />
       <Cost>
         <Charge>
@@ -9610,10 +9655,9 @@
           <TimeUse value="5" />
         </Charge>
       </Cost>
+      <ValidateEffectAliases value="IgnorePositiveArmor" />
       <Kind index="Ability" value="0" />
       <ProvideCategories index="Proc" value="1" />
-      <ValidateEffectAliasesOp value="ExcludeHasAny" />
-      <ValidateEffectAliases value="IgnorePositiveArmor" />
     </DamageResponse>
     <Face value="GenericBlockTalentFace" />
     <SortIndex value="100" />
@@ -9649,6 +9693,7 @@
       <Chance value="1" />
       <Handled value="TalentBucketBlockChargedRemoveSetTarget" />
       <TargetFilters value="Heroic;Structure" />
+      <ValidateEffectAliasesOp value="ExcludeHasAny" />
       <Priority value="55" />
       <Cost>
         <Charge>
@@ -9658,10 +9703,9 @@
           <TimeUse value="5" />
         </Charge>
       </Cost>
+      <ValidateEffectAliases value="IgnorePositiveArmor" />
       <Kind index="Ability" value="0" />
       <ProvideCategories index="Proc" value="1" />
-      <ValidateEffectAliasesOp value="ExcludeHasAny" />
-      <ValidateEffectAliases value="IgnorePositiveArmor" />
     </DamageResponse>
     <Face value="GenericBlockTalentFace" />
     <SortIndex value="100" />
@@ -9908,13 +9952,6 @@
     </Modification>
   </CBehaviorBuff>
   <CBehaviorBuff id="DragonShrineActivated" />
-  <CBehaviorBuff id="ElDruinsMightMasteryPathingBlockerTimedLife" parent="StormTimedLife">
-    <Duration value="4" />
-    <ExpireEffect value="StormSuicide" />
-    <Modification>
-      <StateFlags index="Benign" value="1" />
-    </Modification>
-  </CBehaviorBuff>
   <CBehaviorBuff id="HallOfStormsHealBuff">
     <Alignment value="Positive" />
     <Duration value="0.3125" />
@@ -10339,14 +10376,6 @@
     <Period value="1" />
     <PeriodicEffect value="MercLanerSiegeGiantRegenModifyUnit" />
   </CBehaviorBuff>
-  <CBehaviorBuff id="ElDruinsMightSwordTimedLife" parent="StormTimedLife">
-    <Duration value="5" />
-    <FinalEffect value="ElDruinsMightSwordTimedLifeEndSet" />
-    <ExpireEffect value="ElDruinsMightExpireDummy" />
-    <Modification>
-      <StateFlags index="Benign" value="1" />
-    </Modification>
-  </CBehaviorBuff>
   <CBehaviorBuff id="DragonKnightBullRushCaster">
     <Duration value="1.2" />
     <InitialEffect value="DragonKnightBullRushIssueAttackOrder" />
@@ -10370,6 +10399,7 @@
     <InitialEffect value="DragonKnightBullRushKnockbackBehaviorInitialSet" />
     <Modification>
       <BehaviorCategoriesDisable index="DebuffRoot" value="1" />
+      <BehaviorLinkDisableArray value="StormRootSuppressMoving" />
     </Modification>
   </CBehaviorBuff>
   <CBehaviorBuff id="DragonKnightBullRushPuntableDummy" parent="StormReveal">
@@ -10875,12 +10905,6 @@
       <ModifyFraction value="0" />
       <ModifyLimit value="50" />
     </DamageResponse>
-  </CBehaviorBuff>
-  <CBehaviorBuff id="ElDruinsMightSlow" parent="StormSlowParent">
-    <Duration value="2.5" />
-    <Modification>
-      <UnifiedMoveSpeedFactor value="-0.25" />
-    </Modification>
   </CBehaviorBuff>
   <CBehaviorBuff id="OgreBloodlust">
     <Alignment value="Positive" />
@@ -11756,12 +11780,13 @@
   <CBehaviorBuff id="TownRampingArmorShred" parent="StormArmor">
     <Alignment value="Negative" />
     <BuffFlags index="RefreshStack" value="1" />
-    <MaxStackCount value="4" />
+    <MaxStackCount value="2" />
     <Duration value="3" />
     <ArmorModification StackCount="8">
-      <AllArmorBonus value="-5" />
+      <AllArmorBonus value="-20" />
     </ArmorModification>
     <BehaviorCategories index="DebuffVulnerable" value="1" />
+    <InitialEffect value="TownApplyArmorShredCooldown" />
   </CBehaviorBuff>
   <CBehaviorBuff id="AIGoalHighValueMercCamp" parent="CarryBehaviorParent">
     <BehaviorFlags index="Permanent" value="0" />
@@ -11869,6 +11894,14 @@
     <Duration value="1.25" />
     <Modification>
       <UnifiedMoveSpeedFactor value="-0.7" />
+    </Modification>
+  </CBehaviorBuff>
+  <CBehaviorBuff id="MissileSourceRevealer">
+    <Duration value="0.3125" />
+    <Modification>
+      <ModifyFlags index="Reveal" value="1" />
+      <ModifyFlags index="Detected" value="1" />
+      <BehaviorLinkDisableArray value="ShrubStatusController" />
     </Modification>
   </CBehaviorBuff>
 </Catalog>

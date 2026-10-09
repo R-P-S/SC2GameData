@@ -1,4 +1,4 @@
-﻿AI/Name/Computer=Computer
+﻿﻿AI/Name/Computer=Computer
 AI/StartFollowMessage=<c val="0550ff">%follower% AI</c> is now following <c val="0055ff">%leader%</c>, ping again to release.
 AI/StopFollowMessage=<c val="0550ff">%follower% AI</c> is no longer following <c val="0055ff">%leader%</c>.
 AUTHENTICATION_BETA_REGION=Beta
@@ -2342,7 +2342,7 @@ UI/BattleTradeShow/SelectionCountdown=SELECTION TIME REMAINING: %1
 UI/BattleTradeShow/Tandem=Archon Mode
 UI/BattleTradeShow/ThanksForPlaying=Thank you for playing
 UI/BattleUser/BroadcastFormat="%broadcast%"
-UI/BattleUser/ChatAndVoiceSilenced=<s val="SocialTooltipPenalty">This player is currently silenced. They can only Chat with friends and party members, and can only speak in party Voice. This player cannot participate in Hero League games.</s>
+UI/BattleUser/ChatAndVoiceSilenced=<s val="SocialTooltipPenalty">This player is currently silenced. They can only Chat with friends and party members, and can only speak in party Voice. This player cannot participate in Storm League games.</s>
 UI/BattleUser/FriendNoteFormat=%friendNote%
 UI/BattleUser/LookingForMoreChannelInfo=<s val="SocialTooltipStatusCategory"><lang rule="plural" val="%numChannel%">In Channel,In Channels</lang>:</s> 
 UI/BattleUser/LookingForMoreFormat_Names=%names% are looking for more.
@@ -2399,8 +2399,8 @@ UI/BattleUser/PartyFormat_None=<s val="SocialTooltipStatusCategory">Party: Not i
 UI/BattleUser/PartyFormat_Others=<s val="SocialTooltipStatusCategory">Party: In a party with %others%.</s>
 UI/BattleUser/PartyFormat_OthersPlural=%c% others
 UI/BattleUser/PartyFormat_OthersSingular=1 other
-UI/BattleUser/PartyFormat_YourParty=<s val="SocialTooltipStatusCeatory">In your party.</s>
-UI/BattleUser/Silenced=<s val="SocialTooltipPenalty">This player is currently silenced and can only Chat with friends and party members. This player cannot participate in Hero League games.</s>
+UI/BattleUser/PartyFormat_YourParty=<s val="SocialTooltipStatusCategory">In your party.</s>
+UI/BattleUser/Silenced=<s val="SocialTooltipPenalty">This player is currently silenced and can only Chat with friends and party members. This player cannot participate in Storm League games.</s>
 UI/BattleUser/VoiceSilenced=<s val="SocialTooltipPenalty">This player is currently silenced and can only speak in party Voice.</s>
 UI/BattleUserContextMenuAcceptFriend=Accept Friend Invite
 UI/BattleUserContextMenuAddFriend=Add Friend
@@ -2528,6 +2528,7 @@ UI/CREDITS/GROUP_1712=2016 HEROES OF THE STORM CREDITS
 UI/CREDITS/GROUP_1713=2017 HEROES OF THE STORM CREDITS
 UI/CREDITS/GROUP_1714=2018 HEROES OF THE STORM CREDITS
 UI/CREDITS/GROUP_1715=2020 HEROES OF THE STORM CREDITS
+UI/CREDITS/GROUP_1716=2026 HEROES OF THE STORM CREDITS
 UI/CREDITS/GROUP_3365=ART
 UI/CREDITS/GROUP_3366=DESIGN
 UI/CREDITS/GROUP_3367=LEADERSHIP
@@ -2580,7 +2581,7 @@ UI/CREDITS/GROUP_524=ESPORTS
 UI/CREDITS/GROUP_528=WEB & MOBILE
 UI/CREDITS/GROUP_529=VAULT
 UI/CREDITS/GROUP_758=INFORMATION TECHNOLOGY
-UI/CREDITS/OPENING=Heroes 2016 
+UI/CREDITS/OPENING=Heroes 2026
 UI/CREDITS/ROLE_11344=Game Designers
 UI/CREDITS/ROLE_11348=Technical Director
 UI/CREDITS/ROLE_11352=Game Director
@@ -4150,6 +4151,7 @@ UI/GameSites/Site/ICN1=Korea
 UI/GameSites/Site/ICNX=Korea (PTR)
 UI/GameSites/Site/KR1=Korea
 UI/GameSites/Site/KR3=Korea
+UI/GameSites/Site/LAS1=Western United States
 UI/GameSites/Site/LAX1=Western United States
 UI/GameSites/Site/LAXX=Western United States (PTR)
 UI/GameSites/Site/ORD1=Central United States
@@ -4223,7 +4225,7 @@ UI/GemPackPurchase/GemPackDialogPurchaseButton=Purchase
 UI/GemPackPurchase/GemPackDialogTitle=Gem Purchase
 UI/GemPackPurchase/GemTotalAwardString=<IMG path="Assets\Textures\Storm_UI_Store_GemIcon_Medium.dds" alignment="absolutemiddle"/>%gemTotalAward%
 UI/GemPackPurchase/ItemTitlePrice=Item Name <IMG path="Assets\Textures\Storm_UI_Store_GemIcon_Medium.dds" alignment="absolutemiddle"/> 0,000
-UI/GemPackPurchase/NoGemsAvailableDescription=Sorry, there are no gems available at the moment. Please check back later.
+UI/GemPackPurchase/NoGemsAvailableDescription=Sorry, there are no gems available at the moment. Please check back later or go to the Battle.net shop to purchase.
 UI/GemPackPurchase/NoGemsAvailableTitle=No Gems Available
 UI/GemPackPurchase/ProductInfoFormat=%name% %cost%
 UI/GemPackPurchase/Recommended=Recommended
@@ -5599,6 +5601,7 @@ UI/PlayerAnnounce/AbilityReady=<s val="PlayerAnnounceHeroName">%name%</s> <lang 
 UI/PlayerAnnounce/BehaviorDuration=<s val="PlayerAnnounceHeroName">%name%</s> <lang rule="plural" val="%name%">has,have</lang> <s val="PlayerAnnounceAbilityName">%behavior%</s> for <s val="PlayerAnnounceAbilityState"><d time="%duration%" precision="%precision%"/></s>!
 UI/PlayerAnnounce/BehaviorPresent=<s val="PlayerAnnounceHeroName">%name%</s> <lang rule="plural" val="%name%">has,have</lang> <s val="PlayerAnnounceAbilityName">%behavior%</s>!
 UI/PlayerAnnounce/BehaviorStacks=<s val="PlayerAnnounceHeroName">%name%</s> <lang rule="plural" val="%name%">has,have</lang> <s val="PlayerAnnounceAbilityState">%stacks% <lang rule="plural">stack,stacks</lang></s> of <s val="PlayerAnnounceAbilityName">%behavior%</s>!
+UI/PlayerAnnounce/HealingFountain=<s val="PlayerAnnounceHeroName">%name%</s> can use <s val="PlayerAnnounceAbilityName">Healing Fountain</s> in <s val="PlayerAnnounceAbilityState"><d time="%duration%" precision="%precision%"/></s>!
 UI/PlayerAnnounce/LowVital=<s val="PlayerAnnounceHeroName">%name%</s> <lang rule="plural" val="%name%">has,have</lang> <s val="PlayerAnnounceAbilityState">%percent%% %vital%</s>!
 UI/PlayerAnnounce/TooMuchSpam=<c val="ff0000">You have made too many announcements. Try again later.</c>
 UI/PlayerBlockFrame/Blocked=<c val="#ColorWhite">All Communication Blocked</c><n/>Use option icon to unblock communications.
@@ -6064,6 +6067,36 @@ UI/QuestLine/Event/Toys2019/QuestLogButton=Get started!
 UI/QuestLine/Event/Toys2019/QuestLogEmptyText=Open now for funtime with Tickle Mephisto!
 UI/QuestLine/Event/Toys2019/Tooltip/LapCounter=Game Laps completed so far.<n/>Complete a lap to get free Rare New Toy Chest!
 UI/QuestLine/Event/Toys2019/Tooltip/Tokens=Coins collected so far.<n/>Coins are awarded for completing Common Event quests, collect 3 to get a free New Toy Chest!
+UI/QuestLine/Event/Toys2025/Emcee/FirstRepeatableComplete=You completed my task. Now you get a coin! Collect three to get a box full of rewards!
+UI/QuestLine/Event/Toys2025/Emcee/FirstRepeatableStart=Amazing! Now here's your first task...
+UI/QuestLine/Event/Toys2025/Emcee/GameComplete=My lust for vengeance might be sated a little, but our journey has just began. Savour these rewards for now, and prepare yourself for many more cycles of... fun.
+UI/QuestLine/Event/Toys2025/Emcee/GameStart=Here, press the button on the board to roll the dice! You'll receive an important task, or even two, each time you roll. Complete those tasks and get amazing rewards!
+UI/QuestLine/Event/Toys2025/Emcee/Intro=Howdy, friend! You're here so late to play the game? I'm always up for some fun and adventures! 
+UI/QuestLine/Event/Toys2025/Emcee/Name=Tickle Mephisto
+UI/QuestLine/Event/Toys2025/Emcee/QuestUnique1Complete=Has Qhira's cosmic adventure come to an end? Did you have fun... collecting those... trophies? Good!
+UI/QuestLine/Event/Toys2025/Emcee/QuestUnique1Start=So now, there's a... special task I have for you. Qhira craves for new trophies, and you must aid her in her hunt. Start with collecting fifty heads.
+UI/QuestLine/Event/Toys2025/Emcee/QuestUnique2Complete=Ehehehe, how I love the smell of molten plasic and burnt plush. You and your minions did well.
+UI/QuestLine/Event/Toys2025/Emcee/QuestUnique2Start=Hehehe, there is a great battle... er... huddle... raging ahead. You must help the Green Army to slaughter... I mean, pacify as many foes as possible. Have... fun.
+UI/QuestLine/Event/Toys2025/Emcee/QuestUnique3Complete=Did you learn much of the plushthirst? Does it burn hotter with each battle... I mean... cuddle? Nice! Let me give you rewards!
+UI/QuestLine/Event/Toys2025/Emcee/QuestUnique3Start=Ah, Lil Butcher, my good... friend. His hunger for fresh plastic, plush, cloth, and rubber is unyielding. Follow him in his onslaught!
+UI/QuestLine/Event/Toys2025/Emcee/QuestUnique4Complete=I'm sure the allies you gathered have given your foes some nice... tickling. Behold, the treasure.
+UI/QuestLine/Event/Toys2025/Emcee/QuestUnique4Start=You can't win battles alone, no matter how bright your hatred burns. Recruit mercenaries on the battlefields, and let them march on enemy strongholds... or sandboxes.
+UI/QuestLine/Event/Toys2025/Emcee/QuestUnique5Complete=At long last, this little puny bear has learnt his lesson. You did well, my friend, and your rewards are well earned.
+UI/QuestLine/Event/Toys2025/Emcee/QuestUnique5Start=It's time! Take revenge on the Cuddle Bear Stitches and his allies, rip his stuffing out, sever his knots, and burn his plush hide!
+UI/QuestLine/Event/Toys2025/Emcee/RepeatableEmcee/1=Such a lust for revenge... Admirable! Here's your reward.
+UI/QuestLine/Event/Toys2025/Emcee/RepeatableEmcee/10=Looking at your dedication I'm starting to think I might not be the Prime around here.
+UI/QuestLine/Event/Toys2025/Emcee/RepeatableEmcee/2=What a useful... er, I mean... nice friend you are, keeping on doing my bidding.
+UI/QuestLine/Event/Toys2025/Emcee/RepeatableEmcee/3=Good! Here's another chest of mysteries.
+UI/QuestLine/Event/Toys2025/Emcee/RepeatableEmcee/4=I never expected to meet such a passionate... follower.
+UI/QuestLine/Event/Toys2025/Emcee/RepeatableEmcee/5=One more defeat for our enemies! Enjoy your prize.
+UI/QuestLine/Event/Toys2025/Emcee/RepeatableEmcee/6=I'm starting to think I might soon run out of... presents for your service.
+UI/QuestLine/Event/Toys2025/Emcee/RepeatableEmcee/7=You again? You know, my hatred has started to thin out a little. But well, a promise is a promise. Take this.
+UI/QuestLine/Event/Toys2025/Emcee/RepeatableEmcee/8=Let me give you a good reward for your dedication...
+UI/QuestLine/Event/Toys2025/Emcee/RepeatableEmcee/9=You want even more rewards?
+UI/QuestLine/Event/Toys2025/QuestLogButton=Get started!
+UI/QuestLine/Event/Toys2025/QuestLogEmptyText=Open now for funtime with Tickle Mephisto!
+UI/QuestLine/Event/Toys2025/Tooltip/LapCounter=Game Laps completed so far.<n/>Complete a lap to get free Rare New Toy Chest!
+UI/QuestLine/Event/Toys2025/Tooltip/Tokens=Coins collected so far.<n/>Coins are awarded for completing Common Event quests, collect 3 to get a free New Toy Chest!
 UI/QuestLineDecision/Action/Accept=Lock me in!
 UI/QuestLineDecision/Action/AcceptQuestLine=Tag me in!
 UI/QuestLineDecision/Action/Back=Take me back!

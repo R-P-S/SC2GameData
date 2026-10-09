@@ -36,7 +36,7 @@ void libMSC2_InitVariables () {
 
     libMSC2_gv_mMSC2NukePickupRange_C = 2.0;
     libMSC2_gv_mMSC2EventState = libMSC2_ge_MMSC2EventStates_NoEvent;
-    libMSC2_gv_mMSC2FourWarheadsSpawn = true;
+    libMSC2_gv_mMSC2ThreeWarheadsSpawn = true;
     libMSC2_gv_mMSC2TerrazineMainEventTimer = TimerCreate();
     libMSC2_gv_mMSC2BuiltWarheadsActive = UnitGroupEmpty();
     for (init_i = 0; init_i <= libMSC2_gv_mMSC2BuiltWarheadsCountMax_C; init_i += 1) {
@@ -155,7 +155,7 @@ int libMSC2_gf_MMSC2DetermineDoubleWarheadSpawnLane () {
     PlayerGroupAdd(lv_terrazineLaneGroup, 1);
     PlayerGroupAdd(lv_terrazineLaneGroup, 2);
     PlayerGroupAdd(lv_terrazineLaneGroup, 3);
-    if ((libMSC2_gv_mMSC2FourWarheadsSpawn == true)) {
+    if ((libMSC2_gv_mMSC2ThreeWarheadsSpawn == true)) {
         PlayerGroupRemove(lv_terrazineLaneGroup, libMSC2_gv_mMSC2LastDoubleWarheadLane);
     }
     else {
@@ -208,7 +208,7 @@ void libMSC2_gf_MMSC2WarningStarts (int lp_specialLane) {
     lv_itLane = 1;
     for ( ; ( (autoF2A0A299_ai >= 0 && lv_itLane <= autoF2A0A299_ae) || (autoF2A0A299_ai < 0 && lv_itLane >= autoF2A0A299_ae) ) ; lv_itLane += autoF2A0A299_ai ) {
         if ((lv_itLane == lp_specialLane)) {
-            if ((libMSC2_gv_mMSC2FourWarheadsSpawn == true)) {
+            if ((libMSC2_gv_mMSC2ThreeWarheadsSpawn == true)) {
                 libMSC2_gf_MMSC2CreateCanisterSpawningSignal(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_leftCanisterPoint);
                 libMSC2_gf_MMSC2CreateCanisterSpawningSignal(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_rightCanisterPoint);
                 libMSC2_gf_MMSC2CanisterPlaformPlayBirthAnimations(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_leftCanisterDoodad);
@@ -217,8 +217,27 @@ void libMSC2_gf_MMSC2WarningStarts (int lp_specialLane) {
 
         }
         else {
-            libMSC2_gf_MMSC2CreateCanisterSpawningSignal(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_middleCanisterPoint);
-            libMSC2_gf_MMSC2CanisterPlaformPlayBirthAnimations(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_middleCanisterDoodad);
+            if ((libMSC2_gv_mMSC2ThreeWarheadsSpawn == true)) {
+                if ((ModI(libMSC2_gv_mMSC2EventTracker, 2) == 1)) {
+                    if ((ModI(lv_itLane, 2) == 1)) {
+                        libMSC2_gf_MMSC2CreateCanisterSpawningSignal(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_middleCanisterPoint);
+                        libMSC2_gf_MMSC2CanisterPlaformPlayBirthAnimations(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_middleCanisterDoodad);
+                    }
+
+                }
+                else {
+                    if ((ModI(lv_itLane, 2) == 1)) {
+                    }
+                    else {
+                        libMSC2_gf_MMSC2CreateCanisterSpawningSignal(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_middleCanisterPoint);
+                        libMSC2_gf_MMSC2CanisterPlaformPlayBirthAnimations(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_middleCanisterDoodad);
+                    }
+                }
+            }
+            else {
+                libMSC2_gf_MMSC2CreateCanisterSpawningSignal(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_middleCanisterPoint);
+                libMSC2_gf_MMSC2CanisterPlaformPlayBirthAnimations(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_middleCanisterDoodad);
+            }
         }
     }
 }
@@ -229,24 +248,41 @@ void libMSC2_gf_MMSC2SetupandStartPreview (int lp_specialLane) {
     int lv_itPlayer;
 
     // Automatic Variable Declarations
-    int auto16C266E2_ae;
-    const int auto16C266E2_ai = 1;
+    int auto901C1127_ae;
+    const int auto901C1127_ai = 1;
 
     // Variable Initialization
 
     // Implementation
-    auto16C266E2_ae = libGame_gv_laneCount;
+    auto901C1127_ae = libGame_gv_laneCount;
     lv_itLane = 1;
-    for ( ; ( (auto16C266E2_ai >= 0 && lv_itLane <= auto16C266E2_ae) || (auto16C266E2_ai < 0 && lv_itLane >= auto16C266E2_ae) ) ; lv_itLane += auto16C266E2_ai ) {
+    for ( ; ( (auto901C1127_ai >= 0 && lv_itLane <= auto901C1127_ae) || (auto901C1127_ai < 0 && lv_itLane >= auto901C1127_ae) ) ; lv_itLane += auto901C1127_ai ) {
         if ((lv_itLane == lp_specialLane)) {
-            if ((libMSC2_gv_mMSC2FourWarheadsSpawn == true)) {
+            if ((libMSC2_gv_mMSC2ThreeWarheadsSpawn == true)) {
                 libMSC2_gf_MMSC2CreateCanisterPreview(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_leftCanisterPoint);
                 libMSC2_gf_MMSC2CreateCanisterPreview(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_rightCanisterPoint);
             }
 
         }
         else {
-            libMSC2_gf_MMSC2CreateCanisterPreview(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_middleCanisterPoint);
+            if ((libMSC2_gv_mMSC2ThreeWarheadsSpawn == true)) {
+                if ((ModI(libMSC2_gv_mMSC2EventTracker, 2) == 1)) {
+                    if ((ModI(lv_itLane, 2) == 1)) {
+                        libMSC2_gf_MMSC2CreateCanisterPreview(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_middleCanisterPoint);
+                    }
+
+                }
+                else {
+                    if ((ModI(lv_itLane, 2) == 1)) {
+                    }
+                    else {
+                        libMSC2_gf_MMSC2CreateCanisterPreview(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_middleCanisterPoint);
+                    }
+                }
+            }
+            else {
+                libMSC2_gf_MMSC2CreateCanisterPreview(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_middleCanisterPoint);
+            }
         }
     }
 }
@@ -343,6 +379,7 @@ void libMSC2_gf_MMSC2ClearWarheadPreviews () {
 void libMSC2_gf_MMSC2SpawnNukeCanisters (int lp_specialSpawnLane) {
     // Variable Declarations
     int lv_itLane;
+    int lv_warheadsSpawned;
 
     // Automatic Variable Declarations
     int auto1B0D1057_ae;
@@ -355,14 +392,35 @@ void libMSC2_gf_MMSC2SpawnNukeCanisters (int lp_specialSpawnLane) {
     lv_itLane = 1;
     for ( ; ( (auto1B0D1057_ai >= 0 && lv_itLane <= auto1B0D1057_ae) || (auto1B0D1057_ai < 0 && lv_itLane >= auto1B0D1057_ae) ) ; lv_itLane += auto1B0D1057_ai ) {
         if ((lv_itLane == lp_specialSpawnLane)) {
-            if ((libMSC2_gv_mMSC2FourWarheadsSpawn == true)) {
+            if ((libMSC2_gv_mMSC2ThreeWarheadsSpawn == true)) {
                 libMSC2_gf_MMSC2BuiltWarheadSpawned(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_leftCanisterPoint, libMSC2_gv_mMSC2TerrazineReward_C);
                 libMSC2_gf_MMSC2BuiltWarheadSpawned(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_rightCanisterPoint, libMSC2_gv_mMSC2TerrazineReward_C);
+                lv_warheadsSpawned = (lv_warheadsSpawned + 2);
             }
 
         }
         else {
-            libMSC2_gf_MMSC2BuiltWarheadSpawned(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_middleCanisterPoint, libMSC2_gv_mMSC2TerrazineReward_C);
+            if ((libMSC2_gv_mMSC2ThreeWarheadsSpawn == true)) {
+                if ((ModI(libMSC2_gv_mMSC2EventTracker, 2) == 1)) {
+                    if ((ModI(lv_itLane, 2) == 1)) {
+                        libMSC2_gf_MMSC2BuiltWarheadSpawned(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_middleCanisterPoint, libMSC2_gv_mMSC2TerrazineReward_C);
+                        lv_warheadsSpawned = (lv_warheadsSpawned + 1);
+                    }
+
+                }
+                else {
+                    if ((ModI(lv_itLane, 2) == 1)) {
+                    }
+                    else {
+                        libMSC2_gf_MMSC2BuiltWarheadSpawned(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_middleCanisterPoint, libMSC2_gv_mMSC2TerrazineReward_C);
+                        lv_warheadsSpawned = (lv_warheadsSpawned + 1);
+                    }
+                }
+            }
+            else {
+                libMSC2_gf_MMSC2BuiltWarheadSpawned(libMSC2_gv_mMSC2WarheadData[lv_itLane].lv_middleCanisterPoint, libMSC2_gv_mMSC2TerrazineReward_C);
+                lv_warheadsSpawned = (lv_warheadsSpawned + 1);
+            }
         }
     }
     SoundPlayForPlayer(SoundLink("UI_Game_Ping_Warhead_Nukes_Ready", -1), c_maxPlayers, PlayerGroupAll(), 100.0, 0.0);
@@ -370,12 +428,7 @@ void libMSC2_gf_MMSC2SpawnNukeCanisters (int lp_specialSpawnLane) {
     TimerStart(libMSC2_gv_mMSC2BuiltWarheadReminderTimer, libMSC2_gv_mMSC2WarheadPickupReminderDelay_C, false, c_timeGame);
     StatEventCreate("WarheadJunctionNukesSpawned");
     StatEventAddDataFixed(StatEventLastCreated(), "GameTime", libUIUI_gf_HeroesGameTime());
-    if ((libMSC2_gv_mMSC2FourWarheadsSpawn == true)) {
-        StatEventAddDataInt(StatEventLastCreated(), "NukeSpawnedCount", 4);
-    }
-    else {
-        StatEventAddDataInt(StatEventLastCreated(), "NukeSpawnedCount", 2);
-    }
+    StatEventAddDataInt(StatEventLastCreated(), "NukeSpawnedCount", lv_warheadsSpawned);
     StatEventSend(StatEventLastCreated());
 }
 
@@ -618,6 +671,21 @@ void libMSC2_gf_MMSC2ShowHideNukeTextTagsForPlayer (bool lp_showHide, int lp_pla
     }
 }
 
+void libMSC2_gf_MMSC2NukeDamageScalingOnPickup (int lp_playerIndex) {
+    // Variable Declarations
+    int lv_damageScalesForAlignment;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+
+    // Implementation
+    lv_damageScalesForAlignment = (libMSC2_gv_mMSC2NukeDamageScalesNeeded - libMSC2_gv_mMSC2NukeDamageScalesDone[lp_playerIndex]);
+    CatalogFieldValueModify(c_gameCatalogEffect, "NukeOuterImpactDamage", "Amount", lp_playerIndex, FixedToString((70.0 * lv_damageScalesForAlignment), c_fixedPrecisionAny), c_upgradeOperationAdd);
+    CatalogFieldValueModify(c_gameCatalogEffect, "NukeOuterImpactDamageStructure", "Amount", lp_playerIndex, FixedToString((70.0 * lv_damageScalesForAlignment), c_fixedPrecisionAny), c_upgradeOperationAdd);
+    CatalogFieldValueModify(c_gameCatalogEffect, "NukeStructureBurnPeriodicDamage", "Amount", lp_playerIndex, FixedToString((4.8 * lv_damageScalesForAlignment), c_fixedPrecisionAny), c_upgradeOperationAdd);
+    libMSC2_gv_mMSC2NukeDamageScalesDone[lp_playerIndex] += lv_damageScalesForAlignment;
+}
+
 trigger auto_libMSC2_gf_MMSC2ArmNukeForUnit_Trigger = null;
 unit auto_libMSC2_gf_MMSC2ArmNukeForUnit_lp_unit;
 
@@ -658,6 +726,7 @@ bool auto_libMSC2_gf_MMSC2ArmNukeForUnit_TriggerFunc (bool testConds, bool runAc
     UnitModifyCooldown(lv_varUnit, "Abil/MapMechanicAbilityTarget", libMSC2_gv_mMSC2NukeArmingDuration_C, c_cooldownOperationMax);
     libMSC2_gf_MMSC2ShowHideNukeTextTagsForPlayer(false, lv_player);
     libMSC2_gf_MMSC2NukeButtonStartFlashingForPlayer(lv_player);
+    libMSC2_gf_MMSC2NukeDamageScalingOnPickup(lv_player);
     libGame_gf_ScoreValuesReportIntegerValueAndLog(lv_player, "CarriedMechanic", 1);
     libMSC2_gv_mMSC2_Nuke_Info.lv_playerNukeStateChanged[lv_player] = true;
     libNtve_gf_SendActorMessageToUnit(libMSC2_gv_nukeSiloUnit[lv_allyTeam], "Signal Activate");
@@ -1681,7 +1750,7 @@ bool libMSC2_gt_MMSC2MainThread_Func (bool testConds, bool runActions) {
         libMSC2_gf_MMSC2ClearCanisterSpawningSignals();
         libMSC2_gv_mMSC2EventState = libMSC2_ge_MMSC2EventStates_NukesActive;
         libMSC2_gf_MMSC2SpawnNukeCanisters(libMSC2_gv_mMSC2SpecialSpawnLane);
-        if ((libMSC2_gv_mMSC2FourWarheadsSpawn == true)) {
+        if ((libMSC2_gv_mMSC2ThreeWarheadsSpawn == true)) {
             libMSC2_gv_mMSC2LastDoubleWarheadLane = libMSC2_gv_mMSC2SpecialSpawnLane;
         }
         else {
@@ -1695,10 +1764,10 @@ bool libMSC2_gt_MMSC2MainThread_Func (bool testConds, bool runActions) {
         libMSC2_gv_mMSC2EventTracker = (libMSC2_gv_mMSC2EventTracker + 1);
         TimerStart(libMSC2_gv_mMSC2TerrazineMainEventTimer, (libMSC2_gv_mMSC2RepeatEventDelay_C + libMSC2_gv_mMSC2EventWarningDelayGasCanister_C + libMSC2_gv_mMSC2NukeExpireDuration_C), false, c_timeGame);
         if ((libMSC2_gv_mMSC2EventTracker == 3)) {
-            libMSC2_gv_mMSC2FourWarheadsSpawn = true;
+            libMSC2_gv_mMSC2ThreeWarheadsSpawn = true;
         }
         else {
-            libMSC2_gv_mMSC2FourWarheadsSpawn = false;
+            libMSC2_gv_mMSC2ThreeWarheadsSpawn = false;
         }
         libMSC2_gv_mMSC2EventState = libMSC2_ge_MMSC2EventStates_NoEvent;
         libMSC2_gv_mMSC2SpecialSpawnLane = libMSC2_gf_MMSC2DetermineDoubleWarheadSpawnLane();
@@ -1906,33 +1975,14 @@ void libMSC2_gt_MMSC2BuiltWarheadReminderTimerExpires_Init () {
 // Trigger: MMSC2 Nuke Damage Scaling
 //--------------------------------------------------------------------------------------------------
 bool libMSC2_gt_MMSC2NukeDamageScaling_Func (bool testConds, bool runActions) {
-    // Variable Declarations
-    int lv_playerIndex;
-
     // Automatic Variable Declarations
-    playergroup autoF6E0373D_g;
-
-    // Variable Initialization
-
     // Actions
     if (!runActions) {
         return true;
     }
 
-    autoF6E0373D_g = PlayerGroupAll();
-    lv_playerIndex = -1;
-    while (true) {
-        	lv_playerIndex = PlayerGroupNextPlayer(autoF6E0373D_g, lv_playerIndex);
-        	if (lv_playerIndex<0) { break; }
-        	CatalogFieldValueModify(c_gameCatalogEffect, "NukeOuterImpactDamage", "Amount", lv_playerIndex, "70", c_upgradeOperationAdd);
-    }
-    libMSC2_gv_mMSC2NukeDamageScalesDone += 1;
-    if ((libMSC2_gv_mMSC2NukeDamageScalesDone == 25)) {
-        TriggerEnable(TriggerGetCurrent(), false);
-    }
-    else {
-        TimerStart(libMSC2_gv_mMSC2NukeDamageScalingTimer, libMSC2_gv_mMSC2NukeDamageScalingDelay_C, false, c_timeGame);
-    }
+    libMSC2_gv_mMSC2NukeDamageScalesNeeded += 1;
+    TimerStart(libMSC2_gv_mMSC2NukeDamageScalingTimer, libMSC2_gv_mMSC2NukeDamageScalingDelay_C, false, c_timeGame);
     return true;
 }
 
@@ -2265,6 +2315,8 @@ void libMSC2_gt_MMSC2NukeDamageDealt_Init () {
     libMSC2_gt_MMSC2NukeDamageDealt = TriggerCreate("libMSC2_gt_MMSC2NukeDamageDealt_Func");
     TriggerAddEventUnitDamaged(libMSC2_gt_MMSC2NukeDamageDealt, null, c_unitDamageTypeAny, c_unitDamageEither, "NukeOuterImpactDamage");
     TriggerAddEventUnitDamaged(libMSC2_gt_MMSC2NukeDamageDealt, null, c_unitDamageTypeAny, c_unitDamageEither, "NukeOuterImpactHeroDamage");
+    TriggerAddEventUnitDamaged(libMSC2_gt_MMSC2NukeDamageDealt, null, c_unitDamageTypeAny, c_unitDamageEither, "NukeOuterImpactDamageStructure");
+    TriggerAddEventUnitDamaged(libMSC2_gt_MMSC2NukeDamageDealt, null, c_unitDamageTypeAny, c_unitDamageEither, "NukeStructureBurnPeriodicDamage");
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -2331,6 +2383,26 @@ bool libMSC2_gt_MMSC2PlayerDieswithNuke_Func (bool testConds, bool runActions) {
 void libMSC2_gt_MMSC2PlayerDieswithNuke_Init () {
     libMSC2_gt_MMSC2PlayerDieswithNuke = TriggerCreate("libMSC2_gt_MMSC2PlayerDieswithNuke_Func");
     libGame_gf_HeroKilled(libMSC2_gt_MMSC2PlayerDieswithNuke);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: MMSC2 Reveal Nuke Caster
+//--------------------------------------------------------------------------------------------------
+bool libMSC2_gt_MMSC2RevealNukeCaster_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    UnitBehaviorAdd(EventUnit(), "NukeRevealer", libGame_gv_teams[libGame_gf_EnemyTeamNumberOfPlayer(UnitGetOwner(EventUnit()))].lv_core, 1);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void libMSC2_gt_MMSC2RevealNukeCaster_Init () {
+    libMSC2_gt_MMSC2RevealNukeCaster = TriggerCreate("libMSC2_gt_MMSC2RevealNukeCaster_Func");
+    TriggerAddEventUnitBehaviorChange(libMSC2_gt_MMSC2RevealNukeCaster, null, "CallingDownNuke", c_unitBehaviorChangeCreate);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -2907,6 +2979,7 @@ void libMSC2_InitTriggers () {
     libMSC2_gt_MMSC2NukeUsed_Init();
     libMSC2_gt_MMSC2NukeDamageDealt_Init();
     libMSC2_gt_MMSC2PlayerDieswithNuke_Init();
+    libMSC2_gt_MMSC2RevealNukeCaster_Init();
     libMSC2_gt_MMSC2DroppedWarheadSpawned_Init();
     libMSC2_gt_MMSC2DroppedWarheadChannelStarted_Init();
     libMSC2_gt_MMSC2DroppedWarheadCaptured_Init();

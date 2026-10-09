@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
+  <const id="$KaelthasFlamestrikeRange" value="10.75" />
+  <const id="$KaelthasFlamethrowerRangeModifier" value="0.4" />
+  <const id="$KaelthasFlamethrowerRangeIncrease" value="*($KaelthasFlamestrikeRange $KaelthasFlamethrowerRangeModifier)" evaluateAsExpression="1" />
+  <const id="$KaelthasConvectionFlamestrikeDamageBonusPerStack" value="0" />
+  <const id="$KaelthasConvectionHitsNeededToMilestone" value="20" />
+  <const id="$KaelthasConvectionFlamestrikeDamageBonusPerMilestone" value="200" />
+  <const id="$KalthasConvectionHealthBonusPerMilestone" value="100" />
+  <const id="$KaelthasPhoenixWeaponDamageAmount" value="84" />
+  <const id="$KaelthasPhoenixWeaponSplashModifier" value="0.5" />
+  <const id="$KaelthasPhoneixWeaponSplashDamageAmount" value="*($KaelthasPhoenixWeaponDamageAmount $KaelthasPhoenixWeaponSplashModifier)" evaluateAsExpression="1" />
+  <const id="$KaelthasPhoneixRebirthMaxCharges" value="3" />
   <CAbilAttack id="KaelthasPhoenixAttack" parent="attack">
     <CmdButtonArray index="Execute">
       <Flags index="IgnoreUser" value="1" />
@@ -33,12 +44,13 @@
     <PrepEffect value="DismountDecloakCasterSet" />
     <Effect value="KaelthasFlamestrikeInitialSet" />
     <Flags index="ClearLastMoveTarget" value="1" />
+    <Flags index="RangeUseCasterRadius" value="0" />
     <Flags index="RequireTargetVision" value="0" />
     <Cost>
       <Vital index="Energy" value="70" />
       <Cooldown TimeUse="7" />
     </Cost>
-    <Range value="10" />
+    <Range value="$KaelthasFlamestrikeRange" />
     <RangeSlop value="5" />
     <Arc value="360" />
     <CastIntroTime value="0.25" />
@@ -66,7 +78,7 @@
     <UninterruptibleArray index="Cast" value="1" />
     <UninterruptibleArray index="Channel" value="1" />
     <UninterruptibleArray index="Finish" value="1" />
-    <CursorEffect value="KaelthasGravityLapseMissileScan" />
+    <CursorEffect value="KaelthasGravityLapseSearch" />
     <CmdButtonArray index="Execute" DefaultButtonFace="KaelthasGravityLapse">
       <Flags index="AllowSelfCast" value="0" />
     </CmdButtonArray>
@@ -104,6 +116,7 @@
     <RangeSlop value="5" />
     <Arc value="360" />
     <CastIntroTime value="0.1" />
+    <CursorEffect value="KaelthasPhoenixMissileScan" />
     <UninterruptibleArray index="Cast" value="1" />
     <UninterruptibleArray index="Channel" value="1" />
     <UninterruptibleArray index="Finish" value="1" />
@@ -128,14 +141,24 @@
     <ExternalAngle value="59.9963" />
     <MaxCount value="1" />
   </CAbilArmMagazine>
-  <CAbilEffectTarget id="KaelthasPhoenixRetarget">
+  <CAbilEffectTarget id="KaelthasPhoenixRetargetPhoenixAbility">
     <PrepEffect value="DismountDecloakCasterSet" />
-    <Effect value="KaelthasPhoenixRetargetSet" />
+    <Effect value="KaelthasPhoenixRetargetPhoenixCastSet" />
     <Flags index="ClearLastAttackTarget" value="1" />
     <Flags index="RequireTargetVision" value="0" />
     <Flags index="Transient" value="1" />
+    <Cost>
+      <Charge>
+        <CountMax value="$KaelthasPhoneixRebirthMaxCharges" />
+        <CountStart value="$KaelthasPhoneixRebirthMaxCharges" />
+        <CountUse value="1" />
+        <Location value="Player" />
+      </Charge>
+      <Cooldown Location="Player" TimeUse="1" />
+    </Cost>
     <Range value="10" />
     <Arc value="360" />
+    <CursorEffect value="KaelthasPhoenixMissileScan" />
     <CmdButtonArray index="Execute" DefaultButtonFace="KaelthasPhoenixRetarget" Requirements="KaelthasHasPhoenixRetargetReady">
       <Flags index="AllowSelfCast" value="0" />
       <Flags index="ToSelection" value="1" />
@@ -143,6 +166,17 @@
     <ParentAbil value="KaelthasPhoenix" />
     <CursorRangeFlags index="ClampMin" value="1" />
     <CursorRangeFlags index="ClampMax" value="1" />
+    <AbilityCategories index="TargetAcrossMapPlane" value="1" />
+  </CAbilEffectTarget>
+  <CAbilEffectTarget id="KaelthasPhoenixRetarget">
+    <Effect value="KaelthasPhoenixRetargetSet" />
+    <Flags index="RequireTargetVision" value="0" />
+    <Flags index="Transient" value="1" />
+    <Range value="500" />
+    <Arc value="360" />
+    <CmdButtonArray index="Execute" DefaultButtonFace="KaelthasPhoenixRetarget">
+      <Flags index="IgnoreUser" value="1" />
+    </CmdButtonArray>
     <AbilityCategories index="TargetAcrossMapPlane" value="1" />
   </CAbilEffectTarget>
   <CAbilEffectTarget id="KaelthasPyroblast">
@@ -197,14 +231,18 @@
     <MinAccumulation value="0" />
   </CAccumulatorToken>
   <CAccumulatorToken id="KaelthasFlamestrikeConvectionAccumulator" parent="BaseTokenAccumulator">
-    <MaxAccumulation value="200" />
+    <MaxAccumulation value="65535" />
     <ApplicationRule value="Add" />
     <TokenId value="KaelthasFlamestrikeConvectionQuestToken" />
-    <Scale value="5" />
+    <Scale value="$KaelthasConvectionFlamestrikeDamageBonusPerStack" />
     <UnitSource Value="Source" />
     <MinAccumulation value="0" />
   </CAccumulatorToken>
-  <CActorQuad id="KaelthasPhoenixRetargetGuide" parent="StormGuideVisualQuadDownScaled" abil="KaelthasPhoenixRetarget">
+  <CAccumulatorToken id="KaelthasFlamestrikeConvectionMilestoneTokenCountAccumulator" parent="BaseTokenAccumulator">
+    <ApplicationRule value="Add" />
+    <TokenId value="KaelthasFlamestrikeConvectionMilestoneToken" />
+  </CAccumulatorToken>
+  <CActorQuad id="KaelthasPhoenixRetargetGuide" parent="StormGuideVisualQuadDownScaled" abil="KaelthasPhoenixRetargetPhoenixAbility">
     <Height value="10.000000" />
     <Width value="1.500000" />
   </CActorQuad>
@@ -423,7 +461,7 @@
   </CActorModel>
   <CActorModel id="KaelthasPhoenixWeaponAoEImpact" parent="StormModelAnimationStyleOneShotUnit">
     <Preload index="0" value="KaelthasPhoenixWeaponImpact" />
-    <On Terms="Effect.KaelthasPhoenixWeaponAoEDummy.Start; At Target" Send="Create" />
+    <On Terms="Effect.KaelthasPhoenixWeaponSplashImpactSet.Start; At Target" Send="Create" />
     <On Terms="ActorCreation" Send="AnimPlay Birth Birth" />
     <HostSiteOps Ops="SOpAttachCenter" />
   </CActorModel>
@@ -676,7 +714,7 @@
   </CActorSplat>
   <CActorRange id="KaelthasFlamestrikeRange" parent="StormRangeAbilPlusSplat" abil="KaelthasFlamestrike" />
   <CActorSplat id="KaelthasFlamestrikeRangeSplat" parent="StormRangeSplat">
-    <Scale value="11.125000" />
+    <Scale value="$KaelthasFlamestrikeRange" />
   </CActorSplat>
   <CActorModel id="KaelthasFlamestrikeWarning" parent="StormModelAnimationStyleContinuous">
     <On Terms="Effect.KaelthasFlamestrikeCreatePersistent.Start" Send="Create" />
@@ -861,6 +899,19 @@
     <Host Subject="_Unit" />
     <Scale value="1.200000" />
   </CActorModel>
+  <CActorModel id="KaelthasLivingBombInstantlyExplosionModel" parent="StormModelAnimationStyleOneShot">
+    <On Terms="ActorCreation" Send="Create KaelthasLivingBombExplosionSound" />
+    <On Terms="Effect.KaelthasLivingBombTargetDeadSet.Start; At Effect" Send="Create" />
+    <On Terms="Effect.KaelthasLivingBombTargetDeadSet.Start; At Effect" Send="Create KaelthasLivingBombInstantExplosionRing" />
+    <Remove Terms="ActorOrphan" Send="AnimBracketStop BSD" />
+    <Model value="KaelthasLivingBombExplosion" />
+    <Scale value="1.200000" />
+  </CActorModel>
+  <CActorModel id="KaelthasLivingBombInstantExplosionRing" parent="StormModelAnimationStyleOneShot">
+    <Remove Terms="ActorOrphan" Send="AnimBracketStop BSD" />
+    <Model value="KaelthasLivingBombExplosionRing" />
+    <HostSiteOps Ops="SOpTargetPoint" HoldPosition="1" HoldRotation="1" />
+  </CActorModel>
   <CActorSound id="KaelthasLivingBombExplosionSound" parent="SoundOneShot">
     <Sound value="Kaelthas_LivingBomb_Explode" />
     <Host Subject="::Creator" />
@@ -878,22 +929,20 @@
     <HostEndSiteOps Ops="SOpTargetPoint SOpHigherBy3" />
     <Magnitude value="40.000000" />
     <Radius value="1.750000" />
-    <On Terms="Effect.KaelthasGravityLapseMissileScan.Start" Send="Create" />
+    <On Terms="Effect.KaelthasGravityLapseSearch.Start" Send="Create" />
     <Duration value="0.150000" />
   </CActorForceCylinder>
   <CActorQuad id="KaelthasGravityLapseGuideVisual" parent="StormGuideVisualQuadDownClosestFantasy" abil="KaelthasGravityLapse">
     <Height value="10.000000" />
     <Width value="1.750000" />
   </CActorQuad>
-  <CActorAction id="KaelthasGravityLapseActionActor" parent="GenericAttackPointStorm" effectLaunch="KaelthasGravityLapseLaunchMissile">
+  <CActorAction id="KaelthasGravityLapseActionActor" parent="GenericAttackPointStorm" effectImpact="KaelthasGravityLapseTerminateDummy" effectLaunch="KaelthasGravityLapseLaunchMissile">
     <LaunchAttachQuery Methods="Hardpoint 0" />
     <Missile value="KaelthasGravityLapseMissile" />
   </CActorAction>
-  <CActorAction id="KaelthasGravityLapseNetherWindAttack" parent="GenericAttackPointStorm" effectImpact="KaelthasGravityLapseTerminateDummy" effectLaunch="KaelthasGravityLapseNetherWindLaunchMissile">
-    <Missile value="KaelthasGravityLapseMissile" />
+  <CActorAction id="KaelthasGravityLapseEnhancedActionActor" parent="GenericAttackPointStorm" effectImpact="KaelthasGravityLapseTerminateDummy" effectLaunch="KaelthasGravityLapseEnhancedLaunchMissile">
     <LaunchAttachQuery Methods="Hardpoint 0" />
-    <ImpactPointSiteOps Ops="SOpTargetPointStationary KaelthasGravityLapseMissileImpactOffset" />
-    <ForceCommencementFrom value="KaelthasGravityLapseNetherWindLaunchMissile" />
+    <Missile value="KaelthasGravityLapseMissile" />
   </CActorAction>
   <CActorMissile id="KaelthasGravityLapseMissile" parent="StormMissileWithDeath" unitName="KaelthasGravityLapseMissile">
     <On Terms="ActorCreation" Send="Create KaelthasGravityLapseLaunchSound" />
@@ -1003,7 +1052,7 @@
   <CActorSplat id="KaelthasPhoenixRangeSplat" parent="StormRangeSplat">
     <Scale value="10.500000" />
   </CActorSplat>
-  <CActorRange id="KaelthasPhoenixRetargetRange" parent="StormRangeAbilPlusSplat" abil="KaelthasPhoenixRetarget" />
+  <CActorRange id="KaelthasPhoenixRetargetRange" parent="StormRangeAbilPlusSplat" abil="KaelthasPhoenixRetargetPhoenixAbility" />
   <CActorSplat id="KaelthasPhoenixRetargetRangeSplat" parent="StormRangeSplat">
     <Scale value="10.500000" />
   </CActorSplat>
@@ -1059,7 +1108,7 @@
     <CustomUnitStatusFrame value="UnitStatus/IndestructibleTimedUnitStatusFrameTemplate" />
     <UnitIcon value="Assets\Textures\storm_temp_war3_btnmarkoffire.dds" />
   </CActorUnit>
-  <CActorSplat id="KaelthasRetargetPhoenixCursor" parent="StormGuideVisualCircle" abil="KaelthasPhoenixRetarget">
+  <CActorSplat id="KaelthasRetargetPhoenixCursor" parent="StormGuideVisualCircle" abil="KaelthasPhoenixRetargetPhoenixAbility">
     <Remove Terms="ActorCreation" Send="Create StormGuideRegionCircle" />
     <On Terms="ActorCreation" Send="Create PhoenixRetargetStormGuideRegionCircle" />
     <Model value="KaelthasPhoenixCursorSplat" />
@@ -1333,14 +1382,11 @@
   </CActorSound>
   <CBehaviorBuff id="KaelthasVerdantSpheresSunfireEnchantmentAbilityPowerBuff" parent="StormDamageIncrease">
     <Alignment value="Positive" />
-    <BehaviorFlags index="Permanent" value="0" />
-    <BehaviorFlags index="EnabledWhileDead" value="0" />
     <InfoFlags index="Hidden" value="0" />
     <InfoFlags index="AlwaysUseGameText" value="1" />
     <InfoIcon value="Assets\Textures\storm_ui_icon_kaelthas_verdantspheres.dds" />
     <BehaviorCategories index="BuffAbilityPower" value="1" />
     <SortIndex value="20" />
-    <BuffFlags index="UpdateDurationWhileDisabled" value="0" />
     <Duration value="10" />
     <Modification>
       <HealDealtAdditiveMultiplier index="Life" value="0.15" />
@@ -1546,6 +1592,9 @@
     </DamageResponse>
     <FinalDisplayEffect value="KaelthasLivingBombExplosionDamage" />
   </CBehaviorBuff>
+  <CBehaviorBuff id="KaelthasLivingBombPrecursor">
+    <Duration value="0.1875" />
+  </CBehaviorBuff>
   <CBehaviorBuff id="KaelthasFlamestrikeBurnedFleshHeroHitCounter">
     <BehaviorFlags index="Permanent" value="1" />
     <BehaviorFlags index="EnabledWhileDead" value="1" />
@@ -1600,6 +1649,7 @@
   <CBehaviorBuff id="KaelthasPhoenixRetargetReady">
     <Duration value="14" />
     <DisableValidatorArray value="CasterNotDeadOrPolymorphedOrSilencedOrStasisOrStunned" />
+    <DisableValidatorArray value="KaelthasSourceHasRetargetCharges" />
     <FinalEffect value="KaelthasPhoenixRetargetRemoveReadyBehavior" />
   </CBehaviorBuff>
   <CBehaviorBuff id="KaelthasPhoenixTimedLife" parent="StormTimedLife">
@@ -1607,6 +1657,15 @@
     <Period value="0.5" />
     <InitialEffect value="KaelthasPhoenixAttackTargetSearch" />
     <PeriodicEffect value="KaelthasPhoenixAttackTargetSearch" />
+  </CBehaviorBuff>
+  <CBehaviorBuff id="KaelthasPhoenixAbilityController" parent="CarryBehaviorParent">
+    <EnableEffect value="KaelthasPhoenixAddAbilityTargetController" />
+    <PeriodicEffect value="KaelthasPhoenixAddAbilityTargetController" />
+    <Period value="0.0625" />
+    <DisableValidatorArray value="KaelthasPhoenixDoesNotHaveAbilityTargetController" />
+  </CBehaviorBuff>
+  <CBehaviorBuff id="KaelthasPhoenixAbilityTargetController" parent="CarryBehaviorParent">
+    <CancelEffect value="KaelthasPhoenixEnumTargetUnit" />
   </CBehaviorBuff>
   <CBehaviorBuff id="KaelthasPyroblastCastingReveal" parent="StormReveal">
     <RemoveValidatorArray value="KaelthasIsCastingPyroblast" />
@@ -1656,10 +1715,20 @@
     </Modification>
   </CBehaviorBuff>
   <CBehaviorTokenCounter id="KaelthasFlamestrikeConvectionQuestToken" parent="StormQuestToken">
-    <AtMaxEvents index="0" EventId="QuestComplete" Effect="KaelthasFlamestrikeConvectionTalentCompletionModifyPlayer" />
-    <Max value="20" />
+    <Max value="65535" />
     <SortIndex value="10" />
+    <DeltaEvents Delta="$KaelthasConvectionHitsNeededToMilestone" OnlyIncrease="1" FireForEachDelta="1">
+      <Event EventId="QuestMilestone" Effect="KaelthasFlamestrikeConvectionMilestoneIncreaseHealthCatalog" />
+    </DeltaEvents>
+    <DeltaEvents Delta="1" OnlyIncrease="1" FireForEachDelta="1">
+      <Event Effect="KaelthasFlamestrikeIncreaseMilestoneToken" />
+    </DeltaEvents>
   </CBehaviorTokenCounter>
+  <CBehaviorTokenCounter id="KaelthasFlamestrikeConvectionMilestoneToken" parent="StormGenericToken">
+    <AtMaxEvents Effect="KaelthasFlamestrikeConvectionMilestoneCompleteSet" />
+    <Max value="$KaelthasConvectionHitsNeededToMilestone" />
+  </CBehaviorTokenCounter>
+  <CBehaviorBuff id="KaelthasFlamestrikeConvectionLifeCarry" parent="CarryBehaviorParent" />
   <CButton id="KaelthasLivingBombIgnite" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_kaelthas_livingbomb.dds" />
   </CButton>
@@ -1815,6 +1884,7 @@
   <CEffectSet id="KaelthasLivingBombImpactSet">
     <EffectArray value="KaelthasLivingBombImpactDamage" />
     <EffectArray value="KaelthasLivingBombPyromaniacModifyCooldowns" />
+    <EffectArray value="KaelthasLivingBombRemovePrecursor" />
   </CEffectSet>
   <CEffectSet id="KaelthasPresenceofMindCooldownReductionLivingBombSet">
     <ValidatorArray value="TargetDoesNotAnyLivingBombVariation" />
@@ -1927,18 +1997,30 @@
   <CEffectSet id="RegenGlobeImpactSet">
     <EffectArray value="KaelthasManaAddictQuestIncrement" />
   </CEffectSet>
-  <CEffectModifyTokenCount id="KaelthasFlamestrikeConvectionResetQuestToken">
-    <ValidatorArray value="KaelthasFlamestrikeConvectionCasterHasLessThanMaxStacks" />
-    <Chance value="0" />
+  <CEffectCreatePersistent id="KaelthasFlamestrikeConvectionQuestResetToLastMilestonePersistent">
+    <InitialEffect value="KaelthasFlamestrikeConvectionResetMilestoneTokenCounter" />
+    <PeriodCount value="0">
+      <AccumulatorArray value="KaelthasFlamestrikeConvectionMilestoneTokenCountAccumulator" />
+    </PeriodCount>
+    <PeriodicEffectArray value="KaelthasFlamestrikeConvectionRemoveQuestTokenSingular" />
+  </CEffectCreatePersistent>
+  <CEffectModifyTokenCount id="KaelthasFlamestrikeConvectionRemoveQuestTokenSingular" parent="BaseEffectModifyTokenCount">
     <TokenId value="KaelthasFlamestrikeConvectionQuestToken" />
+    <Value value="-1" />
+  </CEffectModifyTokenCount>
+  <CEffectModifyTokenCount id="KaelthasFlamestrikeConvectionResetMilestoneTokenCounter">
+    <TokenId value="KaelthasFlamestrikeConvectionMilestoneToken" />
     <Operation value="Set" />
+  </CEffectModifyTokenCount>
+  <CEffectModifyTokenCount id="KaelthasFlamestrikeIncreaseMilestoneToken" parent="BaseEffectModifyTokenCount">
+    <ContextUnit Value="Caster" />
+    <TokenId value="KaelthasFlamestrikeConvectionMilestoneToken" />
   </CEffectModifyTokenCount>
   <CEffectModifyTokenCount id="KaelthasFlamestrikeConvectionModifyQuestToken" parent="BaseEffectModifyTokenCount">
     <ValidatorArray value="TargetIsHero" />
     <EffectCategory index="Quest" value="1" />
     <Chance value="0" />
     <CollationId value="" />
-    <ContextUnit Value="Caster" />
     <TokenId value="KaelthasFlamestrikeConvectionQuestToken" />
   </CEffectModifyTokenCount>
   <CEffectApplyBehavior id="KaelthasPhoenixApplyRebirthTalentRetargetReadyBehaviorSource">
@@ -1981,11 +2063,17 @@
   <CEffectApplyBehavior id="KaelthasVerdantSpheresApplyMasterOfFlamesBehavior">
     <Behavior value="KaelthasVerdantSpheresMasterOfFlame" />
   </CEffectApplyBehavior>
-  <CEffectModifyPlayer id="KaelthasFlamestrikeConvectionTalentCompletionModifyPlayer">
+  <CEffectModifyPlayer id="KaelthasFlamestrikeConvectionMilestoneIncreaseHealthCatalog">
     <WhichPlayer Value="Caster" />
-    <EffectArray Operation="Set" Reference="Accumulator,KaelthasFlamestrikeConvectionAccumulator,Scale" Value="10" />
-    <EffectArray Operation="Set" Reference="Effect,KaelthasFlamestrikeConvectionResetQuestToken,Chance" Value="0" />
-    <EffectArray Operation="Set" Reference="Effect,KaelthasFlamestrikeConvectionModifyQuestToken,Chance" Value="0" />
+    <EffectArray Reference="Behavior,KaelthasFlamestrikeConvectionLifeCarry,Modification.VitalMaxArray[Life]" Value="$KalthasConvectionHealthBonusPerMilestone" />
+  </CEffectModifyPlayer>
+  <CEffectSet id="KaelthasFlamestrikeConvectionMilestoneCompleteSet">
+    <EffectArray value="KaelthasFlamestrikeConvectionResetMilestoneTokenCounter" />
+    <EffectArray value="KaelthasFlamestrikeConvectionMilestoneCompleteModifyPlayer" />
+  </CEffectSet>
+  <CEffectModifyPlayer id="KaelthasFlamestrikeConvectionMilestoneCompleteModifyPlayer">
+    <WhichPlayer Value="Caster" />
+    <EffectArray Reference="Accumulator,KaelthasFlamestrikeConvectionAccumulator,Offset" Value="$KaelthasConvectionFlamestrikeDamageBonusPerMilestone" />
   </CEffectModifyPlayer>
   <CEffectSet id="KaelthasVerdantSpheresCooldownEndSet">
     <EffectArray value="KaelthasVerdantSpheresChargeRefund" />
@@ -2270,12 +2358,6 @@
     <EffectArray value="KaelthasFlamestrikeVerdantSpheresSearchAreaWithBurnedFleshSet" />
     <EffectArray value="KaelthasFlamestrikeVerdantSpheresFuryoftheSunwellDelayPersistent" />
   </CEffectSet>
-  <CEffectApplyBehavior id="KaelthasGravityLapseApplyMaxTargetsHitBehavior">
-    <ValidatorArray index="0" value="KaelthasSourceIsRegularGravityLapseMissile" />
-    <WhichUnit Value="Source" />
-    <Behavior value="KaelthasGravityLapseTargetsHit" />
-    <Count value="3" />
-  </CEffectApplyBehavior>
   <CEffectApplyBehavior id="KaelthasGravityLapseApplyTargetBehavior">
     <Behavior value="KaelthasGravityLapseTarget" />
   </CEffectApplyBehavior>
@@ -2293,30 +2375,10 @@
   <CEffectApplyBehavior id="KaelthasGravityLapseApplyVTargetBehavior">
     <Behavior value="KaelthasGravityLapseTargetV" />
   </CEffectApplyBehavior>
-  <CEffectSet id="KaelthasGravityLapseCastSet">
-    <EffectArray value="KaelthasGravityLapseVerdantSpheresLaunchPersistent" />
-    <EffectArray value="KaelthasGravityLapseCreatePersistent" />
-    <TargetLocationType value="Point" />
-  </CEffectSet>
-  <CEffectCreatePersistent id="KaelthasGravityLapseCreatePersistent">
-    <WhichLocation Value="CasterPoint" />
-    <PeriodCount value="1" />
-    <PeriodicEffectArray value="KaelthasGravityLapseNetherWindMissileSwitch" />
-    <PeriodicOffsetArray Y="-9.5" />
-    <PeriodicPeriodArray value="0" />
-  </CEffectCreatePersistent>
   <CEffectSet id="KaelthasGravityLapseDestroyMissileSet">
     <ValidatorArray value="KaelthasGravityLapseTargetsHitGE3" />
-    <EffectArray value="KaelthasGravityLapseDestroyPersistent" />
-    <EffectArray value="KaelthasGravityLapseRemoveTargetsHitBehavior" />
     <EffectArray value="StormSuicide" />
   </CEffectSet>
-  <CEffectDestroyPersistent id="KaelthasGravityLapseDestroyPersistent">
-    <WhichLocation Value="CasterPoint" />
-    <Effect value="KaelthasGravityLapseMissileScanPersistent" />
-    <Count value="1" />
-    <Radius value="0.5" />
-  </CEffectDestroyPersistent>
   <CEffectModifyUnit id="KaelthasGravityLapseEnergyRoilModifyCooldown">
     <Chance value="0" />
     <ImpactUnit Value="Caster" />
@@ -2331,25 +2393,6 @@
     <ValidatorArray value="TargetIsHero" />
     <ValidatorArray value="KaelthasNoMarkers" />
   </CEffectCreateHealer>
-  <CEffectLaunchMissile id="KaelthasGravityLapseEnhancedLaunchMissile">
-    <ValidatorArray index="0" value="CasterNotDead" />
-    <ImpactLocation Value="TargetPoint" />
-    <LaunchEffect value="KaelthasGravityLapseLaunchEffectsSet" />
-    <ImpactEffect value="KaelthasGravityLapseTerminateDummy" />
-    <SharedFlags index="2D" value="1" />
-    <AmmoUnit value="KaelthasGravityLapseEnhancedMissile" />
-    <Movers Link="KaelthasGravityLapseMissile" />
-  </CEffectLaunchMissile>
-  <CEffectSwitch id="KaelthasGravityLapseEnhancedMissileSwitch">
-    <CaseArray Validator="KaelthasCasterVerdantSpheresActive" Effect="KaelthasGravityLapseEnhancedLaunchMissile" />
-    <CaseDefault value="KaelthasGravityLapseLaunchMissile" />
-    <TargetLocationType value="Point" />
-  </CEffectSwitch>
-  <CEffectSwitch id="KaelthasGravityLapseEnhancedNetherWindMissileSwitch">
-    <CaseArray Validator="KaelthasCasterVerdantSpheresActive" Effect="KaelthasGravityLapseLaunchEnhancedNetherWindMissile" />
-    <CaseDefault value="KaelthasGravityLapseNetherWindLaunchMissile" />
-    <TargetLocationType value="Point" />
-  </CEffectSwitch>
   <CEffectApplyBehavior id="KaelthasGravityLapseTargetLiftBehavior">
     <Behavior value="KaelthasGravityLapseVerdantSphereTargetLift" />
   </CEffectApplyBehavior>
@@ -2358,6 +2401,7 @@
     <CaseDefault value="KaelthasGravityLapseApplyTargetLiftBehavior" />
   </CEffectSwitch>
   <CEffectSet id="KaelthasGravityLapseImpactSet">
+    <ValidatorArray value="SourceNotDead" />
     <ValidatorArray value="noMarkers" />
     <EffectArray value="DecloakTargetSet" />
     <EffectArray value="KaelthasGravityLapseApplyTargetsHitBehavior" />
@@ -2378,67 +2422,81 @@
     <EffectArray value="KaelthasArcaneDynamoApplyStack" />
     <TargetLocationType value="Point" />
   </CEffectSet>
-  <CEffectSet id="KaelthasGravityLapseLaunchEffectsSet">
-    <EffectArray value="KaelthasGravityLapseApplyMaxTargetsHitBehavior" />
-    <EffectArray value="KaelthasGravityLapseMissileScanPersistent" />
-    <EffectArray value="KaelthasVerdantSpheresRemoveSet" />
+  <CEffectSet id="KaelthasGravityLapseCastSet">
+    <EffectArray value="KaelthasGravityLapseVerdantSpheresLaunchPersistent" />
+    <EffectArray value="KaelthasGravityLapseEnhancedMissileSwitch" />
+    <TargetLocationType value="Point" />
   </CEffectSet>
-  <CEffectLaunchMissile id="KaelthasGravityLapseLaunchEnhancedNetherWindMissile">
-    <ValidatorArray index="0" value="CasterNotDead" />
-    <ImpactLocation Value="TargetPoint" />
-    <LaunchEffect value="KaelthasGravityLapseLaunchEffectsSet" />
-    <ImpactEffect value="KaelthasGravityLapseTerminateDummy" />
-    <SharedFlags index="2D" value="1" />
-    <AmmoUnit value="KaelthasGravityLapseEnhancedMissile" />
-    <Movers Link="KaelthasGravityLapseNetherWindMissile" />
-  </CEffectLaunchMissile>
+  <CEffectSwitch id="KaelthasGravityLapseEnhancedMissileSwitch">
+    <Marker>
+      <MatchFlags index="Id" value="1" />
+    </Marker>
+    <CaseArray Validator="KaelthasCasterVerdantSpheresActive" Effect="KaelthasGravityLapseEnhancedLaunchMissile" />
+    <CaseDefault value="KaelthasGravityLapseLaunchMissile" />
+    <TargetLocationType value="Point" />
+  </CEffectSwitch>
   <CEffectLaunchMissile id="KaelthasGravityLapseLaunchMissile">
     <ValidatorArray index="0" value="CasterNotDead" />
-    <ImpactLocation Value="TargetPoint" />
+    <ImpactLocation>
+      <Value value="TargetPoint" />
+      <ProjectionMultiplier value="1" />
+      <ProjectionSourceValue value="OriginPoint" />
+      <ProjectionTargetValue value="TargetPoint" />
+      <UsesLineDash value="1" />
+      <LineDashType value="AllowedInUnpathable" />
+      <ProjectionDistanceScale value="10" />
+    </ImpactLocation>
     <LaunchEffect value="KaelthasGravityLapseLaunchEffectsSet" />
     <ImpactEffect value="KaelthasGravityLapseTerminateDummy" />
     <SharedFlags index="2D" value="1" />
+    <SharedFlags index="DynamicSearchArea" value="1" />
+    <SharedFlags index="DisableArriveOnLaunch" value="1" />
+    <SearchEffect value="KaelthasGravityLapseSearch" />
     <AmmoUnit value="KaelthasGravityLapseMissile" />
     <Movers Link="KaelthasGravityLapseMissile" />
   </CEffectLaunchMissile>
-  <CEffectEnumArea id="KaelthasGravityLapseMissileScan">
-    <LaunchLocation Effect="KaelthasGravityLapseCreatePersistent" Value="OriginPoint" />
-    <ImpactLocation Value="SourceUnit" />
-    <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,ImmuneToSkillshots,Structure,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
+  <CEffectLaunchMissile id="KaelthasGravityLapseEnhancedLaunchMissile" parent="KaelthasGravityLapseLaunchMissile">
+    <AmmoUnit value="KaelthasGravityLapseEnhancedMissile" />
+    <SearchEffect value="KaelthasGravityLapseEnhancedSearch" />
+  </CEffectLaunchMissile>
+  <CEffectSet id="KaelthasGravityLapseLaunchEffectsSet">
+    <Marker>
+      <MatchFlags index="Id" value="1" />
+    </Marker>
+    <EffectArray value="KaelthasGravityLapseApplyBehaviorSourceSwitch" />
+    <EffectArray value="KaelthasVerdantSpheresRemoveSet" />
+  </CEffectSet>
+  <CEffectSwitch id="KaelthasGravityLapseApplyBehaviorSourceSwitch">
+    <CaseArray Validator="KaelthasCasterVerdantSpheresActive" Effect="KaelthasGravityLapseApplyVerdantSpheres" />
+    <CaseDefault value="KaelthasGravityLapseApplyMaxTargetsHitBehavior" />
+  </CEffectSwitch>
+  <CEffectApplyBehavior id="KaelthasGravityLapseApplyMaxTargetsHitBehavior">
+    <WhichUnit Value="Source" />
+    <Behavior value="KaelthasGravityLapseTargetsHit" />
+    <Count value="3" />
+  </CEffectApplyBehavior>
+  <CEffectApplyBehavior id="KaelthasGravityLapseApplyVerdantSpheres">
+    <WhichUnit Value="Source" />
+    <Behavior value="KaelthasGravityLapseVerdantSphereDummyBehavior" />
+  </CEffectApplyBehavior>
+  <CEffectEnumArea id="KaelthasGravityLapseSearch">
     <SearchFlags index="DoActorSearch" value="1" />
+    <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,ImmuneToSkillshots,Structure,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
     <AreaArray MaxCount="1" Effect="KaelthasGravityLapseImpactSet">
       <RectangleWidth value="1.75" />
       <RectangleHeight value="0.8" />
     </AreaArray>
-    <AreaRelativeOffset Y="-0.7" />
+    <TargetSorts RequestCount="1">
+      <SortArray value="TSDistanceFromOriginPoint" />
+    </TargetSorts>
     <RevealerParams Duration="0.75" ShapeExpansion="1">
       <RevealFlags index="Unfog" value="1" />
     </RevealerParams>
   </CEffectEnumArea>
-  <CEffectCreatePersistent id="KaelthasGravityLapseMissileScanPersistent">
-    <Marker>
-      <MatchFlags index="Id" value="1" />
-    </Marker>
-    <WhichLocation Value="CasterUnit" />
-    <InitialDelay value="0.0625" />
-    <PeriodCount value="11" />
-    <PeriodicEffectArray value="KaelthasGravityLapseMissileScan" />
-    <PeriodicPeriodArray value="0.0625" />
-  </CEffectCreatePersistent>
-  <CEffectLaunchMissile id="KaelthasGravityLapseNetherWindLaunchMissile">
-    <ValidatorArray index="0" value="CasterNotDead" />
-    <ImpactLocation Value="TargetPoint" />
-    <LaunchEffect value="KaelthasGravityLapseLaunchEffectsSet" />
-    <ImpactEffect value="KaelthasGravityLapseTerminateDummy" />
-    <SharedFlags index="2D" value="1" />
-    <AmmoUnit value="KaelthasGravityLapseMissile" />
-    <Movers Link="KaelthasGravityLapseNetherWindMissile" />
-  </CEffectLaunchMissile>
-  <CEffectSwitch id="KaelthasGravityLapseNetherWindMissileSwitch">
-    <CaseArray Validator="KaelthasHasGravityLapseNetherWind" Effect="KaelthasGravityLapseEnhancedNetherWindMissileSwitch" />
-    <CaseDefault value="KaelthasGravityLapseEnhancedMissileSwitch" />
-    <TargetLocationType value="Point" />
-  </CEffectSwitch>
+  <CEffectEnumArea id="KaelthasGravityLapseEnhancedSearch" parent="KaelthasGravityLapseSearch">
+    <AreaArray index="0" MaxCount="3" Effect="KaelthasGravityLapseImpactSet" />
+    <TargetSorts RequestCount="3" />
+  </CEffectEnumArea>
   <CEffectRemoveBehavior id="KaelthasGravityLapseRemoveTargetsHitBehavior">
     <WhichUnit Value="Caster" />
     <BehaviorLink value="KaelthasGravityLapseTargetsHit" />
@@ -2506,15 +2564,25 @@
   <CEffectApplyBehavior id="KaelthasLivingBombApplyTargetBehavior">
     <ValidatorArray index="0" value="TargetNotDead" />
     <ValidatorArray value="TargetDoesNotAnyLivingBombVariation" />
+    <ValidatorArray value="TargetNotInvulnerableExceptTimeStop" />
+    <ValidatorArray value="TargetNotStasisExceptTimeStop" />
+    <ValidatorArray value="TargetDoesNotHaveImmuneToDoTBehavior" />
     <Behavior value="KaelthasLivingBombTarget" />
   </CEffectApplyBehavior>
   <CEffectCreatePersistent id="KaelthasLivingBombApplyTargetBehaviorCP">
     <WhichLocation Value="TargetUnit" />
-    <PeriodCount value="2" />
-    <PeriodicEffectArray value="KaelthasLivingBombApplyTargetBehavior" />
-    <PeriodicPeriodArray value="0.125" />
-    <PeriodicPeriodArray value="0" />
+    <ExpireDelay value="0.125" />
+    <ExpireEffect value="KaelthasLivingBombApplySwitch" />
   </CEffectCreatePersistent>
+  <CEffectSwitch id="KaelthasLivingBombApplySwitch">
+    <CaseArray Validator="TargetIsDeadOrSpecialDeathState" Effect="KaelthasLivingBombTargetDeadSet" />
+    <CaseDefault value="KaelthasLivingBombApplyTargetBehavior" />
+  </CEffectSwitch>
+  <CEffectSet id="KaelthasLivingBombTargetDeadSet">
+    <EffectArray value="KaelthasLivingBombChainBombSearchAreaTargetDead" />
+    <EffectArray value="KaelthasLivingBombExplosionSearchAreaTargetDead" />
+    <EffectArray value="KaelthasLivingBombRemovePrecursor" />
+  </CEffectSet>
   <CEffectApplyBehavior id="KaelthasLivingBombBackdraftApplyBehavior">
     <Chance value="0" />
     <Behavior value="KaelthasLivingBombBackdraft" />
@@ -2602,6 +2670,32 @@
       <SortArray value="TSHeroic" />
       <SortArray value="TSDistanceToTarget" />
     </TargetSorts>
+  </CEffectEnumArea>
+  <CEffectEnumArea id="KaelthasLivingBombChainBombSearchAreaTargetDead">
+    <ExcludeArray Effect="KaelthasLivingBombTargetDeadSet" Value="Target" />
+    <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Missile,Stasis,Dead,Hidden,Invulnerable" />
+    <SearchFlags index="DoActorSearch" value="1" />
+    <AreaArray Effect="KaelthasLivingBombChainBombApplyTargetBehaviorDelayPersistent">
+      <Radius value="3.3" />
+    </AreaArray>
+    <RevealerParams HeightMap="Ground" Duration="0.5" ShapeExpansion="0.5">
+      <RevealFlags index="Unfog" value="1" />
+    </RevealerParams>
+    <TargetSorts>
+      <SortArray value="TSHeroic" />
+      <SortArray value="TSDistanceToTarget" />
+    </TargetSorts>
+  </CEffectEnumArea>
+  <CEffectEnumArea id="KaelthasLivingBombExplosionSearchAreaTargetDead">
+    <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Missile,Stasis,Dead,Hidden,Invulnerable" />
+    <SearchFlags index="DoActorSearch" value="1" />
+    <AreaArray Effect="KaelthasLivingBombExplosionImpactSet">
+      <Radius value="3.3" />
+    </AreaArray>
+    <ExcludeArray Effect="KaelthasLivingBombTargetDeadSet" Value="Target" />
+    <RevealerParams HeightMap="Ground" Duration="0.5" ShapeExpansion="0.5">
+      <RevealFlags index="Unfog" value="1" />
+    </RevealerParams>
   </CEffectEnumArea>
   <CEffectModifyUnit id="KaelthasLivingBombCriticalMassModifyCooldowns">
     <Chance value="0" />
@@ -2701,8 +2795,16 @@
     <EffectArray value="KaelthasLivingBombCastSet" />
     <EffectArray value="KaelthasModifyWeapon" />
     <EffectArray value="KaelthasArcaneDynamoApplyStack" />
+    <EffectArray value="KaelthasLivingBombApplyPrecursor" />
     <ValidatorArray value="TargetDoesNotAnyLivingBombVariation" />
+    <ValidatorArray value="KaelthasTargetDoesNotHaveLivingBombPrecursor" />
   </CEffectSet>
+  <CEffectApplyBehavior id="KaelthasLivingBombApplyPrecursor">
+    <Behavior value="KaelthasLivingBombPrecursor" />
+  </CEffectApplyBehavior>
+  <CEffectRemoveBehavior id="KaelthasLivingBombRemovePrecursor">
+    <BehaviorLink value="KaelthasLivingBombPrecursor" />
+  </CEffectRemoveBehavior>
   <CEffectModifyUnit id="KaelthasLivingBombPyromaniacModifyCooldowns">
     <Chance value="0" />
     <ImpactUnit Value="Caster" />
@@ -2815,9 +2917,14 @@
     <EffectArray value="KaelthasApplyPhoenixInitialDistanceCheckBehavior" />
     <EffectArray value="KaelthasPhoenixInitialLaunchMissile" />
     <EffectArray value="KaelthasPhoenixFelInfusionApplyBehavior" />
+    <EffectArray value="KaelthasPhoenixAddAbilityController" />
   </CEffectSet>
+  <CEffectApplyBehavior id="KaelthasPhoenixAddAbilityController">
+    <Behavior value="KaelthasPhoenixAbilityController" />
+  </CEffectApplyBehavior>
   <CEffectSet id="KaelthasPhoenixInitialSet">
     <EffectArray value="KaelthasPhoenixCreateUnit" />
+    <EffectArray value="KaelthasPhoenixRebirthGrantChargesInitial" />
     <TargetLocationType value="Point" />
   </CEffectSet>
   <CEffectIssueOrder id="KaelthasPhoenixIssueAttackOrder">
@@ -2832,7 +2939,8 @@
   </CEffectApplyBehavior>
   <CEffectDamage id="KaelthasPhoenixMissileDamage" parent="StormSpell">
     <Amount value="84" />
-    <DamageModifierSource Value="Creator" />
+    <Visibility value="Hidden" />
+    <SourceButtonFace value="KaelthasPhoenix" />
   </CEffectDamage>
   <CEffectSet id="KaelthasPhoenixMissileImpactSet">
     <ValidatorArray value="noMarkers" />
@@ -2889,6 +2997,35 @@
     <BehaviorLink value="KaelthasPhoenixRetargetReady" />
     <Count value="1" />
   </CEffectRemoveBehavior>
+  <CEffectModifyPlayer id="KaelthasPhoenixRebirthGrantChargesInitial">
+    <WhichPlayer Value="Caster" />
+    <Cost Abil="KaelthasPhoenixRetargetPhoenixAbility">
+      <Charge>
+        <CountMax value="$KaelthasPhoneixRebirthMaxCharges" />
+        <CountUse value="-$KaelthasPhoneixRebirthMaxCharges" />
+        <Link value="Abil/KaelthasPhoenixRetargetPhoenixAbility" />
+        <Location value="Player" />
+      </Charge>
+    </Cost>
+  </CEffectModifyPlayer>
+  <CEffectRemoveBehavior id="KaelthasPhoenixRetargetRemoveReadyTargetBehavior">
+    <BehaviorLink value="KaelthasPhoenixRetargetReady" />
+    <Count value="1" />
+  </CEffectRemoveBehavior>
+  <CEffectSet id="KaelthasPhoenixRetargetPhoenixCastSet">
+    <ValidatorArray value="TargetLocationIsPathable" />
+    <ValidatorArray value="CasterIsKaelthasPhoenix" />
+    <ValidatorArray value="CreatorNotDeadOrPolymorphedOrSilencedOrStasisOrStunned" />
+    <EffectArray value="KaelthasPhoenixIssueRetargetOrder" />
+    <TargetLocationType value="Point" />
+  </CEffectSet>
+  <CEffectIssueOrder id="KaelthasPhoenixIssueRetargetOrder">
+    <WhichUnit Value="Creator" />
+    <Player Value="Caster" />
+    <Abil value="KaelthasPhoenixRetarget" />
+    <Target Value="TargetPoint" />
+    <CmdFlags index="Preempt" value="1" />
+  </CEffectIssueOrder>
   <CEffectSet id="KaelthasPhoenixRetargetSet">
     <ValidatorArray value="TargetLocationIsPathable" />
     <EffectArray value="KaelthasPhoenixRebirthRetargetPhoenixEnumerateTrackingList" />
@@ -2903,40 +3040,67 @@
   <CEffectSet id="UseVehicleCastCompleteSet">
     <EffectArray value="KaelthasPhoenixRebirthVehicleUseSet" />
   </CEffectSet>
-  <CEffectSet id="KaelthasPhoenixWeaponAoEDummy">
-    <EffectArray value="ApplyAbilityImpactReveal" />
+  <CEffectSet id="KaelthasPhoenixWeaponSplashImpactSet">
+    <EffectArray value="KaelthasPhoenixWeaponSplashDamage" />
+    <EffectArray value="KaelthasPhoenixAddDamagedUnitTrackerAdd" />
   </CEffectSet>
   <CEffectEnumArea id="KaelthasPhoenixWeaponAoESearch">
-    <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Missile,Item,Stasis,Dead,Hidden" />
-    <AreaArray Effect="KaelthasPhoenixWeaponAoEDummy">
+    <ExcludeArray Value="Target" />
+    <SearchFilters value="-;Self,Player,Ally,Neutral,ImmuneToAOE,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
+    <AreaArray Effect="KaelthasPhoenixWeaponSplashImpactSet">
       <Radius value="2" />
     </AreaArray>
+    <RevealerParams Duration="0.75" ShapeExpansion="1">
+      <RevealFlags index="Unfog" value="1" />
+    </RevealerParams>
   </CEffectEnumArea>
   <CEffectDamage id="KaelthasPhoenixWeaponDamage" parent="StormSpell">
-    <Amount value="84" />
-    <AreaArray Fraction="0.5">
-      <Radius value="2" />
-    </AreaArray>
-    <ExcludeArray Value="Target" />
-    <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
-    <DamageModifierSource Value="Creator" />
+    <Amount value="$KaelthasPhoenixWeaponDamageAmount" />
+    <Visibility value="Hidden" />
+    <SourceButtonFace value="KaelthasPhoenix" />
   </CEffectDamage>
+  <CEffectDamage id="KaelthasPhoenixWeaponSplashDamage" parent="StormSpell">
+    <Amount value="$KaelthasPhoneixWeaponSplashDamageAmount" />
+    <Visibility value="Hidden" />
+    <SourceButtonFace value="KaelthasPhoenix" />
+  </CEffectDamage>
+  <CEffectAddTrackedUnit id="KaelthasPhoenixAddDamagedUnitTrackerAdd" parent="StormSummonedUnitDamagedUnitTrackerAdd">
+    <TrackerUnit Effect="KaelthasPhoenixEnumTargetUnit" Value="Target" />
+  </CEffectAddTrackedUnit>
   <CEffectSet id="KaelthasPhoenixWeaponImpactSet">
     <Marker>
       <MatchFlags index="Id" value="1" />
     </Marker>
-    <EffectArray value="KaelthasPhoenixWeaponAoESearch" />
     <EffectArray value="KaelthasPhoenixWeaponDamage" />
-    <EffectArray value="ApplyAbilityImpactReveal" />
+    <EffectArray value="KaelthasPhoenixAddDamagedUnitTrackerAdd" />
+    <EffectArray value="KaelthasPhoenixWeaponAoESearch" />
+    <EffectArray value="KaelthasPhoenixCreatePersistentRevealDummy" />
   </CEffectSet>
+  <CEffectCreatePersistent id="KaelthasPhoenixCreatePersistentRevealDummy" parent="StormSummonedUnitSpellDamageDealtPersistent">
+    <WhichLocation Effect="KaelthasPhoenixEnumTargetUnit" Value="TargetUnit" />
+  </CEffectCreatePersistent>
   <CEffectLaunchMissile id="KaelthasPhoenixWeaponLaunchMissile">
-    <ValidatorArray index="0" value="TargetisSummonedorNotBenign" />
     <ImpactEffect value="KaelthasPhoenixWeaponImpactSet" />
-    <SharedFlags index="ValidateWeapon" value="0" />
+    <SharedFlags index="ValidateAbil" value="0" />
     <AmmoUnit value="KaelthasPhoenixWeaponMissile" />
     <Movers Link="KaelthasPhoenixWeaponMissileShort" IfRangeLTE="0.1" />
     <Movers Link="KaelthasPhoenixWeaponMissile" IfRangeLTE="500" />
   </CEffectLaunchMissile>
+  <CEffectEnumTrackedUnits id="KaelthasPhoenixEnumTargetUnit" parent="StormSummonedUnitEnumTrackedAttackUnit">
+    <Effect value="KaelthasPhoenixWeaponLaunchMissile" />
+  </CEffectEnumTrackedUnits>
+  <CEffectSet id="KaelthasPhoenixAttackSet" parent="StormSummonedUnitAddAttackTargetSet" behaviorRemoveEffect="KaelthasPhoenixRemoveAbilityTargetController">
+    <ValidatorArray value="TargetisSummonedorNotBenign" />
+  </CEffectSet>
+  <CEffectApplyBehavior id="KaelthasPhoenixAddAbilityTargetController">
+    <ValidatorArray value="KaelthasPhoenixDoesNotHaveAbilityTargetController" />
+    <Behavior value="KaelthasPhoenixAbilityTargetController" />
+  </CEffectApplyBehavior>
+  <CEffectRemoveBehavior id="KaelthasPhoenixRemoveAbilityTargetController">
+    <WhichUnit Value="Caster" />
+    <BehaviorLink value="KaelthasPhoenixAbilityTargetController" />
+    <CancelBehavior value="1" />
+  </CEffectRemoveBehavior>
   <CEffectApplyBehavior id="KaelthasPyroblastApplyCastingReveal">
     <Behavior value="KaelthasPyroblastCastingReveal" />
   </CEffectApplyBehavior>
@@ -3003,10 +3167,16 @@
     <CaseDefault value="KaelthasSunfireEnchantmentDamageSet" />
   </CEffectSwitch>
   <CEffectSet id="KaelthasSunfireEnchantmentDamageSet">
+    <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="KaelthasSunfireEnchantmentWeaponPreImpactSet" />
     <EffectArray value="KaelthasSunfireEnchantmentDamage" />
+    <EffectArray value="KaelthasSunfireEnchantmentWeaponPostImpactSet" />
+    <EffectArray value="UniversalWeaponPostImpactSet" />
+  </CEffectSet>
+  <CEffectSet id="KaelthasSunfireEnchantmentWeaponPreImpactSet" />
+  <CEffectSet id="KaelthasSunfireEnchantmentWeaponPostImpactSet">
     <EffectArray value="KaelthasSunfireEnchantmentApplyAbilityPowerBuffDummyBehavior" />
     <EffectArray value="KaelthasVerdantSpheresSunfireEnchantmentAbilityPowerBuffApplyBehavior" />
-    <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
   <CEffectDamage id="KaelthasSunfireEnchantmentDamage" parent="StormSpell">
     <Amount value="115" />
@@ -3014,7 +3184,6 @@
     <SourceButtonFace value="KaelthasSunfireEnchantmentTalent" />
   </CEffectDamage>
   <CEffectSet id="KaelthasSunfireEnchantmentImpactSet">
-    <EffectArray value="UniversalWeaponImpact" />
     <EffectArray value="KaelthasSunfireEnchantmentMissSwitch" />
   </CEffectSet>
   <CEffectLaunchMissile id="KaelthasSunfireEnchantmentLaunchMissile">
@@ -3123,10 +3292,15 @@
   </CEffectDamage>
   <CEffectSet id="KaelthasWeaponImpactSet">
     <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="KaelthasWeaponPreImpactSet" />
     <EffectArray value="KaelthasWeaponDamage" />
-    <EffectArray value="KaelthasLivingBombCriticalMassModifyCooldowns" />
+    <EffectArray value="KaelthasWeaponPostImpactSet" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
+  <CEffectSet id="KaelthasWeaponPreImpactSet">
+    <EffectArray value="KaelthasLivingBombCriticalMassModifyCooldowns" />
+  </CEffectSet>
+  <CEffectSet id="KaelthasWeaponPostImpactSet" />
   <CEffectLaunchMissile id="KaelthasWeaponLaunchMissile">
     <ValidatorArray index="0" value="TargetNotDead" />
     <ImpactEffect value="KaelthasWeaponImpactSet" />
@@ -3136,8 +3310,8 @@
     <ImpactRange value="0.5" />
   </CEffectLaunchMissile>
   <CEffectSet id="KaelthasWeaponLaunchMissileSet">
-    <EffectArray value="KaelthasWeaponLaunchSwitch" />
     <EffectArray value="UniversalWeaponLaunchSet" />
+    <EffectArray value="KaelthasWeaponLaunchSwitch" />
   </CEffectSet>
   <CEffectSwitch id="KaelthasWeaponLaunchSwitch">
     <CaseArray Validator="KaelthasHasSunfireEnchantmentBuff" Effect="KaelthasSunfireEnchantmentLaunchMissile" />
@@ -3356,6 +3530,14 @@
       <Modifications>
         <Catalog value="Effect" />
         <Entry value="KaelthasPhoenixWeaponDamage" />
+        <Field value="Amount" />
+        <Value value="0.040000" />
+        <AffectedByAbilityPower value="1" />
+        <AffectedByOverdrive value="1" />
+      </Modifications>
+      <Modifications>
+        <Catalog value="Effect" />
+        <Entry value="KaelthasPhoenixWeaponSplashDamage" />
         <Field value="Amount" />
         <Value value="0.040000" />
         <AffectedByAbilityPower value="1" />
@@ -3910,19 +4092,14 @@
     <Abil value="KaelthasFlamestrike" />
     <RankArray>
       <BehaviorArray value="KaelthasFlamestrikeConvectionQuestToken" />
+      <BehaviorArray value="KaelthasFlamestrikeConvectionMilestoneToken" />
+      <BehaviorArray value="KaelthasFlamestrikeConvectionLifeCarry" />
     </RankArray>
     <AbilityModificationArray>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Effect" />
         <Entry value="KaelthasFlamestrikeConvectionModifyQuestToken" />
-        <Field value="Chance" />
-        <Value value="1.000000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="KaelthasFlamestrikeConvectionResetQuestToken" />
         <Field value="Chance" />
         <Value value="1.000000" />
       </Modifications>
@@ -3936,10 +4113,16 @@
         <Type value="FlatModification" />
         <Catalog value="Accumulator" />
         <Entry value="KaelthasFlamestrikeConvectionAccumulator" />
-        <Field value="Scale" />
+        <Field value="Offset" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Behavior" />
+        <Entry value="KaelthasFlamestrikeConvectionLifeCarry" />
+        <Field value="Modification.VitalMaxArray[Life]" />
       </Modifications>
     </AbilityModificationArray>
-    <QuestData StackBehavior="KaelthasFlamestrikeConvectionQuestToken" TargetCount="20" />
+    <QuestData StackBehavior="KaelthasFlamestrikeConvectionQuestToken" />
   </CTalent>
   <CTalent id="KaelthasFlamestrikeFuryOfTheSunwell">
     <Face value="KaelthasFlamestrikeFuryOfTheSunwellTalent" />
@@ -4034,20 +4217,6 @@
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Effect" />
-        <Entry value="KaelthasGravityLapseCreatePersistent" />
-        <Field value="PeriodicOffsetArray[0].Y" />
-        <Value value="-2.500000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="KaelthasGravityLapseVerdantSpheresLaunchPersistent" />
-        <Field value="PeriodicOffsetArray[0].Y" />
-        <Value value="-2.500000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
         <Entry value="KaelthasGravityLapseNetherWindRestoreMana" />
         <Field value="Chance" />
         <Value value="1.000000" />
@@ -4055,10 +4224,23 @@
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Effect" />
-        <Entry value="KaelthasGravityLapseMissileScanPersistent" />
-        <Field value="PeriodCount" />
-        <FieldIsInteger value="1" />
-        <Value value="4.000000" />
+        <Entry value="KaelthasGravityLapseLaunchMissile" />
+        <Field value="ImpactLocation.ProjectionDistanceScale" />
+        <Value value="3.000000" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Effect" />
+        <Entry value="KaelthasGravityLapseEnhancedLaunchMissile" />
+        <Field value="ImpactLocation.ProjectionDistanceScale" />
+        <Value value="3.000000" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Effect" />
+        <Entry value="KaelthasGravityLapseVerdantSpheresLaunchPersistent" />
+        <Field value="PeriodicOffsetArray[0].Y" />
+        <Value value="-2.500000" />
       </Modifications>
     </AbilityModificationArray>
   </CTalent>
@@ -4171,6 +4353,20 @@
         <Value value="1.200000" />
       </Modifications>
       <Modifications>
+        <Type value="MultiplyLevelModification" />
+        <Catalog value="Effect" />
+        <Entry value="KaelthasLivingBombChainBombSearchAreaTargetDead" />
+        <Field value="AreaArray[0].Radius" />
+        <Value value="1.200000" />
+      </Modifications>
+      <Modifications>
+        <Type value="MultiplyLevelModification" />
+        <Catalog value="Effect" />
+        <Entry value="KaelthasLivingBombExplosionSearchAreaTargetDead" />
+        <Field value="AreaArray[0].Radius" />
+        <Value value="1.200000" />
+      </Modifications>
+      <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="KaelthasLivingBombExplosionRing" />
@@ -4209,14 +4405,14 @@
         <Type value="FlatModification" />
         <Entry value="KaelthasFlamestrike" />
         <Field value="Range[0]" />
-        <Value value="4.000000" />
+        <Value value="$KaelthasFlamethrowerRangeIncrease" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="KaelthasFlamestrikeRangeSplat" />
         <Field value="Scale" />
-        <Value value="4.000000" />
+        <Value value="$KaelthasFlamethrowerRangeIncrease" />
       </Modifications>
     </AbilityModificationArray>
   </CTalent>
@@ -4356,12 +4552,13 @@
     <AbilArray Link="KaelthasGravityLapse" />
     <AbilArray Link="KaelthasPhoenix" />
     <AbilArray Link="KaelthasPhoenixRetarget" />
+    <AbilArray Link="KaelthasPhoenixRetargetPhoenixAbility" />
     <AbilArray Link="KaelthasPyroblast" />
     <BehaviorArray Link="ExcellentMana" />
     <BehaviorArray Link="KaelthasVerdantSphereGenerator" />
     <WeaponArray Link="KaelthasHeroWeapon" />
     <CardLayouts index="0">
-      <LayoutButtons Face="KaelthasPhoenixRetarget" Type="AbilCmd" AbilCmd="KaelthasPhoenixRetarget,Execute" Slot="Heroic" />
+      <LayoutButtons Face="KaelthasPhoenixRetarget" Type="AbilCmd" AbilCmd="KaelthasPhoenixRetargetPhoenixAbility,Execute" Slot="Heroic" />
       <LayoutButtons Face="KaelthasPyroblast" Type="AbilCmd" AbilCmd="KaelthasPyroblast,Execute" Slot="Heroic" />
       <LayoutButtons Face="KaelthasPhoenix" Type="AbilCmd" AbilCmd="KaelthasPhoenix,Execute" Slot="Heroic" />
       <LayoutButtons Face="KaelthasVerdantSpheresActive" Type="Passive" Requirements="KaelthasHasVerdantSpheresActive" Slot="Trait" />
@@ -4377,7 +4574,7 @@
     <InitializerFunction value="libGDHL_gf_HeroKaelthasIncrementHeroCountFunction" />
     <DestructionFunction value="libGDHL_gf_HeroKaelthasDecrementHeroCountFunction" />
     <EffectArray index="Birth" value="KaelthasVerdantSpheresRefreshAllStack" />
-    <EffectArray index="Death" value="KaelthasFlamestrikeConvectionResetQuestToken" />
+    <EffectArray index="Death" value="KaelthasFlamestrikeConvectionQuestResetToLastMilestonePersistent" />
     <EffectArray index="Revive" value="KaelthasVerdantSpheresRefreshAllStack" />
     <HeroPlaystyleFlags index="EnergyImportant" value="1" />
     <HeroPlaystyleFlags index="Ganker" value="1" />
@@ -4407,20 +4604,23 @@
     <AttackTargetPriority value="10" />
     <AbilArray Link="stop" />
     <AbilArray Link="KaelthasPhoenixAttack" />
-    <AbilArray Link="KaelthasPhoenixRetarget" />
+    <AbilArray Link="KaelthasPhoenixRetargetPhoenixAbility" />
     <WeaponArray Link="KaelthasPhoenixWeapon" />
     <WeaponArray Link="KaelthasPhoenixWeaponNonHeroes" />
     <CardLayouts>
       <LayoutButtons Face="Stop" Type="AbilCmd" AbilCmd="stop,Stop" Slot="Stop" />
       <LayoutButtons Face="Attack" Type="AbilCmd" AbilCmd="KaelthasPhoenixAttack,Execute" Slot="Cancel" />
-      <LayoutButtons Face="KaelthasPhoenixRetarget" Type="AbilCmd" AbilCmd="KaelthasPhoenixRetarget,Execute" Slot="Heroic" />
+      <LayoutButtons Face="KaelthasPhoenixRetarget" Type="AbilCmd" AbilCmd="KaelthasPhoenixRetargetPhoenixAbility,Execute" Slot="Heroic" />
     </CardLayouts>
     <SeparationRadius value="0.1875" />
     <InnerRadius value="1" />
     <MinimapRadius value="0.75" />
     <BehaviorArray Link="KaelthasPhoenixTrackingBehavior" />
+    <BehaviorArray Link="StormSummonedUnitTargetTracker" />
+    <BehaviorArray Link="StormSummonedUnitDamagedUnitTracker" />
     <EffectArray index="Create" value="KaelthasPhoenixAddToTrackingList" />
     <PlaneArray index="Air" value="1" />
+    <AIThinkTree value="AI/KaelthasPhoenix.aitree" />
   </CUnit>
   <CUnit id="KaelthasPhoenixWeaponMissile" parent="MISSILE_INVULNERABLE" />
   <CUnit id="KaelthasPyroblastMissile" parent="MISSILE_INVULNERABLE" />
@@ -4581,6 +4781,27 @@
   <CValidatorUnitType id="IsKaelthasPhoenix">
     <Value value="KaelthasPhoenix" />
   </CValidatorUnitType>
+  <CValidatorUnitType id="CasterIsKaelthasPhoenix">
+    <WhichUnit Value="Caster" />
+    <Value value="KaelthasPhoenix" />
+  </CValidatorUnitType>
+  <CValidatorUnitCompareChargeUsed id="KaelthasSourceHasRetargetCharges">
+    <WhichUnit Value="Source" />
+    <Compare value="LT" />
+    <ChargeLink value="Abil/KaelthasPhoenixRetargetPhoenixAbility" />
+    <Location value="Player" />
+    <Ability value="KaelthasPhoenixRetargetPhoenixAbility" />
+    <Value value="$KaelthasPhoneixRebirthMaxCharges" />
+  </CValidatorUnitCompareChargeUsed>
+  <CValidatorUnitFilters id="KaelthasPhoenixPhoenixIsNotVisibleToAttackTarget">
+    <WhichUnit Effect="KaelthasPhoenixAddAbilityTargetController" />
+    <OtherUnit Value="Target" />
+    <Filters value="-;Visible" />
+  </CValidatorUnitFilters>
+  <CValidatorUnitHasBehavior id="KaelthasPhoenixDoesNotHaveAbilityTargetController">
+    <Behavior value="KaelthasPhoenixAbilityTargetController" />
+    <Negate value="1" />
+  </CValidatorUnitHasBehavior>
   <CValidatorUnitCompareBehaviorCount id="KaelthasCasterVerdantSpheresActive">
     <WhichUnit Value="Caster" />
     <Compare value="GE" />
@@ -4842,6 +5063,9 @@
   <CValidatorUnitCompareBehaviorCount id="KaelthasTargetDoesNotHaveLivingBombChainBomb">
     <Behavior value="KaelthasLivingBombChainBombTarget" />
   </CValidatorUnitCompareBehaviorCount>
+  <CValidatorUnitCompareBehaviorCount id="KaelthasTargetDoesNotHaveLivingBombPrecursor">
+    <Behavior value="KaelthasLivingBombPrecursor" />
+  </CValidatorUnitCompareBehaviorCount>
   <CValidatorUnitCompareBehaviorCount id="KaelthasTargetHasLivingBombChainBomb">
     <Value value="1" />
     <Behavior value="KaelthasLivingBombChainBombTarget" />
@@ -4890,7 +5114,7 @@
     <Period value="0.5" />
     <DamagePoint value="0" />
     <Backswing value="0" />
-    <Effect value="KaelthasPhoenixWeaponLaunchMissile" />
+    <Effect value="KaelthasPhoenixAttackSet" />
   </CWeaponLegacy>
   <CWeaponLegacy id="KaelthasPhoenixWeaponNonHeroes">
     <Options index="ContinuousScan" value="1" />
@@ -4905,7 +5129,7 @@
     <Period value="0.5" />
     <DamagePoint value="0" />
     <Backswing value="0" />
-    <Effect value="KaelthasPhoenixWeaponLaunchMissile" />
+    <Effect value="KaelthasPhoenixAttackSet" />
     <ScanValidationArray value="TargetNotNoMinionAggroAndSummoned" />
   </CWeaponLegacy>
   <CWeaponLegacy id="KaelthasSunfireEnchantmentWeapon">

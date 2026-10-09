@@ -1669,6 +1669,7 @@
     <AbilArray Link="AlteracBossCharge" />
     <AbilArray Link="AlteracBossChargeApproach" />
     <BehaviorArray Link="BossOutOfCombatHeal" />
+    <BehaviorArray Link="CFHArmorGrantDisabled" />
     <WeaponArray index="0" Link="AlteracBossWeaponParent" Turret="" />
     <CardLayouts index="0">
       <LayoutButtons index="0" Face="Cancel" Type="CancelTargetMode" AbilCmd="" Slot="Cancel" />
@@ -1740,6 +1741,10 @@
     <Value value="DrekThar" />
     <WhichUnit Value="Caster" />
   </CValidatorUnitType>
+  <CValidatorCombine id="CasterIsCore">
+    <CombineArray value="CasterIsVanndarStormpike" />
+    <CombineArray value="IsDrekThar" />
+  </CValidatorCombine>
   <CValidatorCombine id="IsCore">
     <CombineArray value="TargetIsVanndarStormpike" />
     <CombineArray value="TargetIsDrekThar" />

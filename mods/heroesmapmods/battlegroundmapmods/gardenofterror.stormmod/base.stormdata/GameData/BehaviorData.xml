@@ -21,182 +21,182 @@
         <VeterancyLevelArray/>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="1.25"/>
-                <VitalMaxArray index="Life" value="35"/>
+                <DamageDealtScaled index="Basic" value="2.25"/>
+                <VitalMaxArray index="Life" value="45"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="1.25"/>
-                <VitalMaxArray index="Life" value="35"/>
+                <DamageDealtScaled index="Basic" value="2.25"/>
+                <VitalMaxArray index="Life" value="45"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="1.25"/>
-                <VitalMaxArray index="Life" value="35"/>
+                <DamageDealtScaled index="Basic" value="2.25"/>
+                <VitalMaxArray index="Life" value="45"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="1.25"/>
-                <VitalMaxArray index="Life" value="35"/>
+                <DamageDealtScaled index="Basic" value="2.25"/>
+                <VitalMaxArray index="Life" value="45"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="1.25"/>
-                <VitalMaxArray index="Life" value="35"/>
+                <DamageDealtScaled index="Basic" value="2.25"/>
+                <VitalMaxArray index="Life" value="45"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="1.875"/>
-                <VitalMaxArray index="Life" value="52.5"/>
+                <DamageDealtScaled index="Basic" value="2.875"/>
+                <VitalMaxArray index="Life" value="62.5"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="1.875"/>
-                <VitalMaxArray index="Life" value="52.5"/>
+                <DamageDealtScaled index="Basic" value="2.875"/>
+                <VitalMaxArray index="Life" value="62.5"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="1.875"/>
-                <VitalMaxArray index="Life" value="52.5"/>
+                <DamageDealtScaled index="Basic" value="2.875"/>
+                <VitalMaxArray index="Life" value="62.5"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="1.875"/>
-                <VitalMaxArray index="Life" value="52.5"/>
+                <DamageDealtScaled index="Basic" value="2.875"/>
+                <VitalMaxArray index="Life" value="62.5"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="1.875"/>
-                <VitalMaxArray index="Life" value="52.5"/>
+                <DamageDealtScaled index="Basic" value="2.875"/>
+                <VitalMaxArray index="Life" value="62.5"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="2.5"/>
-                <VitalMaxArray index="Life" value="70"/>
+                <DamageDealtScaled index="Basic" value="3.5"/>
+                <VitalMaxArray index="Life" value="80"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="2.5"/>
-                <VitalMaxArray index="Life" value="70"/>
+                <DamageDealtScaled index="Basic" value="3.5"/>
+                <VitalMaxArray index="Life" value="80"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="2.5"/>
-                <VitalMaxArray index="Life" value="70"/>
+                <DamageDealtScaled index="Basic" value="3.5"/>
+                <VitalMaxArray index="Life" value="80"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="2.5"/>
-                <VitalMaxArray index="Life" value="70"/>
+                <DamageDealtScaled index="Basic" value="3.5"/>
+                <VitalMaxArray index="Life" value="80"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="2.5"/>
-                <VitalMaxArray index="Life" value="70"/>
+                <DamageDealtScaled index="Basic" value="3.5"/>
+                <VitalMaxArray index="Life" value="80"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="3.125"/>
-                <VitalMaxArray index="Life" value="87.5"/>
+                <DamageDealtScaled index="Basic" value="4.125"/>
+                <VitalMaxArray index="Life" value="97.5"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="3.125"/>
-                <VitalMaxArray index="Life" value="87.5"/>
+                <DamageDealtScaled index="Basic" value="4.125"/>
+                <VitalMaxArray index="Life" value="97.5"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="3.125"/>
-                <VitalMaxArray index="Life" value="87.5"/>
+                <DamageDealtScaled index="Basic" value="4.125"/>
+                <VitalMaxArray index="Life" value="97.5"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="3.125"/>
-                <VitalMaxArray index="Life" value="87.5"/>
+                <DamageDealtScaled index="Basic" value="4.125"/>
+                <VitalMaxArray index="Life" value="97.5"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="3.125"/>
-                <VitalMaxArray index="Life" value="87.5"/>
+                <DamageDealtScaled index="Basic" value="4.125"/>
+                <VitalMaxArray index="Life" value="97.5"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="3.75"/>
-                <VitalMaxArray index="Life" value="105"/>
+                <DamageDealtScaled index="Basic" value="4.75"/>
+                <VitalMaxArray index="Life" value="115"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="3.75"/>
-                <VitalMaxArray index="Life" value="105"/>
+                <DamageDealtScaled index="Basic" value="4.75"/>
+                <VitalMaxArray index="Life" value="115"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="3.75"/>
-                <VitalMaxArray index="Life" value="105"/>
+                <DamageDealtScaled index="Basic" value="4.75"/>
+                <VitalMaxArray index="Life" value="115"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="3.75"/>
-                <VitalMaxArray index="Life" value="105"/>
+                <DamageDealtScaled index="Basic" value="4.75"/>
+                <VitalMaxArray index="Life" value="115"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="3.75"/>
-                <VitalMaxArray index="Life" value="105"/>
+                <DamageDealtScaled index="Basic" value="4.75"/>
+                <VitalMaxArray index="Life" value="115"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="3.75"/>
-                <VitalMaxArray index="Life" value="105"/>
+                <DamageDealtScaled index="Basic" value="4.75"/>
+                <VitalMaxArray index="Life" value="115"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="3.75"/>
-                <VitalMaxArray index="Life" value="105"/>
+                <DamageDealtScaled index="Basic" value="4.75"/>
+                <VitalMaxArray index="Life" value="115"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="3.75"/>
-                <VitalMaxArray index="Life" value="105"/>
+                <DamageDealtScaled index="Basic" value="4.75"/>
+                <VitalMaxArray index="Life" value="115"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification KillXPBonus="2">
-                <DamageDealtScaled index="Basic" value="3.75"/>
-                <VitalMaxArray index="Life" value="105"/>
+                <DamageDealtScaled index="Basic" value="4.75"/>
+                <VitalMaxArray index="Life" value="115"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification>
-                <DamageDealtScaled index="Basic" value="3.75"/>
-                <VitalMaxArray index="Life" value="105"/>
+                <DamageDealtScaled index="Basic" value="4.75"/>
+                <VitalMaxArray index="Life" value="115"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1"/>
@@ -582,219 +582,249 @@
         <VeterancyLevelArray/>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification>
-                <DamageDealtFraction index="Basic" value="0.02"/>
+                <DamageDealtFraction index="Basic" value="0.025"/>
                 <DamageDealtFraction index="Ability" value="0.05"/>
-                <VitalMaxFractionArray index="Life" value="0.02"/>
+                <VitalMaxFractionArray index="Life" value="0.025"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification>
-                <DamageDealtFraction index="Basic" value="0.02"/>
+                <DamageDealtFraction index="Basic" value="0.025"/>
                 <DamageDealtFraction index="Ability" value="0.05"/>
-                <VitalMaxFractionArray index="Life" value="0.02"/>
+                <VitalMaxFractionArray index="Life" value="0.025"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification>
-                <DamageDealtFraction index="Basic" value="0.02"/>
+                <DamageDealtFraction index="Basic" value="0.025"/>
                 <DamageDealtFraction index="Ability" value="0.05"/>
-                <VitalMaxFractionArray index="Life" value="0.02"/>
+                <VitalMaxFractionArray index="Life" value="0.025"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification>
-                <DamageDealtFraction index="Basic" value="0.02"/>
+                <DamageDealtFraction index="Basic" value="0.025"/>
                 <DamageDealtFraction index="Ability" value="0.05"/>
-                <VitalMaxFractionArray index="Life" value="0.02"/>
+                <VitalMaxFractionArray index="Life" value="0.025"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification>
-                <DamageDealtFraction index="Basic" value="0.02"/>
+                <DamageDealtFraction index="Basic" value="0.025"/>
                 <DamageDealtFraction index="Ability" value="0.05"/>
-                <VitalMaxFractionArray index="Life" value="0.02"/>
+                <VitalMaxFractionArray index="Life" value="0.025"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification>
-                <DamageDealtFraction index="Basic" value="0.03"/>
-                <DamageDealtFraction index="Ability" value="0.06"/>
-                <VitalMaxFractionArray index="Life" value="0.03"/>
+                <DamageDealtFraction index="Basic" value="0.035"/>
+                <DamageDealtFraction index="Ability" value="0.07"/>
+                <VitalMaxFractionArray index="Life" value="0.035"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification>
-                <DamageDealtFraction index="Basic" value="0.03"/>
-                <DamageDealtFraction index="Ability" value="0.06"/>
-                <VitalMaxFractionArray index="Life" value="0.03"/>
+                <DamageDealtFraction index="Basic" value="0.035"/>
+                <DamageDealtFraction index="Ability" value="0.07"/>
+                <VitalMaxFractionArray index="Life" value="0.035"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification>
-                <DamageDealtFraction index="Basic" value="0.03"/>
-                <DamageDealtFraction index="Ability" value="0.06"/>
-                <VitalMaxFractionArray index="Life" value="0.03"/>
+                <DamageDealtFraction index="Basic" value="0.035"/>
+                <DamageDealtFraction index="Ability" value="0.07"/>
+                <VitalMaxFractionArray index="Life" value="0.035"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification>
-                <DamageDealtFraction index="Basic" value="0.03"/>
-                <DamageDealtFraction index="Ability" value="0.06"/>
-                <VitalMaxFractionArray index="Life" value="0.03"/>
+                <DamageDealtFraction index="Basic" value="0.035"/>
+                <DamageDealtFraction index="Ability" value="0.07"/>
+                <VitalMaxFractionArray index="Life" value="0.035"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification>
-                <DamageDealtFraction index="Basic" value="0.03"/>
-                <DamageDealtFraction index="Ability" value="0.06"/>
-                <VitalMaxFractionArray index="Life" value="0.03"/>
-            </Modification>
-        </VeterancyLevelArray>
-        <VeterancyLevelArray MinVeterancyXP="1">
-            <Modification>
-                <DamageDealtFraction index="Basic" value="0.04"/>
-                <DamageDealtFraction index="Ability" value="0.06"/>
-                <VitalMaxFractionArray index="Life" value="0.04"/>
-            </Modification>
-        </VeterancyLevelArray>
-        <VeterancyLevelArray MinVeterancyXP="1">
-            <Modification>
-                <DamageDealtFraction index="Basic" value="0.04"/>
-                <DamageDealtFraction index="Ability" value="0.06"/>
-                <VitalMaxFractionArray index="Life" value="0.04"/>
-            </Modification>
-        </VeterancyLevelArray>
-        <VeterancyLevelArray MinVeterancyXP="1">
-            <Modification>
-                <DamageDealtFraction index="Basic" value="0.04"/>
-                <DamageDealtFraction index="Ability" value="0.06"/>
-                <VitalMaxFractionArray index="Life" value="0.04"/>
-            </Modification>
-        </VeterancyLevelArray>
-        <VeterancyLevelArray MinVeterancyXP="1">
-            <Modification>
-                <DamageDealtFraction index="Basic" value="0.04"/>
-                <DamageDealtFraction index="Ability" value="0.06"/>
-                <VitalMaxFractionArray index="Life" value="0.04"/>
-            </Modification>
-        </VeterancyLevelArray>
-        <VeterancyLevelArray MinVeterancyXP="1">
-            <Modification>
-                <DamageDealtFraction index="Basic" value="0.04"/>
-                <DamageDealtFraction index="Ability" value="0.06"/>
-                <VitalMaxFractionArray index="Life" value="0.04"/>
+                <DamageDealtFraction index="Basic" value="0.035"/>
+                <DamageDealtFraction index="Ability" value="0.07"/>
+                <VitalMaxFractionArray index="Life" value="0.035"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification>
                 <DamageDealtFraction index="Basic" value="0.05"/>
-                <DamageDealtFraction index="Ability" value="0.07"/>
-                <VitalMaxFractionArray index="Life" value="0.05"/>
+                <DamageDealtFraction index="Ability" value="0.08"/>
+                <VitalMaxFractionArray index="Life" value="0.075"/>
+            </Modification>
+        </VeterancyLevelArray>
+        <VeterancyLevelArray MinVeterancyXP="1">
+            <Modification>
+                <DamageDealtFraction index="Basic" value="0.08"/>
+                <DamageDealtFraction index="Ability" value="0.08"/>
+                <VitalMaxFractionArray index="Life" value="0.075"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification>
                 <DamageDealtFraction index="Basic" value="0.05"/>
-                <DamageDealtFraction index="Ability" value="0.07"/>
-                <VitalMaxFractionArray index="Life" value="0.05"/>
+                <DamageDealtFraction index="Ability" value="0.08"/>
+                <VitalMaxFractionArray index="Life" value="0.075"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification>
                 <DamageDealtFraction index="Basic" value="0.05"/>
-                <DamageDealtFraction index="Ability" value="0.07"/>
-                <VitalMaxFractionArray index="Life" value="0.05"/>
+                <DamageDealtFraction index="Ability" value="0.08"/>
+                <VitalMaxFractionArray index="Life" value="0.075"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification>
                 <DamageDealtFraction index="Basic" value="0.05"/>
-                <DamageDealtFraction index="Ability" value="0.07"/>
-                <VitalMaxFractionArray index="Life" value="0.05"/>
-            </Modification>
-        </VeterancyLevelArray>
-        <VeterancyLevelArray MinVeterancyXP="1">
-            <Modification>
-                <DamageDealtFraction index="Basic" value="0.05"/>
-                <DamageDealtFraction index="Ability" value="0.07"/>
-                <VitalMaxFractionArray index="Life" value="0.05"/>
-            </Modification>
-        </VeterancyLevelArray>
-        <VeterancyLevelArray MinVeterancyXP="1">
-            <Modification>
-                <DamageDealtFraction index="Basic" value="0.06"/>
-                <DamageDealtFraction index="Ability" value="0.07"/>
-                <VitalMaxFractionArray index="Life" value="0.06"/>
-            </Modification>
-        </VeterancyLevelArray>
-        <VeterancyLevelArray MinVeterancyXP="1">
-            <Modification>
-                <DamageDealtFraction index="Basic" value="0.06"/>
-                <DamageDealtFraction index="Ability" value="0.07"/>
-                <VitalMaxFractionArray index="Life" value="0.06"/>
-            </Modification>
-        </VeterancyLevelArray>
-        <VeterancyLevelArray MinVeterancyXP="1">
-            <Modification>
-                <DamageDealtFraction index="Basic" value="0.06"/>
-                <DamageDealtFraction index="Ability" value="0.07"/>
-                <VitalMaxFractionArray index="Life" value="0.06"/>
-            </Modification>
-        </VeterancyLevelArray>
-        <VeterancyLevelArray MinVeterancyXP="1">
-            <Modification>
-                <DamageDealtFraction index="Basic" value="0.06"/>
-                <DamageDealtFraction index="Ability" value="0.07"/>
-                <VitalMaxFractionArray index="Life" value="0.06"/>
-            </Modification>
-        </VeterancyLevelArray>
-        <VeterancyLevelArray MinVeterancyXP="1">
-            <Modification>
-                <DamageDealtFraction index="Basic" value="0.06"/>
-                <DamageDealtFraction index="Ability" value="0.07"/>
-                <VitalMaxFractionArray index="Life" value="0.06"/>
+                <DamageDealtFraction index="Ability" value="0.08"/>
+                <VitalMaxFractionArray index="Life" value="0.075"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification>
                 <DamageDealtFraction index="Basic" value="0.07"/>
-                <DamageDealtFraction index="Ability" value="0.07"/>
-                <VitalMaxFractionArray index="Life" value="0.07"/>
+                <DamageDealtFraction index="Ability" value="0.09"/>
+                <VitalMaxFractionArray index="Life" value="0.1"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification>
                 <DamageDealtFraction index="Basic" value="0.07"/>
-                <DamageDealtFraction index="Ability" value="0.07"/>
-                <VitalMaxFractionArray index="Life" value="0.07"/>
+                <DamageDealtFraction index="Ability" value="0.09"/>
+                <VitalMaxFractionArray index="Life" value="0.1"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification>
                 <DamageDealtFraction index="Basic" value="0.07"/>
-                <DamageDealtFraction index="Ability" value="0.07"/>
-                <VitalMaxFractionArray index="Life" value="0.07"/>
+                <DamageDealtFraction index="Ability" value="0.09"/>
+                <VitalMaxFractionArray index="Life" value="0.1"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification>
                 <DamageDealtFraction index="Basic" value="0.07"/>
-                <DamageDealtFraction index="Ability" value="0.07"/>
-                <VitalMaxFractionArray index="Life" value="0.07"/>
+                <DamageDealtFraction index="Ability" value="0.09"/>
+                <VitalMaxFractionArray index="Life" value="0.1"/>
             </Modification>
         </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1">
             <Modification>
                 <DamageDealtFraction index="Basic" value="0.07"/>
-                <DamageDealtFraction index="Ability" value="0.07"/>
-                <VitalMaxFractionArray index="Life" value="0.07"/>
+                <DamageDealtFraction index="Ability" value="0.09"/>
+                <VitalMaxFractionArray index="Life" value="0.1"/>
             </Modification>
         </VeterancyLevelArray>
-        <VeterancyLevelArray MinVeterancyXP="1"/>
-        <VeterancyLevelArray MinVeterancyXP="1"/>
-        <VeterancyLevelArray MinVeterancyXP="1"/>
-        <VeterancyLevelArray MinVeterancyXP="1"/>
-        <VeterancyLevelArray MinVeterancyXP="1"/>
+        <VeterancyLevelArray MinVeterancyXP="1">
+            <Modification>
+                <DamageDealtFraction index="Basic" value="0.08"/>
+                <DamageDealtFraction index="Ability" value="0.1"/>
+                <VitalMaxFractionArray index="Life" value="0.12"/>
+            </Modification>
+        </VeterancyLevelArray>
+        <VeterancyLevelArray MinVeterancyXP="1">
+            <Modification>
+                <DamageDealtFraction index="Basic" value="0.08"/>
+                <DamageDealtFraction index="Ability" value="0.1"/>
+                <VitalMaxFractionArray index="Life" value="0.12"/>
+            </Modification>
+        </VeterancyLevelArray>
+        <VeterancyLevelArray MinVeterancyXP="1">
+            <Modification>
+                <DamageDealtFraction index="Basic" value="0.08"/>
+                <DamageDealtFraction index="Ability" value="0.1"/>
+                <VitalMaxFractionArray index="Life" value="0.12"/>
+            </Modification>
+        </VeterancyLevelArray>
+        <VeterancyLevelArray MinVeterancyXP="1">
+            <Modification>
+                <DamageDealtFraction index="Basic" value="0.08"/>
+                <DamageDealtFraction index="Ability" value="0.1"/>
+                <VitalMaxFractionArray index="Life" value="0.12"/>
+            </Modification>
+        </VeterancyLevelArray>
+        <VeterancyLevelArray MinVeterancyXP="1">
+            <Modification>
+                <DamageDealtFraction index="Basic" value="0.08"/>
+                <DamageDealtFraction index="Ability" value="0.1"/>
+                <VitalMaxFractionArray index="Life" value="0.12"/>
+            </Modification>
+        </VeterancyLevelArray>
+        <VeterancyLevelArray MinVeterancyXP="1">
+            <Modification>
+                <DamageDealtFraction index="Basic" value="0.1"/>
+                <DamageDealtFraction index="Ability" value="0.1"/>
+                <VitalMaxFractionArray index="Life" value="0.15"/>
+            </Modification>
+        </VeterancyLevelArray>
+        <VeterancyLevelArray MinVeterancyXP="1">
+            <Modification>
+                <DamageDealtFraction index="Basic" value="0.1"/>
+                <DamageDealtFraction index="Ability" value="0.1"/>
+                <VitalMaxFractionArray index="Life" value="0.15"/>
+            </Modification>
+        </VeterancyLevelArray>
+        <VeterancyLevelArray MinVeterancyXP="1">
+            <Modification>
+                <DamageDealtFraction index="Basic" value="0.1"/>
+                <DamageDealtFraction index="Ability" value="0.1"/>
+                <VitalMaxFractionArray index="Life" value="0.15"/>
+            </Modification>
+        </VeterancyLevelArray>
+        <VeterancyLevelArray MinVeterancyXP="1">
+            <Modification>
+                <DamageDealtFraction index="Basic" value="0.1"/>
+                <DamageDealtFraction index="Ability" value="0.1"/>
+                <VitalMaxFractionArray index="Life" value="0.15"/>
+            </Modification>
+        </VeterancyLevelArray>
+        <VeterancyLevelArray MinVeterancyXP="1">
+            <Modification>
+                <DamageDealtFraction index="Basic" value="0.1"/>
+                <DamageDealtFraction index="Ability" value="0.1"/>
+                <VitalMaxFractionArray index="Life" value="0.15"/>
+            </Modification>
+        </VeterancyLevelArray>
+        <VeterancyLevelArray MinVeterancyXP="1">
+            <Modification>
+                <DamageDealtFraction index="Basic" value="0.1"/>
+                <DamageDealtFraction index="Ability" value="0.1"/>
+                <VitalMaxFractionArray index="Life" value="0.15"/>
+            </Modification>
+        </VeterancyLevelArray>
+        <VeterancyLevelArray MinVeterancyXP="1">
+            <Modification>
+                <DamageDealtFraction index="Basic" value="0.1"/>
+                <DamageDealtFraction index="Ability" value="0.1"/>
+                <VitalMaxFractionArray index="Life" value="0.15"/>
+            </Modification>
+        </VeterancyLevelArray>
+        <VeterancyLevelArray MinVeterancyXP="1">
+            <Modification>
+                <DamageDealtFraction index="Basic" value="0.1"/>
+                <DamageDealtFraction index="Ability" value="0.1"/>
+                <VitalMaxFractionArray index="Life" value="0.15"/>
+            </Modification>
+        </VeterancyLevelArray>
+        <VeterancyLevelArray MinVeterancyXP="1">
+            <Modification>
+                <DamageDealtFraction index="Basic" value="0.1"/>
+                <DamageDealtFraction index="Ability" value="0.1"/>
+                <VitalMaxFractionArray index="Life" value="0.15"/>
+            </Modification>
+        </VeterancyLevelArray>
+        <VeterancyLevelArray MinVeterancyXP="1">
+            <Modification>
+                <DamageDealtFraction index="Basic" value="0.1"/>
+                <DamageDealtFraction index="Ability" value="0.1"/>
+                <VitalMaxFractionArray index="Life" value="0.15"/>
+            </Modification>
+        </VeterancyLevelArray>
         <VeterancyLevelArray MinVeterancyXP="1"/>
         <VeterancyLevelArray MinVeterancyXP="1"/>
         <VeterancyLevelArray MinVeterancyXP="1"/>

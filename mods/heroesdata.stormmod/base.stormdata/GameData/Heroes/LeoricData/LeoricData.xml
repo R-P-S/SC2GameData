@@ -2181,27 +2181,24 @@
     <EffectArray value="ApplyAbilityImpactReveal" />
     <EffectArray value="LeoricBurningDespairDamage" />
   </CEffectSet>
-  <CEffectSet id="LeoricWrathOfTheBoneKingInitialTargetImpactSet">
-    <EffectArray value="LeoricWeaponImpactSet" />
-    <EffectArray value="LeoricWrathOfTheBoneKingDamageSwitch" />
-  </CEffectSet>
   <CEffectDamage id="LeoricWeaponDamageWrathOfTheBoneKing" parent="StormWeapon">
     <Amount value="115" />
   </CEffectDamage>
   <CEffectSet id="LeoricWeaponWrathOfTheBoneKingImpactSet">
-    <EffectArray value="LeoricWeaponDamageWrathOfTheBoneKing" />
     <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="LeoricWrathOfTheBoneKingWeaponPreImpactSet" />
+    <EffectArray value="LeoricWeaponDamageWrathOfTheBoneKing" />
+    <EffectArray value="LeoricWrathOfTheBoneKingWeaponPostImpactSet" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
+  <CEffectSet id="LeoricWrathOfTheBoneKingWeaponPreImpactSet" />
+  <CEffectSet id="LeoricWrathOfTheBoneKingWeaponPostImpactSet" />
   <CEffectCreatePersistent id="LeoricWrathOfTheBoneKingDummyPersistent">
     <ExpireEffect value="LeoricWrathOfTheBoneKingModifyTokenCount" />
     <PeriodCount value="1" />
     <PeriodicPeriodArray value="0.0625" />
     <FinalEffect value="LeoricWrathOfTheBoneKingRemoveSuppressUI" />
   </CEffectCreatePersistent>
-  <CEffectSet id="LeoricWrathOfTheBoneKingCritSet">
-    <EffectArray value="LeoricWeaponImpactSet" />
-  </CEffectSet>
   <CEffectSwitch id="LeoricWrathOfTheBoneKingDamageSwitch">
     <CaseArray Validator="LeoricHas0TokensOfWrathOfTheBoneKing" Effect="LeoricWrathOfTheBoneKingSearch" />
     <CaseArray Validator="LeoricHas1TokensOfWrathOfTheBoneKing" Effect="LeoricWrathOfTheBoneKingSearch" />
@@ -2227,10 +2224,19 @@
     <Value value="0" />
   </CEffectModifyTokenCount>
   <CEffectSet id="LeoricWeaponLaunchSet">
-    <EffectArray value="LeoricWrathOfTheBoneKingInitialTargetImpactSet" />
+    <EffectArray value="UniversalWeaponLaunchSet" />
+    <EffectArray value="UniversalWeaponImpact" />
+    <EffectArray value="LeoricWeaponPreImpactSet" />
+    <EffectArray value="LeoricWeaponDamage" />
+    <EffectArray value="LeoricWeaponPostImpactSet" />
+    <EffectArray value="LeoricWrathOfTheBoneKingDamageSwitch" />
     <EffectArray value="LeoricWrathOfTheBoneKingDummyPersistent" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
+  <CEffectSet id="LeoricWeaponPreImpactSet">
+    <EffectArray value="LeoricSpectralLeech" />
+  </CEffectSet>
+  <CEffectSet id="LeoricWeaponPostImpactSet" />
   <CEffectSet id="LeoricDrainHopeExpireSet">
     <EffectArray value="LeoricDrainHopeCrushingHopeMasteryDamage" />
     <EffectArray value="LeoricDrainHopeWillingVesselCreateHealer" />
@@ -3050,12 +3056,6 @@
     <ValidatorArray value="LeoricDoesNotHaveUndyingReviveHalfVitals" />
   </CEffectModifyUnit>
   <CEffectSet id="LeoricUndyingWarmingUpDummy" />
-  <CEffectSet id="LeoricWeaponImpactSet">
-    <EffectArray value="UniversalWeaponLaunchSet" />
-    <EffectArray value="LeoricSpectralLeech" />
-    <EffectArray value="LeoricWeaponDamage" />
-    <EffectArray value="UniversalWeaponImpact" />
-  </CEffectSet>
   <CEffectDamage id="LeoricWeaponDamage" parent="StormWeapon">
     <Amount value="115" />
     <MultiplicativeModifierArray index="WrathOfTheBoneKing" Validator="LeoricHas2TokensOfWrathOfTheBoneKing" Modifier="1.25" Crit="1" />
@@ -3070,7 +3070,7 @@
   </CEffectSet>
   <CEffectSwitch id="LeoricWeaponImpactSwitch">
     <CaseArray Validator="LeoricHasUndying" Effect="LeoricUndyingApplySlow" />
-    <CaseDefault value="LeoricWeaponImpactSet" />
+    <CaseDefault value="LeoricWeaponDamage" />
   </CEffectSwitch>
   <CEffectApplyBehavior id="LeoricSkeletalSwingApplySlow" parent="StormSlowApply">
     <Behavior value="LeoricSkeletalSwingSlow" />
@@ -3668,6 +3668,7 @@
     <VoiceLineArray value="LeoricBase_VoiceLine05" />
     <Rarity value="Epic" />
     <HeroSpecificUIArray Location="Status" DescName="Leoric/LeoricTraitFrame" />
+    <HeroSpecificUIArray Location="CommandButton00Status" DescName="Leoric/LeoricRoyalFocusButtonOverride" />
     <ExpandedRole value="Bruiser" />
   </CHero>
   <CHeroMastery id="LeoricMasteryRing1" parent="MasteryRingRank1">
@@ -4520,7 +4521,7 @@
     <InnerRadius value="0.875" />
     <Collide index="Ground" value="1" />
     <DeathTime value="0.0625" />
-    <Speed value="4.8398" />
+    <Speed value="$HeroBaseMovementSpeed" />
     <CardLayouts>
       <LayoutButtons Face="Move" Type="AbilCmd" AbilCmd="move,Move" Slot="ForceMove" />
     </CardLayouts>
@@ -4741,6 +4742,8 @@
     <CombineArray value="LeoricDoesNotHaveUndying" />
     <CombineArray value="TargetNotInvulnerableExceptTimeStop" />
     <CombineArray value="TargetDoesNotHaveInCargo" />
+    <CombineArray value="CasterNotStasisExceptTimeStop" />
+    <CombineArray value="TargetNotStasisExceptTimeStop" />
   </CValidatorCombine>
   <CValidatorLocationCompareRange id="LeoricDrainHopeTargetInRange">
     <WhichLocation Effect="LeoricDrainHopeTargetCreatePersistent" Value="TargetUnit" />

@@ -222,7 +222,7 @@ bool libHALE_gt_HeroAlexstraszaBlessingoftheRedBehaviorUnitSwapped_Func (bool te
 
     auto3C680C14_var = 1;
     for ( ; auto3C680C14_var <= auto3C680C14_ae; auto3C680C14_var += 1 ) {
-        if ((UnitBehaviorEnabled(lv_oldUnit, "AlexstraszaBlessingOfTheRed") == true) && (UnitFilterMatch(lv_newUnit, UnitGetOwner(lv_oldUnit), UnitFilter(0, 0, 0, (1 << (c_targetFilterAITargetableStructure - 32)))) == true)) {
+        if ((UnitBehaviorEnabled(lv_oldUnit, "AlexstraszaBlessingOfTheRed") == true) && (UnitBehaviorEffectPlayer(lv_oldUnit, "AlexstraszaBlessingOfTheRed", c_effectPlayerCaster, 0) == auto3C680C14_var) && (UnitFilterMatch(lv_newUnit, UnitGetOwner(lv_oldUnit), UnitFilter(0, 0, 0, (1 << (c_targetFilterAITargetableStructure - 32)))) == true)) {
             lv_alexstraszaUnit = libGame_gv_players[auto3C680C14_var].lv_heroUnit;
             if ((lv_preserveOnOld == false)) {
                 UnitCreateEffectUnit(lv_alexstraszaUnit, "AlexstraszaBlessingOfTheRedRemoveBehavior", lv_oldUnit);
@@ -324,6 +324,7 @@ void libHALE_gt_HeroAlexstraszaOverprotective_Init () {
     libHALE_gt_HeroAlexstraszaOverprotective = TriggerCreate("libHALE_gt_HeroAlexstraszaOverprotective_Func");
     TriggerEnable(libHALE_gt_HeroAlexstraszaOverprotective, false);
     TriggerAddEventUnitHealed(libHALE_gt_HeroAlexstraszaOverprotective, null, c_unitVitalLife, "AlexstraszaAbundanceCreateHealer");
+    TriggerAddEventUnitHealed(libHALE_gt_HeroAlexstraszaOverprotective, null, c_unitVitalLife, "AlexstraszaPreservationCreateHealer");
 }
 
 void libHALE_InitTriggers () {

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<tree>
+	<include file="AI/HeroBase.aitree" />
+	<mod id="9AE08A35DBE4CDD2">
+		<property name="Ability" valueSource="literal" value="FountainDrink"/>
+	</mod>
+	<mod id="46239EA7D3DBE0D8">
+		<removeChild id="0C8C28CF3AAAC55B"/>
+		<removeChild id="C35E513076FCC49B"/>
+	</mod>
+</tree>

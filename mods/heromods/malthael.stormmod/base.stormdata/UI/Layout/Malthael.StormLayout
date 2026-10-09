@@ -1,61 +1,53 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <Desc>
 
-    <Frame type="SelectionUnitStatusPanel" name="MalthaelFeartheReaperButtonOverrideFrame">
+    <Frame type="UnitStatusFrame" name="MalthaelFeartheReaperButtonOverrideFrame">
         <Anchor relative="$parent"/>
-        <SpecificUnit val="HeroMalthael"/>
+        <AcceptsMouse val="False"/>
 
-        <Frame type="UnitStatusFrame" name="UnitStatusFrame0">
+        <Frame type="UnitStatusBehaviorIcon" name="MalthaelFeartheReaperIcon">
             <Anchor relative="$parent"/>
+            <Behavior val="MalthaelFearTheReaperBuff"/>			
             <AcceptsMouse val="False"/>
 
-            <Frame type="UnitStatusBehaviorIcon" name="MalthaelFeartheReaperIcon">
+            <Frame type="BehaviorIcon" name="BehaviorIcon">
                 <Anchor relative="$parent"/>
                 <Behavior val="MalthaelFearTheReaperBuff"/>
                 <AcceptsMouse val="False"/>
 
-                <Frame type="BehaviorIcon" name="BehaviorIcon">
-                    <Anchor relative="$parent"/>
-                    <Behavior val="MalthaelFearTheReaperBuff"/>
+                <Frame type="ProgressBar" name="CooldownBar">
+                    <Anchor side="Top" relative="$parent" pos="Mid" offset="0"/>
+                    <Anchor side="Left" relative="$parent" pos="Mid" offset="0"/>
+                    <Anchor side="Bottom" relative="$parent" pos="Mid" offset="0"/>
+                    <Anchor side="Right" relative="$parent" pos="Mid" offset="0"/>
+                    <Height val="102"/>
+                    <Width val="102"/>
                     <AcceptsMouse val="False"/>
+                    <MinValue val="0"/>
+                    <MaxValue val="3"/>
+                    <Value val="0"/>
+                    <Circular val="True"/>
+                    <CircularStart val="0"/>
+                    <CircularEndOffset val="360"/>
+                    <FillInset val="0.0"/>
 
-                    <Frame type="ProgressBar" name="CooldownBar">
-                        <Anchor side="Top" relative="$parent" pos="Mid" offset="0"/>
-                        <Anchor side="Left" relative="$parent" pos="Mid" offset="0"/>
-                        <Anchor side="Bottom" relative="$parent" pos="Mid" offset="0"/>
-                        <Anchor side="Right" relative="$parent" pos="Mid" offset="0"/>
-                        <Height val="102"/>
-                        <Width val="102"/>
-                        <AcceptsMouse val="False"/>
+                    <Frame type="Frame" name="FillImageContainer">
+                        <Anchor relative="$parent"/>
 
-                        <MinValue val="0"/>
-                        <MaxValue val="3"/>
-                        <Value val="0"/>
-                        <Circular val="True"/>
-                        <CircularStart val="0"/>
-                        <CircularEndOffset val="360"/>
-                        <FillInset val="0.0"/>
-
-                        <Frame type="Frame" name="FillImageContainer">
+                        <Frame type="Image" name="FillImage">
                             <Anchor relative="$parent"/>
-
-                            <Frame type="Image" name="FillImage">
-                                <Anchor relative="$parent"/>
-                                <SubpixelRendering val="True"/>
-                                <ColorAdjustMode val="Colorize"/>
-                                <AdjustmentColor val="3399FF"/>
-                                <RenderPriority val="510"/>
-                                <Unclipped val="true"/>
-
-                                <Texture val="@UI/Storm_UI_InGame_AbilityButton_Active_Add"/>
-                                <BlendMode val="Normal"/>
-                                <TextureType val="Circular"/>
-                            </Frame>
+                            <SubpixelRendering val="True"/>
+                            <ColorAdjustMode val="Colorize"/>
+                            <AdjustmentColor val="3399FF"/>
+                            <RenderPriority val="510"/>
+                            <Unclipped val="true"/>
+							<Texture val="@UI/Storm_UI_InGame_AbilityButton_Active_Add"/>
+                            <BlendMode val="Normal"/>
+                            <TextureType val="Circular"/>						
                         </Frame>
                     </Frame>
                 </Frame>
-            </Frame>
-            
+            </Frame>            
         </Frame>
     </Frame>
 
@@ -90,4 +82,80 @@
             </Frame>
         </Frame>
     </Frame>
+	
+	<Frame type="SelectionUnitStatusPanel" name="MalthaelTormentedSoulsDuration">
+		<Anchor side="Bottom" relative="$GameUI_HeroCustomChannelBarPlaceholder" pos="Max" offset="0"/>
+		<Anchor side="Left" relative="$parent" pos="Mid" offset="0"/>
+		<Anchor side="Right" relative="$parent" pos="Mid" offset="0"/>
+		<Height val="56"/>
+		<Width val="602"/>
+		<SpecificUnit val="HeroMalthael"/>
+		
+		<Frame type="UnitStatusFrame" name="UnitStatusFrame0">
+			<Anchor relative="$parent"/>
+			<VisibleToOwner val="true"/>
+			<VisibleToAlly val="false"/>
+			<VisibleToEnemy val="false"/>
+			
+			<Frame type="Image" name="ChannelBarFrame">
+				<Anchor side="Bottom" relative="$parent/MalthaelTormentedSoulsDurationBar" pos="Max" offset="0"/>
+				<Anchor side="Left" relative="$parent/MalthaelTormentedSoulsDurationBar" pos="Min" offset="0"/>
+				<Anchor side="Right" relative="$parent/MalthaelTormentedSoulsDurationBar" pos="Max" offset="0"/>
+				<Height val="#ChannelBarHeight"/>
+				<Texture val="@UI/HUD_Bar_CastChannel_BG"/>
+				<TextureType val="NineSlice"/>
+				<IgnoreParentColor val="True"/>
+				<RenderPriority val="600"/>
+				
+				<Frame type="Label" name="ChannelNameLabel">
+					<Anchor side="Top" relative="$parent" pos="Mid" offset="0"/>
+					<Anchor side="Bottom" relative="$parent" pos="Mid" offset="0"/>
+					<Anchor side="Left" relative="$parent" pos="Min" offset="0"/>
+					<Anchor side="Right" relative="$parent" pos="Max" offset="0"/>
+					<Style val="Storm_BehaviorBarLabel"/>
+					<Text val="@Button/Name/MalthaelTormentedSouls"/>
+					<IgnoreParentColor val="True"/>
+					<RenderPriority val="602"/>
+				</Frame>
+				
+				<StateGroup name="ChannelState">
+					<State name="Neither">
+						<When type="Property" frame="$parent/TormentedSoulsInactive" Visible="True"/>
+						<Action type="SetProperty" frame="$this" Visible="false"/>
+						<Action type="SetProperty" frame="$GameUI_HeroCustomChannelBarPlaceholder" Visible="True"/>
+					</State>
+					<State name="DurationCountdown">
+						<When type="Property" frame="$parent/TormentedSoulsTicking" Visible="True"/>
+						<Action type="SetProperty" frame="$this" Visible="True"/>
+						<Action type="SetProperty" frame="$GameUI_HeroCustomChannelBarPlaceholder" Visible="True"/>
+					</State>
+				</StateGroup>
+			</Frame>
+			
+			<Frame type="UnitStatusValidatorAnimElement" name="TormentedSoulsInactive">
+				<Anchor relative="$parent"/>
+				<Validator val="MalthaelTormentedSoulsNoBuff"/>
+			</Frame>
+			
+			<Frame type="UnitStatusValidatorAnimElement" name="TormentedSoulsTicking">
+				<Anchor relative="$parent"/>
+				<Validator val="MalthaelTormentedSoulsHasDurationActive"/>
+			</Frame>
+			
+			<Frame type="UnitStatusDurationBar" name="MalthaelTormentedSoulsDurationBar">
+				<Anchor side="Top" relative="$parent" pos="Min" offset="0"/>
+				<Anchor side="Left" relative="$parent" pos="Min" offset="0"/>
+				<Anchor side="Right" relative="$parent" pos="Max" offset="0"/>
+				<Height val="#ChannelBarHeight"/>
+				<Texture val="@UI/HUD_Bar_Cast"/>
+				<BackgroundShown val="true"/>
+				<BackgroundColor val="125, 0, 0, 0"/>
+				<BarInsetRect top="0" left="0" bottom="0" right="0"/>
+				<ColorStyle val="DurationBar" index="0"/>
+				<Sliced val="false" index="0"/>
+				<Tiled val="true" index="0"/>
+				<Behavior val="MalthaelTormentedSoulsDuration"/>
+			</Frame>
+		</Frame>
+	</Frame>
 </Desc>
