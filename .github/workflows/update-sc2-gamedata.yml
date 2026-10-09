@@ -84,23 +84,11 @@ jobs:
           # Publish annotated tags even if no additional commit is needed.
           git push --atomic --follow-tags origin "HEAD:refs/heads/master"
 
-      - name: Check Heroes history completion
-        id: heroes_state
-        if: inputs.game != 'sc2'
-        shell: bash
-        run: |
-          set -euo pipefail
-          if git ls-remote --exit-code --tags origin refs/tags/heroes/history-complete >/dev/null 2>&1; then
-            echo "complete=true" >> "$GITHUB_OUTPUT"
-          else
-            result=$?
-            if [[ "$result" != "2" ]]; then exit "$result"; fi
-            echo "complete=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Recover up to 10 historical Heroes versions
+      # Like SC2, Heroes always checks missed intermediate patches first.
+      # This continues after its original archival backlog is completed.
+      - name: Recover Heroes versions chronologically
         id: heroes_history
-        if: inputs.game != 'sc2' && (inputs.historical == true || steps.heroes_state.outputs.complete != 'true')
+        if: inputs.game != 'sc2'
         shell: bash
         run: |
           set -euo pipefail
@@ -109,27 +97,6 @@ jobs:
           if [[ "$HOTS_FORCE" == "true" ]]; then EXTRA="$EXTRA --force"; fi
           if [[ "${{ inputs.allow_history_gap }}" == "true" ]]; then EXTRA="$EXTRA --allow-gap"; fi
           python3 scripts/catch_up_history.py --game heroes --max-builds 10 --history-scan 300 $EXTRA
-
-      - name: Mark Heroes archived history complete
-        if: steps.heroes_history.outputs.caught_up == 'true' && inputs.dry_run != true
-        shell: bash
-        run: |
-          set -euo pipefail
-          if [[ "$GITHUB_REPOSITORY" != "R-P-S/SC2GameData" ]]; then exit 1; fi
-          if ! git show-ref --verify --quiet refs/tags/heroes/history-complete; then
-            git tag -a heroes/history-complete -m "Heroes historical archive catch-up complete"
-          fi
-
-      - name: Check latest Heroes after historical completion
-        id: heroes_latest
-        if: inputs.game != 'sc2' && inputs.historical != true && steps.heroes_state.outputs.complete == 'true'
-        run: node scripts/update_hots_gamedata.js
-
-      - name: Commit latest Heroes version
-        if: steps.heroes_latest.outputs.updated == 'true'
-        env:
-          HOTS_BUILD_ID: "${{ steps.heroes_latest.outputs.build_id }}"
-        run: python3 scripts/commit_gamedata_version.py --game heroes --build "$HOTS_BUILD_ID"
 
       - name: Push Heroes commits and tags only to this fork
         if: inputs.game != 'sc2' && (github.event_name == 'schedule' || inputs.dry_run != true)
