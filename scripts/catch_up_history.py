@@ -137,18 +137,14 @@ def fetch_history(product, max_scan):
                 "pagination may be broken."
             )
         if total_pages is not None and page >= int(total_pages):
-            # The API reports 202 total Heroes snapshots but can serve only
-            # 10 records per page while claiming there are 20 pages.
-            # Probe past its reported last page when its own total is larger
-            # than the number of unique entries actually returned.
-            if total is None or len(seen_seqns) >= int(total):
-                break
-            print(
-                f"BlizzTrack reports {total} snapshots, but only "
-                f"{len(seen_seqns)} received after page {page}; "
-                "checking for an extra page.",
-                flush=True,
-            )
+            if total is not None and len(seen_seqns) < int(total):
+                print(
+                    f"WARNING: BlizzTrack reports {total} snapshots but "
+                    f"advertises only {total_pages} pages, yielding "
+                    f"{len(seen_seqns)} records; archive may be incomplete.",
+                    flush=True,
+                )
+            break
         elif len(items) < int(body.get("per_page", page_size)):
             # Use response's declared page size when available. When the
             # server omits it, do NOT assume 10 results means no more pages.
