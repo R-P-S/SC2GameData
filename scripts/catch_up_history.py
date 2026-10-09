@@ -37,42 +37,80 @@ def json_get(url):
         return json.loads(response.read(6_000_000))
 
 
-def fetch_history(product, max_scan):
-    # Routes confirmed in BlizzTrack/BlizzTrack's archived ManifestController.
-    base = "https://www.blizztrack.com/api/manifest"
-    url = f"{base}/seqn/{product}?" + urlencode({"filter": "Versions"})
-    result = json_get(url)
-    seqns = result.get("data") if isinstance(result, dict) else None
-    if not isinstance(seqns, list) or not seqns:
-        raise RuntimeError("BlizzTrack sequence-number API returned no history.")
-    numbers = sorted({
-        int(item["seqn"]) for item in seqns
-        if isinstance(item, dict) and str(item.get("seqn", "")).isdigit()
-    }, reverse=True)
-    if not numbers:
-        raise RuntimeError("No valid historical sequence numbers found.")
+def manifest_result(payload, where, *, paged=False):
+    """Unwrap the BlizzTrack 2 API: {success, results:{results:[...]}} or
+    {success, results:{data:[...]}}. Fail closed for unexpected shapes.
+    See https://blizztrack.com/swagger/doc.json
+    """
+    if not isinstance(payload, dict) or payload.get("success") is False:
+        raise RuntimeError(f"BlizzTrack returned an error for {where}: "
+                           f"{str(payload)[:300]}")
+    body = payload.get("results")
+    if not isinstance(body, dict):
+        raise RuntimeError(f"Unexpected BlizzTrack response at {where}: "
+                           "expected a 'results' object")
+    key = "results" if paged else "data"
+    items = body.get(key)
+    if not isinstance(items, list):
+        raise RuntimeError(f"Unexpected BlizzTrack response at {where}: "
+                           f"expected results.{key} array")
+    return body, items
 
-    for number in numbers[:max_scan]:
-        item = json_get(f"{base}/versions/{product}?" + urlencode({"seqn": number}))
-        rows = item.get("data") if isinstance(item, dict) else None
-        if not isinstance(rows, list):
-            raise RuntimeError(f"Missing archived version records at seqn {number}")
+
+def fetch_history(product, max_scan):
+    # Current BlizzTrack API routing and envelope, not the older ASP.NET
+    # /api/manifest/seqn/<product>?filter=Versions layout.
+    # API spec: https://blizztrack.com/swagger/doc.json
+    base = "https://blizztrack.com/api/manifest/" + product
+    seqns = []
+    page_size = 25  # Maximum allowed by the documented API.
+    page = 1
+    while len(seqns) < max_scan:
+        url = f"{base}/seqn?" + urlencode({
+            "file": "versions", "page": page, "limit": page_size,
+        })
+        body, items = manifest_result(json_get(url), url, paged=True)
+        if not items:
+            break
+        for item in items:
+            if not isinstance(item, dict):
+                raise RuntimeError(f"Malformed archived sequence at {url}")
+            try:
+                seqn = int(item["seqn"])
+            except (KeyError, ValueError, TypeError) as error:
+                raise RuntimeError(f"Missing sequence number at {url}: {error}")
+            seqns.append(seqn)
+        if len(items) < page_size:
+            break
+        total_pages = body.get("total_pages")
+        if total_pages is not None and page >= int(total_pages):
+            break
+        page += 1
+
+    if not seqns:
+        raise RuntimeError("BlizzTrack returned no version history for " + product)
+    numbers = sorted(set(seqns), reverse=True)[:max_scan]
+
+    for number in numbers:
+        url = f"{base}/versions?" + urlencode({"seqn": number})
+        _, rows = manifest_result(json_get(url), url)
         us = [v for v in rows if isinstance(v, dict)
               and str(v.get("region", "")).lower() == "us"]
         if not us:
             continue
         row = us[0]
         try:
-            build = "B" + str(int(row["buildid"]))
-            key = str(row["buildconfig"]).strip().lower()
-            version = str(row["versionsname"]).strip()
+            build = "B" + str(int(row["build_id"]))
+            key = str(row["build_config"]).strip().lower()
+            version = str(row["version_name"]).strip()
         except (KeyError, ValueError, TypeError) as error:
             raise RuntimeError(f"Invalid archived version entry at {number}: {error}")
         if not KEY.fullmatch(key):
             raise RuntimeError(f"Missing or invalid build config for {build}")
+        if version.upper().startswith("SC2."):
+            version = version[4:]
         if not VERSION.fullmatch(version) or not version.endswith("." + build[1:]):
-            # Some SC2 version strings are prefixed by SC2; use exact build ID
-            # rather than giving a mismatched or fabricated patch version.
+            # Never label a build with an unrelated or unverifiable version.
             version = build
         yield {"build": build, "key": key, "version": version, "seqn": number}
 
