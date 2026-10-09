@@ -57,3 +57,22 @@ The extraction scripts do not perform Git operations, and the versioning helper 
 - Downloads are not persisted between hosted runner jobs.
 - Blizzard's CDN and patch-version endpoints or the third-party CASC package can change; full-version lookup falls back to the build ID.
 - The job has a 180-minute timeout and obeys Actions/branch protection settings.
+
+
+## Recovering from an old repository baseline
+
+Heroes currently starts at B76124 (version 2.47.3.76124), while the current
+online version is much newer. BlizzTrack may not retain manifests all the way
+back to the repository's baseline. The historical script now prints the oldest
+and newest archived builds and checks for a coverage gap.
+
+If the archive begins *after* the repository baseline, the default behavior is
+still to **stop without updating**. For a best-effort recovery of only the
+available archived builds, manually enable **Allow incomplete archive history**,
+alongside **historical** and **dry_run** for a first test. If you later run
+without dry_run, the first recovered commit states explicitly that some
+intervening patches could not be recovered. Every available recovered build
+still gets its own commit and annotated tag. The script does **not** invent
+missing builds, skip failed extractions, or rewrite existing history.
+
+The gap override is never enabled for the scheduled weekday updater.
