@@ -89,9 +89,8 @@ jobs:
         run: |
           set -euo pipefail
           if [[ "$GITHUB_REPOSITORY" != "R-P-S/SC2GameData" ]]; then exit 1; fi
-          if [[ "$(git rev-list --count origin/master..HEAD)" != "0" ]]; then
-            git push --atomic --follow-tags origin "HEAD:refs/heads/master"
-          fi
+          # Publish annotated tags even if no additional commit is needed.
+          git push --atomic --follow-tags origin "HEAD:refs/heads/master"
 
       - name: Check Heroes history completion
         id: heroes_state
@@ -146,6 +145,5 @@ jobs:
         run: |
           set -euo pipefail
           if [[ "$GITHUB_REPOSITORY" != "R-P-S/SC2GameData" ]]; then exit 1; fi
-          if [[ "$(git rev-list --count origin/master..HEAD)" != "0" ]]; then
-            git push --atomic --follow-tags origin "HEAD:refs/heads/master"
-          fi
+          # Publish annotated tags even if no additional commit is needed.
+          git push --atomic --follow-tags origin "HEAD:refs/heads/master"
