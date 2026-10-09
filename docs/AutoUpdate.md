@@ -162,3 +162,17 @@ This changes only the SC2 pathway. Heroes retains its automatic ten-version
 weekday backfill and `heroes/history-complete` handoff. Both push only to
 R-P-S/SC2GameData, with SC2 commits pushed before the independent Heroes
 portion of the workflow. Use `dry_run=true` to test without publishing.
+
+
+## Archived Heroes B82624 exception
+
+The exact Jamie Phan archive commit `2d12ec29787fed3c545ebeeea4fdaeff310618f1`
+for documented release 2.52.2.82624 removes `BuildId.txt` and
+`DataBuildId.txt` while retaining core game-data files. The normal extraction
+strictly validates `BuildId.txt`. For **only this pinned commit and build**,
+the historical archive extractor creates the missing `BuildId.txt` tracking
+marker from the documented version-to-commit mapping; it does not invent
+missing game data or replace other source files. The exception is logged.
+All unrelated missing build markers still fail validation. The successful
+extraction and publication of this particular version must be verified in
+an Actions run after this fix.
