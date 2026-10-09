@@ -136,9 +136,19 @@ def fetch_history(product, max_scan):
                 f"BlizzTrack returned no new sequence numbers on page {page}; "
                 "pagination may be broken."
             )
-        if total_pages is not None:
-            if page >= int(total_pages):
+        if total_pages is not None and page >= int(total_pages):
+            # The API reports 202 total Heroes snapshots but can serve only
+            # 10 records per page while claiming there are 20 pages.
+            # Probe past its reported last page when its own total is larger
+            # than the number of unique entries actually returned.
+            if total is None or len(seen_seqns) >= int(total):
                 break
+            print(
+                f"BlizzTrack reports {total} snapshots, but only "
+                f"{len(seen_seqns)} received after page {page}; "
+                "checking for an extra page.",
+                flush=True,
+            )
         elif len(items) < int(body.get("per_page", page_size)):
             # Use response's declared page size when available. When the
             # server omits it, do NOT assume 10 results means no more pages.
@@ -192,40 +202,73 @@ def probe_latest(game):
     return found[0]
 
 
-def candidates(game, current, online, scan_limit):
+def candidates(game, current, online, scan_limit, allow_gap=False):
+    """Return chronological recoverable builds and an optional archive coverage gap.
+
+    A matching baseline snapshot is NOT required if the archive contains
+    builds older than the baseline. When the oldest archived build is newer,
+    allow an explicitly opted-in best-effort recovery, while preserving the
+    missing coverage in the very first recovered commit message.
+    """
     product = GAMES[game][0]
-    history = []
-    seen = set()
-    baseline_seen = current == online
-    latest_seen = False
-
+    history_by_build = {}
     for entry in fetch_history(product, scan_limit):
-        build = entry["build"]
-        if build in seen:
-            continue
-        seen.add(build)
-        if build == online:
-            latest_seen = True
-        if build == current:
-            baseline_seen = True
-            break
-        # Ignore regional archives ahead of Blizzard's currently served build.
-        if int(build[1:]) <= int(online[1:]) and int(build[1:]) > int(current[1:]):
-            history.append(entry)
+        history_by_build.setdefault(entry["build"], entry)
+    if not history_by_build:
+        raise RuntimeError(f"No archived {game} builds could be identified.")
 
-    if not latest_seen and current != online:
-        raise RuntimeError(f"BlizzTrack has not yet indexed current {product} build "
-                           f"{online}. Not skipping possible intermediate patches.")
-    if not baseline_seen:
+    lower = int(current[1:])
+    upper = int(online[1:])
+    recorded = sorted(int(b[1:]) for b in history_by_build)
+    oldest, newest = recorded[0], recorded[-1]
+    print(
+        f"{game}: archive coverage B{oldest}..B{newest}, "
+        f"repository {current}, Blizzard {online} "
+        f"({len(recorded)} unique recorded builds).",
+        flush=True,
+    )
+
+    if online not in history_by_build and current != online:
         raise RuntimeError(
-            f"Could not find installed {game} build {current} within {scan_limit} "
-            "archived manifests. Refusing to skip unverified intermediate patches. "
-            "Try a larger history_scan value or investigate BlizzTrack coverage."
+            f"BlizzTrack has not yet indexed current {product} build {online}; "
+            "refusing to label an incomplete patch sequence as up to date."
         )
-    history.reverse()
-    if current != online and (not history or history[-1]["build"] != online):
-        raise RuntimeError(f"No complete historical path from {current} to {online}.")
-    return history
+
+    missing_start = oldest > lower
+    if missing_start and not allow_gap:
+        raise RuntimeError(
+            f"Historical archive starts at B{oldest}, after installed {current}. "
+            f"Builds between {current} and B{oldest} are not recoverable from "
+            "the available BlizzTrack records. To recover only the available "
+            "patches, rerun manually with 'Allow incomplete archive history' "
+            "checked; the gap will be recorded in the first commit."
+        )
+
+    if current not in history_by_build and oldest <= lower:
+        print(
+            f"NOTE: exact baseline {current} was not indexed, but history "
+            f"extends back to B{oldest}, before the baseline. "
+            "Recovering known intervening builds.",
+            flush=True,
+        )
+
+    gap = current if missing_start else None
+    plan = [
+        history_by_build["B" + str(value)]
+        for value in recorded if lower < value <= upper
+    ]
+    if not plan or plan[-1]["build"] != online:
+        raise RuntimeError(
+            f"No verified path from {current} to current online build {online}."
+        )
+    if gap:
+        print(
+            f"WARNING: incomplete historical coverage. Known archive starts "
+            f"at B{oldest}, newer than {current}. Earlier missing versions "
+            "cannot be reconstructed from this source.",
+            flush=True,
+        )
+    return plan, gap
 
 
 def main():
@@ -236,6 +279,8 @@ def main():
     parser.add_argument("--history-scan", type=int, default=300)
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--force", action="store_true")
+    parser.add_argument("--allow-gap", action="store_true",
+                        help="Allow explicitly documented incomplete history")
     args = parser.parse_args()
 
     if os.environ.get("GITHUB_REPOSITORY") != FORK:
@@ -256,10 +301,12 @@ def main():
         return
 
     if start != online:
-        plans = candidates(args.game, start, online, args.history_scan)
+        plans, gap = candidates(args.game, start, online, args.history_scan,
+                                allow_gap=args.allow_gap)
     else:
         # Re-extract current version without tagging another historical release.
         plans = [{"build": start, "key": None, "version": start}]
+        gap = None
 
     print(f"{args.game}: {len(plans)} available builds from {start} to {online}.")
     selected = plans[:args.max_builds]
@@ -279,11 +326,14 @@ def main():
         subprocess.run(["node", script], env=env, check=True)
 
         if not args.dry_run:
-            subprocess.run([
+            command = [
                 sys.executable, "scripts/commit_gamedata_version.py",
                 "--game", args.game, "--build", entry["build"],
                 "--version", entry["version"],
-            ], check=True)
+            ]
+            if gap and index == 1:
+                command += ["--history-gap-from", gap]
+            subprocess.run(command, check=True)
     print(f"{args.game}: history recovery pass finished successfully.")
 
 
