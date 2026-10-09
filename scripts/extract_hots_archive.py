@@ -17,6 +17,12 @@ FORK = "R-P-S/SC2GameData"
 ARCHIVE = "https://github.com/jamiephan/HeroesOfTheStorm_Gamedata.git"
 REPO = Path(__file__).resolve().parent.parent
 BUILD_FILE = "mods/core.stormmod/base.stormdata/BuildId.txt"
+# Archived release 2.52.2.82624 removed both build-ID files upstream.
+# This exact commit is independently documented in VERSIONS.md.
+# Only its missing tracking BuildId.txt may be reconstructed; no game data is invented.
+MISSING_BUILDID_EXCEPTION = {
+    "B82624": "2d12ec29787fed3c545ebeeea4fdaeff310618f1",
+}
 ALLOWED = re.compile(
     r"\.(aitree|fx|xml|txt|json|galaxy|triggerlib|stormcomponents|"
     r"stormcutscene|stormhotkeys|storminterface|stormlayout|stormlib|"
@@ -140,18 +146,31 @@ def main():
     if len(files) < 1000:
         raise RuntimeError(f"Archived snapshot has only {len(files)} eligible files")
     required = (
-        BUILD_FILE.lower(),
         "mods/core.stormmod/base.stormdata/gamedata.xml",
         "mods/core.stormmod/base.stormdata/triggerlibs/nativelib.galaxy",
     )
     for name in required:
         if name not in files:
             raise RuntimeError("Archived snapshot missing required file: " + name)
-    source_build = files[BUILD_FILE.lower()][0].read_text(encoding="utf-8-sig").strip()
-    if source_build != args.build:
-        raise RuntimeError(
-            f"Archived build-ID mismatch: expected {args.build}, got {source_build}"
+
+    missing_build_id = BUILD_FILE.lower() not in files
+    if missing_build_id:
+        if MISSING_BUILDID_EXCEPTION.get(args.build) != args.commit.lower():
+            raise RuntimeError(
+                "Archived snapshot missing required file: " + BUILD_FILE
+            )
+        print(
+            "WARNING: Archived B82624 commit omits BuildId.txt. "
+            "Using the verified version-to-commit mapping to reconstruct "
+            "only this tracking marker; original archived game data remains unchanged.",
+            flush=True,
         )
+    else:
+        source_build = files[BUILD_FILE.lower()][0].read_text(encoding="utf-8-sig").strip()
+        if source_build != args.build:
+            raise RuntimeError(
+                f"Archived build-ID mismatch: expected {args.build}, got {source_build}"
+            )
 
     with tempfile.TemporaryDirectory(prefix="heroes-archive-stage-") as stage:
         stage_path = Path(stage)
@@ -163,6 +182,12 @@ def main():
             shutil.copyfile(src, dst)
             if i % 1000 == 0:
                 print(f"Staged {i}/{len(files)} Heroes files", flush=True)
+
+        if missing_build_id:
+            # Version marker only: the archived commit is source-pinned above.
+            marker = stage_path / BUILD_FILE
+            marker.parent.mkdir(parents=True, exist_ok=True)
+            marker.write_text(args.build + "\n", encoding="utf-8")
 
         if args.dry_run:
             print(
