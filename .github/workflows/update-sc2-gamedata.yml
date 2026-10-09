@@ -1,10 +1,14 @@
-name: Update SC2 Game Data
-
+name: Update SC2 and Heroes Game Data
 on:
   schedule:
-    - cron: "17 */4 * * *"
+    - cron: '17 15 * * 1-5'
   workflow_dispatch:
     inputs:
+      game:
+        description: "Which game to check"
+        type: choice
+        options: [both, sc2, heroes]
+        default: both
       dry_run:
         description: "Extract and verify without changing repository files"
         type: boolean
@@ -16,19 +20,19 @@ on:
 
 permissions:
   contents: write
-
 concurrency:
-  group: sc2-gamedata-update
+  group: sc2-and-heroes-gamedata-update
   cancel-in-progress: false
-
 jobs:
   fetch:
     if: github.repository == 'R-P-S/SC2GameData' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 180
     env:
       SC2_DRY_RUN: "${{ inputs.dry_run || 'false' }}"
       SC2_FORCE: "${{ inputs.force || 'false' }}"
+      HOTS_DRY_RUN: "${{ inputs.dry_run || 'false' }}"
+      HOTS_FORCE: "${{ inputs.force || 'false' }}"
     steps:
       - name: Checkout this fork
         uses: actions/checkout@v4
@@ -36,23 +40,25 @@ jobs:
           repository: R-P-S/SC2GameData
           ref: master
           persist-credentials: true
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-
       - name: Install CASC reader
         run: npm install --no-save --no-package-lock --no-audit --no-fund @jamiephan/casclib@0.3.0
-
-      - name: Fetch and verify SC2 data
-        id: extract
+      - name: Check StarCraft II
+        id: sc2
+        if: inputs.game != 'heroes'
         run: node scripts/update_sc2_gamedata.js
-
+      - name: Check Heroes of the Storm
+        id: heroes
+        if: inputs.game != 'sc2'
+        run: node scripts/update_hots_gamedata.js
       - name: Commit changes to this fork only
-        if: steps.extract.outputs.updated == 'true'
+        if: steps.sc2.outputs.updated == 'true' || steps.heroes.outputs.updated == 'true'
         env:
-          SC2_BUILD_ID: "${{ steps.extract.outputs.build_id }}"
+          SC2_BUILD_ID: "${{ steps.sc2.outputs.build_id }}"
+          HOTS_BUILD_ID: "${{ steps.heroes.outputs.build_id }}"
         shell: bash
         run: |
           set -euo pipefail
@@ -60,21 +66,21 @@ jobs:
             echo "Wrong repository; refusing to push." >&2
             exit 1
           fi
-          if [[ ! "$SC2_BUILD_ID" =~ ^B[0-9]+$ ]]; then
-            echo "Invalid build ID; refusing to push." >&2
+          if [[ -n "$SC2_BUILD_ID" && ! "$SC2_BUILD_ID" =~ ^B[0-9]+$ ]]; then
+            echo "Invalid SC2 build ID." >&2
             exit 1
           fi
-
+          if [[ -n "$HOTS_BUILD_ID" && ! "$HOTS_BUILD_ID" =~ ^B[0-9]+$ ]]; then
+            echo "Invalid Heroes build ID." >&2
+            exit 1
+          fi
           git add -A -- mods campaigns
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
-
-          git config user.name "R-P-S SC2GameData Bot"
+          git config user.name "R-P-S GameData Bot"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git commit -m "Update SC2 game data to $SC2_BUILD_ID"
-
-          # Explicitly replace any inherited origin; never push upstream.
+          git commit -m "Update game data (SC2: $SC2_BUILD_ID, Heroes: $HOTS_BUILD_ID)"
           git remote set-url origin "https://github.com/R-P-S/SC2GameData.git"
           git push origin "HEAD:refs/heads/master"
