@@ -176,3 +176,29 @@ missing game data or replace other source files. The exception is logged.
 All unrelated missing build markers still fail validation. The successful
 extraction and publication of this particular version must be verified in
 an Actions run after this fix.
+
+
+## Continuous Heroes historical checks (October 2026)
+
+The Heroes workflow now **always runs chronological historical recovery**, even
+after the original 91-release backlog finishes. It does not switch to a
+latest-only updater or use `heroes/history-complete` to bypass the archive.
+Every run checks Jamie Phan's documented version-to-commit archive before
+considering newer builds. When the live Blizzard build is newer than the final
+archived snapshot, it attempts to retrieve the remaining build history through
+BlizzTrack and to extract individual builds with Blizzard's CASC reader. If
+BlizzTrack cannot establish the path to the live version or the historic CDN
+assets are missing, the updater stops instead of skipping intermediate versions.
+
+Some Jamie Phan historical commits (including releases 2.52.2.82624 and
+2.53.1.83716) omit the entire upstream BuildId.txt tracking file. For these,
+the archive extractor requires (1) an exact 40-character commit SHA supplied
+from the documented VERSIONS.md mapping, (2) a successful checkout of that exact
+SHA, (3) an exact upstream commit subject `Updated Files to <version>`,
+(4) a version whose trailing build number matches the planned build, and
+(5) mandatory original game-data files. Only then does it reconstruct the
+missing tracking BuildId.txt; it never creates missing game data. Any existing
+BuildId.txt or DataBuildId.txt must match the planned build.
+
+Up to ten builds per run are processed in order, each with its own commit and
+annotated tag. The existing weekday 2:17 PM Mountain schedule remains in place.
