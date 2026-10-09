@@ -123,6 +123,7 @@ def main():
     parser.add_argument("--game", required=True, choices=GAMES)
     parser.add_argument("--build", required=True)
     parser.add_argument("--version", help="Verified historical Blizzard version name")
+    parser.add_argument("--history-gap-from", help="Baseline build before uncovered historical gap")
     args = parser.parse_args()
     if os.getenv("GITHUB_REPOSITORY") != OWNER_REPO:
         raise RuntimeError("Refusing to commit outside " + OWNER_REPO)
@@ -157,7 +158,14 @@ def main():
     tag = game["tag_prefix"] + "/v" + version
     reject_existing_tag(tag)
 
-    git("commit", "-m", game["label"] + ": Update to " + version)
+    message = game["label"] + ": Update to " + version
+    if args.history_gap_from:
+        if not re.fullmatch(r"B[0-9]+", args.history_gap_from):
+            raise RuntimeError("Invalid history gap baseline")
+        message += ("\\n\\nHistory incomplete: BlizzTrack's earliest available archive "
+                    "is newer than repository baseline " + args.history_gap_from
+                    + ". Intermediate older versions were not recovered.")
+    git("commit", "-m", message)
     git("tag", "-a", tag, "-m", game["label"] + " game data version " + version)
     print("Created " + game["label"] + " commit and tag " + tag)
 
