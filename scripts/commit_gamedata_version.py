@@ -147,7 +147,7 @@ def main():
 
     if args.version:
         if args.version != args.build and (
-            not re.fullmatch(r"[0-9]+(?:\\.[0-9]+)+", args.version)
+            not re.fullmatch(r"[0-9]+(?:\.[0-9]+)+", args.version)
             or not args.version.endswith("." + args.build[1:])
         ):
             raise RuntimeError("Invalid historical version name for " + args.build)
