@@ -61,59 +61,91 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git remote set-url origin "https://github.com/R-P-S/SC2GameData.git"
 
-      - name: Recover historical SC2 builds
-        if: inputs.game != 'heroes' && github.event_name == 'workflow_dispatch' && inputs.historical == true
-        run: |
-          EXTRA=""
-          if [[ "$SC2_DRY_RUN" == "true" ]]; then EXTRA="--dry-run"; fi
-          if [[ "$SC2_FORCE" == "true" ]]; then EXTRA="$EXTRA --force"; fi
-          if [[ "${{ inputs.allow_history_gap }}" == "true" ]]; then EXTRA="$EXTRA --allow-gap"; fi
-          python3 scripts/catch_up_history.py --game sc2 --max-builds 3 --history-scan 300 $EXTRA
-
-      - name: Recover historical Heroes builds
-        if: inputs.game != 'sc2' && github.event_name == 'workflow_dispatch' && inputs.historical == true
-        run: |
-          EXTRA=""
-          if [[ "$HOTS_DRY_RUN" == "true" ]]; then EXTRA="--dry-run"; fi
-          if [[ "$HOTS_FORCE" == "true" ]]; then EXTRA="$EXTRA --force"; fi
-          if [[ "${{ inputs.allow_history_gap }}" == "true" ]]; then EXTRA="$EXTRA --allow-gap"; fi
-          python3 scripts/catch_up_history.py --game heroes --max-builds 3 --history-scan 300 $EXTRA
-
-      - name: Check latest SC2 only (historical recovery disabled)
-        if: inputs.game != 'heroes' && (github.event_name == 'schedule' || inputs.historical != true)
+      - name: Check latest StarCraft II
         id: sc2_latest
+        if: inputs.game != 'heroes' && (github.event_name == 'schedule' || inputs.historical != true)
         run: node scripts/update_sc2_gamedata.js
 
-      - name: Commit latest-only SC2 version
+      - name: Commit latest StarCraft II version
         if: steps.sc2_latest.outputs.updated == 'true'
         env:
           SC2_BUILD_ID: "${{ steps.sc2_latest.outputs.build_id }}"
         run: python3 scripts/commit_gamedata_version.py --game sc2 --build "$SC2_BUILD_ID"
 
-      - name: Check latest Heroes only (historical recovery disabled)
-        if: inputs.game != 'sc2' && (github.event_name == 'schedule' || inputs.historical != true)
+      - name: Recover historical SC2 builds (manual only)
+        if: github.event_name == 'workflow_dispatch' && inputs.historical == true && inputs.game != 'heroes'
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXTRA=""
+          if [[ "$SC2_DRY_RUN" == "true" ]]; then EXTRA="$EXTRA --dry-run"; fi
+          if [[ "$SC2_FORCE" == "true" ]]; then EXTRA="$EXTRA --force"; fi
+          if [[ "${{ inputs.allow_history_gap }}" == "true" ]]; then EXTRA="$EXTRA --allow-gap"; fi
+          python3 scripts/catch_up_history.py --game sc2 --max-builds 3 --history-scan 300 $EXTRA
+
+      - name: Push SC2 updates independently
+        if: inputs.game != 'heroes' && (github.event_name == 'schedule' || inputs.dry_run != true)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_REPOSITORY" != "R-P-S/SC2GameData" ]]; then exit 1; fi
+          if [[ "$(git rev-list --count origin/master..HEAD)" != "0" ]]; then
+            git push --atomic --follow-tags origin "HEAD:refs/heads/master"
+          fi
+
+      - name: Check Heroes history completion
+        id: heroes_state
+        if: inputs.game != 'sc2'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code --tags origin refs/tags/heroes/history-complete >/dev/null 2>&1; then
+            echo "complete=true" >> "$GITHUB_OUTPUT"
+          else
+            result=$?
+            if [[ "$result" != "2" ]]; then exit "$result"; fi
+            echo "complete=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Recover up to 10 historical Heroes versions
+        id: heroes_history
+        if: inputs.game != 'sc2' && (inputs.historical == true || steps.heroes_state.outputs.complete != 'true')
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXTRA=""
+          if [[ "$HOTS_DRY_RUN" == "true" ]]; then EXTRA="$EXTRA --dry-run"; fi
+          if [[ "$HOTS_FORCE" == "true" ]]; then EXTRA="$EXTRA --force"; fi
+          if [[ "${{ inputs.allow_history_gap }}" == "true" ]]; then EXTRA="$EXTRA --allow-gap"; fi
+          python3 scripts/catch_up_history.py --game heroes --max-builds 10 --history-scan 300 $EXTRA
+
+      - name: Mark Heroes archived history complete
+        if: steps.heroes_history.outputs.caught_up == 'true' && inputs.dry_run != true
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_REPOSITORY" != "R-P-S/SC2GameData" ]]; then exit 1; fi
+          if ! git show-ref --verify --quiet refs/tags/heroes/history-complete; then
+            git tag -a heroes/history-complete -m "Heroes historical archive catch-up complete"
+          fi
+
+      - name: Check latest Heroes after historical completion
         id: heroes_latest
+        if: inputs.game != 'sc2' && inputs.historical != true && steps.heroes_state.outputs.complete == 'true'
         run: node scripts/update_hots_gamedata.js
 
-      - name: Commit latest-only Heroes version
+      - name: Commit latest Heroes version
         if: steps.heroes_latest.outputs.updated == 'true'
         env:
           HOTS_BUILD_ID: "${{ steps.heroes_latest.outputs.build_id }}"
         run: python3 scripts/commit_gamedata_version.py --game heroes --build "$HOTS_BUILD_ID"
 
-      - name: Push version commits and annotated tags to fork only
-        if: github.event_name == 'schedule' || inputs.dry_run != true
+      - name: Push Heroes commits and tags only to this fork
+        if: inputs.game != 'sc2' && (github.event_name == 'schedule' || inputs.dry_run != true)
         shell: bash
         run: |
           set -euo pipefail
-          if [[ "$GITHUB_REPOSITORY" != "R-P-S/SC2GameData" ]]; then
-            echo "Wrong repository; refusing to push." >&2
-            exit 1
+          if [[ "$GITHUB_REPOSITORY" != "R-P-S/SC2GameData" ]]; then exit 1; fi
+          if [[ "$(git rev-list --count origin/master..HEAD)" != "0" ]]; then
+            git push --atomic --follow-tags origin "HEAD:refs/heads/master"
           fi
-          if [[ "$(git rev-list --count origin/master..HEAD)" == "0" ]]; then
-            echo "No new commits to push."
-            exit 0
-          fi
-          # --follow-tags includes annotated, reachable tags from both new commits.
-          # --atomic means failure to push any ref prevents publishing the others.
-          git push --atomic --follow-tags origin "HEAD:refs/heads/master"
