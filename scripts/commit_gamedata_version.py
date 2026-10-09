@@ -123,6 +123,7 @@ def main():
     parser.add_argument("--game", required=True, choices=GAMES)
     parser.add_argument("--build", required=True)
     parser.add_argument("--version", help="Verified historical Blizzard version name")
+    parser.add_argument("--source-commit", help="Verified historical source snapshot SHA")
     parser.add_argument("--history-gap-from", help="Baseline build before uncovered historical gap")
     args = parser.parse_args()
     if os.getenv("GITHUB_REPOSITORY") != OWNER_REPO:
@@ -165,6 +166,11 @@ def main():
         message += ("\\n\\nHistory incomplete: BlizzTrack's earliest available archive "
                     "is newer than repository baseline " + args.history_gap_from
                     + ". Intermediate older versions were not recovered.")
+    if args.source_commit:
+        if not re.fullmatch(r"[a-f0-9]{40}", args.source_commit, re.I):
+            raise RuntimeError("Invalid archive source commit SHA")
+        message += ("\n\nSource: jamiephan/HeroesOfTheStorm_Gamedata "
+                    + args.source_commit)
     git("commit", "-m", message)
     git("tag", "-a", tag, "-m", game["label"] + " game data version " + version)
     print("Created " + game["label"] + " commit and tag " + tag)
