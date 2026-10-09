@@ -102,3 +102,36 @@ Choose game **heroes**, enable **historical** and **dry_run** to test it first.
 The historical mode processes up to 3 versions per run. With dry_run disabled,
 repeated manual runs can progressively catch up. Regular scheduled updates
 remain on the live latest-build CASC path.
+
+
+## Automatic weekday Heroes backfill (added October 2026)
+
+The Monday-Friday 2:17 PM America/Denver workflow now handles SC2 and Heroes
+independently. SC2 continues checking Blizzard's latest data and pushes its
+commit/tag without waiting for Heroes.
+
+For Heroes, until the annotated `heroes/history-complete` tag exists on the
+fork, the scheduled workflow automatically fetches **up to 10 historical builds
+per run** from Jamie Phan's versioned Heroes snapshots, in chronological order.
+Each extracted version is checked against its BuildId and published as a separate
+commit and annotated `heroes/v<version>` tag. Later scheduled runs continue
+from the checked-in build. The archive list has 91 builds after the original
+B76124 baseline, and the first three (through B76517) have already been
+published, leaving 88 documented builds at the time of setup.
+
+On the successful final batch, the workflow creates the
+`heroes/history-complete` annotated tag. The following weekday run switches
+Heroes back to its usual live CASC latest-build check. This tag marks that the
+known archived backlog has been replayed; it is not a guarantee that an
+undocumented Blizzard patch never existed. If an archived commit is inaccessible
+or fails validation, that batch stops without a push and can be retried; SC2
+commits are independent.
+
+Normal manual runs also continue Heroes backfill while incomplete. A manual
+`dry_run` validates data but publishes no commits or tags. The explicit
+`historical` checkbox still enables a manual historical run once the
+completion tag exists. Individual manual runs may select just SC2 or Heroes.
+
+**Warning:** When the completion tag exists, newer Heroes patches use the
+live/latest check, which may not preserve intermediate builds released between
+runs. The current historical backfill recovers the known old archive only.
