@@ -145,7 +145,7 @@ async function main() {
     for (const required of [
       BUILD_FILE.toLowerCase(),
       "mods/core.stormmod/base.stormdata/gamedata.xml",
-      "mods/core.stormmod/base.stormdata/triggerlibs/nativelib.triggerlib"
+      "mods/core.stormmod/base.stormdata/triggerlibs/nativelib.galaxy"
     ]) {
       if (!seen.has(required)) {
         throw new Error("Required Heroes file missing from online listing: " + required);
