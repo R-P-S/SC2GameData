@@ -61,19 +61,11 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git remote set-url origin "https://github.com/R-P-S/SC2GameData.git"
 
-      - name: Check latest StarCraft II
-        id: sc2_latest
-        if: inputs.game != 'heroes' && (github.event_name == 'schedule' || inputs.historical != true)
-        run: node scripts/update_sc2_gamedata.js
-
-      - name: Commit latest StarCraft II version
-        if: steps.sc2_latest.outputs.updated == 'true'
-        env:
-          SC2_BUILD_ID: "${{ steps.sc2_latest.outputs.build_id }}"
-        run: python3 scripts/commit_gamedata_version.py --game sc2 --build "$SC2_BUILD_ID"
-
-      - name: Recover historical SC2 builds (manual only)
-        if: github.event_name == 'workflow_dispatch' && inputs.historical == true && inputs.game != 'heroes'
+      # Always recover SC2 builds in order, including scheduled weekday runs.
+      # Do not fall back to latest-only: that would silently skip patches.
+      - name: Recover StarCraft II versions chronologically
+        id: sc2_history
+        if: inputs.game != 'heroes'
         shell: bash
         run: |
           set -euo pipefail
@@ -81,7 +73,7 @@ jobs:
           if [[ "$SC2_DRY_RUN" == "true" ]]; then EXTRA="$EXTRA --dry-run"; fi
           if [[ "$SC2_FORCE" == "true" ]]; then EXTRA="$EXTRA --force"; fi
           if [[ "${{ inputs.allow_history_gap }}" == "true" ]]; then EXTRA="$EXTRA --allow-gap"; fi
-          python3 scripts/catch_up_history.py --game sc2 --max-builds 3 --history-scan 300 $EXTRA
+          python3 scripts/catch_up_history.py --game sc2 --max-builds 10 --history-scan 300 $EXTRA
 
       - name: Push SC2 updates independently
         if: inputs.game != 'heroes' && (github.event_name == 'schedule' || inputs.dry_run != true)
