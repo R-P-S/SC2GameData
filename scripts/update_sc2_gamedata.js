@@ -41,7 +41,28 @@ function normalizeName(name) {
       }
     }
   }
-  return parts.join("/");
+  const full = parts.join("/");
+  // CASC may enumerate lowercase names. Keep Git's existing casing for
+  // already tracked files and use canonical spelling for BuildId.txt.
+  if (full.toLowerCase() === "mods/core.sc2mod/base.sc2data/buildid.txt") {
+    return BUILD_FILE;
+  }
+  return existingCase.get(full.toLowerCase()) || full;
+}
+const existingCase = new Map();
+for (const base of ["mods", "campaigns"]) {
+  function walk(dir) {
+    if (!fs.existsSync(dir)) return;
+    for (const item of fs.readdirSync(dir, { withFileTypes: true })) {
+      const f = path.join(dir, item.name);
+      if (item.isDirectory()) walk(f);
+      else if (item.isFile()) {
+        const rel = path.relative(ROOT, f).split(path.sep).join("/");
+        existingCase.set(rel.toLowerCase(), rel);
+      }
+    }
+  }
+  walk(path.join(ROOT, base));
 }
 
 function pruneSC2Directories(start) {
