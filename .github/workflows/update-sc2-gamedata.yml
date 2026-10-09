@@ -19,9 +19,9 @@ on:
         type: boolean
         default: false
       historical:
-        description: "Recover missed patches in chronological order"
+        description: "EXPERIMENTAL: recover missed patches in chronological order"
         type: boolean
-        default: true
+        default: false
 
 permissions:
   contents: write
@@ -58,7 +58,7 @@ jobs:
           git remote set-url origin "https://github.com/R-P-S/SC2GameData.git"
 
       - name: Recover historical SC2 builds
-        if: inputs.game != 'heroes' && (github.event_name == 'schedule' || inputs.historical != false)
+        if: inputs.game != 'heroes' && github.event_name == 'workflow_dispatch' && inputs.historical == true
         run: |
           EXTRA=""
           if [[ "$SC2_DRY_RUN" == "true" ]]; then EXTRA="--dry-run"; fi
@@ -66,7 +66,7 @@ jobs:
           python3 scripts/catch_up_history.py --game sc2 --max-builds 3 --history-scan 300 $EXTRA
 
       - name: Recover historical Heroes builds
-        if: inputs.game != 'sc2' && (github.event_name == 'schedule' || inputs.historical != false)
+        if: inputs.game != 'sc2' && github.event_name == 'workflow_dispatch' && inputs.historical == true
         run: |
           EXTRA=""
           if [[ "$HOTS_DRY_RUN" == "true" ]]; then EXTRA="--dry-run"; fi
@@ -74,7 +74,7 @@ jobs:
           python3 scripts/catch_up_history.py --game heroes --max-builds 3 --history-scan 300 $EXTRA
 
       - name: Check latest SC2 only (historical recovery disabled)
-        if: inputs.game != 'heroes' && github.event_name == 'workflow_dispatch' && inputs.historical == false
+        if: inputs.game != 'heroes' && (github.event_name == 'schedule' || inputs.historical != true)
         id: sc2_latest
         run: node scripts/update_sc2_gamedata.js
 
@@ -85,7 +85,7 @@ jobs:
         run: python3 scripts/commit_gamedata_version.py --game sc2 --build "$SC2_BUILD_ID"
 
       - name: Check latest Heroes only (historical recovery disabled)
-        if: inputs.game != 'sc2' && github.event_name == 'workflow_dispatch' && inputs.historical == false
+        if: inputs.game != 'sc2' && (github.event_name == 'schedule' || inputs.historical != true)
         id: heroes_latest
         run: node scripts/update_hots_gamedata.js
 
