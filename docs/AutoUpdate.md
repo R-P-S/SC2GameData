@@ -202,3 +202,22 @@ BuildId.txt or DataBuildId.txt must match the planned build.
 
 Up to ten builds per run are processed in order, each with its own commit and
 annotated tag. The existing weekday 2:17 PM Mountain schedule remains in place.
+
+
+## Current update policy: Blizzard latest for Heroes (October 2026)
+
+**This section supersedes earlier Heroes historical-recovery instructions above.**
+StarCraft II continues to recover all verified intermediate historical patches
+chronologically (up to ten per run). Heroes of the Storm now uses
+`scripts/update_hots_gamedata.js` to extract **only Blizzard's current live
+US CASC build**, then commits it as `Storm: <version>` and tags it. The historical
+Jamie Phan archive extractor is no longer called by the scheduled or manual
+workflow for Heroes. Historical Heroes snapshots already committed stay in the
+Git history; intervening future Heroes builds are not reconstructed.
+
+The live Heroes extractor verifies required game-data and `NativeLib.galaxy`
+files, stages the full extraction before replacing tracked .stormmod packages,
+and never deletes StarCraft II .sc2mod/.sc2campaign packages. Unchecked manual
+workflow inputs run the current Blizzard build. Dry-run and force options remain
+supported through HOTS_DRY_RUN and HOTS_FORCE. These changes require validation
+in a new Actions run.
