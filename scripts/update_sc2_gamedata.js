@@ -100,7 +100,7 @@ async function main() {
   }
   // Probe current online build without modifying any checkout files.
   const storage = buildKey
-    ? Storage.openEx(cache + "*s2*us", {
+    ? Storage.openEx(cache, {
         localPath: cache, codeName: "s2", region: "us",
         buildKey, online: true
       })
