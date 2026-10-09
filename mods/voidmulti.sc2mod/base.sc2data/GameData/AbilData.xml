@@ -53,6 +53,9 @@
     <CAbilResearch id="BarracksTechLabResearch">
         <InfoArray index="Research1" Time="140"/>
     </CAbilResearch>
+    <CAbilTrain id="BarracksTrain">
+        <InfoArray index="Train2" Time="47.6"/>
+    </CAbilTrain>
     <CAbilAttack id="BattlecruiserAttack">
         <EditorCategories value="Race:Terran,AbilityorEffectType:Units"/>
         <TargetMessage value="Abil/TargetMessage/attack"/>
@@ -491,12 +494,12 @@
                 <Flags index="ToSelection" value="1"/>
             </Button>
         </InfoArray>
-        <InfoArray index="Train4" Time="60.66">
+        <InfoArray index="Train4" Time="56">
             <Button>
                 <Flags index="ToSelection" value="1"/>
             </Button>
         </InfoArray>
-        <InfoArray index="Train5" Time="60.66">
+        <InfoArray index="Train5" Time="56">
             <Button>
                 <Flags index="ToSelection" value="1"/>
             </Button>
@@ -506,7 +509,7 @@
                 <Flags index="ToSelection" value="1"/>
             </Button>
         </InfoArray>
-        <InfoArray index="Train7" Time="42">
+        <InfoArray index="Train7" Time="45.51">
             <Button>
                 <Flags index="ToSelection" value="1"/>
             </Button>
@@ -1202,7 +1205,7 @@
     </CAbilMorph>
     <CAbilEffectTarget id="TimeWarp"/>
     <CAbilTrain id="TrainQueen">
-        <InfoArray index="Train1" Effect=""/>
+        <InfoArray index="Train1" Effect="MakeQueenFaceHatchery"/>
     </CAbilTrain>
     <CAbilEffectTarget id="Transfusion">
         <Effect index="0" value="TransfusionImpactSet"/>
@@ -1413,18 +1416,12 @@
         <CmdButtonArray index="LoadAll" DefaultButtonFace="LoadNearbyWarpPrism">
             <Flags index="Hidden" value="0"/>
         </CmdButtonArray>
-        <SearchRadius value="5"/>
+        <SearchRadius value="5.875"/>
     </CAbilTransport>
     <CAbilEffectInstant id="VoidRaySwarmDamageBoostCancel">
         <Flags index="Transient" value="1"/>
         <CmdButtonArray index="Execute" DefaultButtonFace="Cancel" Requirements="VoidRayPrismaticAlligned"/>
     </CAbilEffectInstant>
-    <CAbilEffectTarget id="WidowMineAttack">
-        <PrepEffect value="WidowMineTargetTintApplyBehavior"/>
-        <AutoCastValidatorArray value="NotLarvaEgg"/>
-        <AutoCastValidatorArray value="IsNotNeuralParasited"/>
-        <CancelEffect index="Prep" value="WidowMineTargetTintRemoveBehavior"/>
-    </CAbilEffectTarget>
     <CAbilEffectTarget id="LocustMPFlyingSwoopAttack">
         <Alignment value="Negative"/>
         <EditorCategories value="Race:Zerg,AbilityorEffectType:Units"/>
@@ -1568,6 +1565,13 @@
             </Button>
         </InfoArray>
     </CAbilResearch>
+    <CAbilEffectTarget id="WidowMineAttack">
+        <PrepEffect value="WidowMineTargetTintApplyBehavior"/>
+        <AutoCastValidatorArray value="NotLarvaEgg"/>
+        <AutoCastValidatorArray value="IsNotNeuralParasited"/>
+        <PrepTime index="0" value="1.19"/>
+        <CancelEffect index="Prep" value="WidowMineTargetTintRemoveBehavior"/>
+    </CAbilEffectTarget>
     <CAbilEffectTarget id="Yamato">
         <Flags index="AbortOnAllianceChange" value="0"/>
         <Flags index="IgnoreOrderPlayerIdInStageValidate" value="1"/>

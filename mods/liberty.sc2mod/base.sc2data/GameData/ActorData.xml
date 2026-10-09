@@ -1021,7 +1021,9 @@
         <On Terms="ActorCreation; ValidateUnit IsTerran" Send="Create Spray_Terran_ActorSound"/>
         <On Terms="ActorCreation" Target="_Unit" Send="AnimPlay BSD Work NonLooping -1.000000 -1.000000 1.000000 AsDuration"/>
     </CActorSimple>
-    <CActorUnit id="LoadOutSpray@1" parent="SprayDefault"/>
+    <CActorUnit id="LoadOutSpray@1" parent="SprayDefault">
+        <On index="1" Terms="ActorCreation" Send="SpraySwapByPlayerIndex Unknown"/>
+    </CActorUnit>
     <CActorUnit id="LoadOutSpray@2" parent="SprayDefault" sprayIndex="1"/>
     <CActorUnit id="LoadOutSpray@3" parent="SprayDefault" sprayIndex="2"/>
     <CActorUnit id="LoadOutSpray@4" parent="SprayDefault" sprayIndex="3"/>
@@ -13071,6 +13073,11 @@
         <On Terms="Behavior.RawVespeneGeyserGas.Deplete" Send="AnimGroupApply D"/>
         <On Terms="Behavior.RawVespeneGeyserGas.Restore" Send="AnimGroupRemove D"/>
         <On Terms="Behavior.RawVespeneGeyserGas.Restore" Send="AnimGroupApply B"/>
+        <On Terms="OptionsChange; Option Shader Low" Send="ModelSwap VespeneGeyser"/>
+        <On Terms="OptionsChange; Option Shader Medium" Send="ModelSwap VespeneGeyser"/>
+        <On Terms="OptionsChange; Option Shader High" Send="ModelSwap VespeneGeyser"/>
+        <On Terms="OptionsChange; Option Shader Ultra" Send="ModelSwap VespeneGeyserHigh"/>
+        <On Terms="OptionsChange; Option Shader Extreme" Send="ModelSwap VespeneGeyserHigh"/>
         <UnitFlags index="ShowBlobShadow" value="0"/>
         <StatusBarFlags index="Shields" value="0"/>
         <StatusBarFlags index="Life" value="0"/>
@@ -30099,50 +30106,6 @@
             <Volume value="0.000000,0.000000"/>
         </Layers>
     </CActorSound>
-    <CUnit default="1" id="CoopGlobalCaster">
-        <DeathRevealRadius value="3"/>
-        <Race value="Terr"/>
-        <Mob value="Campaign"/>
-        <FlagArray index="Turnable" value="0"/>
-        <FlagArray index="PenaltyRevealed" value="1"/>
-        <FlagArray index="UseLineOfSight" value="1"/>
-        <FlagArray index="TownAlert" value="1"/>
-        <FlagArray index="Invulnerable" value="1"/>
-        <FlagArray index="NoPortraitTalk" value="1"/>
-        <FogVisibility value="Snapshot"/>
-        <PlaneArray index="Ground" value="1"/>
-        <Collide index="Burrow" value="1"/>
-        <Collide index="Ground" value="1"/>
-        <Collide index="Structure" value="1"/>
-        <Collide index="RoachBurrow" value="1"/>
-        <Collide index="ForceField" value="1"/>
-        <Collide index="Small" value="1"/>
-        <Attributes index="Armored" value="1"/>
-        <Attributes index="Structure" value="1"/>
-        <LifeStart value="500000"/>
-        <LifeMax value="500000"/>
-        <LifeArmor value="1"/>
-        <ShieldsStart value="500000"/>
-        <ShieldsMax value="500000"/>
-        <ShieldRegenRate value="500000"/>
-        <Sight value="0.5"/>
-        <CostResource index="Minerals" value="150"/>
-        <AttackTargetPriority value="11"/>
-        <Radius value="1.75"/>
-        <SeparationRadius value="1.75"/>
-        <Footprint value="Footprint3x3Contour"/>
-        <PlacementFootprint value="Footprint3x3"/>
-        <SubgroupPriority value="2"/>
-        <MinimapRadius value="1.75"/>
-        <EditorCategories value="ObjectType:Structure,ObjectFamily:Campaign"/>
-        <!--DeathTime value="-1"/>
-        <EffectArray index="Revive" value="SelfRevive"/-->
-        <ShieldArmorName value="Unit/ShieldArmorName/ProtossPlasmaShields"/>
-        <AbilArray Link="stop"/>
-        <AbilArray Link="BuildInProgress"/>
-        <!--Higher Regen cause overflow, when damaged, they would be instantly killed-->
-        <LifeRegenRate value="100000"/>
-    </CUnit>
     <CActorDoodad id="WorkerOnlyPathIndicator">
         <FogVisibility value="Visible"/>
         <ModelFlags index="UpdateVisibility" value="0"/>
@@ -30263,13 +30226,6 @@
         <ModelFlags index="AllowHitTest" value="0"/>
         <ModelFlags index="AutomateGlobalLoops" value="1"/>
     </CActorModel>
-    <CActorUnit id="VespeneGeyser">
-        <On Terms="OptionsChange; Option Shader Low" Send="ModelSwap VespeneGeyser"/>
-        <On Terms="OptionsChange; Option Shader Medium" Send="ModelSwap VespeneGeyser"/>
-        <On Terms="OptionsChange; Option Shader High" Send="ModelSwap VespeneGeyser"/>
-        <On Terms="OptionsChange; Option Shader Ultra" Send="ModelSwap VespeneGeyserHigh"/>
-        <On Terms="OptionsChange; Option Shader Extreme" Send="ModelSwap VespeneGeyserHigh"/>
-    </CActorUnit>
     <CActorDoodad id="NearResourceBlocker1x1">
         <EditorCategories value="DoodadType:Blocker"/>
         <On index="0" Terms="ActorCreation" Send="Create SoundEmitter Doodad_BuildingBlocker1x1Doodad"/>
@@ -30285,4 +30241,48 @@
         <EditorModel value="CreepBlocker1x1"/>
         <HighlightTooltip value="Unit/Name/MapmakerNeutralUnitGameStartModifier"/>
     </CActorUnit>
+    <CUnit default="1" id="CoopGlobalCaster">
+        <DeathRevealRadius value="3"/>
+        <Race value="Terr"/>
+        <Mob value="Campaign"/>
+        <FlagArray index="Turnable" value="0"/>
+        <FlagArray index="PenaltyRevealed" value="1"/>
+        <FlagArray index="UseLineOfSight" value="1"/>
+        <FlagArray index="TownAlert" value="1"/>
+        <FlagArray index="Invulnerable" value="1"/>
+        <FlagArray index="NoPortraitTalk" value="1"/>
+        <FogVisibility value="Snapshot"/>
+        <PlaneArray index="Ground" value="1"/>
+        <Collide index="Burrow" value="1"/>
+        <Collide index="Ground" value="1"/>
+        <Collide index="Structure" value="1"/>
+        <Collide index="RoachBurrow" value="1"/>
+        <Collide index="ForceField" value="1"/>
+        <Collide index="Small" value="1"/>
+        <Attributes index="Armored" value="1"/>
+        <Attributes index="Structure" value="1"/>
+        <LifeStart value="500000"/>
+        <LifeMax value="500000"/>
+        <LifeArmor value="1"/>
+        <ShieldsStart value="500000"/>
+        <ShieldsMax value="500000"/>
+        <ShieldRegenRate value="500000"/>
+        <Sight value="0.5"/>
+        <CostResource index="Minerals" value="150"/>
+        <AttackTargetPriority value="11"/>
+        <Radius value="1.75"/>
+        <SeparationRadius value="1.75"/>
+        <Footprint value="Footprint3x3Contour"/>
+        <PlacementFootprint value="Footprint3x3"/>
+        <SubgroupPriority value="2"/>
+        <MinimapRadius value="1.75"/>
+        <EditorCategories value="ObjectType:Structure,ObjectFamily:Campaign"/>
+        <!--DeathTime value="-1"/>
+        <EffectArray index="Revive" value="SelfRevive"/-->
+        <ShieldArmorName value="Unit/ShieldArmorName/ProtossPlasmaShields"/>
+        <AbilArray Link="stop"/>
+        <AbilArray Link="BuildInProgress"/>
+        <!--Higher Regen cause overflow, when damaged, they would be instantly killed-->
+        <LifeRegenRate value="100000"/>
+    </CUnit>
 </Catalog>

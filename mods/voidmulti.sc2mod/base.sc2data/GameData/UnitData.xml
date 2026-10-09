@@ -657,6 +657,10 @@
     </CUnit>
     <CUnit id="ForceField">
         <Collide index="LocustForceField" value="1"/>
+        <BehaviorArray Link="ForceFieldHealthExpiry"/>
+        <BehaviorArray Link="ForceFieldHalfLife"/>
+        <LifeStart value="120"/>
+        <LifeMax value="120"/>
     </CUnit>
     <CUnit id="Forge">
         <Collide index="Locust" value="1"/>
@@ -740,8 +744,6 @@
             <LayoutButtons index="10" removed="1"/>
         </CardLayouts>
         <Sight value="12"/>
-        <ScoreMake value="275"/>
-        <ScoreKill value="325"/>
     </CUnit>
     <CUnit id="Hellion">
         <Collide index="Locust" value="1"/>
@@ -787,8 +789,6 @@
         </CardLayouts>
         <KillDisplay value="Default"/>
         <RankDisplay value="Default"/>
-        <ScoreMake value="875"/>
-        <ScoreKill value="925"/>
     </CUnit>
     <CUnit id="Hydralisk">
         <AbilArray Link="MorphToLurker"/>
@@ -1032,8 +1032,6 @@
         <CardLayouts index="0">
             <LayoutButtons index="10" removed="1"/>
         </CardLayouts>
-        <ScoreMake value="525"/>
-        <ScoreKill value="575"/>
     </CUnit>
     <CUnit id="LocustMPFlying">
         <FlagArray index="UseLineOfSight" value="1"/>
@@ -1165,6 +1163,10 @@
         <AlliedPushPriority value="1"/>
         <DefaultAcquireLevel value="Passive"/>
         <Response value="Nothing"/>
+        <LifeStart value="400"/>
+        <LifeMax value="400"/>
+        <ShieldsStart value="200"/>
+        <ShieldsMax value="200"/>
     </CUnit>
     <CUnit id="MothershipCore">
         <SubgroupPriority value="90"/>
@@ -1408,9 +1410,6 @@
         <Collide index="Locust" value="1"/>
         <Collide index="Phased" value="1"/>
         <SubgroupPriority value="3"/>
-        <CardLayouts index="0">
-            <LayoutButtons Face="ImprovedEnergy" Type="Passive" Requirements="NearWarpgateorNexus" Row="2" Column="0"/>
-        </CardLayouts>
         <Sight value="10"/>
     </CUnit>
     <CUnit id="PylonOvercharged" parent="Pylon">
@@ -1421,6 +1420,9 @@
         <TechAliasArray value="Alias_Pylon"/>
         <BehaviorArray Link="PowerSourceFast"/>
         <BehaviorArray Link="FastEnablerPowerUser"/>
+        <CardLayouts index="0">
+            <LayoutButtons Face="ImprovedEnergy" Type="Passive" Requirements="NearWarpgateorNexus" Row="2" Column="0"/>
+        </CardLayouts>
     </CUnit>
     <CUnit id="Queen">
         <Collide index="Locust" value="1"/>
@@ -1453,6 +1455,8 @@
         </CardLayouts>
         <BehaviorArray Link="QueenMustBeOnCreep"/>
         <CostResource index="Minerals" value="175"/>
+        <ScoreMake value="175"/>
+        <ScoreKill value="175"/>
     </CUnit>
     <CUnit id="QueenBurrowed">
         <SubgroupPriority value="101"/>
@@ -1484,6 +1488,7 @@
             <LayoutButtons Face="BurrowUp" Type="AbilCmd" AbilCmd="BurrowUltraliskUp,Execute" Row="2" Column="4"/>
         </CardLayouts>
         <CostResource index="Minerals" value="175"/>
+        <ScoreKill value="175"/>
     </CUnit>
     <CUnit id="Ravager">
         <AbilArray Link="RavagerCorrosiveBile"/>

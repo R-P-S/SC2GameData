@@ -1184,12 +1184,7 @@
         <Value value="0.125"/>
         <Vital value="Shields"/>
     </CValidatorUnitCompareVital>
-    <CValidatorCombine id="QueenTargetFiltersInject">
-        <ResultFailed value="TargetIsOutOfRange"/>
-        <CombineArray value="QueenRangeCheckLE35Inject"/>
-        <CombineArray value="NoQueenNearTargetInject"/>
-        <CombineArray value="QueenInjectMacroHatch"/>
-    </CValidatorCombine>
+    <CValidatorCombine id="QueenTargetFiltersInject"/>
     <CValidatorLocationCompareRange id="QueenRangeCheckLE35Inject">
         <ResultFailed value="TargetIsOutOfRange"/>
         <WhichLocation Value="TargetUnit"/>

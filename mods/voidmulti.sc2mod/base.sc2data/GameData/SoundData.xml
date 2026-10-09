@@ -363,6 +363,15 @@
         <AssetArray File="Assets\Music\protosssc2-01" FacialGroup=""/>
         <AssetArray File="Assets\Music\protosssc2-07" FacialGroup=""/>
     </CSound>
+    <CSound id="RavagerCorrosiveBileForcefieldHit" parent="Combat">
+        <EditorCategories value="Race:Protoss"/>
+        <AssetArray File="Assets\Sounds\Protoss\Immortal\Immortal_HardenedShieldImpact0.wav"/>
+        <AssetArray File="Assets\Sounds\Protoss\Immortal\Immortal_HardenedShieldImpact1.wav"/>
+        <AssetArray File="Assets\Sounds\Protoss\Immortal\Immortal_HardenedShieldImpact2.wav"/>
+        <DupeMuteCount value="4"/>
+        <Pitch value="4.000000,4.000000"/>
+        <Volume value="-2.000000,-2.000000"/>
+    </CSound>
     <CSound id="LurkerEgg_Death">
         <Pitch value="-6.000000,-3.000000"/>
         <Volume value="0.000000,0.000000"/>
@@ -3108,5 +3117,37 @@
         <AssetArray File="Assets\Sounds\UI_NavButtonHover_O01b.wav" Pitch="-5.000000,-5.000000" FacialGroup=""/>
         <DupeDestroyCount value="8"/>
         <Pitch value="2.000000,2.000000"/>
+    </CSound>
+    <CSound id="ArchonMergeHighComplete" parent="Spell">
+        <EditorCategories value="Race:Protoss"/>
+        <AssetArray File="Assets\Sounds\LowHealth_Start_Synth.wav" FacialGroup=""/>
+        <Pitch value="12.000000,12.000000"/>
+        <Volume value="-4.000000,-4.000000"/>
+    </CSound>
+    <CSound id="ArchonMergeLowComplete" parent="Spell">
+        <EditorCategories value="Race:Protoss"/>
+        <AssetArray File="Assets\Sounds\LowHealth_Start_Synth.wav" FacialGroup=""/>
+        <Pitch value="-5.000000,10.000000"/>
+        <Volume value="-5.000000,-5.000000"/>
+    </CSound>
+    <CSound id="Archon_Ready">
+        <AssetArray File="LocalizedData\Sounds\ProtossUnitVO\Archon\Archon_What02.ogg" FacialGroup=""/>
+    </CSound>
+    <CSound id="ArchonMovement" parent="Movement">
+        <EditorCategories value="Race:Protoss"/>
+        <AssetArray File="Assets\Sounds\ArbiterMP_MoveStart00.wav" FacialGroup=""/>
+        <AssetArray File="Assets\Sounds\ArbiterMP_MoveStart01.wav" FacialGroup=""/>
+        <AssetArray File="Assets\Sounds\ArbiterMP_MoveStart02.wav" FacialGroup=""/>
+        <DupeDestroyCount value="6"/>
+        <DupeMuteCount value="4"/>
+        <Pitch value="-10.000000,-5.000000"/>
+        <Volume value="-12.000000,-12.000000"/>
+    </CSound>
+    <CSound id="ForceFieldDamageSound" parent="Combat">
+        <EditorCategories value="Race:Protoss"/>
+        <AssetArray File="Assets\Sounds\PsiBlade_Launch_C_Infa.wav" Pitch="-5.000000,0.000000" FacialGroup=""/>
+        <Pitch value="-2.000000,1.000000"/>
+        <Volume value="-10.000000,-10.000000"/>
+        <DupeMuteCount value="4"/>
     </CSound>
 </Catalog>

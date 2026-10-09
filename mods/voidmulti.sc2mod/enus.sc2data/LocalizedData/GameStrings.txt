@@ -126,6 +126,7 @@ Button/Name/HydraliskIncreasedMovementSpeed=Increased Movement Speed
 Button/Name/InfestorEnsnare=Entangle
 Button/Name/KD8Charge=KD8 Charge
 Button/Name/Larva=Select Larvae
+Button/Name/LoadNearby=Load Nearby
 Button/Name/LockOnAir=Lock On Air
 Button/Name/MagFieldLaunchers=Mag-Field Launchers
 Button/Name/MorphtoObserver=Observer Mode
@@ -189,7 +190,7 @@ Button/Tooltip/BypassArmorDrone=Focuses a beam on enemy units and reduces their 
 Button/Tooltip/CalldownMULE=Drops an experimental robotic MULE miner onto the target Mineral Field. MULEs collect minerals more quickly than SCVs.  <n/><n/>MULEs last <d ref="Behavior,MULETimedLife,Duration"/> seconds before their systems fail.
 Button/Tooltip/CarrierCapacity=Increases the maximum number of Interceptors per Carrier from 8 to 10.
 Button/Tooltip/CarrierLeashRangeUpgrade=Increases the <c val="ffff8a">Interceptor's</c> leash range by <d ref="$UpgradeEffectArrayValue:CarrierLeashRangeUpgrade:Abil,CarrierHangar,Leash$"/>.
-Button/Tooltip/ChannelSnipe=After carefully aiming for <d ref="Effect,ChannelSnipeCreatePersistent,PeriodCount*Effect,ChannelSnipeCreatePersistent,PeriodicPeriodArray[0]" precision="2"/> seconds while not taking damage, the Ghost fires a sniper round dealing <d ref="Effect,ChannelSnipeDamage,Amount"/> (+<d ref="Effect,ChannelSnipeDamage,AttributeBonus[Psionic]"/> vs. psionic) damage. Ignores armor.<n/><n/><c val="#ColorAttackInfo">Can only target biological units.</c>
+Button/Tooltip/ChannelSnipe=After carefully aiming for <d ref="Effect,ChannelSnipeCreatePersistent,PeriodCount*Effect,ChannelSnipeCreatePersistent,PeriodicPeriodArray[0]" precision="2"/> seconds while not taking damage, the Ghost fires a sniper round dealing <d ref="Effect,ChannelSnipeDamage,Amount"/> damage. Ignores armor.<n/><n/><c val="#ColorAttackInfo">Can only target biological units.</c>
 Button/Tooltip/Charge=Allows Zealots to intercept nearby enemies. Also increases the movement speed of Zealots. Ability can only be used once every <d ref="Abil,Charge,Cost.Cooldown.TimeUse"/> seconds.
 Button/Tooltip/ChronoBoostEnergyCost=Places target structure in a Chrono Boost, causing it to operate <d ref="(((Behavior,ChronoBoostEnergyCost,Modification.RateMultiplierArray[Progress])-1)*100)" precision="1"/>% faster for <d ref="Behavior,ChronoBoostEnergyCost,Duration"/> seconds.
 Button/Tooltip/CloakingField=Creates a cloaking field around the Mothership for <d ref="Behavior,CloakField,Duration"/> seconds, preventing enemy units from seeing and attacking nearby units and structures. A cloaked unit will only be revealed by detectors or effects.
@@ -274,7 +275,7 @@ Button/Tooltip/OracleBuildStasisTrap=Places a cloaked Stasis Ward at the target 
 Button/Tooltip/Overseer=Advanced aerial observer. Maintains the unit cap set by the Overlord. Can use the Oversight, Spawn Changeling, and Contaminate abilities.<n/><n/><c val="FFE303">Detector</c>
 Button/Tooltip/ParasiticBomb=Creates a parasitic cloud that deals <d ref="Behavior,ParasiticBomb,Duration/Behavior,ParasiticBomb,Period*Effect,ParasiticBombDotDamage,Amount"/> damage over <d ref="Behavior,ParasiticBomb,Duration"/> seconds to the target and enemy air units nearby. If the target dies, the cloud remains in the air where the enemy died until it expires.<n/><n/><c val="#ColorAttackInfo">Cannot target ground units or structures.</c>
 Button/Tooltip/PointDefense=Automated defensive laser that intercepts a variety of enemy projectiles. Does not intercept special attacks.<n/><n/><c val="f078ff">Each shot consumes 10 energy.</c>
-Button/Tooltip/PsiStorm=Creates a storm of psionic energy that lasts <d time="8.4"/>, causing up to 110 damage to all units in the target area.
+Button/Tooltip/PsiStorm=Creates a storm of psionic energy that lasts <d time="8.4"/>, causing up to <d ref="(Effect,PsiStormPersistent,PeriodCount * Effect,PsiStormDamage,Amount)+(2*Effect,PsiStormDamageInitial,Amount)"/> damage to all units in the target area.
 Button/Tooltip/PsionicSurge=Improves the Zealot's Charge to deal <d ref="Effect,ChargingDamage,Amount"/> damage to the charged target.
 Button/Tooltip/PurificationNova=Shoots out a ball of energy that lasts <d ref="Behavior,PurificationNovaTargettedTarget,Duration"/> seconds and emits a powerful nova dealing <d ref="Effect,PurificationNovaDamage,Amount"/> splash damage and an additional <d ref="Effect,PurificationNovaDamage,ShieldBonus"/> shield damage to nearby ground units and structures. The Disruptor is immobile while this is active.
 Button/Tooltip/RapidReignitionSystem=Reduces the cooldown of Medivac's Ignite Afterburners by <d time="[d ref='$UpgradeEffectArrayValue:MedivacIncreaseSpeedBoost:Abil,MedivacSpeedBoost,Cost[0].Cooldown.TimeUse$'/]"/> and increases the movement speed of Medivacs.
@@ -442,6 +443,7 @@ Effect/Name/DarkTemplarBlinkAB=Dark Templar Blink AB
 Effect/Name/DisruptorTransportUnloadPurificationNovaCooldownReset=Disruptor Transport Unload Purification Nova Cooldown Reset
 Effect/Name/EnergyRecharge=Energy Recharge
 Effect/Name/EnergyRechargePersistent=Energy Recharge Persistent
+Effect/Name/ForcefieldMinusLifeTick=ForcefieldMinusLifeTick
 Effect/Name/FungalGrowthSlowMovementApplyBehavior=Fungal Growth Slow Movement Apply Behavior
 Effect/Name/FungalGrowthTargetOnCreepSwitch=Fungal Growth Target On Creep Switch
 Effect/Name/HighTemplarWeaponDamage=High Templar Weapon Damage

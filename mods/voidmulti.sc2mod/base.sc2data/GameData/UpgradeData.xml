@@ -399,7 +399,7 @@
         <EffectArray Reference="Unit,OverlordTransport,LifeArmorLevel" Value="1"/>
         <EffectArray Reference="Unit,OverseerSiegeMode,LifeArmor" Value="1"/>
         <EffectArray Reference="Unit,OverseerSiegeMode,LifeArmorLevel" Value="1"/>
-        <ScoreAmount value="350"/>
+        <ScoreAmount value="300"/>
     </CUpgrade>
     <CUpgrade id="ZergFlyerArmorsLevel3">
         <AffectedUnitArray value="OverlordTransport"/>
@@ -423,6 +423,7 @@
         <EffectArray Reference="Unit,InfestorTerranBurrowed,LifeArmorLevel" Value="1"/>
         <EffectArray Reference="Unit,InfestorTerranBurrowed,LifeArmor" Value="1"/>
         <EffectArray Operation="Set" Reference="Actor,InfestorTerran,LifeArmorIcon" Value="Assets\Textures\btn-upgrade-zerg-groundcarapace-level1.dds"/>
+        <ScoreAmount value="200"/>
     </CUpgrade>
     <CUpgrade id="ZergGroundArmorsLevel2">
         <AffectedUnitArray value="InfestorTerran"/>
@@ -442,7 +443,7 @@
         <EffectArray Reference="Unit,InfestorTerranBurrowed,LifeArmorLevel" Value="1"/>
         <EffectArray Reference="Unit,InfestorTerranBurrowed,LifeArmor" Value="1"/>
         <EffectArray Operation="Set" Reference="Actor,InfestorTerran,LifeArmorIcon" Value="Assets\Textures\btn-upgrade-zerg-groundcarapace-level3.dds"/>
-        <ScoreAmount value="500"/>
+        <ScoreAmount value="400"/>
     </CUpgrade>
     <CUpgrade id="ZergMissileWeaponsLevel1">
         <AffectedUnitArray value="LurkerMP"/>
@@ -512,7 +513,7 @@
         <EffectArray Reference="Weapon,Spinesdisabled,Level" Value="1"/>
         <EffectArray Operation="Set" Reference="Weapon,Spinesdisabled,Icon" Value="Assets\Textures\btn-upgrade-zerg-missileattacks-level3.dds"/>
         <EffectArray Reference="Weapon,InfestorWeaponAcidSpores,Level" Value="1"/>
-        <EffectArray Operation="Set" Reference="Weapon,InfestorWeaponAcidSpores,Icon" Value="Assets\Textures\btn-upgrade-zerg-missileattacks-level2.dds"/>
+        <EffectArray Operation="Set" Reference="Weapon,InfestorWeaponAcidSpores,Icon" Value="Assets\Textures\btn-upgrade-zerg-missileattacks-level3.dds"/>
         <EffectArray Reference="Effect,InfestorWeaponDamage,Amount" Value="1"/>
         <EffectArray Reference="Weapon,AcidSpitSwarmhostDummy,Level" Value="1"/>
     </CUpgrade>
