@@ -122,6 +122,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--game", required=True, choices=GAMES)
     parser.add_argument("--build", required=True)
+    parser.add_argument("--version", help="Verified historical Blizzard version name")
     args = parser.parse_args()
     if os.getenv("GITHUB_REPOSITORY") != OWNER_REPO:
         raise RuntimeError("Refusing to commit outside " + OWNER_REPO)
@@ -144,7 +145,15 @@ def main():
         print("No staged " + game["label"] + " file changes.")
         return
 
-    version = resolve_version(game["product"], args.build)
+    if args.version:
+        if args.version != args.build and (
+            not re.fullmatch(r"[0-9]+(?:\\.[0-9]+)+", args.version)
+            or not args.version.endswith("." + args.build[1:])
+        ):
+            raise RuntimeError("Invalid historical version name for " + args.build)
+        version = args.version
+    else:
+        version = resolve_version(game["product"], args.build)
     tag = game["tag_prefix"] + "/v" + version
     reject_existing_tag(tag)
 
