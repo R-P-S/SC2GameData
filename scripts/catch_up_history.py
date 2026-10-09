@@ -186,6 +186,38 @@ def fetch_history(product, max_scan):
         yield {"build": build, "key": key, "version": version, "seqn": number}
 
 
+def heroes_archival_versions(current, online):
+    """Pinned commits from jamiephan's documented Heroes VERSIONS.md."""
+    url = ("https://raw.githubusercontent.com/jamiephan/"
+           "HeroesOfTheStorm_Gamedata/master/VERSIONS.md")
+    request = Request(url, headers={"User-Agent": "R-P-S-SC2GameData-History/1.0"})
+    with urlopen(request, timeout=35) as response:
+        body = response.read(1500000).decode("utf8")
+    pattern = re.compile(
+        r"(?m)^- ([0-9]+(?:\.[0-9]+)+): .*?"
+        r"https://github\.com/jamiephan/HeroesOfTheStorm_Gamedata/"
+        r"commit/([0-9a-f]{40})"
+    )
+    found = {}
+    for version, sha in pattern.findall(body):
+        build = "B" + version.split(".")[-1]
+        found[build] = {
+            "build": build, "version": version, "archive_commit": sha,
+            "key": None, "source": "jamiephan-git",
+        }
+    if current not in found:
+        raise RuntimeError("Jamie's version list does not contain baseline " + current)
+    if online not in found:
+        raise RuntimeError("Jamie's version list does not contain current " + online)
+    plan = [
+        found[b] for b in sorted(found, key=lambda x: int(x[1:]))
+        if int(current[1:]) < int(b[1:]) <= int(online[1:])
+    ]
+    print(f"Heroes Git archive: {len(found)} documented version snapshots; "
+          f"{len(plan)} patches between {current} and {online}.", flush=True)
+    return plan
+
+
 def probe_latest(game):
     """Ask online CASC for the ACTUAL latest version, not a tracking-service guess."""
     script = GAMES[game][2]
@@ -297,8 +329,12 @@ def main():
         return
 
     if start != online:
-        plans, gap = candidates(args.game, start, online, args.history_scan,
-                                allow_gap=args.allow_gap)
+        if args.game == "heroes":
+            plans = heroes_archival_versions(start, online)
+            gap = None
+        else:
+            plans, gap = candidates(args.game, start, online, args.history_scan,
+                                    allow_gap=args.allow_gap)
     else:
         # Re-extract current version without tagging another historical release.
         plans = [{"build": start, "key": None, "version": start}]
@@ -319,7 +355,16 @@ def main():
         env[f"{prefix}_FORCE"] = "true"
         env[f"{prefix}_DRY_RUN"] = "true" if args.dry_run else "false"
         # Each extraction stages and validates an entire build before replacing files.
-        subprocess.run(["node", script], env=env, check=True)
+        if args.game == "heroes" and entry.get("archive_commit"):
+            command = [
+                sys.executable, "scripts/extract_hots_archive.py",
+                "--commit", entry["archive_commit"], "--build", entry["build"],
+            ]
+            if args.dry_run:
+                command.append("--dry-run")
+            subprocess.run(command, env=env, check=True)
+        else:
+            subprocess.run(["node", script], env=env, check=True)
 
         if not args.dry_run:
             command = [
@@ -327,6 +372,8 @@ def main():
                 "--game", args.game, "--build", entry["build"],
                 "--version", entry["version"],
             ]
+            if entry.get("archive_commit"):
+                command += ["--source-commit", entry["archive_commit"]]
             if gap and index == 1:
                 command += ["--history-gap-from", gap]
             subprocess.run(command, check=True)
