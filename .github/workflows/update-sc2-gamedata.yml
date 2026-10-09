@@ -18,6 +18,10 @@ on:
         description: "Re-extract even if the build ID matches"
         type: boolean
         default: false
+      allow_history_gap:
+        description: "EXPERIMENTAL: allow clearly documented missing old patches"
+        type: boolean
+        default: false
       historical:
         description: "EXPERIMENTAL: recover missed patches in chronological order"
         type: boolean
@@ -63,6 +67,7 @@ jobs:
           EXTRA=""
           if [[ "$SC2_DRY_RUN" == "true" ]]; then EXTRA="--dry-run"; fi
           if [[ "$SC2_FORCE" == "true" ]]; then EXTRA="$EXTRA --force"; fi
+          if [[ "${{ inputs.allow_history_gap }}" == "true" ]]; then EXTRA="$EXTRA --allow-gap"; fi
           python3 scripts/catch_up_history.py --game sc2 --max-builds 3 --history-scan 300 $EXTRA
 
       - name: Recover historical Heroes builds
@@ -71,6 +76,7 @@ jobs:
           EXTRA=""
           if [[ "$HOTS_DRY_RUN" == "true" ]]; then EXTRA="--dry-run"; fi
           if [[ "$HOTS_FORCE" == "true" ]]; then EXTRA="$EXTRA --force"; fi
+          if [[ "${{ inputs.allow_history_gap }}" == "true" ]]; then EXTRA="$EXTRA --allow-gap"; fi
           python3 scripts/catch_up_history.py --game heroes --max-builds 3 --history-scan 300 $EXTRA
 
       - name: Check latest SC2 only (historical recovery disabled)
