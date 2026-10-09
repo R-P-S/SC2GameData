@@ -90,15 +90,37 @@ def fetch_history(product, max_scan):
     # API spec: https://blizztrack.com/swagger/doc.json
     base = "https://blizztrack.com/api/manifest/" + product
     seqns = []
-    page_size = 25  # Maximum allowed by the documented API.
+    seen_seqns = set()
+    page_size = 25  # Requested size; server may enforce a smaller default.
     page = 1
+    # One archived sequence can contain multiple regional builds. Never
+    # interpret a short result page as the end of the archive.
     while len(seqns) < max_scan:
         url = f"{base}/seqn?" + urlencode({
             "file": "versions", "page": page, "limit": page_size,
         })
         body, items = manifest_result(json_get(url), url, paged=True)
+        total_pages = body.get("total_pages")
+        total = body.get("total")
+        actual_page = body.get("page")
+        print(f"BlizzTrack seqn page {page}: {len(items)} entries, "
+              f"reported page={actual_page}, total_pages={total_pages}, "
+              f"total={total}", flush=True)
+
+        if actual_page is not None and int(actual_page) != page:
+            raise RuntimeError(
+                f"BlizzTrack ignored page={page} and returned page={actual_page}; "
+                "refusing to silently truncate historical builds."
+            )
         if not items:
+            if total_pages is not None and page <= int(total_pages):
+                raise RuntimeError(
+                    f"Unexpected empty BlizzTrack history page {page} "
+                    f"before advertised final page {total_pages}"
+                )
             break
+
+        before = len(seen_seqns)
         for item in items:
             if not isinstance(item, dict):
                 raise RuntimeError(f"Malformed archived sequence at {url}")
@@ -106,13 +128,27 @@ def fetch_history(product, max_scan):
                 seqn = int(item["seqn"])
             except (KeyError, ValueError, TypeError) as error:
                 raise RuntimeError(f"Missing sequence number at {url}: {error}")
-            seqns.append(seqn)
-        if len(items) < page_size:
-            break
-        total_pages = body.get("total_pages")
-        if total_pages is not None and page >= int(total_pages):
-            break
+            if seqn not in seen_seqns:
+                seen_seqns.add(seqn)
+                seqns.append(seqn)
+        if len(seen_seqns) == before:
+            raise RuntimeError(
+                f"BlizzTrack returned no new sequence numbers on page {page}; "
+                "pagination may be broken."
+            )
+        if total_pages is not None:
+            if page >= int(total_pages):
+                break
+        elif len(items) < int(body.get("per_page", page_size)):
+            # Use response's declared page size when available. When the
+            # server omits it, do NOT assume 10 results means no more pages.
+            # Continue until an empty page, limited below.
+            if body.get("per_page") is not None:
+                break
         page += 1
+        if page > max_scan + 1:
+            raise RuntimeError("BlizzTrack pagination exceeded safety limit.")
+
 
     if not seqns:
         raise RuntimeError("BlizzTrack returned no version history for " + product)
