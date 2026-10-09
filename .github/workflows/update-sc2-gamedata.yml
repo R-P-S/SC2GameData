@@ -1,0 +1,80 @@
+name: Update SC2 Game Data
+
+on:
+  schedule:
+    - cron: "17 */4 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Extract and verify without changing repository files"
+        type: boolean
+        default: false
+      force:
+        description: "Re-extract even if the build ID matches"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sc2-gamedata-update
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    if: github.repository == 'R-P-S/SC2GameData' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      SC2_DRY_RUN: "${{ inputs.dry_run || 'false' }}"
+      SC2_FORCE: "${{ inputs.force || 'false' }}"
+    steps:
+      - name: Checkout this fork
+        uses: actions/checkout@v4
+        with:
+          repository: R-P-S/SC2GameData
+          ref: master
+          persist-credentials: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install CASC reader
+        run: npm install --no-save --no-package-lock --no-audit --no-fund @jamiephan/casclib@0.3.0
+
+      - name: Fetch and verify SC2 data
+        id: extract
+        run: node scripts/update_sc2_gamedata.js
+
+      - name: Commit changes to this fork only
+        if: steps.extract.outputs.updated == 'true'
+        env:
+          SC2_BUILD_ID: "${{ steps.extract.outputs.build_id }}"
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_REPOSITORY" != "R-P-S/SC2GameData" ]]; then
+            echo "Wrong repository; refusing to push." >&2
+            exit 1
+          fi
+          if [[ ! "$SC2_BUILD_ID" =~ ^B[0-9]+$ ]]; then
+            echo "Invalid build ID; refusing to push." >&2
+            exit 1
+          fi
+
+          git add -A -- mods campaigns
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git config user.name "R-P-S SC2GameData Bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update SC2 game data to $SC2_BUILD_ID"
+
+          # Explicitly replace any inherited origin; never push upstream.
+          git remote set-url origin "https://github.com/R-P-S/SC2GameData.git"
+          git push origin "HEAD:refs/heads/master"
