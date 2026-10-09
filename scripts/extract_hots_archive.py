@@ -142,7 +142,7 @@ def main():
     required = (
         BUILD_FILE.lower(),
         "mods/core.stormmod/base.stormdata/gamedata.xml",
-        "mods/core.stormmod/base.stormdata/triggerlibs/nativelib.triggerlib",
+        "mods/core.stormmod/base.stormdata/triggerlibs/nativelib.galaxy",
     )
     for name in required:
         if name not in files:
