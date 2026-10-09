@@ -18,6 +18,10 @@ on:
         description: "Re-extract even if the build ID matches"
         type: boolean
         default: false
+      historical:
+        description: "Recover missed patches in chronological order"
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -47,36 +51,52 @@ jobs:
           node-version: '24'
       - name: Install CASC reader
         run: npm install --no-save --no-package-lock --no-audit --no-fund @jamiephan/casclib@0.3.0
-      - name: Check StarCraft II
-        id: sc2
-        if: inputs.game != 'heroes'
-        run: node scripts/update_sc2_gamedata.js
-      - name: Check Heroes of the Storm
-        id: heroes
-        if: inputs.game != 'sc2'
-        run: node scripts/update_hots_gamedata.js
-      - name: Configure Git commit identity
-        if: steps.sc2.outputs.updated == 'true' || steps.heroes.outputs.updated == 'true'
+      - name: Configure Git and safe fork remote
         run: |
           git config user.name "R-P-S GameData Bot"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Use only this fork; never push changes to the SC2Mapster upstream.
           git remote set-url origin "https://github.com/R-P-S/SC2GameData.git"
 
-      - name: Create separate version commit and tag for SC2
-        if: steps.sc2.outputs.updated == 'true'
+      - name: Recover historical SC2 builds
+        if: inputs.game != 'heroes' && (github.event_name == 'schedule' || inputs.historical != false)
+        run: |
+          EXTRA=""
+          if [[ "$SC2_DRY_RUN" == "true" ]]; then EXTRA="--dry-run"; fi
+          if [[ "$SC2_FORCE" == "true" ]]; then EXTRA="$EXTRA --force"; fi
+          python3 scripts/catch_up_history.py --game sc2 --max-builds 3 --history-scan 300 $EXTRA
+
+      - name: Recover historical Heroes builds
+        if: inputs.game != 'sc2' && (github.event_name == 'schedule' || inputs.historical != false)
+        run: |
+          EXTRA=""
+          if [[ "$HOTS_DRY_RUN" == "true" ]]; then EXTRA="--dry-run"; fi
+          if [[ "$HOTS_FORCE" == "true" ]]; then EXTRA="$EXTRA --force"; fi
+          python3 scripts/catch_up_history.py --game heroes --max-builds 3 --history-scan 300 $EXTRA
+
+      - name: Check latest SC2 only (historical recovery disabled)
+        if: inputs.game != 'heroes' && github.event_name == 'workflow_dispatch' && inputs.historical == false
+        id: sc2_latest
+        run: node scripts/update_sc2_gamedata.js
+
+      - name: Commit latest-only SC2 version
+        if: steps.sc2_latest.outputs.updated == 'true'
         env:
-          SC2_BUILD_ID: "${{ steps.sc2.outputs.build_id }}"
+          SC2_BUILD_ID: "${{ steps.sc2_latest.outputs.build_id }}"
         run: python3 scripts/commit_gamedata_version.py --game sc2 --build "$SC2_BUILD_ID"
 
-      - name: Create separate version commit and tag for Heroes
-        if: steps.heroes.outputs.updated == 'true'
+      - name: Check latest Heroes only (historical recovery disabled)
+        if: inputs.game != 'sc2' && github.event_name == 'workflow_dispatch' && inputs.historical == false
+        id: heroes_latest
+        run: node scripts/update_hots_gamedata.js
+
+      - name: Commit latest-only Heroes version
+        if: steps.heroes_latest.outputs.updated == 'true'
         env:
-          HOTS_BUILD_ID: "${{ steps.heroes.outputs.build_id }}"
+          HOTS_BUILD_ID: "${{ steps.heroes_latest.outputs.build_id }}"
         run: python3 scripts/commit_gamedata_version.py --game heroes --build "$HOTS_BUILD_ID"
 
       - name: Push version commits and annotated tags to fork only
-        if: steps.sc2.outputs.updated == 'true' || steps.heroes.outputs.updated == 'true'
+        if: github.event_name == 'schedule' || inputs.dry_run != true
         shell: bash
         run: |
           set -euo pipefail
