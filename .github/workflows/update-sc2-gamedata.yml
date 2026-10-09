@@ -1,7 +1,8 @@
 name: Update SC2 and Heroes Game Data
 on:
   schedule:
-    - cron: '17 15 * * 1-5'
+    - cron: '17 14 * * 1-5'
+      timezone: 'America/Denver'
   workflow_dispatch:
     inputs:
       game:
@@ -54,11 +55,28 @@ jobs:
         id: heroes
         if: inputs.game != 'sc2'
         run: node scripts/update_hots_gamedata.js
-      - name: Commit changes to this fork only
+      - name: Configure Git commit identity
         if: steps.sc2.outputs.updated == 'true' || steps.heroes.outputs.updated == 'true'
+        run: |
+          git config user.name "R-P-S GameData Bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Use only this fork; never push changes to the SC2Mapster upstream.
+          git remote set-url origin "https://github.com/R-P-S/SC2GameData.git"
+
+      - name: Create separate version commit and tag for SC2
+        if: steps.sc2.outputs.updated == 'true'
         env:
           SC2_BUILD_ID: "${{ steps.sc2.outputs.build_id }}"
+        run: python3 scripts/commit_gamedata_version.py --game sc2 --build "$SC2_BUILD_ID"
+
+      - name: Create separate version commit and tag for Heroes
+        if: steps.heroes.outputs.updated == 'true'
+        env:
           HOTS_BUILD_ID: "${{ steps.heroes.outputs.build_id }}"
+        run: python3 scripts/commit_gamedata_version.py --game heroes --build "$HOTS_BUILD_ID"
+
+      - name: Push version commits and annotated tags to fork only
+        if: steps.sc2.outputs.updated == 'true' || steps.heroes.outputs.updated == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -66,21 +84,10 @@ jobs:
             echo "Wrong repository; refusing to push." >&2
             exit 1
           fi
-          if [[ -n "$SC2_BUILD_ID" && ! "$SC2_BUILD_ID" =~ ^B[0-9]+$ ]]; then
-            echo "Invalid SC2 build ID." >&2
-            exit 1
-          fi
-          if [[ -n "$HOTS_BUILD_ID" && ! "$HOTS_BUILD_ID" =~ ^B[0-9]+$ ]]; then
-            echo "Invalid Heroes build ID." >&2
-            exit 1
-          fi
-          git add -A -- mods campaigns
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
+          if [[ "$(git rev-list --count origin/master..HEAD)" == "0" ]]; then
+            echo "No new commits to push."
             exit 0
           fi
-          git config user.name "R-P-S GameData Bot"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git commit -m "Update game data (SC2: $SC2_BUILD_ID, Heroes: $HOTS_BUILD_ID)"
-          git remote set-url origin "https://github.com/R-P-S/SC2GameData.git"
-          git push origin "HEAD:refs/heads/master"
+          # --follow-tags includes annotated, reachable tags from both new commits.
+          # --atomic means failure to push any ref prevents publishing the others.
+          git push --atomic --follow-tags origin "HEAD:refs/heads/master"
