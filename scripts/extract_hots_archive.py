@@ -17,9 +17,11 @@ FORK = "R-P-S/SC2GameData"
 ARCHIVE = "https://github.com/jamiephan/HeroesOfTheStorm_Gamedata.git"
 REPO = Path(__file__).resolve().parent.parent
 BUILD_FILE = "mods/core.stormmod/base.stormdata/BuildId.txt"
-# Some authentic archived releases omit their BuildId.txt. A missing marker
-# may be reconstructed ONLY when the exact fetched Git commit's subject matches
-# the documented release version; the original source data is never invented.
+DATA_BUILD_FILE = "mods/core.stormmod/base.stormdata/DataBuildId.txt"
+# A few upstream release snapshots omit their version markers or retain the
+# previous release's marker values. Repair tracking files ONLY when the exact
+# archived commit subject matches the documented version. Stale values must
+# equal the immediately preceding recovered build. Never invent game-data.
 ALLOWED = re.compile(
     r"\.(aitree|fx|xml|txt|json|galaxy|triggerlib|stormcomponents|"
     r"stormcutscene|stormhotkeys|storminterface|stormlayout|stormlib|"
@@ -96,6 +98,8 @@ def main():
     parser.add_argument("--commit", required=True)
     parser.add_argument("--build", required=True)
     parser.add_argument("--version", required=True, help="Version from archived VERSIONS.md")
+    parser.add_argument("--previous-build", required=True,
+                        help="Build ID immediately before this archival snapshot")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
@@ -105,6 +109,10 @@ def main():
         raise ValueError("Unverified archive commit SHA")
     if not re.fullmatch(r"B[0-9]+", args.build):
         raise ValueError("Invalid expected build ID")
+    if not re.fullmatch(r"B[0-9]+", args.previous_build) or (
+        int(args.previous_build[1:]) >= int(args.build[1:])
+    ):
+        raise ValueError("Invalid previous historical build ID")
     if not re.fullmatch(r"[0-9]+(?:\.[0-9]+)+", args.version) or not args.version.endswith("." + args.build[1:]):
         raise ValueError("Archived version name does not match expected build")
 
@@ -153,37 +161,43 @@ def main():
         if name not in files:
             raise RuntimeError("Archived snapshot missing required file: " + name)
 
-    missing_build_id = BUILD_FILE.lower() not in files
-    if missing_build_id:
-        # The SHA was matched to VERSIONS.md by the coordinator. Independently
-        # check the fetched commit's release declaration before synthesizing a
-        # missing tracking file. A mismatched/malformed snapshot must fail.
+    # Require consistent source version markers. Legitimate archived commits
+    # sometimes leave these at the preceding release rather than advancing.
+    # Other mismatches remain hard errors; no version data is silently skipped.
+    repaired_markers = []
+    if BUILD_FILE.lower() not in files:
+        repaired_markers.append((BUILD_FILE, "missing"))
+
+    for path in (BUILD_FILE, DATA_BUILD_FILE):
+        key = path.lower()
+        if key not in files:
+            continue  # DataBuildId is optional; BuildId is reconstructed above.
+        source_build = files[key][0].read_text(encoding="utf-8-sig").strip()
+        if source_build == args.build:
+            continue
+        if source_build != args.previous_build:
+            raise RuntimeError(
+                f"Archived {path} mismatch: expected {args.build}, got "
+                f"{source_build!r} (previous={args.previous_build})"
+            )
+        repaired_markers.append((files[key][1], f"stale {source_build}"))
+
+    if repaired_markers:
+        # Commit identity is pinned to the documented VERSIONS.md entry by
+        # catch_up_history.py; verify the source release subject as well.
         subject = run("git", "-C", str(cache), "log", "-1", "--format=%s",
                       "HEAD", capture=True)
         if subject != "Updated Files to " + args.version:
             raise RuntimeError(
-                f"Missing BuildId.txt and archive commit subject does not verify "
-                f"{args.version}: {subject!r}"
+                f"Archived version-marker repair refused: commit subject "
+                f"{subject!r} does not verify {args.version}"
             )
-        print(
-            f"WARNING: Archived {args.version} ({args.commit}) omits BuildId.txt. "
-            "Commit SHA and release subject verified; reconstructing only the "
-            "tracking marker, preserving the original game-data snapshot.",
-            flush=True,
-        )
-    else:
-        source_build = files[BUILD_FILE.lower()][0].read_text(encoding="utf-8-sig").strip()
-        if source_build != args.build:
-            raise RuntimeError(
-                f"Archived build-ID mismatch: expected {args.build}, got {source_build}"
-            )
-
-    alternate = "mods/core.stormmod/base.stormdata/databuildid.txt"
-    if alternate in files:
-        data_build = files[alternate][0].read_text(encoding="utf-8-sig").strip()
-        if data_build != args.build:
-            raise RuntimeError(
-                f"Archived DataBuildId mismatch: expected {args.build}, got {data_build}"
+        for marker, reason in repaired_markers:
+            print(
+                f"WARNING: {args.version} verified archived commit {args.commit}; "
+                f"repairing tracking marker {marker} ({reason}) to {args.build}. "
+                "Original game-data files remain unchanged.",
+                flush=True,
             )
 
     with tempfile.TemporaryDirectory(prefix="heroes-archive-stage-") as stage:
@@ -197,9 +211,9 @@ def main():
             if i % 1000 == 0:
                 print(f"Staged {i}/{len(files)} Heroes files", flush=True)
 
-        if missing_build_id:
-            # Version marker only: the archived commit is source-pinned above.
-            marker = stage_path / BUILD_FILE
+        for rel, _reason in repaired_markers:
+            # Tracking files only; preserve all original archived game data.
+            marker = stage_path / rel
             marker.parent.mkdir(parents=True, exist_ok=True)
             marker.write_text(args.build + "\n", encoding="utf-8")
 
