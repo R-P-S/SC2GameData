@@ -324,8 +324,11 @@ def main():
     if int(online[1:]) < int(start[1:]):
         raise RuntimeError("Online build is older than repository build; refusing downgrade.")
 
-    if start == online and not args.force:
-        print(f"{args.game}: {start} is already current. Nothing to recover.")
+    if start == online:
+        print(f"{args.game}: {start} is already current. No historical backlog.")
+        if args.game == "heroes" and os.environ.get("GITHUB_OUTPUT"):
+            with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf8") as output:
+                output.write("caught_up=true\n")
         return
 
     if start != online:
@@ -377,6 +380,12 @@ def main():
             if gap and index == 1:
                 command += ["--history-gap-from", gap]
             subprocess.run(command, check=True)
+    completed = bool(selected and selected[-1]["build"] == online)
+    if args.game == "heroes":
+        print(f"Heroes historical backlog complete: {completed}", flush=True)
+        if os.environ.get("GITHUB_OUTPUT"):
+            with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf8") as output:
+                output.write(f"caught_up={str(completed).lower()}\n")
     print(f"{args.game}: history recovery pass finished successfully.")
 
 
