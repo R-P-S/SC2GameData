@@ -17,12 +17,9 @@ FORK = "R-P-S/SC2GameData"
 ARCHIVE = "https://github.com/jamiephan/HeroesOfTheStorm_Gamedata.git"
 REPO = Path(__file__).resolve().parent.parent
 BUILD_FILE = "mods/core.stormmod/base.stormdata/BuildId.txt"
-# Archived release 2.52.2.82624 removed both build-ID files upstream.
-# This exact commit is independently documented in VERSIONS.md.
-# Only its missing tracking BuildId.txt may be reconstructed; no game data is invented.
-MISSING_BUILDID_EXCEPTION = {
-    "B82624": "2d12ec29787fed3c545ebeeea4fdaeff310618f1",
-}
+# Some authentic archived releases omit their BuildId.txt. A missing marker
+# may be reconstructed ONLY when the exact fetched Git commit's subject matches
+# the documented release version; the original source data is never invented.
 ALLOWED = re.compile(
     r"\.(aitree|fx|xml|txt|json|galaxy|triggerlib|stormcomponents|"
     r"stormcutscene|stormhotkeys|storminterface|stormlayout|stormlib|"
@@ -98,6 +95,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--commit", required=True)
     parser.add_argument("--build", required=True)
+    parser.add_argument("--version", required=True, help="Version from archived VERSIONS.md")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
@@ -107,6 +105,8 @@ def main():
         raise ValueError("Unverified archive commit SHA")
     if not re.fullmatch(r"B[0-9]+", args.build):
         raise ValueError("Invalid expected build ID")
+    if not re.fullmatch(r"[0-9]+(?:\.[0-9]+)+", args.version) or not args.version.endswith("." + args.build[1:]):
+        raise ValueError("Archived version name does not match expected build")
 
     cache = Path(os.getenv("RUNNER_TEMP", tempfile.gettempdir())) / "heroes-archive-git"
     if not (cache / ".git").exists():
@@ -155,14 +155,20 @@ def main():
 
     missing_build_id = BUILD_FILE.lower() not in files
     if missing_build_id:
-        if MISSING_BUILDID_EXCEPTION.get(args.build) != args.commit.lower():
+        # The SHA was matched to VERSIONS.md by the coordinator. Independently
+        # check the fetched commit's release declaration before synthesizing a
+        # missing tracking file. A mismatched/malformed snapshot must fail.
+        subject = run("git", "-C", str(cache), "log", "-1", "--format=%s",
+                      "HEAD", capture=True)
+        if subject != "Updated Files to " + args.version:
             raise RuntimeError(
-                "Archived snapshot missing required file: " + BUILD_FILE
+                f"Missing BuildId.txt and archive commit subject does not verify "
+                f"{args.version}: {subject!r}"
             )
         print(
-            "WARNING: Archived B82624 commit omits BuildId.txt. "
-            "Using the verified version-to-commit mapping to reconstruct "
-            "only this tracking marker; original archived game data remains unchanged.",
+            f"WARNING: Archived {args.version} ({args.commit}) omits BuildId.txt. "
+            "Commit SHA and release subject verified; reconstructing only the "
+            "tracking marker, preserving the original game-data snapshot.",
             flush=True,
         )
     else:
@@ -170,6 +176,14 @@ def main():
         if source_build != args.build:
             raise RuntimeError(
                 f"Archived build-ID mismatch: expected {args.build}, got {source_build}"
+            )
+
+    alternate = "mods/core.stormmod/base.stormdata/databuildid.txt"
+    if alternate in files:
+        data_build = files[alternate][0].read_text(encoding="utf-8-sig").strip()
+        if data_build != args.build:
+            raise RuntimeError(
+                f"Archived DataBuildId mismatch: expected {args.build}, got {data_build}"
             )
 
     with tempfile.TemporaryDirectory(prefix="heroes-archive-stage-") as stage:
