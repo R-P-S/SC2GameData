@@ -135,3 +135,30 @@ completion tag exists. Individual manual runs may select just SC2 or Heroes.
 **Warning:** When the completion tag exists, newer Heroes patches use the
 live/latest check, which may not preserve intermediate builds released between
 runs. The current historical backfill recovers the known old archive only.
+
+
+## Automatic StarCraft II historical updates
+
+SC2 now uses chronological historical recovery for **every weekday scheduled
+run** and every normal manual run that includes SC2. The latest-only SC2
+workflow path is disabled, so a scheduled check cannot silently jump over
+known intermediate builds.
+
+It reads verified Blizzard build-config keys from BlizzTrack's historical
+versions index, extracts up to **10 SC2 builds per run** (oldest first) using
+online CASC, and creates a separate commit and annotated `sc2/v<version>`
+tag for every recovered version. The first batch starts from whatever build is
+currently checked in; at the time of setup that was B97364. Previously tested
+builds include B97425, B97563 and B98310.
+
+Unlike Heroes' finite archive catch-up, SC2 continues using historical
+discovery **on future scheduled checks as well**. That preserves intermediate
+patches published between two runs whenever BlizzTrack indexes their keys
+and Blizzard's CDN still supplies their contents. When the historical index
+is incomplete, unindexed, or a build is unavailable, SC2 fails safely instead
+of falling back to the latest-only build.
+
+This changes only the SC2 pathway. Heroes retains its automatic ten-version
+weekday backfill and `heroes/history-complete` handoff. Both push only to
+R-P-S/SC2GameData, with SC2 commits pushed before the independent Heroes
+portion of the workflow. Use `dry_run=true` to test without publishing.
