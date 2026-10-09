@@ -93,7 +93,18 @@ async function main() {
 
   console.log("Installed build: " + installedBuild);
   console.log("Opening Blizzard online CASC (s2, US)");
-  const storage = await Storage.openOnlineAsync(cache + "*s2*us");
+  const buildKey = process.env.SC2_BUILD_KEY || "";
+  const expectedBuild = process.env.SC2_EXPECTED_BUILD || "";
+  if (buildKey && !/^[0-9a-f]{32}$/i.test(buildKey)) {
+    throw new Error("Invalid historical build configuration key");
+  }
+  // Probe current online build without modifying any checkout files.
+  const storage = buildKey
+    ? Storage.openEx(cache + "*s2*us", {
+        localPath: cache, codeName: "s2", region: "us",
+        buildKey, online: true
+      })
+    : await Storage.openOnlineAsync(cache + "*s2*us");
   let staging = null;
 
   try {
@@ -102,6 +113,14 @@ async function main() {
       throw new Error("Invalid CASC build ID: " + latestBuild);
     }
     console.log("Online build: " + latestBuild);
+    console.log("CASC_BUILD_ID=" + latestBuild);
+    if (expectedBuild && latestBuild !== expectedBuild) {
+      throw new Error("Historical build mismatch: expected " + expectedBuild + ", got " + latestBuild);
+    }
+    if (process.argv.includes("--probe")) {
+      output("updated", "false");
+      return;
+    }
     output("build_id", latestBuild);
 
     if (installedBuild === latestBuild && !force) {
