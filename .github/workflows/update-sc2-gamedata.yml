@@ -84,19 +84,18 @@ jobs:
           # Publish annotated tags even if no additional commit is needed.
           git push --atomic --follow-tags origin "HEAD:refs/heads/master"
 
-      # Like SC2, Heroes always checks missed intermediate patches first.
-      # This continues after its original archival backlog is completed.
-      - name: Recover Heroes versions chronologically
-        id: heroes_history
+      # Heroes intentionally tracks Blizzard's latest build only. Historical
+      # reconstruction remains enabled for StarCraft II, not for Heroes.
+      - name: Download latest Heroes data from Blizzard
+        id: heroes_latest
         if: inputs.game != 'sc2'
-        shell: bash
-        run: |
-          set -euo pipefail
-          EXTRA=""
-          if [[ "$HOTS_DRY_RUN" == "true" ]]; then EXTRA="$EXTRA --dry-run"; fi
-          if [[ "$HOTS_FORCE" == "true" ]]; then EXTRA="$EXTRA --force"; fi
-          if [[ "${{ inputs.allow_history_gap }}" == "true" ]]; then EXTRA="$EXTRA --allow-gap"; fi
-          python3 scripts/catch_up_history.py --game heroes --max-builds 10 --history-scan 300 $EXTRA
+        run: node scripts/update_hots_gamedata.js
+
+      - name: Commit latest Heroes version
+        if: steps.heroes_latest.outputs.updated == 'true'
+        env:
+          HOTS_BUILD_ID: "${{ steps.heroes_latest.outputs.build_id }}"
+        run: python3 scripts/commit_gamedata_version.py --game heroes --build "$HOTS_BUILD_ID"
 
       - name: Push Heroes commits and tags only to this fork
         if: inputs.game != 'sc2' && (github.event_name == 'schedule' || inputs.dry_run != true)
