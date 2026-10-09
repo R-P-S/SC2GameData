@@ -15,7 +15,7 @@ Each game's newly detected build gets a **separate Git commit**. When both games
 
 These are examples, not claims about current game versions. The versioning script queries Blizzard's US patch/version table and verifies that the reported build ID matches the extracted CASC build. If that service is unreachable, it uses the exact build ID instead (e.g. `Heroes: Update to B98348` and `heroes/vB98348`). Tags are immutable: the script refuses to overwrite an existing tag.
 
-This updater saves **the latest build available at each check**, not every intermediate patch released between two runs. Historical version recovery is not implemented.
+The normal weekday schedule saves the **latest build available at each check**. An **experimental, manually enabled historical recovery mode** can attempt intermediate patches using BlizzTrack's archived Blizzard version manifests and CASC build-config keys. It processes up to three builds per game in chronological order, creating separate commits and tags, and does not skip a missing historical build. Recovery depends on BlizzTrack availability and Blizzard retaining those builds' CDN assets. This integration has not yet been validated end to end on GitHub Actions.
 
 ## Game extraction
 
@@ -32,6 +32,9 @@ Both extraction scripts use `@jamiephan/casclib@0.3.0`. They stage and validate 
 2. Select **Run workflow** on branch `master`.
 3. Choose **both**, **sc2**, or **heroes** for **Which game to check**.
 4. Optionally enable **dry_run** to verify extraction without repository edits. **force** re-extracts even if the build ID matches.
+5. To **test historical patches**, check the new **EXPERIMENTAL: recover missed patches in chronological order** option and enable **dry_run**. For the initial test choose one game, not both. Once a dry run succeeds, the recovery can be attempted with **dry_run** unchecked.
+
+For safety, the weekday schedule uses the original latest-build-only mode until historical recovery has been validated. Manual runs also default to the proven latest-build mode. If history lookup is incomplete, the experimental recovery fails without publishing partial commits.
 
 Manual runs can be started anytime, including weekends. Dry runs generate no commits or tags.
 
@@ -49,7 +52,7 @@ The extraction scripts do not perform Git operations, and the versioning helper 
 
 ## Limitations
 
-- Existing earlier commits will not automatically be retroactively tagged.
+- Existing earlier commits will not automatically be retroactively tagged. Historical recovery only attempts builds newer than the currently checked-in BuildId.
 - Scheduled runs can be delayed or occasionally skipped by GitHub.
 - Downloads are not persisted between hosted runner jobs.
 - Blizzard's CDN and patch-version endpoints or the third-party CASC package can change; full-version lookup falls back to the build ID.
