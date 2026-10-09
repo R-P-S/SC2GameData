@@ -38,23 +38,50 @@ def json_get(url):
 
 
 def manifest_result(payload, where, *, paged=False):
-    """Unwrap the BlizzTrack 2 API: {success, results:{results:[...]}} or
-    {success, results:{data:[...]}}. Fail closed for unexpected shapes.
-    See https://blizztrack.com/swagger/doc.json
+    """Accept documented and common BlizzTrack JSON response envelopes.
+
+    The documented payload uses a results object, but the live
+    service has returned a different JSON shape. Inspect only validated
+    arrays; never silently treat errors as empty history.
     """
-    if not isinstance(payload, dict) or payload.get("success") is False:
-        raise RuntimeError(f"BlizzTrack returned an error for {where}: "
-                           f"{str(payload)[:300]}")
-    body = payload.get("results")
-    if not isinstance(body, dict):
-        raise RuntimeError(f"Unexpected BlizzTrack response at {where}: "
-                           "expected a 'results' object")
-    key = "results" if paged else "data"
-    items = body.get(key)
-    if not isinstance(items, list):
-        raise RuntimeError(f"Unexpected BlizzTrack response at {where}: "
-                           f"expected results.{key} array")
-    return body, items
+    if isinstance(payload, dict):
+        if payload.get("success") is False or payload.get("status") == "error":
+            raise RuntimeError(
+                f"BlizzTrack reported failure for {where}: "
+                + json.dumps(payload, ensure_ascii=False)[:1000]
+            )
+        if payload.get("error") and not isinstance(payload.get("results"), (list, dict)):
+            raise RuntimeError(
+                f"BlizzTrack error for {where}: "
+                + json.dumps(payload, ensure_ascii=False)[:1000]
+            )
+
+    # Handle nested or flat results/data arrays.
+    candidates = [payload]
+    seen = set()
+    for candidate in candidates:
+        if id(candidate) in seen:
+            continue
+        seen.add(id(candidate))
+        if isinstance(candidate, list):
+            return {}, candidate
+        if isinstance(candidate, dict):
+            for key in ("results", "data", "items", "rows", "seqns", "result", "payload"):
+                value = candidate.get(key)
+                if isinstance(value, (list, dict)):
+                    if isinstance(value, list):
+                        return candidate, value
+                    candidates.append(value)
+
+    # Unknown response. Include a short public-data diagnostic in the
+    # runner log, so the next failure can be fixed from evidence.
+    preview = json.dumps(payload, ensure_ascii=False, default=str)[:1200]
+    raise RuntimeError(
+        f"Unexpected BlizzTrack response at {where}; "
+        f"top-level type={type(payload).__name__}; "
+        f"keys={list(payload)[:20] if isinstance(payload, dict) else 'n/a'}; "
+        f"body={preview}"
+    )
 
 
 def fetch_history(product, max_scan):
@@ -91,6 +118,8 @@ def fetch_history(product, max_scan):
         raise RuntimeError("BlizzTrack returned no version history for " + product)
     numbers = sorted(set(seqns), reverse=True)[:max_scan]
 
+    print(f"BlizzTrack: found {len(numbers)} distinct archived sequence numbers "+
+          f"for {product}.", flush=True)
     for number in numbers:
         url = f"{base}/versions?" + urlencode({"seqn": number})
         _, rows = manifest_result(json_get(url), url)
