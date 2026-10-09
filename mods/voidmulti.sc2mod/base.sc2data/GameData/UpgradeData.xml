@@ -365,12 +365,12 @@
         <Flags index="TechTreeCheat" value="1"/>
     </CUpgrade>
     <CUpgrade id="WarpGateResearch">
-        <EffectArray Operation="Multiply" Reference="Abil,GatewayTrain,InfoArray[Train4].Time" Value="0.600000"/>
-        <EffectArray Operation="Multiply" Reference="Abil,GatewayTrain,InfoArray[Train1].Time" Value="0.600000"/>
-        <EffectArray Operation="Multiply" Reference="Abil,GatewayTrain,InfoArray[Train2].Time" Value="0.600000"/>
-        <EffectArray Operation="Multiply" Reference="Abil,GatewayTrain,InfoArray[Train6].Time" Value="0.600000"/>
-        <EffectArray Operation="Multiply" Reference="Abil,GatewayTrain,InfoArray[Train7].Time" Value="0.600000"/>
-        <EffectArray Operation="Multiply" Reference="Abil,GatewayTrain,InfoArray[Train5].Time" Value="0.600000"/>
+        <EffectArray Operation="Multiply" Reference="Abil,GatewayTrain,InfoArray[Train4].Time" Value="0.500000"/>
+        <EffectArray Operation="Multiply" Reference="Abil,GatewayTrain,InfoArray[Train1].Time" Value="0.500000"/>
+        <EffectArray Operation="Multiply" Reference="Abil,GatewayTrain,InfoArray[Train2].Time" Value="0.500000"/>
+        <EffectArray Operation="Multiply" Reference="Abil,GatewayTrain,InfoArray[Train6].Time" Value="0.500000"/>
+        <EffectArray Operation="Multiply" Reference="Abil,GatewayTrain,InfoArray[Train7].Time" Value="0.500000"/>
+        <EffectArray Operation="Multiply" Reference="Abil,GatewayTrain,InfoArray[Train5].Time" Value="0.500000"/>
         <Flags index="TechTreeCheat" value="1"/>
     </CUpgrade>
     <CUpgrade id="ZergFlyerArmorsLevel1">
@@ -433,7 +433,7 @@
         <EffectArray Reference="Unit,InfestorTerranBurrowed,LifeArmorLevel" Value="1"/>
         <EffectArray Reference="Unit,InfestorTerranBurrowed,LifeArmor" Value="1"/>
         <EffectArray Operation="Set" Reference="Actor,InfestorTerran,LifeArmorIcon" Value="Assets\Textures\btn-upgrade-zerg-groundcarapace-level2.dds"/>
-        <ScoreAmount value="400"/>
+        <ScoreAmount value="300"/>
     </CUpgrade>
     <CUpgrade id="ZergGroundArmorsLevel3">
         <AffectedUnitArray value="InfestorTerran"/>
@@ -521,6 +521,8 @@
         <EffectArray index="5" Value="1"/>
         <EffectArray index="14" Value="1"/>
         <EffectArray index="23" Value="1"/>
+        <EffectArray index="31" Value="2"/>
+        <EffectArray index="32" Value="2"/>
         <EffectArray Reference="Effect,ThermalBeamDamage,Amount" Value="2"/>
         <EffectArray Operation="Set" Reference="Weapon,ThermalBeam,Icon" Value="Assets\Textures\btn-upgrade-protoss-groundweaponslevel1.dds"/>
         <EffectArray Reference="Weapon,ThermalBeam,Level" Value="1"/>
@@ -537,6 +539,8 @@
         <EffectArray index="5" Value="1"/>
         <EffectArray index="14" Value="1"/>
         <EffectArray index="23" Value="1"/>
+        <EffectArray index="31" Value="2"/>
+        <EffectArray index="32" Value="2"/>
         <EffectArray Reference="Effect,ThermalBeamDamage,Amount" Value="2"/>
         <EffectArray Operation="Set" Reference="Weapon,ThermalBeam,Icon" Value="Assets\Textures\btn-upgrade-protoss-groundweaponslevel2.dds"/>
         <EffectArray Reference="Weapon,ThermalBeam,Level" Value="1"/>
@@ -553,6 +557,8 @@
         <EffectArray index="5" Value="1"/>
         <EffectArray index="14" Value="1"/>
         <EffectArray index="23" Value="1"/>
+        <EffectArray index="31" Value="2"/>
+        <EffectArray index="32" Value="2"/>
         <EffectArray Reference="Effect,ThermalBeamDamage,Amount" Value="2"/>
         <EffectArray Operation="Set" Reference="Weapon,ThermalBeam,Icon" Value="Assets\Textures\btn-upgrade-protoss-groundweaponslevel3.dds"/>
         <EffectArray Reference="Weapon,ThermalBeam,Level" Value="1"/>

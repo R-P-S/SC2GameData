@@ -1306,14 +1306,6 @@
         <PeriodicEffect value="SCVMovetoBuildSearchWorker"/>
         <InfoFlags index="Hidden" value="1"/>
     </CBehaviorBuff>
-    <CBehaviorBuff id="SCVMovetoBuildAllyAntiGrief">
-        <BehaviorFlags index="Permanent" value="1"/>
-        <EditorCategories value="AbilityorEffectType:Units"/>
-        <DamageResponse ModifyFraction="0" TargetFilters="-;Player,Neutral,Enemy" Priority="10">
-            <Chance value="1"/>
-        </DamageResponse>
-        <InfoFlags index="Hidden" value="1"/>
-    </CBehaviorBuff>
     <CBehaviorBuff id="SCVMoveToGatherSeek">
         <BehaviorFlags index="Permanent" value="1"/>
         <EditorCategories value="AbilityorEffectType:Units"/>
@@ -1338,9 +1330,6 @@
         <EditorCategories value="AbilityorEffectType:Units,Race:Protoss"/>
         <Duration value="2"/>
         <Modification DecelerationMultiplier="2"/>
-    </CBehaviorBuff>
-    <CBehaviorBuff id="Hallucination">
-        <InitialEffect value="CopyOrdersCaster"/>
     </CBehaviorBuff>
     <CBehaviorBuff id="CreepTumorActive">
         <InfoFlags index="Hidden" value="1"/>

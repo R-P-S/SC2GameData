@@ -473,7 +473,7 @@
         <Options index="Hidden" value="1"/>
         <TargetFilters value="Ground,Visible;Missile,Stasis,Dead,Hidden,Invulnerable"/>
         <MinScanRange value="12"/>
-        <Range value="11.35"/>
+        <Range value="7"/>
         <Arc value="360"/>
         <Period value="1"/>
         <Effect value="FakeWeaponDummyDamage"/>

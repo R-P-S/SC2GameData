@@ -2,5 +2,7 @@
 <Catalog>
     <CGameUI id="Dflt">
         <DisplayScaledTime value="1"/>
+        <SelectionColorBlindColors index="Subgroup" value="255,25,25,255"/>
+        <SelectionColorBlindColors index="Selected" value="255,0,0,225"/>
     </CGameUI>
 </Catalog>

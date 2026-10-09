@@ -1238,4 +1238,11 @@
         <SearchFilters value="Visible;Ally,Neutral,Enemy,Worker,Missile,Stasis,Dead,Hidden,Invulnerable"/>
         <ExcludeArray Value="Target"/>
     </CValidatorLocationEnumArea>
+    <CValidatorCombine id="CloakedOrBuried">
+        <CombineArray value="TargetIsCloaked"/>
+        <CombineArray value="IsBuried"/>
+    </CValidatorCombine>
+    <CValidatorCondition id="CycloneCloakFix">
+        <IfArray Test="CloakedOrBuried" Return="TargetIsVisible"/>
+    </CValidatorCondition>
 </Catalog>

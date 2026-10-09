@@ -270,6 +270,9 @@
         <Collide index="Phased" value="1"/>
         <SubgroupPriority value="32"/>
         <BehaviorArray Link="CommandCenterKnockbackBehavior"/>
+        <CostResource index="Minerals" value="300"/>
+        <ScoreMake value="300"/>
+        <ScoreKill value="300"/>
     </CUnit>
     <CUnit id="CommandCenterFlying">
         <Food value="13"/>
@@ -279,6 +282,8 @@
         <CardLayouts index="0">
             <LayoutButtons Face="Rally" Type="AbilCmd" AbilCmd="Rally,Rally1" Row="1" Column="4"/>
         </CardLayouts>
+        <CostResource index="Minerals" value="300"/>
+        <ScoreKill value="300"/>
     </CUnit>
     <CUnit id="Corruptor">
         <AbilArray index="0" Link="CausticSpray"/>
@@ -423,7 +428,7 @@
             <LayoutButtons Face="Zealot" Type="AbilCmd" AbilCmd="WarpGateTrain,Train1" Row="0" Column="0"/>
             <LayoutButtons Face="Stalker" Type="AbilCmd" AbilCmd="WarpGateTrain,Train2" Row="0" Column="2"/>
             <LayoutButtons Face="HighTemplar" Type="AbilCmd" AbilCmd="WarpGateTrain,Train4" Row="1" Column="0"/>
-            <LayoutButtons Face="DarkTemplar" Type="AbilCmd" AbilCmd="GatewayTrain,Train5" Row="1" Column="1"/>
+            <LayoutButtons Face="DarkTemplar" Type="AbilCmd" AbilCmd="WarpGateTrain,Train5" Row="1" Column="1"/>
             <LayoutButtons Face="Sentry" Type="AbilCmd" AbilCmd="WarpGateTrain,Train6" Row="0" Column="1"/>
             <LayoutButtons Face="WarpInAdept" Type="AbilCmd" AbilCmd="WarpGateTrain,Train7" Row="0" Column="3"/>
             <LayoutButtons>
@@ -435,8 +440,9 @@
                 <Column value="0"/>
             </LayoutButtons>
             <LayoutButtons Face="UpgradeToWarpGate" Type="AbilCmd" AbilCmd="UpgradeToWarpGate,Execute" Row="2" Column="0"/>
+            <LayoutButtons Face="MorphBackToGateway" Type="AbilCmd" AbilCmd="MorphBackToGateway,Execute" Row="2" Column="1"/>
         </CardLayouts>
-        <SubgroupPriority value="30"/>
+        <SubgroupPriority value="24"/>
     </CUnit>
     <CUnit id="InfestorTerranBurrowed">
         <SubgroupPriority value="66"/>
@@ -697,7 +703,6 @@
         <GlossaryWeakArray index="0" value="Thor"/>
         <GlossaryWeakArray index="1" value="Roach"/>
         <Attributes index="Light" value="1"/>
-        <Food value="-3"/>
     </CUnit>
     <CUnit id="GhostAlternate" parent="Ghost">
         <EffectArray index="Create" value="MorphToGhostNova"/>
@@ -1114,7 +1119,6 @@
         <SubgroupPriority value="60"/>
         <CardLayouts index="0">
             <LayoutButtons Face="CaduceusReactor" Type="Passive" Requirements="HaveMedivacEnergyUpgrade" Row="1" Column="0"/>
-            <LayoutButtons Face="LoadNearbyMedivac" Type="AbilCmd" AbilCmd="MedivacTransport,LoadAll" Row="1" Column="2"/>
         </CardLayouts>
         <GlossaryWeakArray value="MissileTurret"/>
         <GlossaryWeakArray value="SporeCrawler"/>
@@ -1288,6 +1292,9 @@
         <Collide index="Phased" value="1"/>
         <SubgroupPriority value="34"/>
         <BehaviorArray Link="CommandCenterKnockbackBehavior"/>
+        <CostResource index="Minerals" value="450"/>
+        <ScoreMake value="450"/>
+        <ScoreKill value="450"/>
     </CUnit>
     <CUnit id="OrbitalCommandFlying">
         <Food value="13"/>
@@ -1297,6 +1304,8 @@
         <CardLayouts index="0">
             <LayoutButtons Face="Rally" Type="AbilCmd" AbilCmd="Rally,Rally1" Row="1" Column="4"/>
         </CardLayouts>
+        <CostResource index="Minerals" value="450"/>
+        <ScoreKill value="450"/>
     </CUnit>
     <CUnit id="Overlord">
         <SubgroupPriority value="72"/>
@@ -2174,10 +2183,18 @@
         <EffectArray index="Create" value="HasMorphedBefore"/>
         <EffectArray index="Birth" value="HasMorphedBefore"/>
         <CardLayouts index="0">
+            <LayoutButtons Face="Zealot" Type="AbilCmd" AbilCmd="GatewayTrain,Train1" Row="0" Column="0"/>
+            <LayoutButtons Face="Stalker" Type="AbilCmd" AbilCmd="GatewayTrain,Train2" Row="0" Column="2"/>
+            <LayoutButtons Face="HighTemplar" Type="AbilCmd" AbilCmd="GatewayTrain,Train4" Row="1" Column="0"/>
+            <LayoutButtons Face="DarkTemplar" Type="AbilCmd" AbilCmd="GatewayTrain,Train5" Row="1" Column="1"/>
+            <LayoutButtons Face="Sentry" Type="AbilCmd" AbilCmd="GatewayTrain,Train6" Row="0" Column="1"/>
+            <LayoutButtons Face="WarpInAdept" Type="AbilCmd" AbilCmd="GatewayTrain,Train7" Row="0" Column="3"/>
             <LayoutButtons Face="Cancel" Type="AbilCmd" AbilCmd="MorphBackToGateway,Cancel" Row="2" Column="4"/>
-            <LayoutButtons Face="UpgradeToWarpGate" Type="AbilCmd" Row="2" Column="0"/>
+            <LayoutButtons Face="UpgradeToWarpGate" Type="AbilCmd" AbilCmd="MorphBuildingGatewayWarpGateFree,Execute" Row="2" Column="0"/>
+            <LayoutButtons Face="UpgradeToWarpGate" Type="AbilCmd" AbilCmd="UpgradeToWarpGate,Execute" Row="2" Column="0"/>
         </CardLayouts>
-        <SubgroupPriority value="24"/>
+        <SubgroupPriority value="30"/>
+        <SelectAlias value="WarpGate"/>
     </CUnit>
     <CUnit id="WarpPrism">
         <SubgroupPriority value="69"/>
@@ -2195,15 +2212,11 @@
         <MinimapRadius value="1"/>
         <Height value="4.25"/>
         <BehaviorArray Link="WarpPrismLoadupDecelerationFix"/>
-        <CardLayouts index="0">
-            <LayoutButtons Face="LoadNearbyWarpPrism" Type="AbilCmd" AbilCmd="WarpPrismTransport,LoadAll" Row="1" Column="2"/>
-        </CardLayouts>
     </CUnit>
     <CUnit id="WarpPrismPhasing">
         <SubgroupPriority value="69"/>
         <CardLayouts index="0">
             <LayoutButtons Face="ImprovedEnergy" Type="Passive" Row="1" Column="0"/>
-            <LayoutButtons Face="LoadNearbyWarpPrism" Type="AbilCmd" AbilCmd="WarpPrismTransport,LoadAll" Row="1" Column="2"/>
         </CardLayouts>
         <LifeStart value="80"/>
         <LifeMax value="80"/>
@@ -2924,9 +2937,6 @@
         <VisionHeight value="15"/>
         <Speed value="0.914"/>
         <Deceleration value="1.625"/>
-        <CardLayouts index="0">
-            <LayoutButtons Face="LoadNearbyOverlord" Type="AbilCmd" AbilCmd="OverlordTransport,LoadAll" Row="1" Column="2"/>
-        </CardLayouts>
         <StationaryTurningRate value="719.4726"/>
         <TurningRate value="719.4726"/>
     </CUnit>

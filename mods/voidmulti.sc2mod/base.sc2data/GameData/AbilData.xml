@@ -485,7 +485,7 @@
     </CAbilResearch>
     <CAbilTrain id="GatewayTrain">
         <InfoArray index="Train1">
-            <Button>
+            <Button Requirements="GatewayNotMorphing">
                 <Flags index="ToSelection" value="1"/>
             </Button>
         </InfoArray>
@@ -808,18 +808,18 @@
     <CAbilMorph id="MorphBackToGateway">
         <InfoArray index="0">
             <SectionArray index="Abils">
-                <DurationArray index="Delay" value="7"/>
+                <DurationArray index="Delay" value="5.6"/>
                 <EffectArray index="Finish" value="UpgradeToWarpGateAutoCastDisabler"/>
             </SectionArray>
             <SectionArray index="Actor">
-                <DurationArray index="Duration" value="7"/>
+                <DurationArray index="Duration" value="5.6"/>
             </SectionArray>
             <SectionArray index="Stats">
-                <DurationArray index="Delay" value="7"/>
+                <DurationArray index="Delay" value="5.6"/>
             </SectionArray>
         </InfoArray>
         <Alert value="TransformationComplete"/>
-        <CmdButtonArray index="Execute">
+        <CmdButtonArray index="Execute" Requirements="WarpgateNotDemorphing">
             <Flags index="ToSelection" value="1"/>
         </CmdButtonArray>
         <Flags index="Interruptible" value="1"/>
@@ -1304,19 +1304,19 @@
                 <CountMax value="1"/>
                 <CountStart value="1"/>
                 <CountUse value="1"/>
-                <TimeUse value="10"/>
+                <TimeUse value="5.6"/>
             </Charge>
         </Cost>
         <InfoArray Unit="WarpGate">
             <SectionArray index="Abils">
-                <DurationArray index="Delay" value="10"/>
+                <DurationArray index="Delay" value="5.6"/>
                 <EffectArray index="Finish" value="HasMorphedBefore"/>
             </SectionArray>
             <SectionArray index="Actor">
-                <DurationArray index="Duration" value="10"/>
+                <DurationArray index="Duration" value="5.6"/>
             </SectionArray>
             <SectionArray index="Stats">
-                <DurationArray index="Delay" value="10"/>
+                <DurationArray index="Delay" value="5.6"/>
             </SectionArray>
         </InfoArray>
         <Alert value="TransformationComplete"/>
@@ -1344,7 +1344,14 @@
         </Cost>
         <InfoArray index="0">
             <SectionArray index="Abils">
+                <DurationArray index="Delay" value="5.6"/>
                 <EffectArray index="Finish" value="HasMorphedBefore"/>
+            </SectionArray>
+            <SectionArray index="Actor">
+                <DurationArray index="Duration" value="5.6"/>
+            </SectionArray>
+            <SectionArray index="Stats">
+                <DurationArray index="Delay" value="5.6"/>
             </SectionArray>
         </InfoArray>
         <AutoCastValidatorArray value="NotHaveUpgradeToWarpGateAutoCastDisabler"/>
@@ -1374,7 +1381,7 @@
     <CAbilWarpTrain id="WarpGateTrain">
         <InfoArray index="Train1" Time="5.6">
             <Charge TimeStart="32.8" TimeUse="30.8"/>
-            <Button>
+            <Button Requirements="WarpgateNotDemorphing">
                 <Flags index="ToSelection" value="1"/>
             </Button>
         </InfoArray>

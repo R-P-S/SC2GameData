@@ -56,6 +56,12 @@
         <On Terms="AbilMorph.MorphBuildingGatewayWarpGateFree.Pause" Send="SoundSetPaused 1"/>
         <On Terms="AbilMorph.MorphBuildingGatewayWarpGateFree.Resume" Send="SoundSetPaused"/>
         <On Terms="AbilMorph.MorphBuildingGatewayWarpGateFree.Cancel" Send="Destroy Immediate"/>
+        <On Terms="ActorCreation" Send="SoundSetOffset 250"/>
+        <On Terms="ActorCreation; GameSpeed GE Normal" Send="TimerSet 4.250000 FinishMorphSound"/>
+        <On Terms="ActorCreation; GameSpeed LT Normal" Send="TimerSet 7.000000 FinishMorphSound"/>
+        <On Terms="TimerExpired; TimerName FinishMorphSound" Send="SoundSetMuted 1"/>
+        <On Terms="TimerExpired; TimerName FinishMorphSound" Send="Destroy WhenReady"/>
+        <On Terms="UnitDeath.Gateway" Send="Destroy Immediate"/>
     </CActorSound>
     <CActorSplat id="InfestorInitialBurrowedSplat" parent="BurrowedSplatBase">
         <On Terms="AbilMorph.*.Start; MorphTo InfestorBurrowed" Send="Create"/>
@@ -312,8 +318,8 @@
         <Inherits index="Scale" value="1"/>
         <Inherits index="Visibility" value="1"/>
         <On index="0" Terms="ActorCreation" Send="AnimBracketStart BSD Birth Stand Death 0 1.000000 AsTimeScale"/>
-        <On Terms="AbilTrain.GatewayTrain.Trained" Send="Create"/>
-        <On Terms="AbilTrain.GatewayTrain.Trained" Send="TimerSet 0.375000,0.100000"/>
+        <On Terms="AbilTrain.GatewayTrain.Trained; !Option Effects Low" Send="Create"/>
+        <On Terms="AbilTrain.GatewayTrain.Trained; !Option Effects Low" Send="TimerSet 0.375000,0.100000"/>
         <On Terms="TimerExpired" Send="AnimBracketStop BSD 0 1.000000"/>
         <Host Subject="_Selectable"/>
         <HostSiteOps Ops="SOpAttachCenter" HoldRotation="1"/>
@@ -3567,5 +3573,18 @@
     </CActorSplat>
     <CActorSound id="ForceFieldDamage" parent="SoundOneShot">
         <Sound value="ForceFieldDamageSound"/>
+    </CActorSound>
+    <CActorSound id="GatewayMorphToWarpgate2" parent="SoundOneShot">
+        <On Terms="Abil.UpgradeToWarpGate.Start" Send="Create"/>
+        <On Terms="AbilMorph.UpgradeToWarpGate.Pause" Send="SoundSetPaused 1"/>
+        <On Terms="AbilMorph.UpgradeToWarpGate.Resume" Send="SoundSetPaused"/>
+        <On Terms="AbilMorph.UpgradeToWarpGate.Cancel" Send="Destroy Immediate"/>
+        <On Terms="Abil.MorphBuildingGatewayWarpGateFree.Start" Send="Create"/>
+        <On Terms="AbilMorph.MorphBuildingGatewayWarpGateFree.Pause" Send="SoundSetPaused 1"/>
+        <On Terms="AbilMorph.MorphBuildingGatewayWarpGateFree.Resume" Send="SoundSetPaused"/>
+        <On Terms="AbilMorph.MorphBuildingGatewayWarpGateFree.Cancel" Send="Destroy Immediate"/>
+        <On Terms="ActorCreation" Send="SoundSetOffset 3000"/>
+        <On Terms="UnitDeath.Gateway" Send="Destroy Immediate"/>
+        <Sound value="Gateway_MorphToWarpgate2"/>
     </CActorSound>
 </Catalog>
