@@ -1,38 +1,44 @@
-# Automated SC2 Game Data Updates (R-P-S fork)
+# Automated StarCraft II and Heroes of the Storm updates
 
-This fork uses GitHub Actions to check Blizzard's online StarCraft II game data **every four hours**. The updater cannot publish to SC2Mapster: the job checks the exact R-P-S/SC2GameData repository name, checks out this fork, and replaces the Git remote with this fork's URL before pushing.
+This fork uses one GitHub Actions workflow to check both Blizzard game data products **Monday-Friday at 15:17 UTC** (9:17 AM MDT / 8:17 AM MST). It does not run on Saturdays or Sundays. GitHub may start scheduled runs late.
 
-## First run
+The updater runs exclusively in **R-P-S/SC2GameData** on **master**. It neither pushes to nor opens pull requests against **SC2Mapster/SC2GameData**.
 
-1. Open [Actions](https://github.com/R-P-S/SC2GameData/actions) and enable workflows if prompted. Fork schedules may initially be disabled by GitHub.
-2. Choose **Update SC2 Game Data** > **Run workflow**.
-3. Select **dry_run = true** for the first test. This connects to Blizzard and extracts files without editing the repo.
-4. If it succeeds, run again with **dry_run = false** to update the repository. Later runs are automatically scheduled.
-5. If you get a permission error, check **Settings > Actions > General**, workflow permissions, and any master-branch protection rules.
+## Games
 
-The extractor uses npm package `@jamiephan/casclib@0.3.0` with online product code `s2`, region `us`. It reads `mods/core.sc2mod/base.sc2data/BuildId.txt` from CASC and compares it with the repository. If the build is unchanged it skips extraction unless **force = true**.
+| Game | CASC product | Build ID path | Package extensions |
+| --- | --- | --- | --- |
+| StarCraft II | `s2` | `mods/core.sc2mod/base.sc2data/BuildId.txt` | `.sc2mod`, `.sc2campaign` |
+| Heroes of the Storm | `hero` | `mods/core.stormmod/base.stormdata/BuildId.txt` | `.stormmod` |
 
-It extracts SC2 text/code files into a temporary folder, verifies a minimum file count, requires core files, and checks the downloaded build ID. After validation it refreshes SC2 mod/campaign directories, preserving Heroes of the Storm `.stormmod` content and `novastoryassets.sc2mod`. Git commits and pushes modified `mods` and `campaigns` only.
+Each extractor uses `@jamiephan/casclib@0.3.0`. It checks the build ID first, skips unnecessary extraction if unchanged, stages extracted text/code files, and validates the build ID, required files, and minimum file count before replacing files. The Heroes script never deletes SC2 mod/campaign packages and the SC2 script never deletes Heroes packages.
+
+If either game fails extraction, no commit or push happens. After both checks succeed, any changes to `mods/` or `campaigns/` are committed and pushed only to this fork.
+
+## Test Heroes
+
+1. Open [your Actions page](https://github.com/R-P-S/SC2GameData/actions) and select **Update SC2 and Heroes Game Data**.
+2. Click **Run workflow**, select **master** and set **Which game to check** to **heroes**.
+3. Check **Extract and verify without changing repository files** (`dry_run=true`).
+4. Check **Re-extract even if the build ID matches** (`force=true`).
+5. Run the workflow. After it succeeds, run again with `dry_run=false` to publish an actual Heroes update.
+
+For a manual run you can choose **both**, **sc2**, or **heroes**. Scheduled runs always check both. Manual `force` and `dry_run` default to false.
 
 ## Test locally
 
-Install Node.js 24, then from the repository root:
+Install Node.js 24 and run these commands from the repository root:
 
 ```bash
 npm install --no-save --no-package-lock @jamiephan/casclib@0.3.0
-node scripts/update_sc2_gamedata.js --dry-run
-```
-
-To force a complete extraction check even when the build ID matches:
-
-```bash
 node scripts/update_sc2_gamedata.js --dry-run --force
+node scripts/update_hots_gamedata.js --dry-run --force
 ```
 
-This local script does not run Git or push changes.
+The scripts never run Git or push independently.
 
-## Known limitations
+## Limitations
 
-Blizzard online CASC access and the third-party native CASC package must work on GitHub's Ubuntu runner. The script has not yet been verified against a live full extraction in your fork. If the CASC listing, file names, or required files differ from expectations, the job will fail rather than commit an incomplete snapshot. Github Actions runners have finite disk, time, and bandwidth limits. The repository contains some older Heroes of the Storm data that this SC2-only updater deliberately preserves.
+Online extraction depends on Blizzard's CDN and a third-party native CASC library. Future Blizzard changes may require code adjustments. The workflow is limited to 180 minutes per combined job and it currently does not persist download cache between runs. For any permission problems, check the Actions write permissions and branch protection settings.
 
-The fork still points to SC2Mapster as its GitHub fork parent, but **this workflow neither opens upstream pull requests nor pushes to the upstream Git remote**.
+The first real Heroes extraction has not yet been run through GitHub Actions; test in dry-run mode first.
