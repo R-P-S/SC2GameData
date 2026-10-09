@@ -355,6 +355,7 @@ def main():
         print(f"NOTICE: processing {len(selected)} of {len(plans)} missing builds "
               "this run; subsequent scheduled runs will continue.")
 
+    previous_build = start
     for index, entry in enumerate(selected, 1):
         print(f"[{index}/{len(selected)}] {args.game} {entry['build']} "
               f"({entry['version']}) build-config={entry['key']}", flush=True)
@@ -369,6 +370,7 @@ def main():
                 sys.executable, "scripts/extract_hots_archive.py",
                 "--commit", entry["archive_commit"], "--build", entry["build"],
                 "--version", entry["version"],
+                "--previous-build", previous_build,
             ]
             if args.dry_run:
                 command.append("--dry-run")
@@ -387,6 +389,7 @@ def main():
             if gap and index == 1:
                 command += ["--history-gap-from", gap]
             subprocess.run(command, check=True)
+        previous_build = entry["build"]
     completed = bool(selected and selected[-1]["build"] == online)
     if args.game == "heroes":
         print(f"Heroes historical backlog complete: {completed}", flush=True)
