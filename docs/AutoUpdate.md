@@ -76,3 +76,29 @@ still gets its own commit and annotated tag. The script does **not** invent
 missing builds, skip failed extractions, or rewrite existing history.
 
 The gap override is never enabled for the scheduled weekday updater.
+
+
+## Heroes historical Git snapshot recovery
+
+Blizzard's CDN no longer reliably serves very old Heroes build configurations
+(for example, B88481 returned CASC ERROR_FILE_NOT_FOUND).
+Experimental Heroes historical recovery now reads the documented version-to-commit
+mapping from jamiephan/HeroesOfTheStorm_Gamedata's VERSIONS.md.
+
+For each Heroes build after the checked-in BuildId, the updater:
+1. Selects the exact historical commit SHA listed in VERSIONS.md.
+2. Fetches that Git commit, checks out its files, and extracts only Heroes
+   .stormmod text/data files into a staging directory.
+3. Verifies the archival BuildId.txt matches the expected historical build.
+4. In non-dry-run mode, updates only Heroes packages and creates a separate
+   commit/tag with the archived commit SHA in the commit message.
+
+This makes no attempt to claim the snapshot came directly from Blizzard's CDN;
+its archival source is identified explicitly. The archived repository might have
+gaps. Builds not documented in that version list cannot be reconstructed by
+this fallback, and no hypothetical intermediate builds are invented.
+
+Choose game **heroes**, enable **historical** and **dry_run** to test it first.
+The historical mode processes up to 3 versions per run. With dry_run disabled,
+repeated manual runs can progressively catch up. Regular scheduled updates
+remain on the live latest-build CASC path.
