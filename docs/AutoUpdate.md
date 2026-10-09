@@ -1,33 +1,43 @@
 # Automated StarCraft II and Heroes of the Storm updates
 
-This fork uses one GitHub Actions workflow to check both Blizzard game data products **Monday-Friday at 15:17 UTC** (9:17 AM MDT / 8:17 AM MST). It does not run on Saturdays or Sundays. GitHub may start scheduled runs late.
+The [Update SC2 and Heroes Game Data](https://github.com/R-P-S/SC2GameData/actions) GitHub Actions workflow checks Blizzard's US region **Monday–Friday at 2:17 PM Mountain Time** using the IANA timezone `America/Denver`. It adjusts automatically between **MDT and MST**. GitHub may start a scheduled run later than its configured time.
 
-The updater runs exclusively in **R-P-S/SC2GameData** on **master**. It neither pushes to nor opens pull requests against **SC2Mapster/SC2GameData**.
+**All commits and annotated version tags are pushed only to R-P-S/SC2GameData on master.** Nothing is pushed to SC2Mapster/SC2GameData, and no upstream pull requests are created.
 
-## Games
+## Version history: separate commits and tags
 
-| Game | CASC product | Build ID path | Package extensions |
+Each game's newly detected build gets a **separate Git commit**. When both games changed, the workflow creates one SC2 commit, then one Heroes commit, and atomically pushes both commits and their annotated Git tags to the fork.
+
+| Game | Commit example | Annotated tag example |
+| --- | --- | --- |
+| StarCraft II | `SC2: Update to 5.0.14.XXXXX` | `sc2/v5.0.14.XXXXX` |
+| Heroes of the Storm | `Heroes: Update to 2.57.0.98348` | `heroes/v2.57.0.98348` |
+
+These are examples, not claims about current game versions. The versioning script queries Blizzard's US patch/version table and verifies that the reported build ID matches the extracted CASC build. If that service is unreachable, it uses the exact build ID instead (e.g. `Heroes: Update to B98348` and `heroes/vB98348`). Tags are immutable: the script refuses to overwrite an existing tag.
+
+This updater saves **the latest build available at each check**, not every intermediate patch released between two runs. Historical version recovery is not implemented.
+
+## Game extraction
+
+| Game | CASC product | Build ID path | Package extension |
 | --- | --- | --- | --- |
-| StarCraft II | `s2` | `mods/core.sc2mod/base.sc2data/BuildId.txt` | `.sc2mod`, `.sc2campaign` |
-| Heroes of the Storm | `hero` | `mods/core.stormmod/base.stormdata/BuildId.txt` | `.stormmod` |
+| SC2 | `s2` | `mods/core.sc2mod/base.sc2data/BuildId.txt` | `.sc2mod`, `.sc2campaign` |
+| Heroes | `hero` | `mods/core.stormmod/base.stormdata/BuildId.txt` | `.stormmod` |
 
-Each extractor uses `@jamiephan/casclib@0.3.0`. It checks the build ID first, skips unnecessary extraction if unchanged, stages extracted text/code files, and validates the build ID, required files, and minimum file count before replacing files. The Heroes script never deletes SC2 mod/campaign packages and the SC2 script never deletes Heroes packages.
+Both extraction scripts use `@jamiephan/casclib@0.3.0`. They stage and validate game files before updating the checkout, preserve the other game's package tree, and skip full extractions when the build ID is unchanged. A new build with unchanged extracted files does not generate an empty version commit.
 
-If either game fails extraction, no commit or push happens. After both checks succeed, any changes to `mods/` or `campaigns/` are committed and pushed only to this fork.
+## Manual runs
 
-## Test Heroes
+1. Open [Actions](https://github.com/R-P-S/SC2GameData/actions) and choose **Update SC2 and Heroes Game Data**.
+2. Select **Run workflow** on branch `master`.
+3. Choose **both**, **sc2**, or **heroes** for **Which game to check**.
+4. Optionally enable **dry_run** to verify extraction without repository edits. **force** re-extracts even if the build ID matches.
 
-1. Open [your Actions page](https://github.com/R-P-S/SC2GameData/actions) and select **Update SC2 and Heroes Game Data**.
-2. Click **Run workflow**, select **master** and set **Which game to check** to **heroes**.
-3. Check **Extract and verify without changing repository files** (`dry_run=true`).
-4. Check **Re-extract even if the build ID matches** (`force=true`).
-5. Run the workflow. After it succeeds, run again with `dry_run=false` to publish an actual Heroes update.
+Manual runs can be started anytime, including weekends. Dry runs generate no commits or tags.
 
-For a manual run you can choose **both**, **sc2**, or **heroes**. Scheduled runs always check both. Manual `force` and `dry_run` default to false.
+## Local testing
 
-## Test locally
-
-Install Node.js 24 and run these commands from the repository root:
+Use Node.js 24, then run from the repository root:
 
 ```bash
 npm install --no-save --no-package-lock @jamiephan/casclib@0.3.0
@@ -35,10 +45,12 @@ node scripts/update_sc2_gamedata.js --dry-run --force
 node scripts/update_hots_gamedata.js --dry-run --force
 ```
 
-The scripts never run Git or push independently.
+The extraction scripts do not perform Git operations, and the versioning helper creates local commits/tags but does not push. The GitHub Actions workflow is responsible for pushing.
 
 ## Limitations
 
-Online extraction depends on Blizzard's CDN and a third-party native CASC library. Future Blizzard changes may require code adjustments. The workflow is limited to 180 minutes per combined job and it currently does not persist download cache between runs. For any permission problems, check the Actions write permissions and branch protection settings.
-
-The first real Heroes extraction has not yet been run through GitHub Actions; test in dry-run mode first.
+- Existing earlier commits will not automatically be retroactively tagged.
+- Scheduled runs can be delayed or occasionally skipped by GitHub.
+- Downloads are not persisted between hosted runner jobs.
+- Blizzard's CDN and patch-version endpoints or the third-party CASC package can change; full-version lookup falls back to the build ID.
+- The job has a 180-minute timeout and obeys Actions/branch protection settings.
