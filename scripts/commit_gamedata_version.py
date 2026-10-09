@@ -159,7 +159,7 @@ def main():
     tag = game["tag_prefix"] + "/v" + version
     reject_existing_tag(tag)
 
-    message = game["label"] + ": Update to " + version
+    message = ("Storm" if args.game == "heroes" else "SC2") + ": " + version
     if args.history_gap_from:
         if not re.fullmatch(r"B[0-9]+", args.history_gap_from):
             raise RuntimeError("Invalid history gap baseline")
