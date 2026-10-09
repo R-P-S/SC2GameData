@@ -205,10 +205,11 @@ def heroes_archival_versions(current, online):
             "build": build, "version": version, "archive_commit": sha,
             "key": None, "source": "jamiephan-git",
         }
-    if current not in found:
-        raise RuntimeError("Jamie's version list does not contain baseline " + current)
-    if online not in found:
-        raise RuntimeError("Jamie's version list does not contain current " + online)
+    if not found:
+        raise RuntimeError("Jamie's Heroes version archive is empty")
+    # A live Blizzard patch can precede Jamie's next published snapshot.
+    # Recover every documented intermediate version, then use BlizzTrack
+    # for any still-missing builds; never jump directly to latest.
     plan = [
         found[b] for b in sorted(found, key=lambda x: int(x[1:]))
         if int(current[1:]) < int(b[1:]) <= int(online[1:])
@@ -326,14 +327,19 @@ def main():
 
     if start == online:
         print(f"{args.game}: {start} is already current. No historical backlog.")
-        if args.game == "heroes" and os.environ.get("GITHUB_OUTPUT"):
-            with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf8") as output:
-                output.write("caught_up=true\n")
         return
 
     if start != online:
         if args.game == "heroes":
             plans = heroes_archival_versions(start, online)
+            # When Jamie's index has not yet caught up, consult Blizzard
+            # historical manifests before considering any latest extraction.
+            # For archival gaps we fail instead of silently skipping patches.
+            if not plans or plans[-1]["build"] != online:
+                historical, _ = candidates(
+                    args.game, plans[-1]["build"] if plans else start,
+                    online, args.history_scan, allow_gap=False)
+                plans.extend(historical)
             gap = None
         else:
             plans, gap = candidates(args.game, start, online, args.history_scan,
@@ -362,6 +368,7 @@ def main():
             command = [
                 sys.executable, "scripts/extract_hots_archive.py",
                 "--commit", entry["archive_commit"], "--build", entry["build"],
+                "--version", entry["version"],
             ]
             if args.dry_run:
                 command.append("--dry-run")
