@@ -81,8 +81,7 @@
         <MinScanRange value="10.5"/>
     </CWeaponLegacy>
     <CWeaponLegacy id="C10CanisterRifle">
-        <MinScanRange value="7.5"/>
-        <Range value="7"/>
+        <MinScanRange value="6.5"/>
     </CWeaponLegacy>
     <CWeaponLegacy id="DisruptionBeam">
         <MinScanRange value="5.5"/>
@@ -109,9 +108,6 @@
         <LegacyOptions index="NoDeceleration" value="1"/>
         <AllowedMovement value="Slowing"/>
         <Range value="0.2"/>
-    </CWeaponLegacy>
-    <CWeaponLegacy id="GlaiveWurm">
-        <ArcSlop value="180"/>
     </CWeaponLegacy>
     <CWeaponLegacy id="GuassRifle">
         <MinScanRange value="5.5"/>

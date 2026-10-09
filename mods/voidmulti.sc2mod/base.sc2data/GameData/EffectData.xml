@@ -163,10 +163,6 @@
     <CEffectSet id="BroodlingEscortLaunchB">
         <EffectArray index="2" value="BroodlingTimedLifeBroodLord"/>
     </CEffectSet>
-    <CEffectDamage id="C10CanisterRifle">
-        <AttributeBonus index="Light" value="0"/>
-        <Amount value="15"/>
-    </CEffectDamage>
     <CEffectApplyBehavior id="HasMorphedBefore">
         <EditorCategories value=""/>
     </CEffectApplyBehavior>
@@ -391,10 +387,10 @@
         <ValidatorArray value="ZealotAttackDamageMaxRange"/>
     </CEffectDamage>
     <CEffectDamage id="PsiStormDamage">
-        <Amount value="6.25"/>
+        <Amount value="7"/>
     </CEffectDamage>
     <CEffectDamage id="PsiStormDamageInitial">
-        <Amount value="6.25"/>
+        <Amount value="7"/>
     </CEffectDamage>
     <CEffectCreatePersistent id="PsiStormPersistent">
         <PeriodCount value="14"/>
@@ -908,7 +904,7 @@
         <Count value="3"/>
     </CEffectApplyBehavior>
     <CEffectDamage id="SporeCrawlerU">
-        <AttributeBonus index="Biological" value="15"/>
+        <AttributeBonus index="Biological" value="10"/>
         <Amount value="20"/>
     </CEffectDamage>
     <CEffectDamage id="TempestDamage">
@@ -955,7 +951,7 @@
     <CEffectIssueOrder id="UpgradeToWarpGateAutoCastOff">
         <EditorCategories value="Race:Protoss"/>
         <WhichUnit Value="Caster"/>
-        <Abil value="UpgradeToWarpGate"/>
+        <Abil value="MorphBuildingGatewayWarpGateFree"/>
         <CmdFlags index="SetAutoCast" value="1"/>
         <Player Value="Caster"/>
     </CEffectIssueOrder>
@@ -1003,14 +999,11 @@
         <ValidatorArray index="3" removed="1"/>
     </CEffectDamage>
     <CEffectDamage id="ThermalLancesMU">
-        <Amount value="12"/>
-        <AttributeBonus index="Light" value="3"/>
         <ValidatorArray index="0" value="MultipleHitGroundOnlyAttackTargetFilter"/>
         <ValidatorArray index="1" value="noMarkers"/>
         <ValidatorArray index="2" value="ColossusAttackDamageMaxRange"/>
-    </CEffectDamage>
-    <CEffectDamage id="ThermalLancesMUAir">
-        <Amount value="12"/>
+        <AttributeBonus index="Light" value="5"/>
+        <Amount value="10"/>
     </CEffectDamage>
     <CEffectCreatePersistent id="ThermalBeamPersistent">
         <EditorCategories value="Race:Protoss"/>
@@ -1257,6 +1250,8 @@
         <EffectArray value="ChannelSnipeCombat"/>
         <EffectArray value="ChannelSnipeRefund"/>
         <EffectArray value="ChannelSnipeCombatBeamDummy"/>
+        <ValidatorArray value="CasterNotFungalGrowthed"/>
+        <ValidatorArray value="NotInPsiStorm"/>
     </CEffectSet>
     <CEffectCreatePersistent id="ChannelSnipeCreatePersistent">
         <EditorCategories value="Race:Terran"/>
@@ -1270,10 +1265,11 @@
     </CEffectCreatePersistent>
     <CEffectDamage id="ChannelSnipeDamage">
         <EditorCategories value="Race:Terran"/>
-        <Amount value="170"/>
+        <Amount value="130"/>
         <ResponseFlags index="Acquire" value="1"/>
         <ResponseFlags index="Flee" value="1"/>
         <Flags index="Notification" value="1"/>
+        <AttributeBonus index="Psionic" value="40"/>
     </CEffectDamage>
     <CEffectApplyBehavior id="ChannelSnipeCombat">
         <EditorCategories value="Race:Terran"/>
@@ -2189,7 +2185,7 @@
     <CEffectModifyUnit id="ChannelSnipeEnergyRefund">
         <EditorCategories value="Race:Terran"/>
         <VitalArray index="Energy">
-            <Change value="75"/>
+            <Change value="50"/>
         </VitalArray>
         <ImpactUnit Value="Caster"/>
         <ValidatorArray value="ChannelSnipeRefundValidator"/>
@@ -3216,20 +3212,6 @@
         <SelectTransferUnit Effect="NeuralParasiteLaunchMissile" Value="Caster"/>
         <SelectTransferFlags index="SingleOnly" value="1"/>
     </CEffectModifyUnit>
-    <CEffectEnumArea id="GlaiveWurmE1">
-        <TargetSorts>
-            <SortArray value="TSThreatensMutalisk"/>
-            <SortArray value="TSPriorityDesc"/>
-            <SortArray value="TSDistanceToTarget"/>
-        </TargetSorts>
-    </CEffectEnumArea>
-    <CEffectEnumArea id="GlaiveWurmE2">
-        <TargetSorts>
-            <SortArray value="TSThreatensMutalisk"/>
-            <SortArray value="TSPriorityDesc"/>
-            <SortArray value="TSDistanceToTarget"/>
-        </TargetSorts>
-    </CEffectEnumArea>
     <CEffectRemoveBehavior id="CreepTumorActiveRB">
         <EditorCategories value="Race:Zerg"/>
         <WhichUnit Value="Caster"/>
@@ -3276,8 +3258,12 @@
     </CEffectModifyUnit>
     <CEffectSet id="RavagerCorrosiveBileSet">
         <EffectArray index="1" value="ForcefieldMinusHalfLife"/>
+        <EffectArray value="RavagerCorrosiveBileForceFieldKill"/>
     </CEffectSet>
     <CEffectApplyBehavior id="NeuralParasiteChildren">
         <EditorCategories value="Race:Zerg"/>
     </CEffectApplyBehavior>
+    <CEffectSwitch id="YoinkStartSwitch">
+        <ValidatorArray value="IsNotSiegedSiegeTank"/>
+    </CEffectSwitch>
 </Catalog>

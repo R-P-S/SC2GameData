@@ -54,7 +54,7 @@
         <InfoArray index="Research1" Time="140"/>
     </CAbilResearch>
     <CAbilTrain id="BarracksTrain">
-        <InfoArray index="Train2" Time="47.6"/>
+        <InfoArray index="Train2" Time="44.8"/>
     </CAbilTrain>
     <CAbilAttack id="BattlecruiserAttack">
         <EditorCategories value="Race:Terran,AbilityorEffectType:Units"/>
@@ -509,7 +509,7 @@
                 <Flags index="ToSelection" value="1"/>
             </Button>
         </InfoArray>
-        <InfoArray index="Train7" Time="45.51">
+        <InfoArray index="Train7" Time="42">
             <Button>
                 <Flags index="ToSelection" value="1"/>
             </Button>
@@ -962,10 +962,10 @@
         <Cost>
             <Vital index="Energy" value="100"/>
         </Cost>
-        <Range value="12"/>
+        <Range value="9"/>
         <CursorEffect value="AmorphousArmorcloudSearch"/>
         <AINotifyEffect value="AmorphousArmorcloudCP"/>
-        <CmdButtonArray index="Execute" DefaultButtonFace="AmorphousArmorcloud"/>
+        <CmdButtonArray index="Execute" DefaultButtonFace="AmorphousArmorcloud" Requirements="UseAmorphousArmorcloud"/>
         <CastOutroTime value="0.5"/>
     </CAbilEffectTarget>
     <CAbilBuild id="ProtossBuild">
@@ -1281,11 +1281,13 @@
     </CAbilMorph>
     <CAbilMorph id="MorphBuildingGatewayWarpGateFree">
         <EditorCategories value="Race:Protoss,AbilityorEffectType:MorphsandBurrows"/>
-        <CmdButtonArray index="Execute" DefaultButtonFace="UpgradeToWarpGate" State="Restricted" Requirements="UseWarpGateHideFree">
+        <CmdButtonArray index="Execute" DefaultButtonFace="UpgradeToWarpGate" State="Restricted" Requirements="UseWarpGate">
             <Flags index="ShowInGlossary" value="0"/>
             <Flags index="ToSelection" value="1"/>
         </CmdButtonArray>
         <CmdButtonArray index="Cancel" DefaultButtonFace="Cancel"/>
+        <Flags index="AutoCast" value="1"/>
+        <Flags index="AutoCastOn" value="1"/>
         <Flags index="BestUnit" value="1"/>
         <Flags index="Birth" value="1"/>
         <Flags index="DisableAbils" value="1"/>
@@ -1300,12 +1302,7 @@
             <Resource index="Custom" value="-1"/>
         </RefundFraction>
         <Cost>
-            <Charge>
-                <CountMax value="1"/>
-                <CountStart value="1"/>
-                <CountUse value="1"/>
-                <TimeUse value="5.6"/>
-            </Charge>
+            <Charge CountStart="1" TimeUse="5.6"/>
         </Cost>
         <InfoArray Unit="WarpGate">
             <SectionArray index="Abils">
@@ -1379,38 +1376,36 @@
         <CmdButtonArray index="Execute" DefaultButtonFace="ParasiticBomb"/>
     </CAbilEffectTarget>
     <CAbilWarpTrain id="WarpGateTrain">
-        <InfoArray index="Train1" Time="5.6">
-            <Charge TimeStart="32.8" TimeUse="30.8"/>
+        <InfoArray index="Train1" Time="16">
             <Button Requirements="WarpgateNotDemorphing">
                 <Flags index="ToSelection" value="1"/>
             </Button>
         </InfoArray>
-        <InfoArray index="Train2" Time="5.6">
-            <Charge TimeUse="30.8"/>
+        <InfoArray index="Train2" Time="16">
+            <Charge TimeUse="32.2"/>
             <Button>
                 <Flags index="ToSelection" value="1"/>
             </Button>
         </InfoArray>
-        <InfoArray index="Train4" Time="5.6">
-            <Charge TimeUse="49"/>
+        <InfoArray index="Train4" Time="16">
+            <Charge TimeUse="44.8"/>
             <Button>
                 <Flags index="ToSelection" value="1"/>
             </Button>
         </InfoArray>
-        <InfoArray index="Train5" Time="5.6">
-            <Charge TimeUse="49"/>
+        <InfoArray index="Train5" Time="16">
+            <Charge TimeUse="44.8"/>
             <Button>
                 <Flags index="ToSelection" value="1"/>
             </Button>
         </InfoArray>
-        <InfoArray index="Train6" Time="5.6">
-            <Charge TimeUse="30.8"/>
+        <InfoArray index="Train6" Time="16">
+            <Charge TimeUse="32.2"/>
             <Button>
                 <Flags index="ToSelection" value="1"/>
             </Button>
         </InfoArray>
-        <InfoArray index="Train7" Time="5.6">
-            <Charge TimeUse="30.8"/>
+        <InfoArray index="Train7" Time="16">
             <Button>
                 <Flags index="ToSelection" value="1"/>
             </Button>
@@ -1498,7 +1493,7 @@
         <EditorCategories value="Race:Terran,AbilityorEffectType:Units"/>
         <Effect index="0" value="ChannelSnipeInitialSet"/>
         <Cost>
-            <Vital index="Energy" value="75"/>
+            <Vital index="Energy" value="50"/>
         </Cost>
         <TargetFilters value="Biological,Visible;Self,Player,Ally,Structure,Destructible,Stasis,Dead,Hidden,Invulnerable"/>
         <Range value="10"/>
@@ -1576,7 +1571,6 @@
         <PrepEffect value="WidowMineTargetTintApplyBehavior"/>
         <AutoCastValidatorArray value="NotLarvaEgg"/>
         <AutoCastValidatorArray value="IsNotNeuralParasited"/>
-        <PrepTime index="0" value="1.19"/>
         <CancelEffect index="Prep" value="WidowMineTargetTintRemoveBehavior"/>
     </CAbilEffectTarget>
     <CAbilEffectTarget id="Yamato">
@@ -1939,17 +1933,13 @@
         <!--InfoTooltipPriority value="1"/-->
     </CAbilEffectInstant>
     <CAbilResearch id="evolutionchamberresearch">
-        <InfoArray index="Research4">
-            <Resource index="Minerals" value="100"/>
-            <Resource index="Vespene" value="100"/>
-        </InfoArray>
         <InfoArray index="Research5">
-            <Resource index="Minerals" value="150"/>
-            <Resource index="Vespene" value="150"/>
-        </InfoArray>
-        <InfoArray index="Research6">
             <Resource index="Minerals" value="200"/>
             <Resource index="Vespene" value="200"/>
+        </InfoArray>
+        <InfoArray index="Research6">
+            <Resource index="Minerals" value="250"/>
+            <Resource index="Vespene" value="250"/>
         </InfoArray>
         <InfoArray index="Research10" Time="80" Upgrade="SecretedCoating">
             <Resource index="Minerals" value="100"/>

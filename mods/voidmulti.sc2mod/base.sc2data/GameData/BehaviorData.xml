@@ -79,7 +79,7 @@
     </CBehaviorBuff>
     <CBehaviorCreepSource id="NydusCreepGrowth">
         <EditorCategories value="Race:Zerg,AbilityorEffectType:Units"/>
-        <Period value="0.77"/>
+        <Period value="0.63"/>
         <Start value="Footprint4x4CreepSourceGrown"/>
         <Birth value="CreepGrowthMediumNydusCreepSourceStart"/>
         <Grown value="Footprint4x4CreepSourceGrown"/>
@@ -175,19 +175,15 @@
     </CBehaviorBuff>
     <CBehaviorResource id="MineralFieldMinerals450">
         <IdealHarvesterCount value="0"/>
-        <DepletionThreshold value="803"/>
+        <DepletionThreshold value="903"/>
     </CBehaviorResource>
     <CBehaviorResource id="MineralFieldMineralsOpaque">
         <IdealHarvesterCount value="2"/>
-        <DepletionThreshold value="803"/>
-        <Capacity value="1100"/>
-        <Contents value="1100"/>
+        <DepletionThreshold value="903"/>
     </CBehaviorResource>
     <CBehaviorResource id="MineralFieldMineralsOpaque900">
         <IdealHarvesterCount value="2"/>
-        <DepletionThreshold value="803"/>
-        <Capacity value="1100"/>
-        <Contents value="1100"/>
+        <DepletionThreshold value="903"/>
     </CBehaviorResource>
     <CBehaviorBuff id="NeuralParasiteChildren" parent="Radar">
         <Alignment value="Negative"/>
@@ -273,8 +269,8 @@
         <DisplayDuration index="Enemy" value="1"/>
     </CBehaviorBuff>
     <CBehaviorResource id="RawRichVespeneGeyserGas">
-        <Capacity value="2000"/>
-        <Contents value="2000"/>
+        <Capacity value="2250"/>
+        <Contents value="2250"/>
     </CBehaviorResource>
     <CBehaviorBuff id="TemporalField">
         <Modification MoveSpeedMultiplier="0.6" AttackSpeedMultiplier="0.6"/>
@@ -297,15 +293,13 @@
     </CBehaviorBuff>
     <CBehaviorResource id="HighYieldMineralFieldMinerals">
         <IdealHarvesterCount value="2"/>
-        <Capacity value="1600"/>
-        <Contents value="1600"/>
-        <DepletionThreshold value="803"/>
+        <Capacity value="1800"/>
+        <Contents value="1800"/>
+        <DepletionThreshold value="903"/>
     </CBehaviorResource>
     <CBehaviorResource id="HighYieldMineralFieldMinerals750">
         <IdealHarvesterCount value="2"/>
-        <DepletionThreshold value="803"/>
-        <Capacity value="1100"/>
-        <Contents value="1100"/>
+        <DepletionThreshold value="903"/>
     </CBehaviorResource>
     <CBehaviorBuff id="ImmortalOverload">
         <Duration value="0"/>
@@ -347,15 +341,13 @@
     </CBehaviorBuff>
     <CBehaviorResource id="MineralFieldMinerals">
         <IdealHarvesterCount value="2"/>
-        <Capacity value="1600"/>
-        <Contents value="1600"/>
-        <DepletionThreshold value="803"/>
+        <Capacity value="1800"/>
+        <Contents value="1800"/>
+        <DepletionThreshold value="903"/>
     </CBehaviorResource>
     <CBehaviorResource id="MineralFieldMinerals750">
         <IdealHarvesterCount value="2"/>
-        <DepletionThreshold value="803"/>
-        <Capacity value="1100"/>
-        <Contents value="1100"/>
+        <DepletionThreshold value="903"/>
     </CBehaviorResource>
     <CBehaviorBuff id="NydusWormInvuln">
         <InfoFlags index="Hidden" value="1"/>
@@ -413,8 +405,8 @@
         <ExpireEffect value="SpawnLarvaExpireSet"/>
     </CBehaviorBuff>
     <CBehaviorResource id="RawVespeneGeyserGas">
-        <Capacity value="2000"/>
-        <Contents value="2000"/>
+        <Capacity value="2250"/>
+        <Contents value="2250"/>
     </CBehaviorResource>
     <CBehaviorBuff id="SwarmHostEggAnimationMP">
         <Duration value="60"/>
@@ -515,7 +507,9 @@
         <Alignment value="Positive"/>
         <InfoIcon value="Assets\Textures\btn-ability-terran-snipe-color.dds"/>
         <EditorCategories value="Race:Terran,AbilityorEffectType:Units"/>
-        <DamageResponse Handled="ChannelSnipeCombatRB"/>
+        <DamageResponse Handled="ChannelSnipeCombatRB">
+            <Chance value="1"/>
+        </DamageResponse>
         <FinalEffect value="ChannelSnipeRefundSet"/>
     </CBehaviorBuff>
     <CBehaviorBuff id="ChannelSnipeRefund">
@@ -602,11 +596,11 @@
         </Modification>
     </CBehaviorBuff>
     <CBehaviorCreepSource id="makeCreep2x2Overlord">
-        <Period value="0.77"/>
+        <Period value="0.63"/>
         <Delay value="1.5"/>
     </CBehaviorCreepSource>
     <CBehaviorCreepSource id="makeCreep4x4">
-        <Period value="0.77"/>
+        <Period value="0.63"/>
     </CBehaviorCreepSource>
     <CBehaviorBuff id="BarrierDamageResponse">
         <InfoFlags index="Hidden" value="1"/>
@@ -1374,11 +1368,7 @@
         <Offset index="21" value="0,0"/>
         <Offset index="22" value="0.8,0.25"/>
         <Offset index="23" value="-0.8,0.25"/>
-        <InfoArray index="0" Delay="13.86"/>
     </CBehaviorSpawn>
-    <CBehaviorCreepSource id="makeCreep8x6">
-        <Period value="0.5"/>
-    </CBehaviorCreepSource>
     <CBehaviorBuff id="MuleRepairAutocastCheck">
         <EditorCategories value="AbilityorEffectType:Units"/>
         <Duration value="4.07"/>
@@ -1395,4 +1385,14 @@
         <Period value="0.3745"/>
         <PeriodicEffect value="ForcefieldMinusLifeTick"/>
     </CBehaviorBuff>
+    <CBehaviorCreepSource id="makeCreep8x6">
+        <Period value="0.63"/>
+    </CBehaviorCreepSource>
+    <CBehaviorPowerUser id="PowerUserWarpable">
+        <PowerStageArray MinPowerLevel="2" LevelGainEffect="PowerUserWarpablelevel2gained" LevelLossEffect="PowerUserWarpablelevel2lost">
+            <Modification>
+                <RateMultiplierArray index="Progress" value="3.2"/>
+            </Modification>
+        </PowerStageArray>
+    </CBehaviorPowerUser>
 </Catalog>
