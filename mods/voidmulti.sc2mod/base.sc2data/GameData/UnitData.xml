@@ -678,7 +678,7 @@
     <CUnit id="Ghost">
         <Collide index="Locust" value="1"/>
         <SubgroupPriority value="82"/>
-        <Speed value="2.75"/>
+        <Speed value="2.8125"/>
         <AbilArray index="4" Link="ChannelSnipe"/>
         <CardLayouts index="0">
             <LayoutButtons index="7" Face="NukeCalldown" AbilCmd="TacNukeStrike,Execute" Row="1"/>
@@ -706,11 +706,13 @@
         <GlossaryCategory value=""/>
         <GlossaryWeakArray index="0" value="Marauder"/>
         <GlossaryWeakArray index="1" value="Zergling"/>
+        <Speed value="2.75"/>
     </CUnit>
     <CUnit id="GhostNova" parent="Ghost">
         <GlossaryCategory value=""/>
         <GlossaryWeakArray index="0" value="Marauder"/>
         <GlossaryWeakArray index="1" value="Zergling"/>
+        <Speed value="2.75"/>
     </CUnit>
     <CUnit id="GhostAcademy">
         <CardLayouts index="0">

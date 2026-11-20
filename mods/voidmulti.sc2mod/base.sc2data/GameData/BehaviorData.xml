@@ -1386,7 +1386,7 @@
         <PeriodicEffect value="ForcefieldMinusLifeTick"/>
     </CBehaviorBuff>
     <CBehaviorCreepSource id="makeCreep8x6">
-        <Period value="0.63"/>
+        <Period value="0.352"/>
     </CBehaviorCreepSource>
     <CBehaviorPowerUser id="PowerUserWarpable">
         <PowerStageArray MinPowerLevel="2" LevelGainEffect="PowerUserWarpablelevel2gained" LevelLossEffect="PowerUserWarpablelevel2lost">
