@@ -48,6 +48,10 @@
     <PeriodicPeriodArray value="0.125" />
     <PeriodicPeriodArray value="0.125" />
   </CEffectCreatePersistent>
+  <CEffectCreatePersistent id="XalatathVoidVolley2AoESearchAtSourcePersistent">
+    <WhichLocation Value="SourceUnit" />
+    <InitialEffect value="XalatathVoidVolley2AoESearch" />
+  </CEffectCreatePersistent>
   <CEffectLaunchMissile id="XalatathVoidVolley2MissileInnerLeftLM">
     <Marker>
       <MatchFlags index="Id" value="1" />
@@ -293,8 +297,7 @@
     <HostSiteOps Ops="SOpAttachChest" HoldPosition="1" HoldRotation="1" />
   </CActorModel>
   <CActorModel id="XalatathVoidVolleyGroundImpact" parent="StormModelAnimationStyleOneShot">
-    <On Terms="Effect.XalatathVoidVolley2DetonateSet.Start" Send="Create" />
-    <On Terms="Effect.XalatathVoidVolley2ContactDetonateSet.Start" Send="Create" />
+    <On Terms="Effect.XalatathVoidVolley2AoESearch.Start; At Effect" Send="Create" />
     <Scale value=".55" />
     <Model value="XalatathVoidVolleyGroundImpact" />
   </CActorModel>

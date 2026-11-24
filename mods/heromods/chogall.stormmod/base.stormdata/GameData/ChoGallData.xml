@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
+  <const id="$ChoUnitRadius" value="1.1875" />
+  <const id="$ChoUnitInnerRadius" value="0.9375" />
   <const id="$ChoConsumingBlazeHealAmount" value="40" />
   <const id="$ChoConsumingFireBonusHealAmount" value="75" />
   <const id="$GallShadowflameCooldown" value="3" />
@@ -33,13 +35,19 @@
     <ShowProgressArray index="Cast" value="1" />
     <CmdButtonArray index="Execute" DefaultButtonFace="ChoSurgingFist" />
   </CAbilEffectInstant>
-  <CAbilEffectInstant id="ChoSurgingFistTrigger">
+  <CAbilEffectTarget id="ChoSurgingFistTrigger">
     <Effect value="ChoSurgingFistTriggerDummyEffect" />
     <UninterruptibleArray index="Cast" value="1" />
-    <CmdButtonArray index="Execute" DefaultButtonFace="ChoSurgingFistTriggerButton" Requirements="ChoSurgingFistFakeCastBehaviorActive" />
+    <CmdButtonArray index="Execute" DefaultButtonFace="ChoSurgingFistTriggerButton" Requirements="ChoSurgingFistFakeCastBehaviorActive">
+      <Flags index="Continuous" value="1" />
+    </CmdButtonArray>
     <Flags index="RequireTargetVision" value="0" />
+    <Flags index="TransientPreferred" value="1" />
+    <Range value="500" />
+    <SharedFlags index="ForceQuickCast" value="1" />
+    <Arc value="360" />
     <ParentAbil value="ChoSurgingFistCast" />
-  </CAbilEffectInstant>
+  </CAbilEffectTarget>
   <CAbilEffectTarget id="ChoSurgingFistExecute">
     <Activity value="Abil/ChoSurgingFist/Activity" />
     <PrepEffect value="DismountDecloakCasterSet" />
@@ -3606,8 +3614,8 @@
   </CEffectApplyBehavior>
   <CEffectModifyPlayer id="ChoSurgingFistResetUnitRadius">
     <WhichPlayer Value="Caster" />
-    <EffectArray Operation="Set" Reference="Unit,HeroCho,Radius" Value="1.1875" />
-    <EffectArray Operation="Set" Reference="Unit,HeroCho,InnerRadius" Value="1" />
+    <EffectArray Operation="Set" Reference="Unit,HeroCho,Radius" Value="$ChoUnitRadius" />
+    <EffectArray Operation="Set" Reference="Unit,HeroCho,InnerRadius" Value="$ChoUnitInnerRadius" />
   </CEffectModifyPlayer>
   <CEffectSet id="ChoOgreRageSpellDamageBuffFinalSet">
     <EffectArray value="ChoOgreHideApplyArmorBuff" />
@@ -7413,8 +7421,8 @@
       <LayoutButtons Face="ChoOgreHidePassive" Type="Passive" Requirements="ChoHasOgreHideArmorBuff" ShowInGlossary="0" Slot="Trait" />
       <LayoutButtons Face="ChoOgreHideActivated" Type="AbilCmd" AbilCmd="ChoOgreHide,Execute" Slot="Trait" />
     </CardLayouts>
-    <Radius value="1.1875" />
-    <InnerRadius value="0.9375" />
+    <Radius value="$ChoUnitRadius" />
+    <InnerRadius value="$ChoUnitInnerRadius" />
     <AIUtility value="2" />
     <AIBaseThreat value="1.9" />
     <AIThinkTree value="AI/Cho.aitree" />

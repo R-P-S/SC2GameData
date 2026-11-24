@@ -2545,6 +2545,7 @@
     <MultiplicativeModifierArray index="HasSurvivalInstincts" Validator="HasAbathurCombatStyleSurvivalInstincts" Modifier="0.6" />
     <MultiplicativeModifierArray index="StructureDamage" Validator="TargetNotHero" Modifier="1" />
     <LeechFraction index="Life" value="0.2" />
+    <LeechScoreArray index="0" removed="1" />
   </CEffectDamage>
   <CEffectSet id="DeepTunnelFinalSet">
     <EffectArray value="DeepTunnelRemoveDisablerBehavior" />
@@ -2568,11 +2569,13 @@
     <MultiplicativeModifierArray index="HasSurvivalInstincts" Validator="HasAbathurCombatStyleSurvivalInstincts" Modifier="0.6" />
     <MultiplicativeModifierArray index="StructureDamage" Validator="TargetNotHero" Modifier="1" />
     <LeechFraction index="Life" value="0.2" />
+    <LeechScoreArray index="0" removed="1" />
   </CEffectDamage>
   <CEffectDamage id="AbathurLocustAssaultWeaponDamage" parent="StormSummonedUnitWeapon">
     <Amount value="43" />
     <MultiplicativeModifierArray index="StructureDamage" Validator="IsStructureTarget" Modifier="0.25" />
     <LeechFraction index="Life" value="0.2" />
+    <LeechScoreArray index="0" removed="1" />
   </CEffectDamage>
   <CEffectDamage id="AbathurLocustAssaultExplodeDamage" parent="StormSpell">
     <Marker Link="Effect/AbathurLocustWeaponDamage" />
@@ -2861,6 +2864,7 @@
     <MultiplicativeModifierArray index="SurvivalInstincts" Validator="HasAbathurCombatStyleSurvivalInstincts" Modifier="0.6" />
     <MultiplicativeModifierArray index="StructureDamage" Validator="TargetNotHero" Modifier="1" />
     <LeechFraction index="Life" value="0.2" />
+    <LeechScoreArray index="0" removed="1" />
   </CEffectDamage>
   <CEffectSet id="AssumingDirectControlBehaviorFinalSet">
     <EffectArray value="AssumingDirectControlUltimateEvolutionSearch" />
@@ -3187,6 +3191,7 @@
     <ValidatorArray value="NoJungleBenignTarget" />
     <LeechValidator index="Life" value="TargetIsHero" />
     <LeechFraction index="Life" value="1" />
+    <LeechScoreArray index="0" Validator="SourceIsHero" Value="SelfHealing" />
     <LeechRecipientArray index="0" Value="Source" />
   </CEffectDamage>
   <CEffectDamage id="AbathurVolatileMutationDamageUltimateEvolution" parent="AbathurVolatileMutationDamage">
@@ -3419,9 +3424,11 @@
   </CEffectSwitch>
   <CEffectDamage id="AbathurSymbioteStabDamage" parent="StormSpell">
     <Amount value="119" />
+    <MultiplicativeModifierArray index="Needlespine" Validator="HasAbathurMasteryNeedlespine" Modifier="0.2" />
   </CEffectDamage>
   <CEffectDamage id="AbathurSymbioteStabDamageHivemind" parent="StormSpell">
     <Amount value="59.5" />
+    <MultiplicativeModifierArray index="Needlespine" Validator="HasAbathurMasteryNeedlespine" Modifier="0.2" />
   </CEffectDamage>
   <CEffectLaunchMissile id="AbathurSymbioteStabLaunchMissile">
     <Marker>
@@ -4737,94 +4744,10 @@
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamage" />
-        <Field value="AttributeFactor[Creep]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamage" />
-        <Field value="AttributeFactor[Merc]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamage" />
-        <Field value="AttributeFactor[Structure]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamage" />
-        <Field value="AttributeFactor[Minion]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamage" />
-        <Field value="AttributeFactor[Summoned]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamage" />
-        <Field value="AttributeFactor[Heroic]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="AbathurSymbioteHivemindStabGuideA" />
         <Field value="Height" />
         <Value value="1.750000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamageHivemind" />
-        <Field value="AttributeFactor[Creep]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamageHivemind" />
-        <Field value="AttributeFactor[Merc]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamageHivemind" />
-        <Field value="AttributeFactor[Structure]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamageHivemind" />
-        <Field value="AttributeFactor[Minion]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamageHivemind" />
-        <Field value="AttributeFactor[Summoned]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamageHivemind" />
-        <Field value="AttributeFactor[Heroic]" />
-        <Value value="0.200000" />
       </Modifications>
     </AbilityModificationArray>
   </CTalent>

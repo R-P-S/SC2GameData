@@ -12,6 +12,12 @@
     <const id="$ThrallMaelstromWeaponBasicAttackBonusDamageFirstMilestone" value="40"/>
     <const id="$ThrallMaelstromWeaponBasicAttackBonusDamageSecondMilestone" value="75"/>
     <const id="$ThrallMaelstromWeaponFrostwolfResilienceHealingModifierPinnacle" value="2"/>
+    <const id="$ThrallEchooftheElementsMilestone1Stacks" value="20"/>
+    <const id="$ThrallEchooftheElementsMilestone2Stacks" value="50"/>
+    <const id="$ThrallEchooftheElementsMilestoneMaxStacks" value="125"/>
+    <const id="$ThrallEchooftheElementsStackLossOnDeath" value="5"/>
+    <const id="$ThrallEchooftheElementsMilestone1StacksPlusDeathLossAmount" value="+($ThrallEchooftheElementsMilestone1Stacks $ThrallEchooftheElementsStackLossOnDeath)" evaluateAsExpression="1"/>
+    <const id="$ThrallEchooftheElementsMilestone2StacksPlusDeathLossAmount" value="+($ThrallEchooftheElementsMilestone2Stacks $ThrallEchooftheElementsStackLossOnDeath)" evaluateAsExpression="1"/>    
     <const id="$ThrallThunderstormDamageModifier" value="0.3"/>
     <CAbilEffectTarget id="ThrallAncestralWrath">
         <PrepEffect value="DismountDecloakCasterSet"/>
@@ -1214,22 +1220,22 @@
         </DamageResponse>
         <ArmorModification>
             <ArmorSet index="Hero">
-                <ArmorMitigationTable index="Ability" value="70"/>
+                <ArmorMitigationTable index="Ability" value="50"/>
             </ArmorSet>
             <ArmorSet index="Merc">
-                <ArmorMitigationTable index="Ability" value="70"/>
+                <ArmorMitigationTable index="Ability" value="50"/>
             </ArmorSet>
             <ArmorSet index="Monster">
-                <ArmorMitigationTable index="Ability" value="70"/>
+                <ArmorMitigationTable index="Ability" value="50"/>
             </ArmorSet>
             <ArmorSet index="Summon">
-                <ArmorMitigationTable index="Ability" value="70"/>
+                <ArmorMitigationTable index="Ability" value="50"/>
             </ArmorSet>
             <ArmorSet index="Structure">
-                <ArmorMitigationTable index="Ability" value="70"/>
+                <ArmorMitigationTable index="Ability" value="50"/>
             </ArmorSet>
             <ArmorSet index="Minion">
-                <ArmorMitigationTable index="Ability" value="70"/>
+                <ArmorMitigationTable index="Ability" value="50"/>
             </ArmorSet>
         </ArmorModification>
     </CBehaviorBuff>
@@ -1245,22 +1251,22 @@
         </DamageResponse>
         <ArmorModification>
             <ArmorSet index="Hero">
-                <ArmorMitigationTable index="Ability" value="70"/>
+                <ArmorMitigationTable index="Ability" value="50"/>
             </ArmorSet>
             <ArmorSet index="Merc">
-                <ArmorMitigationTable index="Ability" value="70"/>
+                <ArmorMitigationTable index="Ability" value="50"/>
             </ArmorSet>
             <ArmorSet index="Monster">
-                <ArmorMitigationTable index="Ability" value="70"/>
+                <ArmorMitigationTable index="Ability" value="50"/>
             </ArmorSet>
             <ArmorSet index="Summon">
-                <ArmorMitigationTable index="Ability" value="70"/>
+                <ArmorMitigationTable index="Ability" value="50"/>
             </ArmorSet>
             <ArmorSet index="Structure">
-                <ArmorMitigationTable index="Ability" value="70"/>
+                <ArmorMitigationTable index="Ability" value="50"/>
             </ArmorSet>
             <ArmorSet index="Minion">
-                <ArmorMitigationTable index="Ability" value="70"/>
+                <ArmorMitigationTable index="Ability" value="50"/>
             </ArmorSet>
         </ArmorModification>
     </CBehaviorBuff>
@@ -1331,14 +1337,14 @@
     </CBehaviorBuff>
     <CBehaviorTokenCounter id="ThrallEchooftheElementsTokenCounter" parent="StormQuestToken">
         <Face value="ThrallEchooftheElementsToken"/>
-        <ConditionalEvents Compare="GE" CompareValue="20">
+        <ConditionalEvents Compare="GE" CompareValue="$ThrallEchooftheElementsMilestone1Stacks">
             <Event EventId="QuestMilestone" Effect="ThrallChainLightningEchooftheElementsTalentQuestModifyPlayer"/>
         </ConditionalEvents>
-        <ConditionalEvents Compare="GE" CompareValue="50">
+        <ConditionalEvents Compare="GE" CompareValue="$ThrallEchooftheElementsMilestone2Stacks">
             <Event EventId="QuestMilestone" Effect="ThrallChainLightningEchooftheElementsTalent2ndQuestModifyPlayer"/>
         </ConditionalEvents>
         <AtMaxEvents index="0" EventId="QuestComplete" Effect="ThrallChainLightningEchooftheElementsTalentCompletionModifyPlayer"/>
-        <Max value="125"/>
+        <Max value="$ThrallEchooftheElementsMilestoneMaxStacks"/>
     </CBehaviorTokenCounter>
     <CBehaviorTokenCounter id="ThrallCrashLightningTokenCounter" parent="StormQuestToken">
         <Face value="ThrallCrashLightningToken"/>
@@ -2281,6 +2287,7 @@
         <EffectArray value="ThrallFeralSpiritFrostwolfPackTalentDeathResetTokenCount"/>
         <EffectArray value="ThrallChainLightningThunderstormResetTokenCount"/>
         <EffectArray value="ChainLightningCrashLightningTalentDeathLoss"/>
+        <EffectArray value="ThrallEchooftheElementsDeathReductionSwitch"/>        
     </CEffectSet>
     <CEffectApplyBehavior id="ThrallFeralSpiritFeralResilienceTalentApplyBlockBehavior">
         <ValidatorArray index="0" value="ThrallHasFeralResilienceTalent"/>
@@ -2342,6 +2349,27 @@
         <WhichUnit Effect="ThrallChainLightningEchooftheElementsTalentApplyDebuff"/>
         <TokenId value="ThrallEchooftheElementsTokenCounter"/>
         <ContextUnit Value="Source"/>
+    </CEffectModifyTokenCount>
+    <CEffectSwitch id="ThrallEchooftheElementsDeathReductionSwitch">
+        <ValidatorArray value="ThrallHasEchooftheElementsTalent"/>
+        <ValidatorArray value="ThrallEchooftheElementsNotAtMilsetoneCount"/>
+        <CaseArray Validator="ThrallHasBetweenEchooftheElementsFirstMilestoneAndDeathLossAmount" Effect="ThrallEchooftheElementsResetProgressToFirstMilestone"/>
+        <CaseArray Validator="ThrallHasBetweenEchooftheElementsSecondMilestoneAndDeathLossAmount" Effect="ThrallEchooftheElementsResetProgressToSecondMilestone"/>
+        <CaseDefault value="ThrallEchooftheElementsDeathReduceProgress"/>
+    </CEffectSwitch>
+    <CEffectModifyTokenCount id="ThrallEchooftheElementsResetProgressToFirstMilestone" parent="BaseEffectModifyTokenCount">
+        <TokenId value="ThrallEchooftheElementsTokenCounter"/>
+        <Value value="$ThrallEchooftheElementsMilestone1Stacks"/>
+        <Operation value="Set"/>
+    </CEffectModifyTokenCount>
+    <CEffectModifyTokenCount id="ThrallEchooftheElementsResetProgressToSecondMilestone" parent="BaseEffectModifyTokenCount">
+        <TokenId value="ThrallEchooftheElementsTokenCounter"/>
+        <Value value="$ThrallEchooftheElementsMilestone2Stacks"/>
+        <Operation value="Set"/>
+    </CEffectModifyTokenCount>
+    <CEffectModifyTokenCount id="ThrallEchooftheElementsDeathReduceProgress" parent="BaseEffectModifyTokenCount">
+        <TokenId value="ThrallEchooftheElementsTokenCounter"/>
+        <Value value="-$ThrallEchooftheElementsStackLossOnDeath"/>
     </CEffectModifyTokenCount>
     <CEffectModifyTokenCount id="ThrallChainLightningCrashLightningTalentModifyToken" parent="BaseEffectModifyTokenCount">
         <ValidatorArray value="ThrallCasterHasLT30CrashLightningTokens"/>
@@ -4092,7 +4120,7 @@
                 <Field value="Chance"/>
             </Modifications>
         </AbilityModificationArray>
-        <QuestData StackBehavior="ThrallEchooftheElementsTokenCounter" TargetCount="100"/>
+        <QuestData StackBehavior="ThrallEchooftheElementsTokenCounter" TargetCount="$ThrallEchooftheElementsMilestoneMaxStacks"/>
     </CTalent>
     <CTalent id="ThrallCrashLightning">
         <Face value="ThrallCrashLightning"/>
@@ -4317,7 +4345,7 @@
     <CValidatorUnitCompareTokenCount id="HasEchooftheElementsFinalComplete">
         <WhichUnit Value="Caster"/>
         <Compare value="GE"/>
-        <Value value="125"/>
+        <Value value="$ThrallEchooftheElementsMilestoneMaxStacks"/>
         <TokenId value="ThrallEchooftheElementsTokenCounter"/>
     </CValidatorUnitCompareTokenCount>
     <CValidatorCombine id="ThrallNoEchoAndNoMarkerCombine">
@@ -4328,6 +4356,65 @@
         <WhichUnit Value="Caster"/>
         <Compare value="LT"/>
         <Value value="20"/>
+        <TokenId value="ThrallEchooftheElementsTokenCounter"/>
+    </CValidatorUnitCompareTokenCount>
+    <CValidatorCombine id="ThrallEchooftheElementsNotAtMilsetoneCount">
+        <Type value="And"/>
+        <CombineArray value="HasEchooftheElementsNoStacks"/>
+        <CombineArray value="HasEchooftheElementsExactFirstMilestone"/>
+        <CombineArray value="HasEchooftheElementsExactSecondMilestone"/>
+        <CombineArray value="HasEchooftheElementsFinalComplete"/>
+        <Negate value="1"/>
+    </CValidatorCombine>
+    <CValidatorUnitCompareTokenCount id="HasEchooftheElementsNoStacks">
+        <WhichUnit Value="Caster"/>
+        <Compare value="Eq"/>
+        <TokenId value="ThrallEchooftheElementsTokenCounter"/>
+    </CValidatorUnitCompareTokenCount>
+    <CValidatorUnitCompareTokenCount id="HasEchooftheElementsExactFirstMilestone">
+        <WhichUnit Value="Caster"/>
+        <Compare value="Eq"/>
+        <Value value="$ThrallEchooftheElementsMilestone1Stacks"/>
+        <TokenId value="ThrallEchooftheElementsTokenCounter"/>
+    </CValidatorUnitCompareTokenCount>
+    <CValidatorCombine id="ThrallHasBetweenEchooftheElementsFirstMilestoneAndDeathLossAmount">
+        <Type value="And"/>
+        <CombineArray value="HasEchooftheElementsGTFirstMilestone"/>
+        <CombineArray value="HasEchooftheElementsLEFirstMilestonePlusDeathLossAmount"/>
+    </CValidatorCombine>
+    <CValidatorUnitCompareTokenCount id="HasEchooftheElementsGTFirstMilestone">
+        <WhichUnit Value="Caster"/>
+        <Compare value="GT"/>
+        <Value value="$ThrallEchooftheElementsMilestone1Stacks"/>
+        <TokenId value="ThrallEchooftheElementsTokenCounter"/>
+    </CValidatorUnitCompareTokenCount>
+    <CValidatorUnitCompareTokenCount id="HasEchooftheElementsLEFirstMilestonePlusDeathLossAmount">
+        <WhichUnit Value="Caster"/>
+        <Compare value="LE"/>
+        <Value value="$ThrallEchooftheElementsMilestone1StacksPlusDeathLossAmount"/>
+        <TokenId value="ThrallEchooftheElementsTokenCounter"/>
+    </CValidatorUnitCompareTokenCount>
+    <CValidatorUnitCompareTokenCount id="HasEchooftheElementsExactSecondMilestone">
+        <WhichUnit Value="Caster"/>
+        <Compare value="Eq"/>
+        <Value value="$ThrallEchooftheElementsMilestone2Stacks"/>
+        <TokenId value="ThrallEchooftheElementsTokenCounter"/>
+    </CValidatorUnitCompareTokenCount>
+    <CValidatorCombine id="ThrallHasBetweenEchooftheElementsSecondMilestoneAndDeathLossAmount">
+        <Type value="And"/>
+        <CombineArray value="HasEchooftheElementsGTSecondMilestone"/>
+        <CombineArray value="HasEchooftheElementsLESecondMilestonePlusDeathLossAmount"/>
+    </CValidatorCombine>
+    <CValidatorUnitCompareTokenCount id="HasEchooftheElementsGTSecondMilestone">
+        <WhichUnit Value="Caster"/>
+        <Compare value="GT"/>
+        <Value value="$ThrallEchooftheElementsMilestone2Stacks"/>
+        <TokenId value="ThrallEchooftheElementsTokenCounter"/>
+    </CValidatorUnitCompareTokenCount>
+    <CValidatorUnitCompareTokenCount id="HasEchooftheElementsLESecondMilestonePlusDeathLossAmount">
+        <WhichUnit Value="Caster"/>
+        <Compare value="LE"/>
+        <Value value="$ThrallEchooftheElementsMilestone2StacksPlusDeathLossAmount"/>
         <TokenId value="ThrallEchooftheElementsTokenCounter"/>
     </CValidatorUnitCompareTokenCount>
     <CValidatorCombine id="RemoveSuppressTurningBehavior">

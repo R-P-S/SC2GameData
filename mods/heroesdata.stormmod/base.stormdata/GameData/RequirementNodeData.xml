@@ -42,10 +42,6 @@
     <OperandArray value="OrEqCountBehaviorDeadQueuedOrBetterAtUnit0EqCountBehaviorLeoricUndyingQueuedOrBetterAtUnit1" />
     <OperandArray value="EqCountBehaviorHallOfStormsProtectionBuffQueuedOrBetterAtUnit0" />
   </CRequirementAnd>
-  <CRequirementCountBehavior id="CountBehaviorChenFortifyingBrewEnergyBehaviorCompleteOnlyAtUnit">
-    <Flags index="TechTreeCheat" value="0" />
-    <Count Link="ChenFortifyingBrewEnergyBehavior" State="CompleteOnlyAtUnit" />
-  </CRequirementCountBehavior>
   <CRequirementCountBehavior id="CountBehaviorDisableDanceAndTauntCompleteOnlyAtUnit">
     <Flags index="TechTreeCheat" value="0" />
     <Count Link="DisableDanceAndTaunt" State="CompleteOnlyAtUnit" />
@@ -208,11 +204,6 @@
     <Count Link="Mounted" State="CompleteOnlyAtUnit" />
     <Flags index="TechTreeCheat" value="0" />
   </CRequirementCountBehavior>
-  <CRequirementCountBehavior id="CountBehaviorBlindingWindValidityBehaviorCompleteOnlyAtUnit">
-    <Flags index="TechTreeCheat" value="0" />
-    <Tooltip value="" />
-    <Count Link="BlindingWindValidityBehavior" State="CompleteOnlyAtUnit" />
-  </CRequirementCountBehavior>
   <CRequirementCountBehavior id="CountBehaviorTrebuchetUnpackedModeCompleteOnlyAtUnit">
     <Flags index="TechTreeCheat" value="0" />
     <Tooltip value="" />
@@ -252,10 +243,6 @@
     <Tooltip value="" />
     <Count Link="Gravestone" State="InProgressOrBetter" />
   </CRequirementCountUnit>
-  <CRequirementEq id="EqCountBehaviorChenFortifyingBrewEnergyBehaviorCompleteOnlyAtUnit1">
-    <OperandArray index="0" value="CountBehaviorChenFortifyingBrewEnergyBehaviorCompleteOnlyAtUnit" />
-    <OperandArray index="1" value="1" />
-  </CRequirementEq>
   <CRequirementEq id="EqCountBehaviorDeadQueuedOrBetterAtUnit0">
     <Tooltip value="" />
     <OperandArray index="0" value="CountBehaviorDeadQueuedOrBetterAtUnit" />
@@ -322,11 +309,6 @@
     <Tooltip value="" />
     <OperandArray index="0" value="CountBehaviorDeadMechanicsCompleteOnlyAtUnit" />
     <OperandArray index="1" value="0" />
-  </CRequirementEq>
-  <CRequirementEq id="EqCountBehaviorBlindingWindValidityBehaviorCompleteOnlyAtUnit1">
-    <Tooltip value="" />
-    <OperandArray index="0" value="CountBehaviorBlindingWindValidityBehaviorCompleteOnlyAtUnit" />
-    <OperandArray index="1" value="1" />
   </CRequirementEq>
   <CRequirementEq id="EqCountBehaviorMountedCompleteOnlyAtUnit0">
     <OperandArray index="0" value="CountBehaviorMountedCompleteOnlyAtUnit" />
@@ -458,16 +440,6 @@
   </CRequirementNot>
   <CRequirementNot id="NotOrCountBehaviorUltimate2UnlockedCompleteOnlyAtUnitCountBehaviorUltimate1UnlockedCompleteOnlyAtUnitCountBehaviorUltimate3UnlockedCompleteOnlyAtUnit">
     <OperandArray index="0" value="OrCountBehaviorUltimate2UnlockedCompleteOnlyAtUnitCountBehaviorUltimate1UnlockedCompleteOnlyAtUnitCountBehaviorUltimate3UnlockedCompleteOnlyAtUnit" />
-  </CRequirementNot>
-  <CRequirementOr id="OrAndCountBehaviorSpiritOfRedemptionSpiritFormBuffInProgressOrBetterAtUnit1AndCountBehaviorSpiritOfRedemptionSpiritFormBuffImprovedInProgressOrBetterAtUnit1">
-    <Tooltip value="" />
-    <OperandArray value="AndCountBehaviorSpiritOfRedemptionSpiritFormBuffInProgressOrBetterAtUnit1" />
-    <OperandArray value="AndCountBehaviorSpiritOfRedemptionSpiritFormBuffImprovedInProgressOrBetterAtUnit1" />
-  </CRequirementOr>
-  <CRequirementNot id="NotTechTreeCheatCountBehaviorDethLazorActiveCompleteOnlyAtUnit">
-    <Flags index="TechTreeCheat" value="1" />
-    <Tooltip value="" />
-    <OperandArray index="0" value="CountBehaviorDethLazorActiveCompleteOnlyAtUnit" />
   </CRequirementNot>
   <CRequirementOr id="OrCountBehaviorHasMapMechanicTargetAbilityCompleteOnlyAtUnitCountBehaviorMapMechanicStackCompleteOnly">
     <OperandArray value="CountBehaviorHasMapMechanicTargetAbilityCompleteOnlyAtUnit" />

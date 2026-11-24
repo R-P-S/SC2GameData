@@ -1559,8 +1559,6 @@
     <CBehaviorBuff id="AlexstraszaCleansingFlameCasterBehavior" parent="StormStasisRemoved">
         <Modification>
             <ModifyFlags index="SuppressTurning" value="0"/>
-            <AbilLinkEnableArray value="AlexstraszaCleansingFlame"/>
-            <AbilLinkEnableArray value="AlexstraszaCleansingFlameDragonqueen"/>
             <AbilLinkEnableArray value="AlexstraszaDragonqueenDragonMorph"/>
         </Modification>
         <HealResponse Handled="AlexstraszaOnRubyWingsCleansingFlameAddTokenHeal" Location="Healer">

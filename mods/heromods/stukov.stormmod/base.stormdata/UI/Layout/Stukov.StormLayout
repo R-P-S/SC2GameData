@@ -223,7 +223,7 @@
     <Frame type="Image" name="HealthIndicator">
       <Anchor side="Bottom" relative="$parent/$parent/$parent/HeroConsolePanel/HeroStatsFrame/HeroUnitStatusFrame/HealthBar" pos="Mid" offset="9" />
       <Anchor side="Left" relative="$parent/$parent/$parent/HeroConsolePanel/HeroStatsFrame/HeroUnitStatusFrame/HealthBar" pos="50%" offset="-17" />
-      <Texture val="@UI/UI/HeroConsole/Hero/HealthIndicator" />
+      <Texture val="@UI/HeroConsole/Hero/HealthIndicator" />
       <Unclipped val="True" />
       <Visible val="{$parent/UnitStatusFrame0/HealthIndicatorVisibility/@Visible}" />
       <RenderPriority val="513" />

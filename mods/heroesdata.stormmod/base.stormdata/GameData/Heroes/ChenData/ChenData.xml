@@ -3867,6 +3867,14 @@
     <NodeArray index="Use" Link="EqCountBehaviorHeroGenericPregameAbilitySuppressionCompleteOnlyAtUnit0" />
     <NodeArray index="Show" Link="AndGTECountBehaviorUltimate2UnlockedCompleteOnlyAtUnit1EqCountBehaviorStormEarthFireCasterBehaviorCompleteOnlyAtUnit0" />
   </CRequirement>
+  <CRequirementEq id="EqCountBehaviorChenFortifyingBrewEnergyBehaviorCompleteOnlyAtUnit1">
+    <OperandArray index="0" value="CountBehaviorChenFortifyingBrewEnergyBehaviorCompleteOnlyAtUnit" />
+    <OperandArray index="1" value="1" />
+  </CRequirementEq>
+  <CRequirementCountBehavior id="CountBehaviorChenFortifyingBrewEnergyBehaviorCompleteOnlyAtUnit">
+    <Flags index="TechTreeCheat" value="0" />
+    <Count Link="ChenFortifyingBrewEnergyBehavior" State="CompleteOnlyAtUnit" />
+  </CRequirementCountBehavior>
   <CRequirementCountBehavior id="CountBehaviorChenWanderingKegCasterBuffCompleteOnlyAtUnitTechTreeCheat">
     <Count Link="ChenWanderingKegCasterBuff" State="CompleteOnlyAtUnit" />
   </CRequirementCountBehavior>

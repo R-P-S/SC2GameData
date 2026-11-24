@@ -2211,6 +2211,7 @@
   </CEffectApplyBehavior>
   <CEffectDamage id="NecromancerBonePrisonDamage" parent="StormSpell">
     <Amount value="80" />
+    <Visibility value="Hidden" />
   </CEffectDamage>
   <CEffectIssueOrder id="NecromancerBonePrisonJailorsTalentIssueAttackOrder">
     <Abil value="attack" />

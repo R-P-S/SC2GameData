@@ -171,6 +171,9 @@
     <ScaleMax X="0.250000" Y="0.250000" Z="0.250000" />
     <ScaleMin X="0.250000" Y="0.250000" Z="0.250000" />
   </CModel>
+  <CModel id="XalatathUnstableCoreGroundModel" parent="PersistentSpellFX">
+    <Model value="Assets\Effects\Storm_FX_Xalatath_Base_XalatathUnstableCoreFireUnit\Storm_FX_Xalatath_Base_XalatathUnstableCoreFireUnit.m3" />
+  </CModel>
   <CModel id="XalatathVoidVolleyCursorSplat" parent="Splat">
     <Model value="Assets\UI\Cursors\Storm_UI_AOECursor_Fantasy\Storm_UI_AOECursor_Fantasy.m3" />
   </CModel>

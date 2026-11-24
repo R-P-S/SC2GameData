@@ -20,6 +20,7 @@
   <const id="$ZagaraCreepTumorLifeDecayRate" value="/($ZagaraCreepTumorHealth $ZagaraCreepTumorDecayDuration)" evaluateAsExpression="1" />
   <const id="$ZagaraEndlessCreepCreepTumorCastRange" value="50" />
   <const id="$ZagaraEndlessCreepTalentModifyValue" value="-($ZagaraEndlessCreepCreepTumorCastRange $ZagaraSummonCreepTumorRange)" evaluateAsExpression="1" />
+  <const id="$ZagaraTyrantMawModifier" value="0.5" />
   <CAbilMorph id="BurrowZagaraCreepTumorDown" parent="StormMorph">
     <AbilSetId value="BrwD" />
     <CmdButtonArray index="Execute" DefaultButtonFace="BurrowDown">
@@ -2645,6 +2646,7 @@
   <CEffectDamage id="DevouringMawImpactDamage" parent="StormSpell">
     <Amount value="307" />
     <MultiplicativeModifierArray index="PackInstinct" Validator="ZagaraPackInstinctTalentProcCombine" Modifier="$ZagaraPackInstinctModifier" Crit="1" />
+    <MultiplicativeModifierArray index="TyrantMaw" Validator="ZagaraHasTyrantMaw" Modifier="$ZagaraTyrantMawModifier" />
   </CEffectDamage>
   <CEffectEnumArea id="DevouringMawInitialSearchArea">
     <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Structure,Missile,Item,Stasis,Dead,Hidden,Invulnerable,Summoned" />
@@ -2675,6 +2677,7 @@
     <ImpactUnitValidator value="TargetIsStasisOrNotInvulnerable" />
     <Amount value="94" />
     <MultiplicativeModifierArray index="PackInstinct" Validator="ZagaraPackInstinctTalentProcCombine" Modifier="$ZagaraPackInstinctModifier" Crit="1" />
+    <MultiplicativeModifierArray index="TyrantMaw" Validator="ZagaraHasTyrantMaw" Modifier="$ZagaraTyrantMawModifier" />
   </CEffectDamage>
   <CEffectCreatePersistent id="ZagaraDevouringMawCCPersistent">
     <WhichLocation Value="TargetUnit" />
@@ -4173,90 +4176,6 @@
   <CTalent id="ZagaraMasteryTyrantMaw">
     <Face value="ZagaraDevouringMawTyrantMawTalent" />
     <AbilityModificationArray>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="DevouringMawImpactDamage" />
-        <Field value="AttributeFactor[Creep]" />
-        <Value value="0.500000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="DevouringMawImpactDamage" />
-        <Field value="AttributeFactor[Minion]" />
-        <Value value="0.500000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="DevouringMawImpactDamage" />
-        <Field value="AttributeFactor[Structure]" />
-        <Value value="0.500000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="DevouringMawImpactDamage" />
-        <Field value="AttributeFactor[Summoned]" />
-        <Value value="0.500000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="DevouringMawImpactDamage" />
-        <Field value="AttributeFactor[Merc]" />
-        <Value value="0.500000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="DevouringMawImpactDamage" />
-        <Field value="AttributeFactor[Heroic]" />
-        <Value value="0.500000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="DevouringMawSustainedDamage" />
-        <Field value="AttributeFactor[Creep]" />
-        <Value value="0.500000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="DevouringMawSustainedDamage" />
-        <Field value="AttributeFactor[Minion]" />
-        <Value value="0.500000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="DevouringMawSustainedDamage" />
-        <Field value="AttributeFactor[Structure]" />
-        <Value value="0.500000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="DevouringMawSustainedDamage" />
-        <Field value="AttributeFactor[Summoned]" />
-        <Value value="0.500000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="DevouringMawSustainedDamage" />
-        <Field value="AttributeFactor[Merc]" />
-        <Value value="0.500000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="DevouringMawSustainedDamage" />
-        <Field value="AttributeFactor[Heroic]" />
-        <Value value="0.500000" />
-      </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Effect" />

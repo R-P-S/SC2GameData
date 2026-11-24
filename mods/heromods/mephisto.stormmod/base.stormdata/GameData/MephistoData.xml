@@ -874,7 +874,7 @@
     <HostSiteOps Ops="SOpAttachOrigin" />
     <Model value="MephistoDuranceOfHateDemonFX" />
   </CActorModel>
-  <CActorModel id="MephistoDuranceOfHateDemonImpactFX" parent="StormModelRoot" effect="MephistoDuranceOfHateApplyPrimaryRootBehavior" behavior="MephistoDuranceOfHatePrimaryRootBehavior">
+  <CActorModel id="MephistoDuranceOfHateDemonImpactFX" parent="StormModelRoot" behavior="MephistoDuranceOfHatePrimaryRootBehavior" effect="MephistoDuranceOfHateApplyPrimaryRootBehavior">
     <Remove Terms="ActorCreation" Send="AnimBracketStart BSD Birth Stand Death" />
     <On Terms="Effect.MephistoDuranceOfHateApplySecondaryRootBehavior.Start; At Target" Send="Create" />
     <On Terms="Behavior.MephistoDuranceOfHateSecondaryRootBehavior.Destroy" Send="AnimBracketStop BSD" />
@@ -886,7 +886,7 @@
     <On Terms="Behavior.MephistoDuranceOfHateDoTBehavior.On" Send="Create" />
     <HostSiteOps Ops="SOpAttachCenter" HoldPosition="1" HoldRotation="1" />
   </CActorModel>
-  <CActorModel id="MephistoDuranceOfHateTargetFX" parent="StormModelRoot" effect="MephistoDuranceOfHateApplyPrimaryRootBehavior" behavior="MephistoDuranceOfHatePrimaryRootBehavior">
+  <CActorModel id="MephistoDuranceOfHateTargetFX" parent="StormModelRoot" behavior="MephistoDuranceOfHatePrimaryRootBehavior" effect="MephistoDuranceOfHateApplyPrimaryRootBehavior">
     <On Terms="Effect.MephistoDuranceOfHateApplySecondaryRootBehavior.Start; At Target" Send="Create" />
     <On Terms="Behavior.MephistoDuranceOfHateSecondaryRootBehavior.Destroy" Send="AnimBracketStop BSD" />
     <HostSiteOps Ops="SOpAttachOrigin" />
@@ -1022,9 +1022,9 @@
     <SortIndex value="100" />
     <Duration value="10" />
     <Modification>
-      <HealDealtAdditiveMultiplier index="Life" value="0.25" />
-      <HealDealtAdditiveMultiplier index="Shields" value="0.25" />
-      <DamageDealtFraction index="Ability" value="0.25" />
+      <HealDealtAdditiveMultiplier index="Life" value="0.3" />
+      <HealDealtAdditiveMultiplier index="Shields" value="0.3" />
+      <DamageDealtFraction index="Ability" value="0.3" />
     </Modification>
   </CBehaviorBuff>
   <CBehaviorTokenCounter id="MephistoShadeOfMephistoMaliciousIntentTokenCounter" parent="StormGenericToken">
@@ -1235,9 +1235,9 @@
     <BehaviorCategories index="BuffAbilityPower" value="1" />
     <RemoveValidatorArray value="MephistoShadeOfMephistoCasterHasTeleportBehavior" />
     <Modification>
-      <HealDealtAdditiveMultiplier index="Life" value="0.25" />
-      <HealDealtAdditiveMultiplier index="Shields" value="0.25" />
-      <DamageDealtFraction index="Ability" value="0.25" />
+      <HealDealtAdditiveMultiplier index="Life" value="0.3" />
+      <HealDealtAdditiveMultiplier index="Shields" value="0.3" />
+      <DamageDealtFraction index="Ability" value="0.3" />
     </Modification>
     <FinalEffect value="MephistoShadeOfMephistoMaliciousIntentSpellPowerBuffSwitch" />
     <Face value="MephistoShadeOfMephistoMaliciousIntentSpellPowerBuff" />
@@ -1279,11 +1279,11 @@
   <CBehaviorBuff id="MephistoShadeOfMephistoMaliciousIntentPostTeleportSpellPowerBuff" parent="StormDamageIncrease">
     <Alignment value="Positive" />
     <BehaviorCategories index="BuffAbilityPower" value="1" />
-    <Duration value="2.5" />
+    <Duration value="3" />
     <Modification>
-      <HealDealtAdditiveMultiplier index="Life" value="0.25" />
-      <HealDealtAdditiveMultiplier index="Shields" value="0.25" />
-      <DamageDealtFraction index="Ability" value="0.25" />
+      <HealDealtAdditiveMultiplier index="Life" value="0.3" />
+      <HealDealtAdditiveMultiplier index="Shields" value="0.3" />
+      <DamageDealtFraction index="Ability" value="0.3" />
     </Modification>
     <Face value="MephistoShadeOfMephistoMaliciousIntentSpellPowerBuff" />
     <InfoFlags index="Hidden" value="0" />
@@ -1453,7 +1453,7 @@
   <CEffectCreateHealer id="MephistoSkullMissileHatefulMendingManaRestoration" parent="StormManaRestore">
     <ValidatorArray value="MephistoHasHatefulMendingTalentAndTargetIsHero" />
     <ImpactUnit Value="Caster" />
-    <RechargeVitalRate value="10" />
+    <RechargeVitalRate value="15" />
   </CEffectCreateHealer>
   <CEffectCreateHealer id="MephistoLordOfHatredHysteriaHealthRestoration" parent="StormSelfOnlyHealingSpellPercent">
     <ValidatorArray value="MephistoHasLordofHatredHysteriaTalent" />
@@ -1585,7 +1585,7 @@
     </AINotifySettings>
   </CEffectCreatePersistent>
   <CEffectModifyUnit id="MephistoLightningNovaStaticBarrierShieldFractionDummy">
-    <XP value="0.4" />
+    <XP value="0.5" />
   </CEffectModifyUnit>
   <CEffectSwitch id="MephistoLightningNovaFuriousSparkSwitch">
     <Chance value="0" />
@@ -1911,7 +1911,7 @@
   </CEffectModifyUnit>
   <CEffectDamage id="MephistoSkullMissileDamage" parent="StormSpell">
     <Amount value="127" />
-    <LeechFraction index="Life" value="0.7" />
+    <LeechFraction index="Life" value="0.85" />
     <LeechValidator index="Life" value="MephistoSkullMissileHatefulMendingCombine" />
     <FlatModifierArray index="UnyieldingPowerTalentFlatDamage" Validator="MephistoSkullMissileUnyieldingPowerCasterHasDamageIncreaseBehavior" Modifier="100" />
     <SourceButtonFace value="MephistoSkullMissile" />
@@ -2299,6 +2299,7 @@
     <AttributeId value="MEPH" />
     <SkinArray value="MephistoStarWraith" />
     <SkinArray value="MephistoToys19" />
+    <SkinArray value="MephistoMoophisto" />
     <VariationArray value="MephistoVar1" />
     <VariationArray value="MephistoVar2" />
     <VariationArray value="MephistoVar3" />

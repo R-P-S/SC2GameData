@@ -72,82 +72,62 @@
   </CButton>
   <CButton id="XalatathAnchoredCore" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_xalatath_e_darkheartritual.dds" />
-    <SimpleDisplayText value="Button/SimpleDisplayText/XalatathAnchoredCore" />
   </CButton>
   <CButton id="XalatathCloakOfShadows" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_xalatath_w_voidstep.dds" />
-    <SimpleDisplayText value="Button/SimpleDisplayText/XalatathCloakOfShadows" />
   </CButton>
   <CButton id="XalatathToxicMark" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_xalatath_q_shadowmark.dds" />
-    <SimpleDisplayText value="Button/SimpleDisplayText/XalatathToxicMark" />
   </CButton>
   <CButton id="XalatathDarkBarrier" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_xalatath_e_darkheartritual.dds" />
-    <SimpleDisplayText value="Button/SimpleDisplayText/XalatathDarkBarrier" />
   </CButton>
   <CButton id="XalatathVoidAcolyte" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_xalatath_w_voidstep.dds" />
-    <SimpleDisplayText value="Button/SimpleDisplayText/XalatathVoidAcolyte" />
   </CButton>
   <CButton id="XalatathFrozenMark" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_xalatath_q_shadowmark.dds" />
-    <SimpleDisplayText value="Button/SimpleDisplayText/XalatathFrozenMark" />
   </CButton>
   <CButton id="XalatathVoidSummoner" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_xalatath_w_voidstep_b.dds" />
-    <SimpleDisplayText value="Button/SimpleDisplayText/XalatathVoidSummoner" />
   </CButton>
   <CButton id="XalatathVoidAdept" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_xalatath_q_shadowmark.dds" />
-    <SimpleDisplayText value="Button/SimpleDisplayText/XalatathVoidAdept" />
   </CButton>
   <CButton id="XalatathSilenceOfTheLamb" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_xalatath_w_voidstep_c.dds" />
-    <SimpleDisplayText value="Button/SimpleDisplayText/XalatathSilenceOfTheLamb" />
   </CButton>
   <CButton id="XalatathCrushingCascade" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_xalatath_trait.dds" />
-    <SimpleDisplayText value="Button/SimpleDisplayText/XalatathCrushingCascade" />
   </CButton>
   <CButton id="XalatathDarkHeartsProtection" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_xalatath_e_darkheartritual_b.dds" />
-    <SimpleDisplayText value="Button/SimpleDisplayText/XalatathDarkHeartsProtection" />
   </CButton>
   <CButton id="XalatathPullOfTheDarkHeart" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_xalatath_e_darkheartritual.dds" />
-    <SimpleDisplayText value="Button/SimpleDisplayText/XalatathPullOfTheDarkHeart" />
   </CButton>
   <CButton id="XalatathPummelingStep" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_xalatath_w_voidstep.dds" />
-    <SimpleDisplayText value="Button/SimpleDisplayText/XalatathPummelingStep" />
   </CButton>
   <CButton id="XalatathMarkedResilience" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_xalatath_q_shadowmark.dds" />
-    <SimpleDisplayText value="Button/SimpleDisplayText/XalatathMarkedResilience" />
   </CButton>
   <CButton id="XalatathDuelingOrbs" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_xalatath_q_shadowmark.dds" />
-    <SimpleDisplayText value="Button/SimpleDisplayText/XalatathDuelingOrbs" />
   </CButton>
   <CButton id="XalatathRiftInvasion" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_xalatath_r2_voidconvergence.dds" />
-    <SimpleDisplayText value="Button/SimpleDisplayText/XalatathRiftInvasion" />
   </CButton>
   <CButton id="XalatathOrbitalEruption" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_xalatath_r1_voideruption_b.dds" />
-    <SimpleDisplayText value="Button/SimpleDisplayText/XalatathOrbitalEruption" />
   </CButton>
   <CButton id="XalatathFracturedReality" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_xalatath_trait.dds" />
-    <SimpleDisplayText value="Button/SimpleDisplayText/XalatathFracturedReality" />
   </CButton>
   <CButton id="XalatathUnstableCore" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_xalatath_e_darkheartritual.dds" />
-    <SimpleDisplayText value="Button/SimpleDisplayText/XalatathUnstableCore" />
   </CButton>
   <CButton id="XalatathParadoxLoop" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_xalatath_w_voidstep.dds" />
-    <SimpleDisplayText value="Button/SimpleDisplayText/XalatathParadoxLoop" />
   </CButton>
 </Catalog>

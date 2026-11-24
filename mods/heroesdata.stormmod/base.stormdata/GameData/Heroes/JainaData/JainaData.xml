@@ -545,9 +545,9 @@
     <Quad value="-0.500000,-1.000000,0.500000,0.000000" />
     <Host Subject="_ElementalSiteModel" Actor="Find" />
     <HostSiteOps Ops="SOpForwardJainaFrostboltElementalGuide SOp2DRotation" />
-    <LaunchActor value="GuideVisualQuadLaunch" />
-    <CenterActor value="GuideVisualQuadCenter" />
-    <ImpactActor value="GuideVisualQuadImpact" />
+    <LaunchActor value="StormGuideVisualQuadLaunchFantasy" />
+    <CenterActor value="StormGuideVisualQuadCenterFantasy" />
+    <ImpactActor value="StormGuideVisualQuadImpactFantasy" />
     <Flags index="SuppressSaveLoad" value="1" />
     <On Terms="ActorDestruction" Target="_GuideQuadSegment" Send="Destroy" />
     <On Terms="ActorOrphan" Send="Destroy" />

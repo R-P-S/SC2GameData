@@ -6,7 +6,7 @@
   <const id="$MeiOWCryoFreezeShieldStackCount" value="24" />
   <const id="$MeiOWCryoFreezeDuration" value="3" />
   <const id="$MeiOWSnowBlindRange" value="9.75" />
-  <const id="$MeiOWIcicleSearchWidth" value="1" />
+  <const id="$MeiOWIcicleSearchWidth" value="1.25" />
   <const id="$MeiOWIcingSearchRadius" value="4" />
   <const id="$MeiOWIcingSlowDuration" value="1.5" />
   <const id="$MeiOWIcingSlowAmountPos" value="0.8" />
@@ -71,7 +71,7 @@
       <Cooldown TimeUse="$MeiOWIcingCooldown" />
     </Cost>
     <MoveLocation ProjectionDistanceScale="11" />
-    <CastIntroTime value="0.125" />
+    <CastIntroTime value="0.0625" />
     <CursorEffect value="MeiOWIcingSearch" />
     <CmdButtonArray index="Execute" DefaultButtonFace="MeiOWIcing">
       <Flags index="AllowSelfCast" value="0" />
@@ -124,7 +124,7 @@
     <Flags index="RequireTargetVision" value="0" />
     <Cost>
       <Vital index="Energy" value="80" />
-      <Cooldown TimeUse="90" />
+      <Cooldown TimeUse="80" />
     </Cost>
     <InterruptArray index="Cast" value="1" />
     <InterruptCost>
@@ -170,8 +170,8 @@
     <PrepEffect value="DismountDecloakCasterSet" />
     <Effect value="MeiOWSnowBlindInitialSet" />
     <Flags index="ClearLastMoveTarget" value="1" />
-    <Flags index="RequireTargetVision" value="0" />
     <Flags index="RangeUseCasterRadius" value="0" />
+    <Flags index="RequireTargetVision" value="0" />
     <Cost>
       <Vital index="Energy" value="35" />
       <Charge>
@@ -1060,8 +1060,8 @@
       <Handled value="MeiOWCryoFreezeFlashFreezeTalentProcSec" />
       <Priority value="16" />
       <Fatal value="1" />
-      <RestoreLifeAfterFatal value="1" />
       <RecordBehaviorShieldDamage value="1" />
+      <RestoreLifeAfterFatal value="1" />
       <ModifyFraction value="0" />
       <ValidatorArray value="MeiOWFlashFreezeNotOnCooldown" />
       <ProvideCategories index="Shield" value="1" />
@@ -2323,7 +2323,7 @@
   <CEffectCreatePersistent id="MeiOWBlizzardSearchPersistent">
     <InitialEffect value="MeiOWBlizzardSearchArea" />
     <FinalEffect value="MeiOWBlizzardFinalSet" />
-    <PeriodCount value="32" />
+    <PeriodCount value="30" />
     <PeriodicEffectArray value="MeiOWBlizzardSelfImpactTalentSearch" />
     <PeriodicEffectArray value="MeiOWBlizzardSelfImpactTalentSearch" />
     <PeriodicEffectArray value="MeiOWBlizzardSelfImpactTalentSearch" />
@@ -2439,7 +2439,7 @@
   </CEffectLaunchMissileAdvanced>
   <CEffectDamage id="MeiOWBlizzardFinalExplosionDamage" parent="StormSpell">
     <MultiplicativeModifierArray index="MeiOWBlizzardIceStorm" Validator="MeiOWHasIceStormTalent" Modifier="1.5" Crit="1" />
-    <Amount value="75" />
+    <Amount value="80" />
   </CEffectDamage>
   <CEffectSet id="MeiOWAvalancheInitialSet">
     <EffectArray value="MeiOWAvalancheModifyCatalogNumeric" />
@@ -2507,7 +2507,7 @@
     <OffsetVectorEndLocation Effect="MeiOWIceWallInitialSet" Value="VectorPoint" />
     <InitialEffect value="MeiOWIceWallWarningPersistent" />
     <InitialOffset Y="-6" />
-    <ExpireDelay value="0.75" />
+    <ExpireDelay value="0.6875" />
     <FinalEffect value="MeiOWIceWallSearchCreatePersistent" />
   </CEffectCreatePersistent>
   <CEffectCreatePersistent id="MeiOWIceWallSearchCreatePersistent">
@@ -2572,7 +2572,6 @@
   </CEffectSet>
   <CEffectCreatePersistent id="MeiOWIceWallTimeStopPrepPersistentHandler">
     <WhichLocation Value="TargetUnit" />
-    <TimeScaleSource Value="Global" />
     <FinalEffect value="MeiOWIceWallTimeStopDebuffApplyBehavior" />
     <ExpireDelay value="1.0625" />
     <PeriodicValidator value="MeiOWCasterHasIceWallController" />
@@ -2580,7 +2579,6 @@
   <CEffectApplyBehavior id="MeiOWIceWallTimeStopDebuffApplyUntimedBehavior">
     <Behavior value="MeiOWIceWallTimeStopDebuff" />
     <Flags index="UseDuration" value="1" />
-    <Duration value="-1" />
   </CEffectApplyBehavior>
   <CEffectApplyBehavior id="MeiOWIceWallTimeStopDebuffApplyBehavior">
     <Behavior value="MeiOWIceWallTimeStopDebuff" />

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Desc>
+    <Frame type="HeroContainerFrame" name="MoophistoFrameTemplate" template="HomeShared/NewContentFrameTemplate">
+        <Hero val="Mephisto"/>
+        <Skin val="MephistoMoophisto"/>
+
+        <Animation name="ChangeHomeScreenHero">
+            <Event event="MephistoMoophisto" action="Restart,Play" frame="$parent"/>
+        </Animation>
+
+        <Frame type="Image" name="BackgroundImage">
+            <Texture val="@UI/Storm_UI_HomeScreenBackground_Moophisto"/>
+        </Frame>
+
+        <Frame type="HeroCutsceneFrame" name="HomeCutscene">         
+            <Visible val="True"/>
+        </Frame>
+
+        <Frame type="Frame" name="DescriptionContainerFrame">
+            <Frame type="HeroLabel" name="NewItemLabel">
+                <ConjugatingString val="@UI/ScreenHome/NewSkins"/>
+            </Frame>
+        </Frame>     
+    </Frame>
+</Desc>
+
+
+
+

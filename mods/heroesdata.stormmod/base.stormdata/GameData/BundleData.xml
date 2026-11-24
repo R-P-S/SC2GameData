@@ -3045,4 +3045,10 @@
     <ReleaseDate Month="9" Day="28" Year="2026" />
     <Universe value="Warcraft" />
   </CBundle>
+  <CBundle id="MoophistoLaunchBundle">
+    <ProductId value="2162043" />
+    <Flags index="ShowDynamicProductContent" value="1" />
+    <TileTexture value="Assets\Textures\storm_ui_bundle_h57_moophisto.dds" />
+    <ReleaseDate Month="11" Day="23" Year="2026" />
+  </CBundle>
 </Catalog>

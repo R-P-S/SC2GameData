@@ -1278,6 +1278,7 @@
     <CaseDefault value="LiLiCloudSerpentCastMissileLaunch" />
   </CEffectSwitch>
   <CEffectLaunchMissile id="CloudSerpentCastMissileLaunchInvisibletoOtherTeam">
+    <SharedFlags index="ValidateTeleport" value="0" />
     <ImpactEffect value="LiLiCloudSerpentCastMissileImpactSet" />
     <AmmoUnit value="LiLiCloudSerpentInvisibleCastMissile" />
   </CEffectLaunchMissile>
@@ -2001,6 +2002,7 @@
   </CEffectDamage>
   <CEffectModifyUnit id="LiLiCloudSerpentHostLinkDummy" />
   <CEffectLaunchMissile id="LiLiCloudSerpentCastMissileLaunch">
+    <SharedFlags index="ValidateTeleport" value="0" />
     <ImpactEffect value="LiLiCloudSerpentCastMissileImpactSet" />
     <AmmoUnit value="LiLiCloudSerpentCastMissile" />
   </CEffectLaunchMissile>
@@ -2714,6 +2716,16 @@
     <Tooltip value="" />
     <Count Link="HealingBrewValidityBehavior" State="CompleteOnlyAtUnit" />
   </CRequirementCountBehavior>
+  <CRequirementCountBehavior id="CountBehaviorBlindingWindValidityBehaviorCompleteOnlyAtUnit">
+    <Flags index="TechTreeCheat" value="0" />
+    <Tooltip value="" />
+    <Count Link="BlindingWindValidityBehavior" State="CompleteOnlyAtUnit" />
+  </CRequirementCountBehavior>
+  <CRequirementEq id="EqCountBehaviorBlindingWindValidityBehaviorCompleteOnlyAtUnit1">
+    <Tooltip value="" />
+    <OperandArray index="0" value="CountBehaviorBlindingWindValidityBehaviorCompleteOnlyAtUnit" />
+    <OperandArray index="1" value="1" />
+  </CRequirementEq>
   <CRequirementEq id="EqCountBehaviorHealingBrewImprovedRangeValidityBehaviorCompleteOnlyAtUnit1">
     <Tooltip value="" />
     <OperandArray index="0" value="CountBehaviorHealingBrewImprovedRangeValidityBehaviorCompleteOnlyAtUnit" />

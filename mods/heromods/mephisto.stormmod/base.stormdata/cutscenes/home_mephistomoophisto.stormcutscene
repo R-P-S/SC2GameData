@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CutsceneState cutsceneVersion="1.300000">
+    <CCutsceneNodeDirector guid="10391308154086264694" name="Director" reverb="Heroes_UI_Front_End" interactive="1">
+        <CCutsceneNodeActiveCamera guid="11432784530196303734" name="Active Camera">
+            <CCutsceneElementActiveCamera guid="8767568086769241974" cameraIndex="0" objectGuid="12853048275597430646"/>
+        </CCutsceneNodeActiveCamera>
+        <CCutsceneNodeActiveLight guid="13581226385400041334" name="Active Light">
+            <CCutsceneElementActiveLight guid="6719006335984111478" lightGUID="0" lightID="Home_DiabloSkinPrime" lightIndex="0" blendTime="0"/>
+        </CCutsceneNodeActiveLight>
+        <CCutsceneNodeBookmark guid="10464635430651203446" name="Bookmarks">
+            <CCutsceneElementBookmark guid="5314691401880866678" bookmarkName="Stand Start"/>
+            <CCutsceneElementBookmark guid="5145291777198072833" start="1000" bookmarkName="Stand Loop"/>
+            <CCutsceneElementBookmark guid="8229443701448806262" start="90154" bookmarkName="Stand End" jumpToBookmarkWhenHit="Stand Loop"/>
+        </CCutsceneNodeBookmark>
+    </CCutsceneNodeDirector>
+    <CCutsceneNodeCamera guid="12853048275597430646" name="Game Camera" position="3.425499,3.344139,0.000000" fov="45.000000" nearClip="0.100000" farClip="600.000000" shadowClip="75.000000" depthOfField="0.000000" focalDepth="8.000000" falloffStart="0.000300" falloffEnd="8.000000" falloffStartNear="0.000000" falloffEndNear="0.000000" fstop="32.000000" doftype="0.000000" roll="-1.000000" verticalFOV="1" distance="9.123530" pitch="-20.000000" yaw="148.813187" heightOffset="3.721160">
+        <CCutsceneElementObject guid="5388320107840573302" duration="90154" lockedToEnd="1"/>
+    </CCutsceneNodeCamera>
+    <CCutsceneNodeActor guid="11906357936469741430" name="Moophisto" position="0.034035,0.432121,-0.265813" scale="0.900000,0.900000,0.900000" rotation="8.028455,-3.926652,-103.710915" modelLink="HeroMephistoMoophisto" hitTest="1" enablePhysics="0" shadowBox="0" teamColorDiffuse="1.000000,0.000000,0.000000,1.000000" teamColorEmissive="0.700000,0.000000,0.000000,1.000000">
+        <CCutsceneElementObject guid="8032209972763725686" duration="35740"/>
+        <CCutsceneNodeAnimLayer guid="12340900950034971983" name="Animation Layer">
+            <CCutsceneElementAnim guid="7233569998330807768" duration="29574" anim="Stand" priority="3" originalDuration="4000" looping="1" timeScale="0.500000" fullMatchLegacy="1"/>
+            <CCutsceneElementAnim guid="5313323161010223268" start="29574" duration="6166" anim="Channel Hearth" priority="5" originalDuration="6166"/>
+        </CCutsceneNodeAnimLayer>
+        <CCutsceneNodeConversation guid="10653886420725090723" name="Conversation"/>
+        <CCutsceneNodeAnimLayer guid="13567337004053085522" name="Animation Layer"/>
+        <CCutsceneNodeModelMaterial guid="11929333280393730451" name="Model Material"/>
+    </CCutsceneNodeActor>
+    <CCutsceneNodeActor guid="11108813200716600154" name="Hearthstone (Channel FX)" position="-0.178577,-0.008087,2.547744" modelLink="HearthstoneChannelFX" shadowBox="0" teamColorDiffuse="0.968628,0.870588,0.054902,1.000000" teamColorEmissive="0.494118,0.749020,0.945098,1.000000">
+        <CCutsceneElementObject guid="6272436797127660378" start="29574" duration="6166"/>
+        <CCutsceneNodeAnimLayer guid="13409543192672490990" name="Animation Layer">
+            <CCutsceneElementAnim guid="5573184338155034094" start="29574" duration="6166" anim="Birth" priority="7" originalDuration="7000"/>
+        </CCutsceneNodeAnimLayer>
+        <CCutsceneNodeAttachment guid="9916308566503212539" name="Attachment">
+            <CCutsceneElementAttachment guid="9115699462500926971" start="29574" duration="6166" attachGuid="11906357936469741430" attachName="Ref_Origin" offsetX="0.000000" offsetY="0.000000" offsetZ="0.000000" rotationX="0.000000" rotationY="0.000000" rotationZ="0.000000"/>
+        </CCutsceneNodeAttachment>
+    </CCutsceneNodeActor>
+    <CCutsceneNodeActor guid="11619717150846385928" name="MephistoSkinMoophistountBaseFX (Unnamed)" modelLink="MephistoSkinMoophistountBaseFX" shadowBox="0" opacity="0.100000" teamColorDiffuse="0.968628,0.870588,0.054902,1.000000" teamColorEmissive="0.494118,0.749020,0.945098,1.000000">
+        <CCutsceneElementObject guid="4868481336986730248" start="29574" duration="19363"/>
+        <CCutsceneNodePropertyValue guid="11929288229676859246" name="Property - Opacity" propertyName="opacity">
+            <CCutsceneElementPropertyCurve guid="7369398181104402286" start="29574" value="0.100000" time="29574.000000" curveInValue="29573.000000,0.100000" curveOutValue="29896.666016,0.150077" curveOutType="3" curveInType="3"/>
+            <CCutsceneElementPropertyCurve guid="7352647178453349547" start="30542" value="0.250231" time="30542.000000" curveInValue="30219.333984,0.200154" curveOutValue="31024.000000,0.325036" curveOutType="3" curveInType="3"/>
+            <CCutsceneElementPropertyCurve guid="5286341404176639704" start="31988" value="0.474646" time="31988.000000" curveInValue="31506.000000,0.399841" curveOutValue="32668.000000,0.580181" curveOutType="3" curveInType="3"/>
+            <CCutsceneElementPropertyCurve guid="7194572980545531274" start="34028" value="0.791249" time="34028.000000" curveInValue="33348.000000,0.685715" curveOutValue="34737.332031,0.660833" curveOutType="3" curveInType="3"/>
+            <CCutsceneElementPropertyCurve guid="8514731516838056249" start="36156" value="0.400000" time="36156.000000" curveInValue="35446.667969,0.530416" curveOutValue="37139.332031,0.350000" curveOutType="3" curveInType="3"/>
+            <CCutsceneElementPropertyCurve guid="8159577386699321431" start="39106" value="0.250000" time="39106.000000" curveInValue="38122.667969,0.300000" curveOutValue="40002.000000,0.200000" curveOutType="3" curveInType="3"/>
+            <CCutsceneElementPropertyCurve guid="8802141433273108331" start="41794" value="0.100000" time="41794.000000" curveInValue="40898.000000,0.150000" curveOutValue="43182.667969,0.083333" curveOutType="3" curveInType="3"/>
+            <CCutsceneElementPropertyCurve guid="6017917242601227152" start="45960" value="0.050000" time="45960.000000" curveInValue="44571.332031,0.066667" curveOutValue="45961.000000,0.050000" curveOutType="3" curveInType="3"/>
+        </CCutsceneNodePropertyValue>
+    </CCutsceneNodeActor>
+    <CCutsceneNodeActor guid="13570036877699522278" name="Storm_FX_Mephisto_Moophisto_CrownFX (Unnamed)" position="1.869537,2.921890,0.000000" scale="0.400000,0.400000,0.400000" modelLink="Storm_FX_Mephisto_Moophisto_CrownFX" shadowBox="0" teamColorDiffuse="0.968628,0.870588,0.054902,1.000000" teamColorEmissive="0.494118,0.749020,0.945098,1.000000">
+        <CCutsceneElementObject guid="6292207750881156838" duration="35740"/>
+        <CCutsceneNodeAnimLayer guid="9832984028757665915" name="Animation Layer">
+            <CCutsceneElementAnim guid="8992937968107825275" duration="35740" anim="Stand" priority="3" originalDuration="1000" looping="1"/>
+        </CCutsceneNodeAnimLayer>
+        <CCutsceneNodeAttachment guid="13152530412096648740" name="Attachment">
+            <CCutsceneElementAttachment guid="5036556664694121752" duration="35740" attachGuid="11906357936469741430" attachName="Ref_Head Top" offsetX="0.000000" offsetY="0.090000" offsetZ="0.563500" rotationX="0.000000" rotationY="0.000000" rotationZ="0.000000"/>
+        </CCutsceneNodeAttachment>
+    </CCutsceneNodeActor>
+    <CCutsceneNodeFolder guid="11821415688155594426" name="Lights">
+        <CCutsceneNodeLight guid="10019348551622195053" name="rim_higher_upper_warm" position="-4.094124,2.981735,8.805785" rotation="-30.364616,-23.885149,-47.556072" type="2" colorR="0.784314" colorG="0.501961" colorB="0.392157" shadowCasting="0" ambientOcclusion="1" colorMultiplier="8.000000" attenuationStart="4.232395" range="4.232395" hotspot="0.400000" falloff="0.400000">
+            <CCutsceneElementObject guid="8397956250868119405" duration="90154" lockedToEnd="1"/>
+        </CCutsceneNodeLight>
+        <CCutsceneNodeLight guid="9678162538883528076" name="Key green upper" position="-1.814651,-1.864910,7.185228" rotation="14.944333,-17.325039,-47.556072" type="2" colorR="0.490196" colorMultiplier="0.800000" specularColorMultiplier="2.000000" attenuationStart="4.268127" range="4.268127" hotspot="0.200000" falloff="0.500000">
+            <CCutsceneElementObject guid="8200309123198563724" duration="90154" lockedToEnd="1"/>
+        </CCutsceneNodeLight>
+        <CCutsceneNodeLight guid="11272248923628320140" name="Rim right hot" position="6.879417,-1.820541,3.916121" rotation="43.177414,58.366154,-47.556072" type="2" colorR="0.490196" colorMultiplier="15.000000" attenuationStart="4.000000" range="4.000000" hotspot="0.200000" falloff="0.500000">
+            <CCutsceneElementObject guid="7845963124298823052" duration="90154" lockedToEnd="1"/>
+        </CCutsceneNodeLight>
+        <CCutsceneNodeLight guid="12492934803028784524" name="Fill front " position="-2.643627,-1.750698,0.527659" rotation="115.215126,-44.906876,-47.556072" type="2" colorG="0.392157" colorB="0.392157" shadowCasting="0" specularColorMultiplier="2.000000" attenuationStart="3.115322" range="3.365994" hotspot="0.200000">
+            <CCutsceneElementObject guid="8505154490140538252" duration="90154" lockedToEnd="1"/>
+        </CCutsceneNodeLight>
+        <CCutsceneNodeLight guid="9514271526080558476" name="Rim Yellow back" position="3.569038,-0.182816,6.628529" rotation="-8.155235,41.380451,-47.556072" type="2" colorR="0.588235" colorG="0.588235" colorB="0.392157" shadowCasting="0" colorMultiplier="15.000000" attenuationStart="4.451279" range="4.451279" hotspot="0.200000" falloff="0.800000">
+            <CCutsceneElementObject guid="6576541387702220172" duration="90154" lockedToEnd="1"/>
+        </CCutsceneNodeLight>
+        <CCutsceneNodeLight guid="10480892188498933132" name="bounce2" position="-2.805229,-1.007160,5.317253" rotation="10.288531,-32.958755,-47.556072" type="2" colorR="0.392157" colorG="0.784314" colorB="0.784314" shadowCasting="0" colorMultiplier="0.750000" attenuationStart="5.213653" range="5.633145" hotspot="0.200000">
+            <CCutsceneElementObject guid="6702096613342786956" duration="90154" lockedToEnd="1"/>
+        </CCutsceneNodeLight>
+        <CCutsceneNodeLight guid="11257515515060761996" name="Rim left dim" position="-0.945267,6.051224,3.090769" rotation="-79.385216,0.213802,-47.556072" type="2" colorR="0.490196" shadowCasting="0" colorMultiplier="2.500000" attenuationStart="6.268915" range="6.773358" hotspot="0.200000">
+            <CCutsceneElementObject guid="5345099394069116300" duration="90154" lockedToEnd="1"/>
+        </CCutsceneNodeLight>
+        <CCutsceneNodeLight guid="12963719620180915596" name="bounce" position="-1.410576,-3.516586,5.410094" rotation="60.795582,-10.827530,-47.556072" type="2" colorR="0.784314" colorG="0.392157" colorB="0.392157" shadowCasting="0" colorMultiplier="0.800000" attenuationStart="4.061049" range="4.061049" hotspot="0.200000">
+            <CCutsceneElementObject guid="7786363516694640012" duration="90154" lockedToEnd="1"/>
+        </CCutsceneNodeLight>
+        <CCutsceneNodeLight guid="12237230121305813808" name="axe rim" position="4.217003,-0.754742,7.030840" rotation="21.231342,33.606869,-87.272820" type="2" colorR="0.980392" colorG="0.980392" colorB="0.784314" shadowCasting="0" colorMultiplier="10.000000" attenuationStart="2.495192" range="2.495192" hotspot="0.030000">
+            <CCutsceneElementObject guid="5963339674258027312" duration="90154" lockedToEnd="1"/>
+        </CCutsceneNodeLight>
+        <CCutsceneNodeLight guid="9790868766129120570" name="axe handle rim" position="0.414520,-0.009743,4.608521" rotation="-1.285365,31.949545,-87.272820" type="2" colorR="0.980392" colorG="0.980392" colorB="0.784314" colorMultiplier="10.000000" attenuationStart="2.323132" range="2.323132" hotspot="0.030000" falloff="0.500000">
+            <CCutsceneElementObject guid="9112178330367943994" duration="90154" lockedToEnd="1"/>
+        </CCutsceneNodeLight>
+        <CCutsceneNodeLight guid="11706119977110109243" name="rim lower dim green" position="-4.094124,2.981735,1.725734" rotation="-81.966118,-44.088535,-47.556072" type="2" colorR="0.392157" colorG="0.784314" colorB="0.784314" shadowCasting="0" ambientOcclusion="1" colorMultiplier="8.000000" attenuationStart="4.434084" range="4.790843" hotspot="0.400000" falloff="0.800000">
+            <CCutsceneElementObject guid="5964128033869691963" duration="90154" lockedToEnd="1"/>
+        </CCutsceneNodeLight>
+        <CCutsceneNodeLight guid="13249154150664104332" name="axe fill" position="0.806038,-2.577049,4.190577" rotation="79.919373,-1.537600,-47.556072" type="2" colorR="0.392157" colorG="0.784314" colorB="0.784314" shadowCasting="0" attenuationStart="4.605304" range="4.605304" hotspot="0.200000" falloff="0.800000">
+            <CCutsceneElementObject guid="7831754000041634188" duration="90154" lockedToEnd="1"/>
+        </CCutsceneNodeLight>
+        <CCutsceneNodeLight guid="10521417734424027008" name="bounce 2" position="-0.373550,-3.516586,2.148355" rotation="80.313499,-12.187855,-47.556072" type="2" colorR="0.392157" colorG="0.784314" colorB="0.784314" shadowCasting="0" colorMultiplier="0.500000" attenuationStart="6.638497" range="7.172645" hotspot="0.200000">
+            <CCutsceneElementObject guid="7669110260725374848" duration="90154" lockedToEnd="1"/>
+        </CCutsceneNodeLight>
+        <CCutsceneNodeLight guid="10839155722574474877" name="faceyellow" position="-1.814651,-0.793812,3.357241" rotation="35.942909,-59.840981,-47.556072" type="2" colorB="0.490196" colorMultiplier="0.800000" specularColorMultiplier="2.000000" attenuationStart="3.708009" range="4.006376" hotspot="0.200000" falloff="0.500000">
+            <CCutsceneElementObject guid="4908835218660634237" duration="90154" lockedToEnd="1"/>
+        </CCutsceneNodeLight>
+    </CCutsceneNodeFolder>
+    <CCutsceneNodeActor guid="10105024039608649034" visible="0" name="Look At Target (Talk)" position="-3.338025,-11.837715,-0.238970" modelLink="AbathurLocust" shadowBox="0" teamColorDiffuse="1.000000,0.000000,0.000000,1.000000" teamColorEmissive="0.700000,0.000000,0.000000,1.000000">
+        <CCutsceneElementObject guid="8872911335292667210" duration="90154" lockedToEnd="1"/>
+        <CCutsceneNodePropertyValue guid="10585071493599767502" name="Property - Position X" propertyName="positionX"/>
+        <CCutsceneNodePropertyValue guid="9625212602717794516" name="Property - Position Y" propertyName="positionY"/>
+        <CCutsceneNodePropertyValue guid="9336301231046157136" name="Property - Position Z" propertyName="positionZ"/>
+    </CCutsceneNodeActor>
+    <CCutsceneNodeActor guid="12273281415329389550" name="Moophisto_Fog" scale="1.500000,1.500000,1.500000" modelLink="GarroshHomeScreenFog" fromArchive="0" shadowBox="0" tintColorRed="0.000000" tintColorGreen="0.000000" tintColorBlue="0.000000" teamColorDiffuse="0.705800,0.078300,0.117600,1.000000" teamColorEmissive="0.545100,0.062700,0.086100,1.000000">
+        <CCutsceneElementObject guid="6698389465412180974" duration="90154" lockedToEnd="1"/>
+        <CCutsceneNodeAnimLayer guid="9801601060163066862" name="Animation Layer">
+            <CCutsceneElementAnim guid="5998341145130474478" duration="90154" lockedToEnd="1" anim="Stand" priority="3" originalDuration="1000" looping="1" fullMatchLegacy="1"/>
+        </CCutsceneNodeAnimLayer>
+    </CCutsceneNodeActor>
+    <CCutsceneNodeFog guid="13530785904018477557" name="Fog" fogColor="0.000000,0.000000,0.000000" fogFalloff="0.000000" fogDensity="1.000000" fogStartHeight="1.000000">
+        <CCutsceneElementObject guid="6013396944676868597" duration="35740"/>
+        <CCutsceneNodePropertyValue guid="11241422147448623605" name="Property - Fog Density" propertyName="fogDensity">
+            <CCutsceneElementPropertyCurve guid="7607670491211518453" start="1000" value="1.000000" time="1000.000000" curveInValue="999.000000,1.000000" curveOutValue="1666.666748,0.883333" curveOutType="3" curveInType="3"/>
+            <CCutsceneElementPropertyCurve guid="5737749697421005301" start="3000" value="0.650000" time="3000.000000" curveInValue="2333.333252,0.766667" curveOutValue="3666.666748,0.433333" curveOutType="3" curveInType="3"/>
+            <CCutsceneElementPropertyCurve guid="6482556623513604597" start="5000" value="0.000000" time="5000.000000" curveInValue="4333.333496,0.216667" curveOutValue="5001.000000,0.000000" curveOutType="3" curveInType="3"/>
+        </CCutsceneNodePropertyValue>
+        <CCutsceneNodePropertyValue guid="13594109789434171893" name="Property - Fog Color Blue" propertyName="fogColorZ">
+            <CCutsceneElementPropertyCurve guid="7968348869633397237" start="1000" value="0.000000" time="1000.000000" curveInValue="999.000000,0.000000" curveOutValue="1666.666748,0.005000" curveOutType="3" curveInType="3"/>
+            <CCutsceneElementPropertyCurve guid="8399094683097256437" start="3000" value="0.015000" time="3000.000000" curveInValue="2333.333252,0.010000" curveOutValue="3001.000000,0.015000" curveOutType="3" curveInType="3"/>
+        </CCutsceneNodePropertyValue>
+        <CCutsceneNodePropertyValue guid="11226715015490982389" name="Property - Fog Color Green" propertyName="fogColorY">
+            <CCutsceneElementPropertyCurve guid="7634915109447553525" start="1000" value="0.000000" time="1000.000000" curveInValue="999.000000,0.000000" curveOutValue="1666.666748,0.004167" curveOutType="3" curveInType="3"/>
+            <CCutsceneElementPropertyCurve guid="5670118573987746293" start="3000" value="0.012500" time="3000.000000" curveInValue="2333.333252,0.008333" curveOutValue="3001.000000,0.012500" curveOutType="3" curveInType="3"/>
+        </CCutsceneNodePropertyValue>
+        <CCutsceneNodePropertyValue guid="13273656554288206325" name="Property - Fog Color Red" propertyName="fogColorX">
+            <CCutsceneElementPropertyCurve guid="6172968908302209525" start="1000" value="0.000000" time="1000.000000" curveInValue="999.000000,0.000000" curveOutValue="1666.666748,0.001667" curveOutType="3" curveInType="3"/>
+            <CCutsceneElementPropertyCurve guid="7316696502836023797" start="3000" value="0.005000" time="3000.000000" curveInValue="2333.333252,0.003333" curveOutValue="3001.000000,0.005000" curveOutType="3" curveInType="3"/>
+        </CCutsceneNodePropertyValue>
+        <CCutsceneNodePropertyValue guid="10644505943383101941" name="Property - Fog Falloff" propertyName="fogFalloff">
+            <CCutsceneElementPropertyCurve guid="5725650452425626101" start="1000" value="0.000000" time="1000.000000" curveInValue="999.000000,0.000000" curveOutValue="1666.666748,0.266667" curveOutType="3" curveInType="3"/>
+            <CCutsceneElementPropertyCurve guid="4929210069450641909" start="3000" value="0.800000" time="3000.000000" curveInValue="2333.333252,0.533333" curveOutValue="3001.000000,0.800000" curveOutType="3" curveInType="3"/>
+        </CCutsceneNodePropertyValue>
+        <CCutsceneNodePropertyValue guid="12811711046119215605" name="Property - Fog Start Height" propertyName="fogStartHeight">
+            <CCutsceneElementPropertyCurve guid="8755206347347350005" start="1000" value="1.000000" time="1000.000000" curveInValue="999.000000,1.000000" curveOutValue="1666.666748,0.833333" curveOutType="3" curveInType="3"/>
+            <CCutsceneElementPropertyCurve guid="5564302214880711157" start="3000" value="0.500000" time="3000.000000" curveInValue="2333.333252,0.666667" curveOutValue="3001.000000,0.500000" curveOutType="3" curveInType="3"/>
+        </CCutsceneNodePropertyValue>
+    </CCutsceneNodeFog>
+</CutsceneState>

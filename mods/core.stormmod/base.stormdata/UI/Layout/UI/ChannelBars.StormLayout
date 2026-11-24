@@ -173,6 +173,7 @@
       <Texture val="@UI/HUD_Bar_DeathStun_Icon_Stun" />
       <TextureType val="Normal" />
       <ImageMaskTexture val="@UI/HUD_Bar_DeathStun_IconMask" />
+      <SubpixelRendering val="true" />
     </Frame>
     <Frame type="Image" name="DeathStunOverrideIcon">
       <Anchor side="Top" relative="$parent/DeathStunIconBackground" pos="Mid" offset="0" />

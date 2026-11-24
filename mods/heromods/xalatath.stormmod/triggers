@@ -2,10 +2,88 @@
 <TriggerData>
     <Library Id="HXAL">
         <Root>
+            <Item Type="Category" Library="HXAL" Id="B45F1319"/>
             <Item Type="Category" Library="HXAL" Id="A5F79A3D"/>
+            <Item Type="Category" Library="HXAL" Id="85B5056A"/>
             <Item Type="Category" Library="HXAL" Id="9D9CD3BF"/>
             <Item Type="Category" Library="HXAL" Id="D46F66F2"/>
         </Root>
+        <Element Type="Category" Id="B45F1319">
+            <Item Type="Variable" Library="HXAL" Id="B718D001"/>
+            <Item Type="Trigger" Library="HXAL" Id="EF17A6B0"/>
+        </Element>
+        <Element Type="Variable" Id="B718D001">
+            <Identifier>heroXalatathVoidEruptionPlayerCount</Identifier>
+            <VariableType>
+                <Type Value="int"/>
+            </VariableType>
+        </Element>
+        <Element Type="Trigger" Id="EF17A6B0">
+            <Identifier>HeroXalatathHeroSpawned</Identifier>
+            <InitOff/>
+            <Variable Type="Variable" Library="HXAL" Id="D13D66D5"/>
+            <Event Type="FunctionCall" Library="HXAL" Id="2D95C6D5"/>
+            <Condition Type="FunctionCall" Library="HXAL" Id="C8CDB73D"/>
+            <Action Type="FunctionCall" Library="HXAL" Id="DCDDF0A0"/>
+        </Element>
+        <Element Type="Variable" Id="D13D66D5">
+            <Identifier>playerID</Identifier>
+            <VariableType>
+                <Type Value="int"/>
+            </VariableType>
+            <Value Type="Param" Library="HXAL" Id="BA515C38"/>
+        </Element>
+        <Element Type="Param" Id="BA515C38">
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="87417672"/>
+        </Element>
+        <Element Type="FunctionCall" Id="87417672">
+            <FunctionDef Type="FunctionDef" Library="Game" Id="90BAC0E4"/>
+        </Element>
+        <Element Type="FunctionCall" Id="2D95C6D5">
+            <FunctionDef Type="FunctionDef" Library="Game" Id="C7BC72D6"/>
+        </Element>
+        <Element Type="FunctionCall" Id="C8CDB73D">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="C439C375"/>
+            <Parameter Type="Param" Library="HXAL" Id="A147E6DB"/>
+            <Parameter Type="Param" Library="HXAL" Id="FE8F2FCA"/>
+            <Parameter Type="Param" Library="HXAL" Id="11545869"/>
+        </Element>
+        <Element Type="Param" Id="A147E6DB">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="ABB380C4"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="8D97F822"/>
+        </Element>
+        <Element Type="FunctionCall" Id="8D97F822">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000079"/>
+            <Parameter Type="Param" Library="HXAL" Id="64304105"/>
+        </Element>
+        <Element Type="Param" Id="64304105">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000138"/>
+            <Variable Type="Variable" Library="Game" Id="A77A5F62"/>
+            <StructMember Type="Param" Library="HXAL" Id="B3119064"/>
+            <Array Type="Param" Library="HXAL" Id="8ADF0CFC"/>
+        </Element>
+        <Element Type="Param" Id="B3119064">
+            <Variable Type="Variable" Library="Game" Id="4456E858"/>
+        </Element>
+        <Element Type="Param" Id="8ADF0CFC">
+            <Variable Type="Variable" Library="HXAL" Id="D13D66D5"/>
+        </Element>
+        <Element Type="Param" Id="FE8F2FCA">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="51567265"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="1E7A4625"/>
+        </Element>
+        <Element Type="Param" Id="11545869">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="4A15EC5F"/>
+            <Value>HeroXalatath</Value>
+            <ValueType Type="gamelink"/>
+            <ValueGameType Type="Unit"/>
+        </Element>
+        <Element Type="FunctionCall" Id="DCDDF0A0">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000123"/>
+            <ScriptCode>
+                TriggerAddEventMouseClicked(libHXAL_gt_HeroXalatathVoidEruptionPlayerClicked, lv_playerID, c_mouseButtonLeft,true);
+            </ScriptCode>
+        </Element>
         <Element Type="Category" Id="A5F79A3D">
             <Item Type="Category" Library="HXAL" Id="C7C914A5"/>
             <Item Type="Category" Library="HXAL" Id="12253800"/>
@@ -794,6 +872,508 @@
             <ParameterDef Type="ParamDef" Library="Ntve" Id="88375332"/>
             <Variable Type="Variable" Library="HXAL" Id="B984C9CA"/>
         </Element>
+        <Element Type="Category" Id="85B5056A">
+            <Item Type="Category" Library="HXAL" Id="68B112DC"/>
+        </Element>
+        <Element Type="Category" Id="68B112DC">
+            <Item Type="Trigger" Library="HXAL" Id="5D09125A"/>
+            <Item Type="Trigger" Library="HXAL" Id="9B4E8A41"/>
+            <Item Type="Trigger" Library="HXAL" Id="0AF8AF08"/>
+        </Element>
+        <Element Type="Trigger" Id="5D09125A">
+            <Identifier>HeroXalatathVoidEruptionOn</Identifier>
+            <InitOff/>
+            <Event Type="FunctionCall" Library="HXAL" Id="2DF9FA52"/>
+            <Action Type="FunctionCall" Library="HXAL" Id="413ED5EB"/>
+            <Action Type="FunctionCall" Library="HXAL" Id="2B1F9D15"/>
+        </Element>
+        <Element Type="FunctionCall" Id="2DF9FA52">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="3C0566C4"/>
+            <Parameter Type="Param" Library="HXAL" Id="3B1160D4"/>
+            <Parameter Type="Param" Library="HXAL" Id="3F210F54"/>
+            <Parameter Type="Param" Library="HXAL" Id="94F24D58"/>
+        </Element>
+        <Element Type="Param" Id="3B1160D4">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="F3A8B0DC"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="C84C7A78"/>
+        </Element>
+        <Element Type="Param" Id="3F210F54">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="1CDCC284"/>
+            <Value>XalatathVoidEruptionV2CasterBehavior</Value>
+            <ValueType Type="gamelink"/>
+            <ValueGameType Type="Behavior"/>
+        </Element>
+        <Element Type="Param" Id="94F24D58">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="3029CA3C"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="079527A6"/>
+        </Element>
+        <Element Type="FunctionCall" Id="413ED5EB">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="A0F31305"/>
+            <Parameter Type="Param" Library="HXAL" Id="0DE929B9"/>
+            <Parameter Type="Param" Library="HXAL" Id="D86C4F16"/>
+            <Parameter Type="Param" Library="HXAL" Id="9A3C24BA"/>
+        </Element>
+        <Element Type="Param" Id="0DE929B9">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="5BFF7323"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="00000085"/>
+        </Element>
+        <Element Type="Param" Id="D86C4F16">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="6725C0EB"/>
+            <Value>1</Value>
+            <ValueType Type="int"/>
+        </Element>
+        <Element Type="Param" Id="9A3C24BA">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="7B3B0884"/>
+            <Variable Type="Variable" Library="HXAL" Id="B718D001"/>
+        </Element>
+        <Element Type="FunctionCall" Id="2B1F9D15">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000111"/>
+            <Parameter Type="Param" Library="HXAL" Id="997E4590"/>
+            <Parameter Type="Param" Library="HXAL" Id="202E9DE5"/>
+        </Element>
+        <Element Type="Param" Id="997E4590">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000177"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="00000538"/>
+        </Element>
+        <Element Type="Param" Id="202E9DE5">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000176"/>
+            <ValueType Type="trigger"/>
+            <ValueElement Type="Trigger" Library="HXAL" Id="0AF8AF08"/>
+        </Element>
+        <Element Type="Trigger" Id="9B4E8A41">
+            <Identifier>HeroXalatathVoidEruptionOff</Identifier>
+            <InitOff/>
+            <Event Type="FunctionCall" Library="HXAL" Id="B03C2A0F"/>
+            <Action Type="FunctionCall" Library="HXAL" Id="1EFE0EA1"/>
+            <Action Type="FunctionCall" Library="HXAL" Id="EEC05FA0"/>
+            <Action Type="FunctionCall" Library="HXAL" Id="90407ADE"/>
+        </Element>
+        <Element Type="FunctionCall" Id="B03C2A0F">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="3C0566C4"/>
+            <Parameter Type="Param" Library="HXAL" Id="18CFB893"/>
+            <Parameter Type="Param" Library="HXAL" Id="5179EC23"/>
+            <Parameter Type="Param" Library="HXAL" Id="3F48BB50"/>
+        </Element>
+        <Element Type="Param" Id="18CFB893">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="F3A8B0DC"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="C84C7A78"/>
+        </Element>
+        <Element Type="Param" Id="5179EC23">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="1CDCC284"/>
+            <Value>XalatathVoidEruptionV2CasterBehavior</Value>
+            <ValueType Type="gamelink"/>
+            <ValueGameType Type="Behavior"/>
+        </Element>
+        <Element Type="Param" Id="3F48BB50">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="3029CA3C"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="77C172A5"/>
+        </Element>
+        <Element Type="FunctionCall" Id="1EFE0EA1">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="A0F31305"/>
+            <Parameter Type="Param" Library="HXAL" Id="09FD9B3B"/>
+            <Parameter Type="Param" Library="HXAL" Id="9E6133F4"/>
+            <Parameter Type="Param" Library="HXAL" Id="50AAF38D"/>
+        </Element>
+        <Element Type="Param" Id="09FD9B3B">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="5BFF7323"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="00000086"/>
+        </Element>
+        <Element Type="Param" Id="9E6133F4">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="6725C0EB"/>
+            <Value>1</Value>
+            <ValueType Type="int"/>
+        </Element>
+        <Element Type="Param" Id="50AAF38D">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="7B3B0884"/>
+            <Variable Type="Variable" Library="HXAL" Id="B718D001"/>
+        </Element>
+        <Element Type="FunctionCall" Id="EEC05FA0">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000137"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="95CEC2A2"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="352CFC33"/>
+        </Element>
+        <Element Type="FunctionCall" Id="95CEC2A2">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000136"/>
+            <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000004"/>
+            <Parameter Type="Param" Library="HXAL" Id="27D5CD4B"/>
+            <Parameter Type="Param" Library="HXAL" Id="7E3FB6F9"/>
+        </Element>
+        <Element Type="Param" Id="27D5CD4B">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000220"/>
+            <Value>0</Value>
+            <ValueType Type="int"/>
+        </Element>
+        <Element Type="Param" Id="7E3FB6F9">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000219"/>
+            <Variable Type="Variable" Library="HXAL" Id="B718D001"/>
+        </Element>
+        <Element Type="FunctionCall" Id="352CFC33">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="C439C375"/>
+            <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000003"/>
+            <Parameter Type="Param" Library="HXAL" Id="0AD68E9D"/>
+            <Parameter Type="Param" Library="HXAL" Id="D597E55D"/>
+            <Parameter Type="Param" Library="HXAL" Id="8DC63337"/>
+        </Element>
+        <Element Type="Param" Id="0AD68E9D">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="51567265"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="684CA9CE"/>
+        </Element>
+        <Element Type="Param" Id="D597E55D">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="4A15EC5F"/>
+            <Value>0</Value>
+            <ValueType Type="int"/>
+        </Element>
+        <Element Type="Param" Id="8DC63337">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="ABB380C4"/>
+            <Variable Type="Variable" Library="HXAL" Id="B718D001"/>
+        </Element>
+        <Element Type="FunctionCall" Id="90407ADE">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000137"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="517DB3E9"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="5F6A37A3"/>
+        </Element>
+        <Element Type="FunctionCall" Id="517DB3E9">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000111"/>
+            <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000004"/>
+            <Parameter Type="Param" Library="HXAL" Id="54050EF0"/>
+            <Parameter Type="Param" Library="HXAL" Id="6BE01677"/>
+        </Element>
+        <Element Type="Param" Id="54050EF0">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000177"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="00000545"/>
+        </Element>
+        <Element Type="Param" Id="6BE01677">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000176"/>
+            <ValueType Type="trigger"/>
+            <ValueElement Type="Trigger" Library="HXAL" Id="0AF8AF08"/>
+        </Element>
+        <Element Type="FunctionCall" Id="5F6A37A3">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="C439C375"/>
+            <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000003"/>
+            <Parameter Type="Param" Library="HXAL" Id="D2F877CE"/>
+            <Parameter Type="Param" Library="HXAL" Id="2BAE2B16"/>
+            <Parameter Type="Param" Library="HXAL" Id="567D1DAF"/>
+        </Element>
+        <Element Type="Param" Id="D2F877CE">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="51567265"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="1E7A4625"/>
+        </Element>
+        <Element Type="Param" Id="2BAE2B16">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="4A15EC5F"/>
+            <Value>0</Value>
+            <ValueType Type="int"/>
+        </Element>
+        <Element Type="Param" Id="567D1DAF">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="ABB380C4"/>
+            <Variable Type="Variable" Library="HXAL" Id="B718D001"/>
+        </Element>
+        <Element Type="Trigger" Id="0AF8AF08">
+            <Identifier>HeroXalatathVoidEruptionPlayerClicked</Identifier>
+            <InitOff/>
+            <Variable Type="Variable" Library="HXAL" Id="7CED096F"/>
+            <Variable Type="Variable" Library="HXAL" Id="CFA83E7A"/>
+            <Condition Type="FunctionCall" Library="HXAL" Id="E5A64A70"/>
+            <Action Type="FunctionCall" Library="HXAL" Id="F7B678F4"/>
+            <Action Type="FunctionCall" Library="HXAL" Id="E7DAE1E7"/>
+        </Element>
+        <Element Type="Variable" Id="7CED096F">
+            <Identifier>playerID</Identifier>
+            <VariableType>
+                <Type Value="int"/>
+            </VariableType>
+            <Value Type="Param" Library="HXAL" Id="12FB0699"/>
+        </Element>
+        <Element Type="Param" Id="12FB0699">
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="28031E89"/>
+        </Element>
+        <Element Type="FunctionCall" Id="28031E89">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000053"/>
+        </Element>
+        <Element Type="Variable" Id="CFA83E7A">
+            <Identifier>heroUnit</Identifier>
+            <VariableType>
+                <Type Value="unit"/>
+            </VariableType>
+            <Value Type="Param" Library="HXAL" Id="37D8FDFC"/>
+        </Element>
+        <Element Type="Param" Id="37D8FDFC">
+            <Variable Type="Variable" Library="Game" Id="A77A5F62"/>
+            <StructMember Type="Param" Library="HXAL" Id="E5B1BF83"/>
+            <Array Type="Param" Library="HXAL" Id="C7A65F1D"/>
+        </Element>
+        <Element Type="Param" Id="E5B1BF83">
+            <Variable Type="Variable" Library="Game" Id="4456E858"/>
+        </Element>
+        <Element Type="Param" Id="C7A65F1D">
+            <Variable Type="Variable" Library="HXAL" Id="7CED096F"/>
+        </Element>
+        <Element Type="FunctionCall" Id="E5A64A70">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="C439C375"/>
+            <Parameter Type="Param" Library="HXAL" Id="929D17F6"/>
+            <Parameter Type="Param" Library="HXAL" Id="9B4C07A1"/>
+            <Parameter Type="Param" Library="HXAL" Id="FE64764B"/>
+        </Element>
+        <Element Type="Param" Id="929D17F6">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="ABB380C4"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="1ADDEF86"/>
+        </Element>
+        <Element Type="FunctionCall" Id="1ADDEF86">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="A7C9E6B1"/>
+        </Element>
+        <Element Type="Param" Id="9B4C07A1">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="51567265"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="1E7A4625"/>
+        </Element>
+        <Element Type="Param" Id="FE64764B">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="4A15EC5F"/>
+            <Value>false</Value>
+            <ValueType Type="bool"/>
+        </Element>
+        <Element Type="FunctionCall" Id="F7B678F4">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000137"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="A353C11B"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="554F7CEB"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="009A06BA"/>
+        </Element>
+        <Element Type="FunctionCall" Id="A353C11B">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="C439C375"/>
+            <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000003"/>
+            <Parameter Type="Param" Library="HXAL" Id="43008248"/>
+            <Parameter Type="Param" Library="HXAL" Id="E655CC7C"/>
+            <Parameter Type="Param" Library="HXAL" Id="085DC1F7"/>
+        </Element>
+        <Element Type="Param" Id="43008248">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="ABB380C4"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="F145C222"/>
+        </Element>
+        <Element Type="FunctionCall" Id="F145C222">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="142FF15A"/>
+            <Parameter Type="Param" Library="HXAL" Id="F4A1DE06"/>
+            <Parameter Type="Param" Library="HXAL" Id="8646D33D"/>
+        </Element>
+        <Element Type="Param" Id="F4A1DE06">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="033DFD05"/>
+            <Variable Type="Variable" Library="HXAL" Id="CFA83E7A"/>
+        </Element>
+        <Element Type="Param" Id="8646D33D">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="B29EDD13"/>
+            <Value>XalatathVoidEruptionV2CasterBehavior</Value>
+            <ValueType Type="gamelink"/>
+            <ValueGameType Type="Behavior"/>
+        </Element>
+        <Element Type="Param" Id="E655CC7C">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="51567265"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="1E7A4625"/>
+        </Element>
+        <Element Type="Param" Id="085DC1F7">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="4A15EC5F"/>
+            <Value>true</Value>
+            <ValueType Type="bool"/>
+        </Element>
+        <Element Type="FunctionCall" Id="554F7CEB">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000089"/>
+            <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000004"/>
+            <Parameter Type="Param" Library="HXAL" Id="A26DFA05"/>
+            <Parameter Type="Param" Library="HXAL" Id="D0E9B0EB"/>
+            <Parameter Type="Param" Library="HXAL" Id="815CA6B7"/>
+        </Element>
+        <Element Type="Param" Id="A26DFA05">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000156"/>
+            <Variable Type="Variable" Library="HXAL" Id="CFA83E7A"/>
+        </Element>
+        <Element Type="Param" Id="D0E9B0EB">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000157"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="58709ADD"/>
+        </Element>
+        <Element Type="FunctionCall" Id="58709ADD">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="43F16BA5"/>
+            <Parameter Type="Param" Library="HXAL" Id="51B59A36"/>
+            <Parameter Type="Param" Library="HXAL" Id="E0FF47C3"/>
+        </Element>
+        <Element Type="Param" Id="51B59A36">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="B796880B"/>
+            <Value>XalatathVoidEruptionV2Cancel</Value>
+            <ValueType Type="abilcmd"/>
+            <ValueTypeInfo Value="2"/>
+        </Element>
+        <Element Type="Param" Id="E0FF47C3">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="32BBED47"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="546A8A77"/>
+        </Element>
+        <Element Type="FunctionCall" Id="546A8A77">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000022"/>
+            <Parameter Type="Param" Library="HXAL" Id="99B66327"/>
+            <Parameter Type="Param" Library="HXAL" Id="4065671C"/>
+        </Element>
+        <Element Type="Param" Id="99B66327">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000034"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="19EF3A8D"/>
+        </Element>
+        <Element Type="FunctionCall" Id="19EF3A8D">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="D606E2CD"/>
+        </Element>
+        <Element Type="Param" Id="4065671C">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000035"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="934834C5"/>
+        </Element>
+        <Element Type="FunctionCall" Id="934834C5">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="451E6FB0"/>
+        </Element>
+        <Element Type="Param" Id="815CA6B7">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000158"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="00000039"/>
+        </Element>
+        <Element Type="FunctionCall" Id="009A06BA">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000139"/>
+            <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000004"/>
+        </Element>
+        <Element Type="FunctionCall" Id="E7DAE1E7">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000137"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="A6F4EF8E"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="ED4BF371"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="3949C3CA"/>
+        </Element>
+        <Element Type="FunctionCall" Id="A6F4EF8E">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000089"/>
+            <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000004"/>
+            <Parameter Type="Param" Library="HXAL" Id="A65C4A9A"/>
+            <Parameter Type="Param" Library="HXAL" Id="FBB35B9F"/>
+            <Parameter Type="Param" Library="HXAL" Id="2B4D49D3"/>
+        </Element>
+        <Element Type="Param" Id="A65C4A9A">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000156"/>
+            <Variable Type="Variable" Library="Game" Id="A77A5F62"/>
+            <StructMember Type="Param" Library="HXAL" Id="CCC17750"/>
+            <Array Type="Param" Library="HXAL" Id="0EB1A542"/>
+        </Element>
+        <Element Type="Param" Id="CCC17750">
+            <Variable Type="Variable" Library="Game" Id="28CBB92F"/>
+        </Element>
+        <Element Type="Param" Id="0EB1A542">
+            <Variable Type="Variable" Library="HXAL" Id="7CED096F"/>
+        </Element>
+        <Element Type="Param" Id="FBB35B9F">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000157"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="99C63DE8"/>
+        </Element>
+        <Element Type="FunctionCall" Id="99C63DE8">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="43F16BA5"/>
+            <Parameter Type="Param" Library="HXAL" Id="F3DD1AA7"/>
+            <Parameter Type="Param" Library="HXAL" Id="A9C4C6D8"/>
+        </Element>
+        <Element Type="Param" Id="F3DD1AA7">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="B796880B"/>
+            <Value>XalatathVoidEruptionV2Cancel</Value>
+            <ValueType Type="abilcmd"/>
+            <ValueTypeInfo Value="2"/>
+        </Element>
+        <Element Type="Param" Id="A9C4C6D8">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="32BBED47"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="ABF65CF4"/>
+        </Element>
+        <Element Type="FunctionCall" Id="ABF65CF4">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000022"/>
+            <Parameter Type="Param" Library="HXAL" Id="4BCD433A"/>
+            <Parameter Type="Param" Library="HXAL" Id="65E7F1E5"/>
+        </Element>
+        <Element Type="Param" Id="4BCD433A">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000034"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="C3C9A32A"/>
+        </Element>
+        <Element Type="FunctionCall" Id="C3C9A32A">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="D606E2CD"/>
+        </Element>
+        <Element Type="Param" Id="65E7F1E5">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000035"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="50E66F8D"/>
+        </Element>
+        <Element Type="FunctionCall" Id="50E66F8D">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="451E6FB0"/>
+        </Element>
+        <Element Type="Param" Id="2B4D49D3">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000158"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="00000039"/>
+        </Element>
+        <Element Type="FunctionCall" Id="ED4BF371">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="C439C375"/>
+            <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000003"/>
+            <Parameter Type="Param" Library="HXAL" Id="9549D03A"/>
+            <Parameter Type="Param" Library="HXAL" Id="83ACB05E"/>
+            <Parameter Type="Param" Library="HXAL" Id="7B100559"/>
+        </Element>
+        <Element Type="Param" Id="9549D03A">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="ABB380C4"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="D41C8843"/>
+        </Element>
+        <Element Type="FunctionCall" Id="D41C8843">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000079"/>
+            <Parameter Type="Param" Library="HXAL" Id="0069BFC8"/>
+        </Element>
+        <Element Type="Param" Id="0069BFC8">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000138"/>
+            <Variable Type="Variable" Library="Game" Id="A77A5F62"/>
+            <StructMember Type="Param" Library="HXAL" Id="7B1D3D75"/>
+            <Array Type="Param" Library="HXAL" Id="B2645721"/>
+        </Element>
+        <Element Type="Param" Id="7B1D3D75">
+            <Variable Type="Variable" Library="Game" Id="4456E858"/>
+        </Element>
+        <Element Type="Param" Id="B2645721">
+            <Variable Type="Variable" Library="HXAL" Id="7CED096F"/>
+        </Element>
+        <Element Type="Param" Id="83ACB05E">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="51567265"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="1E7A4625"/>
+        </Element>
+        <Element Type="Param" Id="7B100559">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="4A15EC5F"/>
+            <Value>HeroAbathur</Value>
+            <ValueType Type="gamelink"/>
+            <ValueGameType Type="Unit"/>
+        </Element>
+        <Element Type="FunctionCall" Id="3949C3CA">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="C439C375"/>
+            <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000003"/>
+            <Parameter Type="Param" Library="HXAL" Id="4E6B7006"/>
+            <Parameter Type="Param" Library="HXAL" Id="08063882"/>
+            <Parameter Type="Param" Library="HXAL" Id="73FD0D22"/>
+        </Element>
+        <Element Type="Param" Id="4E6B7006">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="ABB380C4"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="5C2FB41C"/>
+        </Element>
+        <Element Type="FunctionCall" Id="5C2FB41C">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="142FF15A"/>
+            <Parameter Type="Param" Library="HXAL" Id="25DEB21D"/>
+            <Parameter Type="Param" Library="HXAL" Id="88B52AB8"/>
+        </Element>
+        <Element Type="Param" Id="25DEB21D">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="033DFD05"/>
+            <Variable Type="Variable" Library="Game" Id="A77A5F62"/>
+            <StructMember Type="Param" Library="HXAL" Id="290FB4BA"/>
+            <Array Type="Param" Library="HXAL" Id="BDD16495"/>
+        </Element>
+        <Element Type="Param" Id="290FB4BA">
+            <Variable Type="Variable" Library="Game" Id="28CBB92F"/>
+        </Element>
+        <Element Type="Param" Id="BDD16495">
+            <Variable Type="Variable" Library="HXAL" Id="7CED096F"/>
+        </Element>
+        <Element Type="Param" Id="88B52AB8">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="B29EDD13"/>
+            <Value>XalatathVoidEruptionV2CasterBehavior</Value>
+            <ValueType Type="gamelink"/>
+            <ValueGameType Type="Behavior"/>
+        </Element>
+        <Element Type="Param" Id="08063882">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="51567265"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="1E7A4625"/>
+        </Element>
+        <Element Type="Param" Id="73FD0D22">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="4A15EC5F"/>
+            <Value>true</Value>
+            <ValueType Type="bool"/>
+        </Element>
         <Element Type="Category" Id="9D9CD3BF">
             <Item Type="Variable" Library="HXAL" Id="1D59C9D8"/>
             <Item Type="FunctionDef" Library="HXAL" Id="C4DC85CC"/>
@@ -815,6 +1395,7 @@
             <FlagCall/>
             <FunctionCall Type="FunctionCall" Library="HXAL" Id="65D59E74"/>
             <FunctionCall Type="FunctionCall" Library="HXAL" Id="31009819"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="43FE1D35"/>
             <FunctionCall Type="FunctionCall" Library="HXAL" Id="65D80823"/>
         </Element>
         <Element Type="FunctionCall" Id="65D59E74">
@@ -838,12 +1419,30 @@
         </Element>
         <Element Type="FunctionCall" Id="31009819">
             <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000137"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="D339304E"/>
             <FunctionCall Type="FunctionCall" Library="HXAL" Id="260E837F"/>
             <FunctionCall Type="FunctionCall" Library="HXAL" Id="5911E540"/>
             <FunctionCall Type="FunctionCall" Library="HXAL" Id="07658B0A"/>
             <FunctionCall Type="FunctionCall" Library="HXAL" Id="12B81A7F"/>
             <FunctionCall Type="FunctionCall" Library="HXAL" Id="507B5F29"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="8113D104"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="C5D02EAB"/>
             <FunctionCall Type="FunctionCall" Library="HXAL" Id="CF027725"/>
+        </Element>
+        <Element Type="FunctionCall" Id="D339304E">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000111"/>
+            <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000004"/>
+            <Parameter Type="Param" Library="HXAL" Id="81D6B2F4"/>
+            <Parameter Type="Param" Library="HXAL" Id="5AEA577C"/>
+        </Element>
+        <Element Type="Param" Id="81D6B2F4">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000176"/>
+            <ValueType Type="trigger"/>
+            <ValueElement Type="Trigger" Library="HXAL" Id="EF17A6B0"/>
+        </Element>
+        <Element Type="Param" Id="5AEA577C">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000177"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="00000538"/>
         </Element>
         <Element Type="FunctionCall" Id="260E837F">
             <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000111"/>
@@ -920,6 +1519,36 @@
             <ParameterDef Type="ParamDef" Library="Ntve" Id="00000177"/>
             <Preset Type="PresetValue" Library="Ntve" Id="00000538"/>
         </Element>
+        <Element Type="FunctionCall" Id="8113D104">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000111"/>
+            <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000004"/>
+            <Parameter Type="Param" Library="HXAL" Id="E8346DF3"/>
+            <Parameter Type="Param" Library="HXAL" Id="3161827D"/>
+        </Element>
+        <Element Type="Param" Id="E8346DF3">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000176"/>
+            <ValueType Type="trigger"/>
+            <ValueElement Type="Trigger" Library="HXAL" Id="5D09125A"/>
+        </Element>
+        <Element Type="Param" Id="3161827D">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000177"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="00000538"/>
+        </Element>
+        <Element Type="FunctionCall" Id="C5D02EAB">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000111"/>
+            <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000004"/>
+            <Parameter Type="Param" Library="HXAL" Id="A5EF30DF"/>
+            <Parameter Type="Param" Library="HXAL" Id="9A24B72C"/>
+        </Element>
+        <Element Type="Param" Id="A5EF30DF">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000176"/>
+            <ValueType Type="trigger"/>
+            <ValueElement Type="Trigger" Library="HXAL" Id="9B4E8A41"/>
+        </Element>
+        <Element Type="Param" Id="9A24B72C">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000177"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="00000538"/>
+        </Element>
         <Element Type="FunctionCall" Id="CF027725">
             <FunctionDef Type="FunctionDef" Library="Ntve" Id="C439C375"/>
             <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000003"/>
@@ -939,6 +1568,25 @@
             <ParameterDef Type="ParamDef" Library="Ntve" Id="4A15EC5F"/>
             <Value>1</Value>
             <ValueType Type="int"/>
+        </Element>
+        <Element Type="FunctionCall" Id="43FE1D35">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000116"/>
+            <Parameter Type="Param" Library="HXAL" Id="975B3997"/>
+            <Parameter Type="Param" Library="HXAL" Id="8B249A3A"/>
+            <Parameter Type="Param" Library="HXAL" Id="B11D9DF2"/>
+        </Element>
+        <Element Type="Param" Id="975B3997">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000183"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="00000065"/>
+        </Element>
+        <Element Type="Param" Id="8B249A3A">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000184"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="00000068"/>
+        </Element>
+        <Element Type="Param" Id="B11D9DF2">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000182"/>
+            <ValueType Type="trigger"/>
+            <ValueElement Type="Trigger" Library="HXAL" Id="EF17A6B0"/>
         </Element>
         <Element Type="FunctionCall" Id="65D80823">
             <Disabled/>
@@ -1050,10 +1698,14 @@
         <Element Type="FunctionCall" Id="CC5CD7F2">
             <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000137"/>
             <FunctionCall Type="FunctionCall" Library="HXAL" Id="549494B8"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="580FDA39"/>
             <FunctionCall Type="FunctionCall" Library="HXAL" Id="0578284F"/>
             <FunctionCall Type="FunctionCall" Library="HXAL" Id="8A609A50"/>
             <FunctionCall Type="FunctionCall" Library="HXAL" Id="C2C00EB2"/>
             <FunctionCall Type="FunctionCall" Library="HXAL" Id="A8925829"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="A17C8A28"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="0946C9B0"/>
+            <FunctionCall Type="FunctionCall" Library="HXAL" Id="D45709FF"/>
             <FunctionCall Type="FunctionCall" Library="HXAL" Id="552D7094"/>
         </Element>
         <Element Type="FunctionCall" Id="549494B8">
@@ -1065,9 +1717,24 @@
         <Element Type="Param" Id="B5741C99">
             <ParameterDef Type="ParamDef" Library="Ntve" Id="00000176"/>
             <ValueType Type="trigger"/>
-            <ValueElement Type="Trigger" Library="HXAL" Id="38E1FEC6"/>
+            <ValueElement Type="Trigger" Library="HXAL" Id="EF17A6B0"/>
         </Element>
         <Element Type="Param" Id="B68288A8">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000177"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="00000545"/>
+        </Element>
+        <Element Type="FunctionCall" Id="580FDA39">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000111"/>
+            <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000004"/>
+            <Parameter Type="Param" Library="HXAL" Id="EC5A3CBC"/>
+            <Parameter Type="Param" Library="HXAL" Id="62D8226B"/>
+        </Element>
+        <Element Type="Param" Id="EC5A3CBC">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000176"/>
+            <ValueType Type="trigger"/>
+            <ValueElement Type="Trigger" Library="HXAL" Id="38E1FEC6"/>
+        </Element>
+        <Element Type="Param" Id="62D8226B">
             <ParameterDef Type="ParamDef" Library="Ntve" Id="00000177"/>
             <Preset Type="PresetValue" Library="Ntve" Id="00000545"/>
         </Element>
@@ -1128,6 +1795,51 @@
             <ValueElement Type="Trigger" Library="HXAL" Id="6DD4AB31"/>
         </Element>
         <Element Type="Param" Id="73A9697B">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000177"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="00000545"/>
+        </Element>
+        <Element Type="FunctionCall" Id="A17C8A28">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000136"/>
+            <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000004"/>
+            <Parameter Type="Param" Library="HXAL" Id="BC007041"/>
+            <Parameter Type="Param" Library="HXAL" Id="8BE83468"/>
+        </Element>
+        <Element Type="Param" Id="BC007041">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000220"/>
+            <Value>0</Value>
+            <ValueType Type="int"/>
+        </Element>
+        <Element Type="Param" Id="8BE83468">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000219"/>
+            <Variable Type="Variable" Library="HXAL" Id="B718D001"/>
+        </Element>
+        <Element Type="FunctionCall" Id="0946C9B0">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000111"/>
+            <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000004"/>
+            <Parameter Type="Param" Library="HXAL" Id="417CFF02"/>
+            <Parameter Type="Param" Library="HXAL" Id="DCFD4E5C"/>
+        </Element>
+        <Element Type="Param" Id="417CFF02">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000176"/>
+            <ValueType Type="trigger"/>
+            <ValueElement Type="Trigger" Library="HXAL" Id="5D09125A"/>
+        </Element>
+        <Element Type="Param" Id="DCFD4E5C">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000177"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="00000545"/>
+        </Element>
+        <Element Type="FunctionCall" Id="D45709FF">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000111"/>
+            <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000004"/>
+            <Parameter Type="Param" Library="HXAL" Id="AA37FA15"/>
+            <Parameter Type="Param" Library="HXAL" Id="E5EB0C32"/>
+        </Element>
+        <Element Type="Param" Id="AA37FA15">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000176"/>
+            <ValueType Type="trigger"/>
+            <ValueElement Type="Trigger" Library="HXAL" Id="9B4E8A41"/>
+        </Element>
+        <Element Type="Param" Id="E5EB0C32">
             <ParameterDef Type="ParamDef" Library="Ntve" Id="00000177"/>
             <Preset Type="PresetValue" Library="Ntve" Id="00000545"/>
         </Element>

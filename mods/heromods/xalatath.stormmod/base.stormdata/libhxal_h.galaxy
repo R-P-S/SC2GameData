@@ -4,6 +4,7 @@ include "TriggerLibs/HeroesLib"
 // Library: Xal'atath
 //--------------------------------------------------------------------------------------------------
 // Variable Declarations
+int libHXAL_gv_heroXalatathVoidEruptionPlayerCount;
 unitgroup[libCore_gv_bALMaxPlayers + 1] libHXAL_gv_heroXalatathVoidStepUnitGroup;
 int libHXAL_gv_heroXalatathTriggerRegistrationVariable;
 unit[libCore_gv_bALMaxPlayers + 1] libHXAL_gv_heroXalatathCurrentAttackTarget;
@@ -13,7 +14,11 @@ void libHXAL_gf_HeroXalatathIncrementHeroCountFunction ();
 void libHXAL_gf_HeroXalatathDecrementHeroCountFunction ();
 
 // Trigger Declarations
+trigger libHXAL_gt_HeroXalatathHeroSpawned;
 trigger libHXAL_gt_HeroXalatathVoidVolleyCooldownReset;
+trigger libHXAL_gt_HeroXalatathVoidEruptionOn;
+trigger libHXAL_gt_HeroXalatathVoidEruptionOff;
+trigger libHXAL_gt_HeroXalatathVoidEruptionPlayerClicked;
 trigger libHXAL_gt_HeroXalatathHeroWeaponApplyTargetingUnit;
 trigger libHXAL_gt_HeroXalatathTargetAcquired;
 trigger libHXAL_gt_HeroXalatathForceAcquireTargetTaunt;

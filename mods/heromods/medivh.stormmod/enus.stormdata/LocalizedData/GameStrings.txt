@@ -1,7 +1,7 @@
 ﻿Abil/MedivhInvisibility/Activity=
 Abil/MedivhLeyLineSeal/Activity=Casting
 Abil/MedivhLeyLineSealMedivhCheats/Activity=
-Abil/MedivhPortalMasteryCooldownOverride=16 seconds
+Abil/MedivhPortalMasteryCooldownOverride=20 seconds
 Abil/MedivhSealFate/Activity=Casting
 Abil/MedivhTransformRaven/Activity=Raven Form
 Abil/Name/MedivhArcaneBrilliance=Arcane Brilliance
@@ -110,7 +110,7 @@ Button/SimpleDisplayText/MedivhTemporalFlux=Arcane Rift reduces Heroic cooldown
 Button/SimpleDisplayText/MedivhTransformRaven=Transform into a raven
 Button/SimpleDisplayText/MedivhTransformRavenBirdsEyeView=Increases Raven Form vision range
 Button/SimpleDisplayText/MedivhTransformRavenRavensIntellect=Raven Form increases Health and Mana Regen
-Button/SimpleDisplayText/MedivhTransformRavenWindsOfCelerity=Increases Raven Form Movement Speed
+Button/SimpleDisplayText/MedivhTransformRavenWindsOfCelerity=Increases Raven Form Movement and Cast Speed
 Button/Tooltip/MedivhArcaneBrilliance=Activate to instantly restore <c val="#TooltipNumbers"><d ref="Effect,MedivhArcaneBrillianceManaRestore,RechargeVitalRate"/></c> mana to all nearby allied Heroes and grant them <c val="#TooltipNumbers"><d ref="Behavior,MedivhArcaneBrilliance,Modification.DamageDealtFraction[Ability]*100"/>%</c> Spell Power for <c val="#TooltipNumbers"><d ref="Behavior,MedivhArcaneBrilliance,Duration"/></c> seconds.
 Button/Tooltip/MedivhArcaneRift=Launch a rift that deals <c val="#TooltipNumbers"><d ref="Effect,MedivhArcaneRiftDamage,Amount"/></c> damage to enemies in its path. If an enemy Hero is hit, reduce its cooldown by <c val="#TooltipNumbers"><d ref="Effect,MedivhArcaneRiftCooldownReduction,Cost[0].CooldownTimeUse*(-1)" precision="1" player="0"/></c> seconds and refund <c val="#TooltipNumbers"><d ref="Effect,MedivhArcaneRiftManaRefund,RechargeVitalRate" player="0"/></c> Mana.<n/><n/><img path="@UI/StormTalentInTextQuestIcon" alignment="uppermiddle" color="B48E4C" width="20" height="22"/><c val="#TooltipQuest">Quest:</c> Hit <c val="#TooltipNumbers"><d ref="Behavior,MedivhArcaneRiftTheMastersTouchQuestToken,Max"/></c> enemy Heroes with Arcane Rift without dying.<n/><n/><img path="@UI/StormTalentInTextQuestIcon" alignment="uppermiddle" color="B48E4C" width="20" height="22"/><c val="#TooltipQuest">Reward:</c> Permanently increase the damage dealt by <c val="#TooltipNumbers"><d ref="Effect,MedivhArcaneRiftDamage,FlatModifierArray[MastersTouchDamage].Modifier"/></c> and cooldown reduction for hitting a Hero by <c val="#TooltipNumbers"><d ref="Effect,MedivhArcaneRiftTheMastersTouchQuestCompleteModifyPlayer,EffectArray[0].Value" precision="1"/></c> second.
 Button/Tooltip/MedivhArcaneRiftArcaneCharge=When Arcane Rift damages an enemy Hero, the next Arcane Rift deals <c val="#TooltipNumbers"><d ref="100*Effect,MedivhArcaneRiftDamage,MultiplicativeModifierArray[MedivhArcaneCharge].Modifier"/>%</c> more damage.
@@ -139,7 +139,7 @@ Button/Tooltip/MedivhPortalCancel=Destroy current Portal.
 Button/Tooltip/MedivhPortalInstant=Create a set of portals between Medivh and the target location, allowing allies to teleport between both. The portals last <c val="#TooltipNumbers"><d ref="Behavior,MedivhPortalTimedLife,Duration" player="0"/></c> seconds.
 Button/Tooltip/MedivhPortalMageArmor=The first time an ally uses a Portal, they gain <c val="#TooltipNumbers"><d ref="Behavior,MedivhPortalMageArmor,ArmorModification.AllArmorBonus"/></c> Armor for <c val="#TooltipNumbers"><d ref="Behavior,MedivhPortalMageArmor,Duration"/></c> seconds, reducing their damage taken by <c val="#TooltipNumbers"><d ref="Behavior,MedivhPortalMageArmor,ArmorModification.AllArmorBonus"/>%</c>.
 Button/Tooltip/MedivhPortalPortalMastery=Create a Portal entrance or exit at the targeted location. <n/><n/><c val="#ColorCreamYellow">Activate Medivh's Trait to cancel an unlinked Portal</c>.
-Button/Tooltip/MedivhPortalPortalMasteryTalent=Medivh can manually place both Portal locations and it no longer breaks Raven Form. <n/><n/><c val="#ColorCreamYellow">Activate Medivh's Trait to cancel an unlinked Portal</c>.
+Button/Tooltip/MedivhPortalPortalMasteryTalent=<c val="#TooltipRed">+<d ref="(Talent,MedivhPortalPortalMastery,AbilityModificationArray[0].Modifications[0].Value/Abil,MedivhPortal1,Cost[0].Vital[Energy])*100" player="0"/>%</c> Portal Mana Cost</n>Medivh can manually place both Portal locations.<n/><n/><c val="#ColorCreamYellow">Activate Medivh's Trait to cancel an unlinked Portal</c>.
 Button/Tooltip/MedivhPortalQuickening=Reduces Portal cooldown by <c val="#TooltipNumbers"><d ref="Talent,MedivhPortalQuickening,AbilityModificationArray[0].Modifications[0].Value/Abil,MedivhPortal2,Cost[0].Cooldown.TimeUse*(-100)" player="0"/>%</c>.
 Button/Tooltip/MedivhPortalRavenFamiliar=A Raven Familiar joins allies each time they use a Portal. The Raven will dive at the ally's next Basic Attack against a Hero within <c val="#TooltipNumbers"><d ref="Behavior,MedivhPortalRavenFamiliarOwner,Duration"/></c> seconds, dealing <c val="#TooltipNumbers"><d ref="Effect,MedivhPortalRavenFamiliarImpactDamage,Amount"/></c> damage and Slowing them by <c val="#TooltipNumbers"><d ref="-100*Behavior,MedivhPortalRavenFamiliarTalentSlow,Modification.UnifiedMoveSpeedFactor"/>%</c> for <c val="#TooltipNumbers"><d ref="Behavior,MedivhPortalRavenFamiliarTalentSlow,Duration"Precision="2"/></c> seconds.
 Button/Tooltip/MedivhPortalStablePortal=Decrease Portal cooldown by <c val="#TooltipNumbers"><d ref="-100*Talent,MedivhPortalStablePortal,AbilityModificationArray[0].Modifications[3].Value/Abil,MedivhPortalInstant,Cost.Cooldown.TimeUse"precision="2"player="0"/>%</c> and increase Portal duration by <c val="#TooltipNumbers"><d ref="Talent,MedivhPortalStablePortal,AbilityModificationArray[0].Modifications[0].Value/Behavior,MedivhPortalTimedLife,Duration*100" player="0"/>%</c>.
@@ -149,7 +149,7 @@ Button/Tooltip/MedivhTransformRaven=Transform into a raven, increasing Movement 
 Button/Tooltip/MedivhTransformRavenBirdsEyeView=Permanently increase Raven Form's vision range by <c val="#TooltipNumbers">25%</c>. Activate to increase this bonus to <c val="#TooltipNumbers"><d ref="Behavior,MedivhTransformRavenBirdsEyeView,Modification.SightBonus/Unit,HeroMedivhRaven,Sight*100" player="0"/>%</c> for <c val="#TooltipNumbers"><d ref="Behavior,MedivhTransformRavenBirdsEyeView,Duration"/></c> seconds.
 Button/Tooltip/MedivhTransformRavenLand=Cancel Raven Form.
 Button/Tooltip/MedivhTransformRavenRavensIntellect=Raven Form increases Medivh's Mana and Health Regeneration by <c val="#TooltipNumbers"><d ref="Talent,MedivhTransformRavenRavensIntellect,AbilityModificationArray[0].Modifications[0].Value*100"/>%</c>.
-Button/Tooltip/MedivhTransformRavenWindsOfCelerity=Increases Raven Form's Movement Speed bonus by <c val="#TooltipNumbers"><d ref="Talent,MedivhTransformRavenWindsOfCelerity,AbilityModificationArray[0].Modifications[0].Value/Behavior,MedivhTransformRaven,Modification.UnifiedMoveSpeedFactor*100" player="0"/>%</c>.
+Button/Tooltip/MedivhTransformRavenWindsOfCelerity=Increases Raven Form's Movement Speed bonus by <c val="#TooltipNumbers"><d ref="Talent,MedivhTransformRavenWindsOfCelerity,AbilityModificationArray[0].Modifications[0].Value/Behavior,MedivhTransformRaven,Modification.UnifiedMoveSpeedFactor*100" player="0"/>%</c> and reduces the cast time by <c val="#TooltipNumbers">0.25</c> seconds.
 Button/TooltipAppender/LockedUntilGameStarts=<n/><n/><c val="FF0000">LOCKED UNTIL GAME STARTS.</c>
 Button/TooltipAppender/MedivhArcaneRiftTheMastersTouch=<n/><c val="#TooltipQuest">Current Progress:</c> <c val="#TooltipNumbers"><d ref="$BehaviorTokenCount:MedivhArcaneRiftTheMastersTouchQuestToken$"/>/<c val="#TooltipNumbers"><d ref="Behavior,MedivhArcaneRiftTheMastersTouchQuestToken,Max"/></c>
 Button/TooltipAppender/MedivhArcaneRiftTheMastersTouchComplete=<c val="#TooltipQuest">QUEST COMPLETE!</c>
@@ -178,8 +178,9 @@ Param/Value/lib_HMDV_D1AB6E23=Medivh Decrement:
 Param/Value/lib_HMDV_EB9E6C70=%num% Absorbed
 Portal Cancel Hide Mana=
 Portal Cancel Mana Hide=
-Portal Cooldown Override=16 seconds
-Portal Mana Cost Override=65
+Portal Cooldown Override=<d ref="Abil,MedivhPortalInstant,Cost[0].Cooldown.TimeUse" player="0"/> seconds
+Portal Mana Cost Override=<d ref="Abil,MedivhPortalInstant,Cost[0].Vital[Energy]" player="0"/>
+Portal Mastery Mana Cost Override=<d ref="Abil,MedivhPortalMastery,Cost[0].Vital[Energy]" player="0"/>
 Reward/Description/MedivhBasic=You have unlocked Medivh's hero portrait for use in your profile.
 Reward/Description/MedivhEpic=You have unlocked the Medivh master portrait.
 Reward/DescriptionUnearned/MedivhBasic=Unlock Medivh's hero portrait for use in your profile.

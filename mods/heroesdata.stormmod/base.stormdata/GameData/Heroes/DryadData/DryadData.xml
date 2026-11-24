@@ -684,7 +684,7 @@
   </CActorModel>
   <CActorModel id="DryadThornwoodVineCastFX" parent="StormModelAnimationStyleOneShotUnit" />
   <CActorSiteOpLocalOffset id="DryadThornwoodVineMissileActorOffset" />
-  <CActorQuad id="DryadThornwoodVineGuide" parent="StormGuideVisualQuadDown" abil="DryadThornwoodVine">
+  <CActorQuad id="DryadThornwoodVineGuide" parent="StormGuideVisualQuadDownFantasy" abil="DryadThornwoodVine">
     <Height value="$DryadThornwoodVineRange" />
     <Width value="1.400000" />
   </CActorQuad>
@@ -712,7 +712,7 @@
     <On Terms="Effect.DryadThornwoodVineMissileScanImpactSet.Start" Send="Create" />
     <Sound value="Dryad_ThornwoodVine_Impact" />
   </CActorSound>
-  <CActorQuad id="DryadThornwoodVineForTheWildlandsLeftGuide" parent="StormGuideVisualQuadDown" abil="DryadThornwoodVine">
+  <CActorQuad id="DryadThornwoodVineForTheWildlandsLeftGuide" parent="StormGuideVisualQuadDownFantasy" abil="DryadThornwoodVine">
     <Aliases value="_GuideVisualLeft" />
     <Remove Terms="ActorCreation" Send="Create StormGuideRegionQuadDown" />
     <On index="0" Terms="Abil.DryadThornwoodVine.Guide; ValidatePlayer DryadHasForTheWildlands" />
@@ -735,7 +735,7 @@
     <HostSiteOps Ops="DryadThornwoodVineForTheWildlandsLeftRotation" />
     <RegionFlags index="UseEffectRange" value="1" />
   </CActorRegionQuad>
-  <CActorQuad id="DryadThornwoodVineForTheWildlandsRightGuide" parent="StormGuideVisualQuadDown" abil="DryadThornwoodVine">
+  <CActorQuad id="DryadThornwoodVineForTheWildlandsRightGuide" parent="StormGuideVisualQuadDownFantasy" abil="DryadThornwoodVine">
     <Aliases value="_GuideVisualRight" />
     <Remove Terms="ActorCreation" Send="Create StormGuideRegionQuadDown" />
     <On index="0" Terms="Abil.DryadThornwoodVine.Guide; ValidatePlayer DryadHasForTheWildlands" />
@@ -758,13 +758,13 @@
     <HostSiteOps Ops="DryadThornwoodVineForTheWildlandsRightRotation" />
     <RegionFlags index="UseEffectRange" value="1" />
   </CActorRegionQuad>
-  <CActorQuad id="DryadThornwoodVineForTheWildlandsFarLeftGuide" parent="StormGuideVisualQuadDown" abil="DryadThornwoodVine">
+  <CActorQuad id="DryadThornwoodVineForTheWildlandsFarLeftGuide" parent="StormGuideVisualQuadDownFantasy" abil="DryadThornwoodVine">
     <Aliases value="_GuideVisualFarLeft" />
     <Remove Terms="ActorCreation" Send="Create StormGuideRegionQuadDown" />
     <On index="0" Terms="Abil.DryadThornwoodVine.Guide; ValidatePlayer DryadHasForTheWildlands" />
     <On Terms="ActorCreation; IsActorLocalPlayer" Send="Create DryadThornwoodVineForTheWildlandsGuideRegionFarLeft" />
     <Host Subject="_GuideRegionFarLeft" />
-    <Height value="13.000000" />
+    <Height value="$DryadThornwoodVineRange" />
     <Width value="1.400000" />
   </CActorQuad>
   <CActorRegionQuad id="DryadThornwoodVineForTheWildlandsGuideRegionFarLeft" parent="StormGuideRegionClosest">
@@ -781,13 +781,13 @@
     <HostSiteOps Ops="DryadThornwoodVineForTheWildlandsFarLeftRotation" />
     <RegionFlags index="UseEffectRange" value="1" />
   </CActorRegionQuad>
-  <CActorQuad id="DryadThornwoodVineForTheWildlandsFarRightGuide" parent="StormGuideVisualQuadDown" abil="DryadThornwoodVine">
+  <CActorQuad id="DryadThornwoodVineForTheWildlandsFarRightGuide" parent="StormGuideVisualQuadDownFantasy" abil="DryadThornwoodVine">
     <Aliases value="_GuideVisualFarRight" />
     <Remove Terms="ActorCreation" Send="Create StormGuideRegionQuadDown" />
     <On index="0" Terms="Abil.DryadThornwoodVine.Guide; ValidatePlayer DryadHasForTheWildlands" />
     <On Terms="ActorCreation; IsActorLocalPlayer" Send="Create DryadThornwoodVineForTheWildlandsGuideRegionFarRight" />
     <Host Subject="_GuideRegionFarRight" />
-    <Height value="12.000000" />
+    <Height value="$DryadThornwoodVineRange" />
     <Width value="1.400000" />
   </CActorQuad>
   <CActorRegionQuad id="DryadThornwoodVineForTheWildlandsGuideRegionFarRight" parent="StormGuideRegionClosest">

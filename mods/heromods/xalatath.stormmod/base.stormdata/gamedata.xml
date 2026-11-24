@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Includes>
     <Catalog path="GameData/XalatathData.xml" />
-    <Catalog path="GameData/XalatathVoidEruptionData.xml" />
+    <Catalog path="GameData/XalatathVoidEruptionV2Data.xml" />
     <Catalog path="GameData/XalatathVoidVolley2Data.xml" />
     <Catalog path="GameData/XalatathSoundData/XalatathBaseSoundData.xml" />
     <Catalog path="GameData/XalatathSoundData/XalatathBaseVOData.xml" />

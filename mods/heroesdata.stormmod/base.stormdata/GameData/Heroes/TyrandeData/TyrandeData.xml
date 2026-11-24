@@ -2290,8 +2290,14 @@
       <BehaviorArray value="TyrandeLightOfEluneEverlastingLightUICasterBehavior" />
     </RankArray>
   </CTalent>
-  <CTalent id="TyrandeHarshMoonlight" />
-  <CTalent id="TyrandeMoonlitArrows" />
+  <CTalent id="TyrandeHarshMoonlight">
+    <Face value="TyrandeHarshMoonlight" />
+    <Abil value="TyrandeSentinelShot" />
+  </CTalent>
+  <CTalent id="TyrandeMoonlitArrows">
+    <Face value="TyrandeMoonlitArrows" />
+    <Abil value="TyrandeLightofElune" />
+  </CTalent>
   <CTalent id="TyrandeElunesChosen">
     <Face value="TyrandeElunesChosen" />
     <Abil value="TyrandeElunesChosen" />

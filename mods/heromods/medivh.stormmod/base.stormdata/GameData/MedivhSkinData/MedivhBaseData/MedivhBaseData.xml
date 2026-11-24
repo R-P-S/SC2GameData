@@ -401,6 +401,13 @@
     <CModel id="MedivhPolyBombGlyphOfPolyBombCursorSplat" parent="UI">
         <Model value="Assets\UI\Cursors\Storm_UI_AOECursor_Fantasy\Storm_UI_AOECursor_Fantasy.m3"/>
     </CModel>	
+    <CModel id="MedivhForceOfWillCircleOfProtectionSplat" parent="UI">
+        <Model value="Assets\UI\Cursors\Storm_UI_AOECursor_Fantasy\Storm_UI_AOECursor_Fantasy.m3"/>
+        <ScaleMax X="3.000000" Y="3.000000" Z="3.000000"/>
+        <ScaleMin X="3.000000" Y="3.000000" Z="3.000000"/>
+        <SelectionRadius value="2.500000"/>
+        <ShadowRadius value="2.500000"/>
+    </CModel>    
     <CModel id="MedivhArcaneRiftMissile">
         <Model value="Assets\Effects\Storm_FX_Medivh_Base_ArcaneMissile\Storm_FX_Medivh_Base_ArcaneMissile.m3"/>
         <ScaleMax X="0.800000" Y="0.800000" Z="0.800000"/>

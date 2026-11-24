@@ -2205,6 +2205,7 @@
   </CEffectApplyBehavior>
   <CEffectDamage id="AnubarakBurrowChargeDamage" parent="StormSpell">
     <Amount value="91" />
+    <MultiplicativeModifierArray index="Underking" Validator="AnubarakHasAnubarakMasteryUnderkingBurrowCharge" Modifier="1" />
   </CEffectDamage>
   <CEffectApplyBehavior id="AnubarakBurrowChargeApplyBehavior">
     <WhichUnit Value="Caster" />
@@ -3913,55 +3914,6 @@
         <Entry value="AnubarakBurrowChargeGuide" />
         <Field value="Height" />
         <Value value="2.000000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AnubarakBurrowChargeDamage" />
-        <Field value="AttributeFactor[Creep]" />
-        <Value value="1.000000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AnubarakBurrowChargeDamage" />
-        <Field value="AttributeFactor[Tower]" />
-        <Value value="1.000000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AnubarakBurrowChargeDamage" />
-        <Field value="AttributeFactor[Minion]" />
-        <Value value="1.000000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AnubarakBurrowChargeDamage" />
-        <Field value="AttributeFactor[Merc]" />
-        <Value value="1.000000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AnubarakBurrowChargeDamage" />
-        <Field value="AttributeFactor[Structure]" />
-        <Value value="1.000000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AnubarakBurrowChargeDamage" />
-        <Field value="AttributeFactor[Heroic]" />
-        <Value value="1.000000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AnubarakBurrowChargeDamage" />
-        <Field value="AttributeFactor[Summoned]" />
-        <Value value="1.000000" />
       </Modifications>
     </AbilityModificationArray>
   </CTalent>

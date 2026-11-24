@@ -1998,6 +1998,7 @@
     <RechargeVitalRate value="1125" />
     <ValidatorArray value="LeoricDoesNotHaveUndying" />
     <ValidatorArray value="CasterNotDeathwing" />
+    <Flags index="IgnoreBehaviorDealtMultipliers" value="1" />
   </CEffectCreateHealer>
   <CEffectCreateHealer id="HearthstoneManaCreateHealer">
     <ValidatorArray value="CasterIsManaUser" />

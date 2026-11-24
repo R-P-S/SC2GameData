@@ -12,6 +12,8 @@
   <const id="$ChromieSandBlastOnceAgainTheFirstTimeMaximumTokens" value="20" />
   <const id="$ChromieDragonsBreathDeepBreathingMilestoneGoal" value="20" />
   <const id="$PastAndFutureMeUnitRadius" value="0.625" />
+  <const id="$ChromieOnceAgainTheFirstTimeQuestCompleteBonus" value="0.15" />
+  <const id="$ChromieOnceAgainTheFirstTimeQuestTotalBonus" value="+($ChromiePastAndFutureMeDamageModifier $ChromieOnceAgainTheFirstTimeQuestCompleteBonus)" evaluateAsExpression="1" />
   <const id="$ChromieHereAndThereRange" value="40" />
   <const id="$ChromieHereAndThereSlopDistance" value="4" />
   <const id="$ChromieHereAndThereSlopDistanceSplat" value="+($ChromieHereAndThereSlopDistance $PastAndFutureMeUnitRadius)" evaluateAsExpression="1" />
@@ -255,7 +257,7 @@
     <Scale value="0.1" />
   </CAccumulatorToken>
   <CAccumulatorToken id="ChromieDragonsBreathDeepBreathingAccumulator" parent="BaseTokenAccumulator">
-    <Scale value="0.005" />
+    <Scale value="0.006" />
     <TokenId value="ChromieDragonsBreathDeepBreathingQuestToken" />
     <ApplicationRule value="Add" />
   </CAccumulatorToken>
@@ -2009,7 +2011,7 @@
   </CBehaviorTokenCounter>
   <CBehaviorBuff id="ChromieTimewalkersPursuitQuestCompleteAbilityPower" parent="CarryBehaviorParent">
     <Modification>
-      <DamageDealtFraction index="Ability" value="0.15" />
+      <DamageDealtFraction index="Ability" value="0.12" />
     </Modification>
   </CBehaviorBuff>
   <CBehaviorBuff id="ChromieQuantumOverdriveBuff" parent="StormDamageIncrease">
@@ -3238,7 +3240,7 @@
   </CEffectEnumArea>
   <CEffectDamage id="ChromieSandEchoWeaponDamage" parent="ChromieHeroWeaponDamage">
     <MultiplicativeModifierArray index="PastandFutureMe" Validator="ChromieCreatorDoesNotHaveSandBlastOnceAgainTheFirstTimeQuestCompleteBehavior" Modifier="$ChromiePastAndFutureMeDamageModifier" />
-    <MultiplicativeModifierArray index="OnceAgainTheFirstTime" Validator="ChromieCreatorDoesHaveSandBlastOnceAgainTheFirstTimeQuestCompleteBehavior" Modifier="-0.5" />
+    <MultiplicativeModifierArray index="OnceAgainTheFirstTime" Validator="ChromieCreatorDoesHaveSandBlastOnceAgainTheFirstTimeQuestCompleteBehavior" Modifier="$ChromieOnceAgainTheFirstTimeQuestTotalBonus" />
     <Visibility value="Hidden" />
   </CEffectDamage>
   <CEffectSet id="ChromieTimeTrapTargetBehaviorExpireSet">
@@ -3531,7 +3533,7 @@
   </CEffectSet>
   <CEffectDamage id="ChromieSandBlastPastAndFutureMeDamage" parent="ChromieSandBlastDamage">
     <MultiplicativeModifierArray index="PastandFutureMe" Validator="ChromieCreatorDoesNotHaveSandBlastOnceAgainTheFirstTimeQuestCompleteBehavior" Modifier="$ChromiePastAndFutureMeDamageModifier" />
-    <MultiplicativeModifierArray index="OnceAgainTheFirstTime" Validator="ChromieCreatorDoesHaveSandBlastOnceAgainTheFirstTimeQuestCompleteBehavior" Modifier="-0.5" />
+    <MultiplicativeModifierArray index="OnceAgainTheFirstTime" Validator="ChromieCreatorDoesHaveSandBlastOnceAgainTheFirstTimeQuestCompleteBehavior" Modifier="$ChromieOnceAgainTheFirstTimeQuestTotalBonus" />
     <Visibility value="Hidden" />
   </CEffectDamage>
   <CEffectAddTrackedUnit id="ChromieSandEchoSandBlastDamagedUnitTrackerAdd" parent="StormSummonedUnitDamagedUnitTrackerAdd">

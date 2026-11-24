@@ -1198,7 +1198,7 @@
   </CBehaviorBuff>
   <CBehaviorBuff id="GenjiCyberAgilityPathfinderCloak" parent="StormTempCloak">
     <Duration value="4" />
-    <FinalEffect value="RemoveHoldFireBehavior" />
+    <FinalEffect value="GenjiCyberAgilityPathfinderCloakRemoveSet" />
     <DamageResponse Chance="1" Handled="GenjiCyberAgilityPathfinderRemoveCloakBehavior" Priority="97">
       <ValidatorArray value="SourceNotUnrevealable" />
     </DamageResponse>
@@ -1711,6 +1711,13 @@
   <CEffectRemoveBehavior id="GenjiCyberAgilityPathfinderRemoveCloakBehavior">
     <WhichUnit Value="Caster" />
     <BehaviorLink value="GenjiCyberAgilityPathfinderCloak" />
+  </CEffectRemoveBehavior>
+  <CEffectSet id="GenjiCyberAgilityPathfinderCloakRemoveSet">
+    <EffectArray value="GenjiCyberAgilityPathfinderCloakRemoveSafetyBehavior" />
+    <EffectArray value="RemoveHoldFireBehavior" />
+  </CEffectSet>
+  <CEffectRemoveBehavior id="GenjiCyberAgilityPathfinderCloakRemoveSafetyBehavior">
+    <BehaviorLink value="GenjiCyberAgilityPathfinderCloakSafety" />
   </CEffectRemoveBehavior>
   <CEffectSet id="GenjiCyberAgilityPathfinderSearchValidationSet">
     <ValidatorArray value="TargetUnitIsPathingBlocker" />

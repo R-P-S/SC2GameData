@@ -22,10 +22,10 @@
   <const id="$XalatathVoidEruptionDamageTier2" value="500" />
   <const id="$XalatathVoidEruptionDamageTier3" value="600" />
   <const id="$XalatathVoidEruptionDamageTier4" value="700" />
-  <const id="$XalatathVoidEruptionMissileSpeedTier1" value="7" />
-  <const id="$XalatathVoidEruptionMissileSpeedTier2" value="7" />
-  <const id="$XalatathVoidEruptionMissileSpeedTier3" value="7" />
-  <const id="$XalatathVoidEruptionMissileSpeedTier4" value="7" />
+  <const id="$XalatathVoidEruptionMissileSpeedTier1" value="6.3" />
+  <const id="$XalatathVoidEruptionMissileSpeedTier2" value="6.3" />
+  <const id="$XalatathVoidEruptionMissileSpeedTier3" value="6.3" />
+  <const id="$XalatathVoidEruptionMissileSpeedTier4" value="6.3" />
   <const id="$XalatathVoidEruptionMissileRangeTier1" value="1" />
   <const id="$XalatathVoidEruptionMissileRangeTier2" value="1" />
   <const id="$XalatathVoidEruptionMissileRangeTier3" value="1" />
@@ -44,10 +44,10 @@
   <const id="$XalatathVoidEruptionFlightDamageRadiusTier4" value="4" />
   <const id="$XalatathVoidEruptionFlightDamagePeriod" value="0.0625" />
   <const id="$XalatathVoidEruptionFlightDamageCooldown" value="0.25" />
-  <const id="$XalatathVoidEruptionFlightDamagePerSecondTier1" value="1440" />
-  <const id="$XalatathVoidEruptionFlightDamagePerSecondTier2" value="1700" />
-  <const id="$XalatathVoidEruptionFlightDamagePerSecondTier3" value="2160" />
-  <const id="$XalatathVoidEruptionFlightDamagePerSecondTier4" value="2660" />
+  <const id="$XalatathVoidEruptionFlightDamagePerSecondTier1" value="1300" />
+  <const id="$XalatathVoidEruptionFlightDamagePerSecondTier2" value="1530" />
+  <const id="$XalatathVoidEruptionFlightDamagePerSecondTier3" value="1940" />
+  <const id="$XalatathVoidEruptionFlightDamagePerSecondTier4" value="2390" />
   <const id="$XalatathVoidEruptionScanPeriodCountTier1" value="floor(/($XalatathVoidEruptionMissileTimeoutTier1 $XalatathVoidEruptionFlightDamagePeriod))" evaluateAsExpression="1" />
   <const id="$XalatathVoidEruptionScanPeriodCountTier2" value="floor(/($XalatathVoidEruptionMissileTimeoutTier2 $XalatathVoidEruptionFlightDamagePeriod))" evaluateAsExpression="1" />
   <const id="$XalatathVoidEruptionScanPeriodCountTier3" value="floor(/($XalatathVoidEruptionMissileTimeoutTier3 $XalatathVoidEruptionFlightDamagePeriod))" evaluateAsExpression="1" />
@@ -60,10 +60,10 @@
   <const id="$XalatathOrbitalEruptionDamageTier2" value="425" />
   <const id="$XalatathOrbitalEruptionDamageTier3" value="540" />
   <const id="$XalatathOrbitalEruptionDamageTier4" value="665" />
-  <const id="$XalatathOrbitalEruptionFlightDamagePerSecondTier1" value="1440" />
-  <const id="$XalatathOrbitalEruptionFlightDamagePerSecondTier2" value="1700" />
-  <const id="$XalatathOrbitalEruptionFlightDamagePerSecondTier3" value="2160" />
-  <const id="$XalatathOrbitalEruptionFlightDamagePerSecondTier4" value="2660" />
+  <const id="$XalatathOrbitalEruptionFlightDamagePerSecondTier1" value="1300" />
+  <const id="$XalatathOrbitalEruptionFlightDamagePerSecondTier2" value="1530" />
+  <const id="$XalatathOrbitalEruptionFlightDamagePerSecondTier3" value="1940" />
+  <const id="$XalatathOrbitalEruptionFlightDamagePerSecondTier4" value="2390" />
   <const id="$XalatathOrbitalEruptionFlightDamagePerPeriodTier1" value="*($XalatathOrbitalEruptionFlightDamagePerSecondTier1 $XalatathVoidEruptionFlightDamagePeriod)" evaluateAsExpression="1" />
   <const id="$XalatathOrbitalEruptionFlightDamagePerPeriodTier2" value="*($XalatathOrbitalEruptionFlightDamagePerSecondTier2 $XalatathVoidEruptionFlightDamagePeriod)" evaluateAsExpression="1" />
   <const id="$XalatathOrbitalEruptionFlightDamagePerPeriodTier3" value="*($XalatathOrbitalEruptionFlightDamagePerSecondTier3 $XalatathVoidEruptionFlightDamagePeriod)" evaluateAsExpression="1" />
@@ -71,7 +71,7 @@
   <const id="$XalatathVoidEruptionChargeForwardOffset" value="3.5" />
   <const id="$XalatathVoidEruptionChargeDamagePeriodCount" value="+(floor(/($XalatathVoidEruptionChargeDuration $XalatathVoidEruptionFlightDamagePeriod)) 1)" evaluateAsExpression="1" />
   <const id="$XalatathOrbitalEruptionChargeForwardOffset" value="0" />
-  <const id="$XalatathOrbitalEruptionOrbitRevPeriod" value="1.75" />
+  <const id="$XalatathOrbitalEruptionOrbitRevPeriod" value="5" />
   <const id="$XalatathOrbitalEruptionOrbitRadiusTier1" value="1" />
   <const id="$XalatathOrbitalEruptionOrbitRadiusTier2" value="2.5" />
   <const id="$XalatathOrbitalEruptionOrbitRadiusTier3" value="3.5" />
@@ -88,7 +88,7 @@
   <const id="$XalatathVoidEruptionRadiusTier2" value="1.5" />
   <const id="$XalatathVoidEruptionRadiusTier3" value="2.5" />
   <const id="$XalatathVoidEruptionRadiusTier4" value="3.25" />
-  <const id="$XalatathOrbitalEruptionCooldownReductionPerHeroHit" value="14" />
+  <const id="$XalatathOrbitalEruptionCooldownReductionPerHeroHit" value="10" />
   <CAbilEffectTarget id="XalatathVoidEruption" DefaultButtonFace="XalatathVoidEruption" Requirements="Ultimate2Unlocked">
     <Activity value="Abil/XalatathVoidEruptionActivity" />
     <SharedFlags index="QuickCastOnReleaseOnly" value="1" />

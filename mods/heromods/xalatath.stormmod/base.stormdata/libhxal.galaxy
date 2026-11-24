@@ -37,13 +37,17 @@ void libHXAL_gf_HeroXalatathIncrementHeroCountFunction () {
     // Implementation
     libHXAL_gv_heroXalatathTriggerRegistrationVariable += 1;
     if ((libHXAL_gv_heroXalatathTriggerRegistrationVariable == 1)) {
+        TriggerEnable(libHXAL_gt_HeroXalatathHeroSpawned, true);
         TriggerEnable(libHXAL_gt_HeroXalatathHeroWeaponApplyTargetingUnit, true);
         TriggerEnable(libHXAL_gt_HeroXalatathTargetAcquired, true);
         TriggerEnable(libHXAL_gt_HeroXalatathForceAcquireTargetTaunt, true);
         TriggerEnable(libHXAL_gt_HeroXalatathHoldFire, true);
         TriggerEnable(libHXAL_gt_HeroXalatathVoidVolleyCooldownReset, true);
+        TriggerEnable(libHXAL_gt_HeroXalatathVoidEruptionOn, true);
+        TriggerEnable(libHXAL_gt_HeroXalatathVoidEruptionOff, true);
     }
 
+    TriggerExecute(libHXAL_gt_HeroXalatathHeroSpawned, true, false);
 }
 
 void libHXAL_gf_HeroXalatathDecrementHeroCountFunction () {
@@ -55,16 +59,54 @@ void libHXAL_gf_HeroXalatathDecrementHeroCountFunction () {
     }
 
     if ((libHXAL_gv_heroXalatathTriggerRegistrationVariable == 0)) {
+        TriggerEnable(libHXAL_gt_HeroXalatathHeroSpawned, false);
         TriggerEnable(libHXAL_gt_HeroXalatathHeroWeaponApplyTargetingUnit, false);
         TriggerEnable(libHXAL_gt_HeroXalatathTargetAcquired, false);
         TriggerEnable(libHXAL_gt_HeroXalatathForceAcquireTargetTaunt, false);
         TriggerEnable(libHXAL_gt_HeroXalatathHoldFire, false);
         TriggerEnable(libHXAL_gt_HeroXalatathVoidVolleyCooldownReset, false);
+        libHXAL_gv_heroXalatathVoidEruptionPlayerCount = 0;
+        TriggerEnable(libHXAL_gt_HeroXalatathVoidEruptionOn, false);
+        TriggerEnable(libHXAL_gt_HeroXalatathVoidEruptionOff, false);
     }
 
 }
 
 // Triggers
+//--------------------------------------------------------------------------------------------------
+// Trigger: Trigger: Hero - Xalatath - Hero Spawned
+//--------------------------------------------------------------------------------------------------
+bool libHXAL_gt_HeroXalatathHeroSpawned_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_playerID;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_playerID = libGame_gf_HeroSpawnPlayer();
+
+    // Conditions
+    if (testConds) {
+        if (!((UnitGetType(libGame_gv_players[lv_playerID].lv_heroUnit) == "HeroXalatath"))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerAddEventMouseClicked(libHXAL_gt_HeroXalatathVoidEruptionPlayerClicked, lv_playerID, c_mouseButtonLeft,true);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void libHXAL_gt_HeroXalatathHeroSpawned_Init () {
+    libHXAL_gt_HeroXalatathHeroSpawned = TriggerCreate("libHXAL_gt_HeroXalatathHeroSpawned_Func");
+    TriggerEnable(libHXAL_gt_HeroXalatathHeroSpawned, false);
+    libGame_gf_HeroSpawn(libHXAL_gt_HeroXalatathHeroSpawned);
+}
+
 //--------------------------------------------------------------------------------------------------
 // Trigger: New Trigger: Hero - Xalatath - Void Volley - Cooldown Reset
 //--------------------------------------------------------------------------------------------------
@@ -99,6 +141,100 @@ void libHXAL_gt_HeroXalatathVoidVolleyCooldownReset_Init () {
     libHXAL_gt_HeroXalatathVoidVolleyCooldownReset = TriggerCreate("libHXAL_gt_HeroXalatathVoidVolleyCooldownReset_Func");
     TriggerEnable(libHXAL_gt_HeroXalatathVoidVolleyCooldownReset, false);
     libGame_gf_SpecialCaseTalentCooldownReset(libHXAL_gt_HeroXalatathVoidVolleyCooldownReset);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Trigger: Hero - Xalatath - Void Eruption - On
+//--------------------------------------------------------------------------------------------------
+bool libHXAL_gt_HeroXalatathVoidEruptionOn_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    libHXAL_gv_heroXalatathVoidEruptionPlayerCount += 1;
+    TriggerEnable(libHXAL_gt_HeroXalatathVoidEruptionPlayerClicked, true);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void libHXAL_gt_HeroXalatathVoidEruptionOn_Init () {
+    libHXAL_gt_HeroXalatathVoidEruptionOn = TriggerCreate("libHXAL_gt_HeroXalatathVoidEruptionOn_Func");
+    TriggerEnable(libHXAL_gt_HeroXalatathVoidEruptionOn, false);
+    TriggerAddEventUnitBehaviorChange(libHXAL_gt_HeroXalatathVoidEruptionOn, null, "XalatathVoidEruptionV2CasterBehavior", c_unitBehaviorChangeActivate);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Trigger: Hero - Xalatath - Void Eruption - Off
+//--------------------------------------------------------------------------------------------------
+bool libHXAL_gt_HeroXalatathVoidEruptionOff_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    libHXAL_gv_heroXalatathVoidEruptionPlayerCount -= 1;
+    if ((libHXAL_gv_heroXalatathVoidEruptionPlayerCount < 0)) {
+        libHXAL_gv_heroXalatathVoidEruptionPlayerCount = 0;
+    }
+
+    if ((libHXAL_gv_heroXalatathVoidEruptionPlayerCount == 0)) {
+        TriggerEnable(libHXAL_gt_HeroXalatathVoidEruptionPlayerClicked, false);
+    }
+
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void libHXAL_gt_HeroXalatathVoidEruptionOff_Init () {
+    libHXAL_gt_HeroXalatathVoidEruptionOff = TriggerCreate("libHXAL_gt_HeroXalatathVoidEruptionOff_Func");
+    TriggerEnable(libHXAL_gt_HeroXalatathVoidEruptionOff, false);
+    TriggerAddEventUnitBehaviorChange(libHXAL_gt_HeroXalatathVoidEruptionOff, null, "XalatathVoidEruptionV2CasterBehavior", c_unitBehaviorChangeDeactivate);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Trigger: Hero - Xalatath - Void Eruption - Player Clicked
+//--------------------------------------------------------------------------------------------------
+bool libHXAL_gt_HeroXalatathVoidEruptionPlayerClicked_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_playerID;
+    unit lv_heroUnit;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_playerID = EventPlayer();
+    lv_heroUnit = libGame_gv_players[lv_playerID].lv_heroUnit;
+
+    // Conditions
+    if (testConds) {
+        if (!((EventKeyAlt() == false))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    if ((UnitHasBehavior2(lv_heroUnit, "XalatathVoidEruptionV2CasterBehavior") == true)) {
+        UnitIssueOrder(lv_heroUnit, OrderTargetingPoint(AbilityCommand("XalatathVoidEruptionV2Cancel", 0), Point(EventMouseClickedPosXWorld(), EventMouseClickedPosYWorld())), c_orderQueueReplace);
+        return true;
+    }
+
+    if ((UnitGetType(libGame_gv_players[lv_playerID].lv_heroUnit) == "HeroAbathur") && (UnitHasBehavior2(libGame_gv_players[lv_playerID].lv_activeVehicle, "XalatathVoidEruptionV2CasterBehavior") == true)) {
+        UnitIssueOrder(libGame_gv_players[lv_playerID].lv_activeVehicle, OrderTargetingPoint(AbilityCommand("XalatathVoidEruptionV2Cancel", 0), Point(EventMouseClickedPosXWorld(), EventMouseClickedPosYWorld())), c_orderQueueReplace);
+    }
+
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void libHXAL_gt_HeroXalatathVoidEruptionPlayerClicked_Init () {
+    libHXAL_gt_HeroXalatathVoidEruptionPlayerClicked = TriggerCreate("libHXAL_gt_HeroXalatathVoidEruptionPlayerClicked_Func");
+    TriggerEnable(libHXAL_gt_HeroXalatathVoidEruptionPlayerClicked, false);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -322,7 +458,11 @@ void libHXAL_gt_HeroXalatathHoldFire_Init () {
 }
 
 void libHXAL_InitTriggers () {
+    libHXAL_gt_HeroXalatathHeroSpawned_Init();
     libHXAL_gt_HeroXalatathVoidVolleyCooldownReset_Init();
+    libHXAL_gt_HeroXalatathVoidEruptionOn_Init();
+    libHXAL_gt_HeroXalatathVoidEruptionOff_Init();
+    libHXAL_gt_HeroXalatathVoidEruptionPlayerClicked_Init();
     libHXAL_gt_HeroXalatathHeroWeaponApplyTargetingUnit_Init();
     libHXAL_gt_HeroXalatathTargetAcquired_Init();
     libHXAL_gt_HeroXalatathForceAcquireTargetTaunt_Init();

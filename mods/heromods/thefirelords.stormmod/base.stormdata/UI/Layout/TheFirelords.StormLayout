@@ -508,7 +508,7 @@
         <Visible val="False" />
         <AcceptsMouseTooltip val="True" />
         <TooltipAnchorPosition val="TopRight" />
-        <Tooltip val="@Button/Tooltip/RagnarosLivingMeteorMoltenPowerTalentTokenCounter" />
+        <Tooltip val="@Button/Tooltip/RagnarosLivingMeteorMoltenPower" />
       </Frame>
       <Frame type="Label" name="StackLabel">
         <Anchor side="Top" relative="$parent/MoltenPowerBackground" pos="Min" offset="32" />

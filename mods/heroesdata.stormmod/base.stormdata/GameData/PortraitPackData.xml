@@ -3463,4 +3463,7 @@
   <CPortraitPack id="ZachRoadHogPortrait">
     <ProductId value="138202" />
   </CPortraitPack>
+  <CPortraitPack id="TheGoldSink">
+    <ProductId value="2162044" />
+  </CPortraitPack>
 </Catalog>

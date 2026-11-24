@@ -683,6 +683,7 @@
     <BundleArray value="MineralHarvesterGazloweSkinPack" />
     <BundleArray value="HoggerHeroicBundle" />
     <BundleArray value="XalatathLaunchBundle" />
+    <BundleArray value="MoophistoLaunchBundle" />
     <BoostArray value="360DayStimpack" />
     <BoostArray value="7Day" />
     <BoostArray value="30Day" />
@@ -1083,7 +1084,7 @@
     <TutorialProgressArray index="Gold1" value="5216701565267608179" />
     <TutorialProgressArray index="Tutorial" value="5216701565554463133" />
     <TutorialProgressArray index="Challenge" value="5216701565267608492" />
-    <HomeScreenHeroArray value="Xalatath" />
+    <HomeScreenHeroArray value="MephistoMoophisto" />
     <GameContentArray value="Spray,SprayStaticFluidDefault" />
     <GameContentArray value="Spray,SprayAnimatedEmojiArthas" />
     <GameContentArray value="Spray,SprayAnimatedEmojiButcher" />

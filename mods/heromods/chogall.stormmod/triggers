@@ -1094,6 +1094,7 @@
             <Preset Type="PresetValue" Library="Ntve" Id="00000545"/>
         </Element>
         <Element Type="FunctionCall" Id="3A3448A2">
+            <Disabled/>
             <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000111"/>
             <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000004"/>
             <Parameter Type="Param" Library="HCHO" Id="5FBA25A5"/>
@@ -6217,8 +6218,6 @@
             <Action Type="FunctionCall" Library="HCHO" Id="D6CCFA3C"/>
             <Action Type="FunctionCall" Library="HCHO" Id="D1B9E696"/>
             <Action Type="Comment" Library="HCHO" Id="B6FFB3E6"/>
-            <Action Type="FunctionCall" Library="HCHO" Id="47829616"/>
-            <Action Type="FunctionCall" Library="HCHO" Id="C731AF11"/>
             <Action Type="FunctionCall" Library="HCHO" Id="AE6C122C"/>
             <Action Type="FunctionCall" Library="HCHO" Id="7874EAD3"/>
             <Action Type="FunctionCall" Library="HCHO" Id="DA267829"/>
@@ -6334,26 +6333,6 @@
             <Comment>
                 Mouse tracking enable
             </Comment>
-        </Element>
-        <Element Type="FunctionCall" Id="47829616">
-            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000123"/>
-            <ScriptCode>
-                TriggerAddEventMouseMoved(libHCHO_gt_SurgingFistMouseTracker, EventPlayer());
-            </ScriptCode>
-        </Element>
-        <Element Type="FunctionCall" Id="C731AF11">
-            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000111"/>
-            <Parameter Type="Param" Library="HCHO" Id="6A107BF9"/>
-            <Parameter Type="Param" Library="HCHO" Id="52DEACF3"/>
-        </Element>
-        <Element Type="Param" Id="6A107BF9">
-            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000176"/>
-            <ValueType Type="trigger"/>
-            <ValueElement Type="Trigger" Library="HCHO" Id="0B5D17B3"/>
-        </Element>
-        <Element Type="Param" Id="52DEACF3">
-            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000177"/>
-            <Preset Type="PresetValue" Library="Ntve" Id="00000538"/>
         </Element>
         <Element Type="FunctionCall" Id="AE6C122C">
             <FunctionDef Type="FunctionDef" Library="Ntve" Id="71596144"/>
@@ -6539,24 +6518,8 @@
         </Element>
         <Element Type="FunctionCall" Id="09DC1F55">
             <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000137"/>
-            <FunctionCall Type="FunctionCall" Library="HCHO" Id="61ED56FB"/>
             <FunctionCall Type="FunctionCall" Library="HCHO" Id="E9FBB7D2"/>
             <FunctionCall Type="FunctionCall" Library="HCHO" Id="25B36684"/>
-        </Element>
-        <Element Type="FunctionCall" Id="61ED56FB">
-            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000111"/>
-            <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000004"/>
-            <Parameter Type="Param" Library="HCHO" Id="2E88E79C"/>
-            <Parameter Type="Param" Library="HCHO" Id="0F09EA5A"/>
-        </Element>
-        <Element Type="Param" Id="2E88E79C">
-            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000176"/>
-            <ValueType Type="trigger"/>
-            <ValueElement Type="Trigger" Library="HCHO" Id="0B5D17B3"/>
-        </Element>
-        <Element Type="Param" Id="0F09EA5A">
-            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000177"/>
-            <Preset Type="PresetValue" Library="Ntve" Id="00000545"/>
         </Element>
         <Element Type="FunctionCall" Id="E9FBB7D2">
             <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000111"/>
@@ -6685,13 +6648,43 @@
         </Element>
         <Element Type="Trigger" Id="1A30A0E6">
             <InitOff/>
+            <Variable Type="Variable" Library="HCHO" Id="BCEB4846"/>
             <Variable Type="Variable" Library="HCHO" Id="4D185CEA"/>
             <Event Type="Comment" Library="HCHO" Id="EEF3B821"/>
             <Condition Type="FunctionCall" Library="HCHO" Id="8B560F9F"/>
             <Condition Type="FunctionCall" Library="HCHO" Id="CEB8A365"/>
             <Condition Type="FunctionCall" Library="HCHO" Id="D01B28BA"/>
+            <Action Type="FunctionCall" Library="HCHO" Id="6C752F43"/>
             <Action Type="FunctionCall" Library="HCHO" Id="806F4D45"/>
-            <Action Type="FunctionCall" Library="HCHO" Id="E79AA29C"/>
+        </Element>
+        <Element Type="Variable" Id="BCEB4846">
+            <Identifier>point</Identifier>
+            <VariableType>
+                <Type Value="point"/>
+            </VariableType>
+            <Value Type="Param" Library="HCHO" Id="75522F00"/>
+        </Element>
+        <Element Type="Param" Id="75522F00">
+            <FunctionCall Type="FunctionCall" Library="HCHO" Id="92B1F553"/>
+        </Element>
+        <Element Type="FunctionCall" Id="92B1F553">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000022"/>
+            <Parameter Type="Param" Library="HCHO" Id="52916A5D"/>
+            <Parameter Type="Param" Library="HCHO" Id="3362D55C"/>
+        </Element>
+        <Element Type="Param" Id="52916A5D">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000034"/>
+            <FunctionCall Type="FunctionCall" Library="HCHO" Id="C699DEDA"/>
+        </Element>
+        <Element Type="FunctionCall" Id="C699DEDA">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="D606E2CD"/>
+        </Element>
+        <Element Type="Param" Id="3362D55C">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000035"/>
+            <FunctionCall Type="FunctionCall" Library="HCHO" Id="26082093"/>
+        </Element>
+        <Element Type="FunctionCall" Id="26082093">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="451E6FB0"/>
         </Element>
         <Element Type="Variable" Id="4D185CEA">
             <VariableType>
@@ -6864,6 +6857,55 @@
             <Value>false</Value>
             <ValueType Type="bool"/>
         </Element>
+        <Element Type="FunctionCall" Id="6C752F43">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000137"/>
+            <FunctionCall Type="FunctionCall" Library="HCHO" Id="5D278188"/>
+            <FunctionCall Type="FunctionCall" Library="HCHO" Id="6804D43C"/>
+        </Element>
+        <Element Type="FunctionCall" Id="5D278188">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000136"/>
+            <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000004"/>
+            <Parameter Type="Param" Library="HCHO" Id="AE6A976F"/>
+            <Parameter Type="Param" Library="HCHO" Id="261533C5"/>
+        </Element>
+        <Element Type="Param" Id="AE6A976F">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000219"/>
+            <Variable Type="Variable" Library="HCHO" Id="BCEB4846"/>
+        </Element>
+        <Element Type="Param" Id="261533C5">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="00000220"/>
+            <FunctionCall Type="FunctionCall" Library="HCHO" Id="5CC4901E"/>
+        </Element>
+        <Element Type="FunctionCall" Id="5CC4901E">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="0E9617C3"/>
+            <Parameter Type="Param" Library="HCHO" Id="E6791964"/>
+        </Element>
+        <Element Type="Param" Id="E6791964">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="DE00215F"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="03EF46B2"/>
+        </Element>
+        <Element Type="FunctionCall" Id="6804D43C">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="C439C375"/>
+            <SubFunctionType Type="SubFuncType" Library="Ntve" Id="00000003"/>
+            <Parameter Type="Param" Library="HCHO" Id="D2924A4A"/>
+            <Parameter Type="Param" Library="HCHO" Id="985D7759"/>
+            <Parameter Type="Param" Library="HCHO" Id="B3C9F42D"/>
+        </Element>
+        <Element Type="Param" Id="D2924A4A">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="ABB380C4"/>
+            <FunctionCall Type="FunctionCall" Library="HCHO" Id="7411297C"/>
+        </Element>
+        <Element Type="FunctionCall" Id="7411297C">
+            <FunctionDef Type="FunctionDef" Library="Ntve" Id="58FBAD08"/>
+        </Element>
+        <Element Type="Param" Id="985D7759">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="51567265"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="500677B2"/>
+        </Element>
+        <Element Type="Param" Id="B3C9F42D">
+            <ParameterDef Type="ParamDef" Library="Ntve" Id="4A15EC5F"/>
+            <Preset Type="PresetValue" Library="Ntve" Id="A4D28F3B"/>
+        </Element>
         <Element Type="FunctionCall" Id="806F4D45">
             <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000137"/>
             <FunctionCall Type="FunctionCall" Library="HCHO" Id="0C2DD020"/>
@@ -6906,11 +6948,7 @@
         </Element>
         <Element Type="Param" Id="775537D2">
             <ParameterDef Type="ParamDef" Library="Ntve" Id="32BBED47"/>
-            <Variable Type="Variable" Library="HCHO" Id="6258DC7D"/>
-            <Array Type="Param" Library="HCHO" Id="3F0AC763"/>
-        </Element>
-        <Element Type="Param" Id="3F0AC763">
-            <Variable Type="Variable" Library="HCHO" Id="4D185CEA"/>
+            <Variable Type="Variable" Library="HCHO" Id="BCEB4846"/>
         </Element>
         <Element Type="Param" Id="EC732C9E">
             <ParameterDef Type="ParamDef" Library="Ntve" Id="00000158"/>
@@ -6952,11 +6990,7 @@
         </Element>
         <Element Type="Param" Id="6688F517">
             <ParameterDef Type="ParamDef" Library="Ntve" Id="32BBED47"/>
-            <Variable Type="Variable" Library="HCHO" Id="6258DC7D"/>
-            <Array Type="Param" Library="HCHO" Id="3343F66D"/>
-        </Element>
-        <Element Type="Param" Id="3343F66D">
-            <Variable Type="Variable" Library="HCHO" Id="4D185CEA"/>
+            <Variable Type="Variable" Library="HCHO" Id="BCEB4846"/>
         </Element>
         <Element Type="Param" Id="DD391574">
             <ParameterDef Type="ParamDef" Library="Ntve" Id="00000158"/>
@@ -6998,12 +7032,6 @@
             <Value>HeroAbathur</Value>
             <ValueType Type="gamelink"/>
             <ValueGameType Type="Unit"/>
-        </Element>
-        <Element Type="FunctionCall" Id="E79AA29C">
-            <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000123"/>
-            <ScriptCode>
-                TriggerRemoveEventMouseMoved(libHCHO_gt_SurgingFistMouseTracker, EventPlayer());
-            </ScriptCode>
         </Element>
         <Element Type="Trigger" Id="00318D35">
             <InitOff/>
@@ -18168,6 +18196,7 @@
             </Comment>
         </Element>
         <Element Type="FunctionCall" Id="ABD7CEA4">
+            <Disabled/>
             <FunctionDef Type="FunctionDef" Library="Ntve" Id="00000123"/>
             <ScriptCode>
                 TriggerAddEventMouseMoved(libHCHO_gt_SurgingFistMouseTracker, lv_gallPlayer);

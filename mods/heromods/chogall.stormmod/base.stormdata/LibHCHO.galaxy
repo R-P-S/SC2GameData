@@ -118,7 +118,6 @@ void libHCHO_gf_HeroChoGallDecrementHeroCountFunction () {
         TriggerEnable(libHCHO_gt_HeroGallShadowBoltVolleyEnd, false);
         TriggerEnable(libHCHO_gt_HeroGallPsychoticBreakRespawnTimerAdjustmentBase, false);
         TriggerEnable(libHCHO_gt_SurgingFistFakeCastActivated, false);
-        TriggerEnable(libHCHO_gt_SurgingFistMouseTracker, false);
         TriggerEnable(libHCHO_gt_SurgingFistExecuteChargetomouse, false);
         TriggerEnable(libHCHO_gt_SurgingFistRootsOnMonitor, false);
         TriggerEnable(libHCHO_gt_SurgingFistRootsOffMonitor, false);
@@ -912,8 +911,6 @@ bool libHCHO_gt_SurgingFistFakeCastActivated_Func (bool testConds, bool runActio
     lv_cho = EventPlayerEffectUsedUnit(c_effectUnitCaster);
     libHCHO_gv_surgingFistActiveFlag[UnitGetOwner(lv_cho)] = true;
     libHCHO_gv_surgingFistActiveCasters = (libHCHO_gv_surgingFistActiveCasters + 1);
-    TriggerAddEventMouseMoved(libHCHO_gt_SurgingFistMouseTracker, EventPlayer());
-    TriggerEnable(libHCHO_gt_SurgingFistMouseTracker, true);
     while ((UnitHasBehavior2(lv_cho, "ChoSurgingFistInitialFakeCast") == true)) {
         Wait(0.0625, c_timeGame);
     }
@@ -924,7 +921,6 @@ bool libHCHO_gt_SurgingFistFakeCastActivated_Func (bool testConds, bool runActio
     libHCHO_gv_surgingFistActiveFlag[UnitGetOwner(lv_cho)] = false;
     libHCHO_gv_surgingFistActiveCasters = (libHCHO_gv_surgingFistActiveCasters - 1);
     if ((libHCHO_gv_surgingFistActiveCasters == 0)) {
-        TriggerEnable(libHCHO_gt_SurgingFistMouseTracker, false);
         TriggerEnable(libHCHO_gt_SurgingFistExecuteChargetomouse, false);
     }
 
@@ -963,10 +959,12 @@ void libHCHO_gt_SurgingFistMouseTracker_Init () {
 //--------------------------------------------------------------------------------------------------
 bool libHCHO_gt_SurgingFistExecuteChargetomouse_Func (bool testConds, bool runActions) {
     // Variable Declarations
+    point lv_point;
     int lv_player;
 
     // Automatic Variable Declarations
     // Variable Initialization
+    lv_point = Point(EventMouseClickedPosXWorld(), EventMouseClickedPosYWorld());
     lv_player = EventPlayer();
 
     // Conditions
@@ -989,13 +987,16 @@ bool libHCHO_gt_SurgingFistExecuteChargetomouse_Func (bool testConds, bool runAc
         return true;
     }
 
+    if ((EventMouseClickedButton() != c_mouseButtonLeft)) {
+        lv_point = EventPlayerEffectUsedPoint(c_effectLocationTargetPoint);
+    }
+
     if ((UnitGetType(libGame_gv_players[lv_player].lv_heroUnit) == "HeroAbathur")) {
-        UnitIssueOrder(libGame_gv_players[lv_player].lv_activeVehicle, OrderTargetingPoint(AbilityCommand("ChoSurgingFistExecute", 0), libHCHO_gv_surgingFistMousePosition[lv_player]), c_orderQueueReplace);
+        UnitIssueOrder(libGame_gv_players[lv_player].lv_activeVehicle, OrderTargetingPoint(AbilityCommand("ChoSurgingFistExecute", 0), lv_point), c_orderQueueReplace);
     }
     else {
-        UnitIssueOrder(libGame_gv_players[lv_player].lv_heroUnit, OrderTargetingPoint(AbilityCommand("ChoSurgingFistExecute", 0), libHCHO_gv_surgingFistMousePosition[lv_player]), c_orderQueueReplace);
+        UnitIssueOrder(libGame_gv_players[lv_player].lv_heroUnit, OrderTargetingPoint(AbilityCommand("ChoSurgingFistExecute", 0), lv_point), c_orderQueueReplace);
     }
-    TriggerRemoveEventMouseMoved(libHCHO_gt_SurgingFistMouseTracker, EventPlayer());
     return true;
 }
 
@@ -1789,7 +1790,6 @@ bool libHCHO_gt_HeroChogallGallSpawn_Func (bool testConds, bool runActions) {
     libGDHL_gv_chogallPairs[lv_chogallTeam].lv_gallFollowUnit = lv_choUnit;
     libHCHO_gf_HeroChogallGallFollow(libGDHL_gv_chogallPairs[lv_chogallTeam].lv_gallUnit);
     UISetCommandAllowed(PlayerGroupSingle(lv_gallPlayer), c_uiCommandAllowQueue, false);
-    TriggerAddEventMouseMoved(libHCHO_gt_SurgingFistMouseTracker, lv_gallPlayer);
     TriggerAddEventMouseClicked(libHCHO_gt_SurgingFistExecuteChargetomouse, lv_gallPlayer, c_mouseButtonLeft,true);
     TriggerAddEventPlayerEffectUsed(libHCHO_gt_SurgingFistExecuteChargetomouse, lv_gallPlayer,"ChoSurgingFistTriggerDummyEffect");
     libGame_gv_players[lv_gallPlayer].lv_suppressHeroAnnouncements = true;

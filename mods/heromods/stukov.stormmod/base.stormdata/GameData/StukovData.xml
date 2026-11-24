@@ -30,8 +30,8 @@
     <Effect value="StukovLurkingArmStartSet" />
     <Flags index="ClearLastAttackTarget" value="1" />
     <Flags index="ClearLastMoveTarget" value="1" />
-    <Flags index="RequireTargetVision" value="0" />
     <Flags index="RangeUseCasterRadius" value="0" />
+    <Flags index="RequireTargetVision" value="0" />
     <Cost>
       <Vital index="Energy" value="60" />
       <Cooldown TimeUse="10" />
@@ -1034,7 +1034,7 @@
     <HostSiteOps Ops="SOpAttachCenter" />
     <Model value="StukovBioKillSwitchDamageImpact" />
   </CActorModel>
-  <CActorModel id="StukovBioKillSwitchVirulentReactionRoot" parent="StormModelRoot" effect="StukovBioKillSwitchVirulentReactionApplyRootBehavior" behavior="StukovBioKillSwitchVirulentReactionRootBehavior">
+  <CActorModel id="StukovBioKillSwitchVirulentReactionRoot" parent="StormModelRoot" behavior="StukovBioKillSwitchVirulentReactionRootBehavior" effect="StukovBioKillSwitchVirulentReactionApplyRootBehavior">
     <On Terms="ActorCreation" Send="SetTintColor 169,14,220" />
     <HostSiteOps Ops="SOpAttachOriginSoft SOpRotationRandomDisc" HoldRotation="1" />
     <AutoScaleFactor value="1.300000" />
@@ -1818,6 +1818,7 @@
   <CEffectSet id="StukovMassiveShoveShovedBehaviorFinalSet">
     <EffectArray value="StukovMassiveShoveForceRemoveShovingBehavior" />
     <EffectArray value="StukovMassiveShoveRemoveKnockbackProbes" />
+    <EffectArray value="StukovMassiveShoveDestroyPlacementCheckPersistent" />
     <EffectArray value="StukovMassiveShoveRemoveSegmentSpawningBehavior" />
     <EffectArray value="StukovMassiveShoveSlowApplyBehavior" />
   </CEffectSet>
@@ -2768,7 +2769,7 @@
     <ValidatorArray value="TargetNotUnstoppable" />
   </CEffectModifyUnit>
   <CEffectDamage id="StukovFlailingSwipeDamage" parent="StormSpell">
-    <Amount value="48" />
+    <Amount value="62" />
   </CEffectDamage>
   <CEffectSet id="StukovBioKillSwitchRemoveWeightedPustuleSet">
     <EffectArray value="StukovBioKillSwitchRemoveWeightedPustuleController" />
@@ -2809,8 +2810,9 @@
   </CEffectApplyBehavior>
   <CEffectApplyForce id="StukovFlailingSwipeFirstKnockbackApplyForce">
     <WhichLocation>
-      <Value value="CasterPoint" />
       <Effect value="StukovFlailingSwipeInitialSet" />
+      <Value value="CasterPoint" />
+      <ProjectionAngle value="180" />
       <ProjectionMultiplier value="1" />
       <ProjectionSourceEffect value="StukovFlailingSwipeInitialSet" />
       <ProjectionSourceValue value="OriginPoint" />
@@ -2818,15 +2820,15 @@
       <ProjectionTargetValue value="TargetPoint" />
       <UsesLineDash value="1" />
       <LineDashType value="AllowedInUnpathable" />
-      <ProjectionAngle value="180" />
       <ProjectionDistanceScale value="3" />
     </WhichLocation>
     <Amount value="24" />
   </CEffectApplyForce>
   <CEffectApplyForce id="StukovFlailingSwipeSecondKnockbackApplyForce">
     <WhichLocation>
-      <Value value="CasterPoint" />
       <Effect value="StukovFlailingSwipeInitialSet" />
+      <Value value="CasterPoint" />
+      <ProjectionAngle value="180" />
       <ProjectionMultiplier value="1" />
       <ProjectionSourceEffect value="StukovFlailingSwipeInitialSet" />
       <ProjectionSourceValue value="OriginPoint" />
@@ -2834,15 +2836,15 @@
       <ProjectionTargetValue value="TargetPoint" />
       <UsesLineDash value="1" />
       <LineDashType value="AllowedInUnpathable" />
-      <ProjectionAngle value="180" />
       <ProjectionDistanceScale value="2" />
     </WhichLocation>
     <Amount value="24" />
   </CEffectApplyForce>
   <CEffectApplyForce id="StukovFlailingSwipeFinalKnockbackApplyForce">
     <WhichLocation>
-      <Value value="CasterPoint" />
       <Effect value="StukovFlailingSwipeInitialSet" />
+      <Value value="CasterPoint" />
+      <ProjectionAngle value="180" />
       <ProjectionMultiplier value="1" />
       <ProjectionSourceEffect value="StukovFlailingSwipeInitialSet" />
       <ProjectionSourceValue value="OriginPoint" />
@@ -2850,7 +2852,6 @@
       <ProjectionTargetValue value="TargetPoint" />
       <UsesLineDash value="1" />
       <LineDashType value="AllowedInUnpathable" />
-      <ProjectionAngle value="180" />
       <ProjectionDistanceScale value="1" />
     </WhichLocation>
     <Amount value="24" />
@@ -2901,7 +2902,7 @@
   </CEffectApplyBehavior>
   <CEffectModifyPlayer id="StukovWeightedPustuleFetidTouchQuestModification">
     <WhichPlayer Value="Caster" />
-    <EffectArray Operation="Subtract" Reference="Abil,StukovWeightedPustule,Cost[0].Cooldown.TimeUse" Value="5.000000" />
+    <EffectArray Operation="Subtract" Reference="Abil,StukovWeightedPustule,Cost[0].Cooldown.TimeUse" Value="6.000000" />
     <EffectArray Operation="Set" Reference="Effect,StukovWeightedPustuleFetidTouchQuestIncrement,Chance" Value="0" />
     <EffectArray Operation="Set" Reference="Abil,StukovWeightedPustule,Cost.Vital[Energy]" Value="0" />
   </CEffectModifyPlayer>

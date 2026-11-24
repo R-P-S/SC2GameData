@@ -34,11 +34,39 @@
       </DirectionalLight>
     </ToDInfoArray>
   </CLight>
+  <CActorModelMaterial id="MephistoShadeOfMephistoShadeGlaze" parent="StormModelAnimationStyleContinuous">
+    <Aliases value="_TimeStopAffectedActor" />
+    <On Terms="StatusOn.*.TimeStopPaused" Send="AnimSetPausedAll" />
+    <On Terms="StatusOff.*.TimeStopPaused" Send="AnimSetPausedAll 0" />
+    <MaterialType value="Replacement" />
+  </CActorModelMaterial>
+  <CActorEventMacroRunnable id="MephistoMoophistoAddAddition">
+    <Do Terms="!IsKnownAs PreviewerModel" Target="MephistoMoophistoHearthListener" Send="Destroy" />
+    <Do Terms="!IsKnownAs PreviewerModel" Send="Create MephistoMoophistoHearthListener" />
+  </CActorEventMacroRunnable>
+  <CActorSimple id="MephistoMoophistoHearthListener">
+    <On Terms="Abil.Hearthstone.SourceCastStart" Target="HeroMephisto" Send="HostSiteOpsSet ::Host SOpPointSouthWorld" />
+    <On Terms="Abil.Hearthstone.SourceCastStop" Target="HeroMephisto" Send="HostSiteOpsSet ::Host" />
+  </CActorSimple>
   <CModel id="HeroMephistoMoophisto" parent="HeroMephisto">
-    <RequiredAnims index="1" value="Assets\Portraits\Storm_Hero_Mephisto_Moophisto_PortraitAnims\Storm_Hero_Mephisto_Moophisto_PortraitAnims.m3a" />
+    <RequiredAnims index="0" removed="1" />
+    <RequiredAnimsEx FilePath="Assets\Units\Heroes\Storm_Hero_Mephisto_Moophisto_RequiredAnims\Storm_Hero_Mephisto_Moophisto_RequiredAnims.m3a">
+      <Flags index="Override" value="1" />
+    </RequiredAnimsEx>
     <Model value="Assets\Units\Heroes\Storm_Hero_Mephisto_Moophisto\Storm_Hero_Mephisto_Moophisto.m3" />
     <TextureDeclares Prefix="Storm_Hero_Mephisto_Moophisto_" Slot="main" />
+    <Events>
+      <Anim value="Channel,Hearth,00" />
+      <Name value="Mephisto_Moophisto_Hearth" />
+      <Type value="Actor" />
+      <Time value="0.500000" />
+      <Payload value="Mephisto_Moophisto_Hearth" />
+    </Events>
   </CModel>
+  <CActorSound id="Mephisto_Moophisto_Hearth" parent="SoundOneShot">
+    <Sound value="Mephisto_Moophisto_Hearth" />
+    <On Terms="Abil.Hearthstone.SourceCastStop" Target="Mephisto_Moophisto_Hearth" Send="Destroy Immediate" />
+  </CActorSound>
   <CModel id="HeroMephistoMoophistoDeathRagdoll" parent="HeroMephistoDeathRagdoll">
     <Model value="Assets\Units\Heroes\Storm_Hero_Mephisto_Moophisto_DeathRagdoll\Storm_Hero_Mephisto_Moophisto_DeathRagdoll.m3" />
   </CModel>
@@ -50,6 +78,10 @@
   </CModel>
   <CModel id="MephistoMoophistoPortraitAddition" parent="MephistoPortraitAddition">
     <Model value="Assets\Units\Heroes\Storm_Hero_Mephisto_Moophisto\Storm_Hero_Mephisto_Moophisto.m3" />
+    <RequiredAnims index="0" removed="1" />
+    <RequiredAnimsEx FilePath="Assets\Units\Heroes\Storm_Hero_Mephisto_Moophisto_RequiredAnims\Storm_Hero_Mephisto_Moophisto_RequiredAnims.m3a">
+      <Flags index="Override" value="1" />
+    </RequiredAnimsEx>
   </CModel>
   <CModel id="MephistoSkinMoophistoDuranceOfHateDemonFX" parent="MephistoDuranceOfHateDemonFX">
     <Model value="Assets\Effects\Storm_FX_Mephisto_Moophisto_Imprison_Model\Storm_FX_Mephisto_Moophisto_Imprison_Model.m3" />
@@ -57,10 +89,35 @@
   </CModel>
   <CModel id="MephistoSkinMoophistoShadeOfMephistoModel" parent="MephistoShadeOfMephistoModel">
     <Model value="Assets\Units\Heroes\Storm_Hero_Mephisto_Moophisto\Storm_Hero_Mephisto_Moophisto.m3" />
+    <RequiredAnims index="0" removed="1" />
+    <RequiredAnimsEx FilePath="Assets\Units\Heroes\Storm_Hero_Mephisto_Moophisto_RequiredAnims\Storm_Hero_Mephisto_Moophisto_RequiredAnims.m3a">
+      <Flags index="Override" value="1" />
+    </RequiredAnimsEx>
   </CModel>
   <CModel id="MephistoSkinMoophistoShadeOfMephistoShadeGlaze" parent="MephistoShadeOfMephistoShadeGlaze">
     <Model value="Assets\Effects\Glaze\Storm_Hero_Mephisto_Moophisto_Shade_Mat\Storm_Hero_Mephisto_Moophisto_Shade_Mat.m3" />
   </CModel>
+  <CModel id="Storm_FX_Mephisto_Moophisto_CrownFX" parent="PersistentSpellFX">
+    <Model value="Assets\Effects\Storm_FX_Mephisto_Moophisto_Crown\Storm_FX_Mephisto_Moophisto_Crown.m3" />
+  </CModel>
+  <CActorSiteOpLocalOffset id="MephistoSkinMoophistoCrownHoverActor">
+    <LocalOffset value="0.000000,0.090000,0.563500" />
+  </CActorSiteOpLocalOffset>
+  <CActorSiteOpSpring id="MephistoSkinMoophistoCrownSpringActor">
+    <TeleportUnitRef value="::OuterUnit" />
+    <Tightness value="2250.000000" />
+  </CActorSiteOpSpring>
+  <CActorEventMacroRunnable id="MephistoSkinMoophistoCrownAddAdditionActor">
+    <Do Terms="!IsKnownAs PreviewerModel" Target="MephistoSkinMoophistoCrownActor" Send="Destroy" />
+    <Do Terms="!IsKnownAs PreviewerModel" Send="Create MephistoSkinMoophistoCrownActor" />
+  </CActorEventMacroRunnable>
+  <CActorModel id="MephistoSkinMoophistoCrownActor" parent="ModelAddition">
+    <Model value="Storm_FX_Mephisto_Moophisto_CrownFX" />
+    <Host Subject="::Creator" />
+    <HostSiteOps Ops="SOpAttachHead SOpUpDefault MephistoSkinMoophistoCrownHoverActor MephistoSkinMoophistoCrownSpringActor" />
+    <Scale value="0.400000" />
+    <ModelFlags index="AutomateGlobalLoops" value="1" />
+  </CActorModel>
   <CModel id="MephistoSkinMoophistoConsumeSoulsCastFX" parent="MephistoConsumeSoulsCastFX">
     <Model value="Assets\Effects\Storm_FX_Mephisto_Moophisto_Consume_Cast\Storm_FX_Mephisto_Moophisto_Consume_Cast.m3" />
   </CModel>
@@ -144,15 +201,26 @@
     <ReplacementArray Catalog="Model" From="MephistoSkullMissileAttackMissile" To="MephistoSkinMoophistoSkullMissileAttackMissile" />
     <ReplacementArray Catalog="Model" From="MephistoDuranceOfHateCastFX" To="MephistoSkinMoophistoDuranceOfHateCastFX" />
     <ReplacementArray Catalog="Model" From="MephistoSkullMissileImpactFX" To="MephistoSkinMoophistoSkullMissileImpactFX" />
-    <ReplacementArray Catalog="Sound" From="MephistoConsumeSoulsTargetAllySound" To="DX_MephistoMoophisto_Ultimate1_Laugh" />
+    <ReplacementArray Catalog="Sound" From="MephistoDuranceOfHateLaunchSound" To="MoophistoDuranceOfHateLaunchSound" />
+    <ReplacementArray Catalog="Sound" From="MephistoDuranceOfHateWarningSound" To="MoophistoMooSound" />
+    <ReplacementArray Catalog="Sound" From="MephistoDuranceOfHateTargetEnergySound" To="MoophistoSkullMissileCastSound" />
+    <ReplacementArray Catalog="Sound" From="MephistoSkullMissileCastSound" To="MoophistoMooSound" />
+    <ReplacementArray Catalog="Sound" From="MephistoSkullMissileTravelSound" To="MoophistoSkullMissileCastSound" />
+    <ReplacementArray Catalog="Sound" From="MephistoConsumeSoulsTargetPlayerLoopSound" To="MoophistoConsumeSoulsTargetPlayerLoopSound" />
+    <ReplacementArray Catalog="Sound" From="MephistoConsumeSoulsTargetAllyLoopSound" To="MoophistoConsumeSoulsTargetPlayerLoopSound" />
+    <ReplacementArray Catalog="Sound" From="MephistoLightningNovaLaunchSound" To="MoophistoMooSound" />
     <PreviewCutsceneFile value="Cutscenes\StoreMephistoMoophisto.StormCutscene" />
     <HeroSelectCutsceneFile value="Cutscenes\HeroSelectMephistoMoophisto.StormCutscene" />
+    <TileCutsceneFile value="Cutscenes\FrameMephistoMoophisto.StormCutscene" />
     <SortName value="Skin/SortName/MephistoMoophistoCommonVar1" />
-    <ReleaseDate Month="11" Day="01" Year="2026" />
+    <ReleaseDate Month="11" Day="23" Year="2026" />
     <InfoText value="Skin/Info/MephistoMoophisto" />
     <Rarity value="Legendary" />
     <FeatureArray value="ThemedAbilities" />
+    <FeatureArray value="ThemedAnimations" />
     <Universe value="Diablo" />
+    <ModelMacroRun Models="HeroMephistoMoophisto" Macro="MephistoSkinMoophistoCrownAddAdditionActor" />
+    <ModelMacroRun Models="HeroMephistoMoophisto" Macro="MephistoMoophistoAddAddition" />
   </CSkin>
   <CSkin id="MephistoMoophisto" parent="MephistoMoophistoCommon">
     <AttributeId value="MMO1" />

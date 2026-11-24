@@ -11056,4 +11056,13 @@
   <CRewardEmoticonPack id="EmojiOWCPack1">
     <License value="135726" />
   </CRewardEmoticonPack>
+  <CRewardPortrait id="TheGoldSink">
+    <Category File="HeroPortrait" Tag="PORT" />
+    <HyperlinkId value="TheGoldSinkPortrait" />
+    <IconFile value="$HeroPortraits44" />
+    <IconSlot value="30" />
+    <License value="1230374" />
+    <CollectionCategory value="PortraitsNexusEmblems1" />
+    <PortraitPack value="TheGoldSink" />
+  </CRewardPortrait>
 </Catalog>

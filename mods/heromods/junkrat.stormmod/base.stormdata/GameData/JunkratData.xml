@@ -2763,9 +2763,6 @@
   <CEffectModifyTokenCount id="JunkratFragLauncherTasteForExplosionsModifyQuestToken" parent="BaseEffectModifyTokenCount">
     <ValidatorArray value="TargetIsHero" />
     <ValidatorArray value="NotStructure" />
-    <ValidatorArray value="TargetNotDead" />
-    <ValidatorArray value="TargetNotStasis" />
-    <ValidatorArray value="TargetNotInvulnerable" />
     <EffectCategory index="Quest" value="1" />
     <Chance value="0" />
     <TokenId value="JunkratFragLauncherTasteForExplosionsTokenCounter" />
@@ -3038,9 +3035,9 @@
     <SourceButtonFace value="JunkratFragLauncher" />
   </CEffectDamage>
   <CEffectSet id="JunkratFragLauncherExplosionImpactSet">
-    <EffectArray value="JunkratFragLauncherTasteForExplosionsModifyQuestToken" />
     <EffectArray value="JunkratFragLauncherEndlessNadesReduceCooldown" />
     <EffectArray value="JunkratFragLauncherExplosionDamage" />
+    <EffectArray value="JunkratFragLauncherTasteForExplosionsModifyQuestToken" />
     <EffectArray value="ApplyAbilityImpactReveal" />
     <EffectArray value="CameraShakeLightTauntingTotemSet" />
   </CEffectSet>
