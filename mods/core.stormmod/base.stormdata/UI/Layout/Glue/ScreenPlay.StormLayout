@@ -261,13 +261,6 @@
       <Text val="@UI/ScreenPlay/QuickMatchButton" />
       <Handle val="ScreenPlay_QuickMatchButton" />
     </Frame>
-    <Frame type="GlueButton" name="UnrankedDraftButton" template="ScreenPlay/NavigationButtonTemplate">
-      <Anchor side="Top" relative="$parent/QuickMatchButton" pos="Min" offset="0" />
-      <Anchor side="Left" relative="$parent/QuickMatchButton" pos="Min" offset="0" />
-      <Frame type="Image" name="SeparatorImage">
-        <Visible val="false" />
-      </Frame>
-    </Frame>
     <Frame type="GlueButton" name="RankedLeagueButton" template="ScreenPlay/NavigationButtonTemplate">
       <Anchor side="Top" relative="$parent/QuickMatchButton" pos="Min" offset="0" />
       <Anchor side="Left" relative="$parent/QuickMatchButton" pos="Max" offset="#ScreenPlay_NavigationButton_Offset" />
@@ -285,6 +278,15 @@
       <Anchor side="Left" relative="$parent/ARAMButton" pos="Max" offset="#ScreenPlay_NavigationButton_Offset" />
       <Text val="@UI/ScreenPlay/CustomGamesButton" />
       <Handle val="ScreenPlay_CustomGamesButton" />
+      <Frame type="Image" name="SeparatorImage">
+        <Visible val="false" />
+      </Frame>
+    </Frame>
+    <Frame type="GlueButton" name="UnrankedDraftButton" template="ScreenPlay/NavigationButtonTemplate">
+      <Anchor side="Top" relative="$parent/CustomGamesButton" pos="Min" offset="0" />
+      <Anchor side="Left" relative="$parent/CustomGamesButton" pos="Min" offset="0" />
+      <AcceptsMouse val="false" />
+      <Alpha val="0" />
       <Frame type="Image" name="SeparatorImage">
         <Visible val="false" />
       </Frame>

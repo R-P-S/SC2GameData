@@ -212,6 +212,7 @@
     <PreviewCutsceneFile value="Cutscenes\StoreMephistoMoophisto.StormCutscene" />
     <HeroSelectCutsceneFile value="Cutscenes\HeroSelectMephistoMoophisto.StormCutscene" />
     <TileCutsceneFile value="Cutscenes\FrameMephistoMoophisto.StormCutscene" />
+    <EndOfMatchCutsceneFile value="Cutscenes\EndOfMatch\EndOfMatch_LineUp_MephistoMoophisto.StormCutscene" />
     <SortName value="Skin/SortName/MephistoMoophistoCommonVar1" />
     <ReleaseDate Month="11" Day="23" Year="2026" />
     <InfoText value="Skin/Info/MephistoMoophisto" />

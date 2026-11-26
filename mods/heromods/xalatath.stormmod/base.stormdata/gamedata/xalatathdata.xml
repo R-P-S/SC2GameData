@@ -1805,6 +1805,7 @@
   <CBehaviorUnitTracker id="XalatathShadowMarkUnitTracker">
     <TrackingValidatorArray value="XalatathShadowMarkTargetHasOwnDebuff" />
   </CBehaviorUnitTracker>
+  <CBehaviorBuff id="XalatathVoidAdeptMarkedHeroHitMarker" />
   <CBehaviorTokenCounter id="XalatathVoidAdeptTalentTokenCounter" parent="StormQuestToken">
     <Face value="XalatathVoidAdeptChargeTokenButton" />
     <SortIndex value="15" />
@@ -3109,6 +3110,7 @@
     </RevealerParams>
   </CEffectEnumArea>
   <CEffectSet id="XalatathDarkHeartRitualDetonationImpactSet">
+    <EffectArray value="XalatathVoidAdeptApplyMarkerToDarkHeartSource" />
     <EffectArray value="XalatathDarkHeartRitualDetonationDamage" />
     <EffectArray value="ApplyAbilityImpactReveal" />
     <EffectArray value="XalatathDarkHeartRitualDetonationPostImpactSet" />
@@ -3338,10 +3340,15 @@
     <Minimum value="1" />
   </CEffectDamage>
   <CEffectModifyTokenCount id="XalatathVoidAdeptTalentModifyToken" parent="BaseEffectModifyTokenCount">
-    <ValidatorArray value="XalatathShadowMarkTargetHasDebuff" />
-    <ValidatorArray value="TargetIsHero" />
+    <ValidatorArray value="XalatathDarkHeartRitualHasMarkedHeroHitMarker" />
     <TokenId value="XalatathVoidAdeptTalentTokenCounter" />
   </CEffectModifyTokenCount>
+  <CEffectApplyBehavior id="XalatathVoidAdeptApplyMarkerToDarkHeartSource">
+    <ValidatorArray value="XalatathShadowMarkTargetHasDebuff" />
+    <ValidatorArray value="TargetIsHero" />
+    <WhichUnit Effect="XalatathDarkHeartRitualDetonateSet" />
+    <Behavior value="XalatathVoidAdeptMarkedHeroHitMarker" />
+  </CEffectApplyBehavior>
   <CEffectSet id="XalatathWeaponInitialSet">
     <ValidatorArray value="XalatathHeroWeaponValidatorCombine" />
     <ValidatorArray value="XalatathTargetHasXalatathWeaponTargetBehaviorOrIsNotBenign" />
@@ -4665,6 +4672,11 @@
   </CValidatorLocationEnumArea>
   <CValidatorUnitCompareBehaviorCount id="XalatathDarkHeartRitualTargetDoesNotHaveSuicideDelay">
     <Behavior value="XalatathDarkHeartDetonateMissileSuicideDelay" />
+  </CValidatorUnitCompareBehaviorCount>
+  <CValidatorUnitCompareBehaviorCount id="XalatathDarkHeartRitualHasMarkedHeroHitMarker">
+    <Behavior value="XalatathVoidAdeptMarkedHeroHitMarker" />
+    <Compare value="GE" />
+    <Value value="1" />
   </CValidatorUnitCompareBehaviorCount>
   <CValidatorUnitCompareBehaviorCount id="XalatathVoidConvergenceCasterHasCasterBehavior">
     <WhichUnit Effect="XalatathVoidConvergenceInitialSet" Value="Caster" />

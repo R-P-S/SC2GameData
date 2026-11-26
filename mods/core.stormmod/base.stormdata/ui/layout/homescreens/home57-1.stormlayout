@@ -8,12 +8,47 @@
             <Event event="MephistoMoophisto" action="Restart,Play" frame="$parent"/>
         </Animation>
 
-        <Frame type="Image" name="BackgroundImage">
+<Frame type="Image" name="BackgroundImage">
             <Texture val="@UI/Storm_UI_HomeScreenBackground_Moophisto"/>
+
+            <Frame type="AspectRatioFrame" name="BackgroundEdgeGradientMask">
+                <MinVisibleAspectRatio val="100"/>
+            </Frame>
+
+            <Frame type="AspectRatioFrame" name="BackgroundFillSwitch">
+                <MinVisibleAspectRatio val="1.78"/>
+
+                <StateGroup name="FillMode">
+                    <DefaultState val="FitHeight"/>
+
+                    <State name="FitHeight">
+                        <Action type="SetProperty" frame="$parent" ScaleHeightToTexture="False"/>
+                        <Action type="SetProperty" frame="$parent" ScaleWidthToTexture="True"/>
+                        <Action type="SetAnchor" frame="$parent" side="Top" relative="$parent" pos="Min" offset="0"/>
+                        <Action type="SetAnchor" frame="$parent" side="Bottom" relative="$parent" pos="Max" offset="0"/>
+                        <Action type="SetAnchor" frame="$parent" side="Left" relative="$parent" pos="Mid" offset="0"/>
+                        <Action type="SetAnchor" frame="$parent" side="Right" relative="$parent" pos="Mid" offset="0"/>
+                    </State>
+
+                    <State name="FillWidth">
+                        <When type="Property" Visible="True"/>
+                        <Action type="SetProperty" frame="$parent" ScaleWidthToTexture="False"/>
+                        <Action type="SetProperty" frame="$parent" ScaleHeightToTexture="True"/>
+                        <Action type="SetAnchor" frame="$parent" side="Left" relative="$parent" pos="Min" offset="0"/>
+                        <Action type="SetAnchor" frame="$parent" side="Right" relative="$parent" pos="Max" offset="0"/>
+                        <Action type="SetAnchor" frame="$parent" side="Top" relative="$parent" pos="Mid" offset="0"/>
+                        <Action type="SetAnchor" frame="$parent" side="Bottom" relative="$parent" pos="Mid" offset="0"/>
+                    </State>
+                </StateGroup>
+            </Frame>
         </Frame>
 
-        <Frame type="HeroCutsceneFrame" name="HomeCutscene">         
+        <Frame type="HeroCutsceneFrame" name="HomeCutscene">
             <Visible val="True"/>
+
+            <Frame type="AspectRatioFrame" name="BackgroundEdgeGradientVignietteTemplate">
+                <MinVisibleAspectRatio val="100"/>
+            </Frame>
         </Frame>
 
         <Frame type="Frame" name="DescriptionContainerFrame">
